@@ -1,49 +1,53 @@
 {
-    "name": "FieldKit",
-    "version": "0.0.1",
-    "private": true,
-    "scripts": {
-        "postinstall": "rn-nodeify --install stream,process,util --hack",
-        "start": "node node_modules/react-native/local-cli/cli.js start",
-        "test": "jest"
-    },
-    "browser": {
-        "net": "react-native-tcp",
-        "_stream_transform": "readable-stream/transform",
-        "_stream_readable": "readable-stream/readable",
-        "_stream_writable": "readable-stream/writable",
-        "_stream_duplex": "readable-stream/duplex",
-        "_stream_passthrough": "readable-stream/passthrough",
-        "stream": "stream-browserify"
-    },
-    "dependencies": {
-        "bluebird": "3.5.0",
-        "process": "^0.11.10",
-        "protobufjs": "^6.8.0",
-        "react": "16.0.0-alpha.12",
-        "react-native": "0.47.1",
-        "react-native-service-discovery": "https://github.com/Conservify/react-native-service-discovery.git",
-        "react-native-tcp": "https://github.com/PeelTechnologies/react-native-tcp.git",
-        "readable-stream": "^1.0.33",
-        "stream-browserify": "^1.0.0"
-    },
-    "devDependencies": {
-        "babel-jest": "20.0.3",
-        "babel-preset-react-native": "2.1.0",
-        "jest": "20.0.4",
-        "react-test-renderer": "16.0.0-alpha.12",
-        "rn-nodeify": "^7.0.1"
-    },
-    "jest": {
-        "preset": "react-native"
-    },
-    "react-native": {
-        "net": "react-native-tcp",
-        "_stream_transform": "readable-stream/transform",
-        "_stream_readable": "readable-stream/readable",
-        "_stream_writable": "readable-stream/writable",
-        "_stream_duplex": "readable-stream/duplex",
-        "_stream_passthrough": "readable-stream/passthrough",
-        "stream": "stream-browserify"
-    }
+  "name": "FieldKit",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "postinstall": "rn-nodeify --install stream,process,util --hack",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "browser": {
+    "net": "react-native-tcp",
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify"
+  },
+  "dependencies": {
+    "bluebird": "3.5.0",
+    "process": "^0.11.10",
+    "protobufjs": "^6.8.0",
+    "react": "16.0.0-alpha.12",
+    "react-native": "0.47.1",
+    "react-native-service-discovery": "https://github.com/Conservify/react-native-service-discovery.git",
+    "react-native-tcp": "https://github.com/PeelTechnologies/react-native-tcp.git",
+    "react-redux": "^5.0.6",
+    "readable-stream": "^1.0.33",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
+    "stream-browserify": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-jest": "20.0.3",
+    "babel-preset-react-native": "2.1.0",
+    "jest": "20.0.4",
+    "react-test-renderer": "16.0.0-alpha.12",
+    "rn-nodeify": "^7.0.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "react-native": {
+    "net": "react-native-tcp",
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify"
+  }
 }
