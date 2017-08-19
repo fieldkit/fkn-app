@@ -24,6 +24,7 @@
     "react-native": "0.47.1",
     "react-native-service-discovery": "https://github.com/Conservify/react-native-service-discovery.git",
     "react-native-tcp": "https://github.com/PeelTechnologies/react-native-tcp.git",
+    "react-navigation": "^1.0.0-beta.11",
     "react-redux": "^5.0.6",
     "readable-stream": "^1.0.33",
     "redux": "^3.7.2",

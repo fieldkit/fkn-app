@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ActionCreators } from '../actions'
@@ -10,7 +10,7 @@ import {
     Text
 } from 'react-native'
 
-import Home from './Home'
+import AppWithNavigationState from '../navigators/AppNavigator';
 
 class AppContainer extends Component {
     constructor(props: any, context: any) {
@@ -19,19 +19,9 @@ class AppContainer extends Component {
 
     render() {
         return (
-                <View>
-                <Text>Hello</Text>
-                </View>
+                <AppWithNavigationState />
         )
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(ActionCreators, dispatch)
-}
-
-function mapStateToProps(state) {
-    return {}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppContainer)
+export default AppContainer

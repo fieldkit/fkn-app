@@ -1,5 +1,11 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from 'redux'
 
-import * as nothingReducer from './nothing';
+import * as nothingReducer from './nothing'
+import * as navigationReducer from './navigation'
 
-export default combineReducers(Object.assign(nothingReducer));
+console.log('nav', navigationReducer);
+
+export default combineReducers(Object.assign(
+    nothingReducer,
+    navigationReducer
+));
