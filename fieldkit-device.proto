@@ -1,0 +1,26 @@
+syntax = "proto3";
+package fieldkitdevice;
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloResponse {
+  string message = 1;
+}
+
+message RequestHeader {
+  enum MessageType {
+    SAY_HELLO = 0;
+  }
+  MessageType type = 1;
+}
+
+message ResponseHeader {
+  bool success = 1;
+  string error = 2;
+}
+
+service Service {
+  rpc SayHello (HelloRequest) returns (HelloResponse) {}
+}

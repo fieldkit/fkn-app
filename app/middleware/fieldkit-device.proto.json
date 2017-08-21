@@ -1,0 +1,59 @@
+{
+  "nested": {
+    "fieldkitdevice": {
+      "nested": {
+        "HelloRequest": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "HelloResponse": {
+          "fields": {
+            "message": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "RequestHeader": {
+          "fields": {
+            "type": {
+              "type": "MessageType",
+              "id": 1
+            }
+          },
+          "nested": {
+            "MessageType": {
+              "values": {
+                "SAY_HELLO": 0
+              }
+            }
+          }
+        },
+        "ResponseHeader": {
+          "fields": {
+            "success": {
+              "type": "bool",
+              "id": 1
+            },
+            "error": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "Service": {
+          "methods": {
+            "SayHello": {
+              "requestType": "HelloRequest",
+              "responseType": "HelloResponse"
+            }
+          }
+        }
+      }
+    }
+  }
+}
