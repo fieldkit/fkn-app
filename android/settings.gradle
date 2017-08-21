@@ -1,3 +1,7 @@
 rootProject.name = 'FieldKit'
+include ':react-native-tcp'
+project(':react-native-tcp').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-tcp/android')
+include ':react-native-service-discovery'
+project(':react-native-service-discovery').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-service-discovery/android')
 
 include ':app'
