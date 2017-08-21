@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import {
     View,
@@ -7,7 +8,9 @@ import {
     Button
 } from 'react-native'
 
-import * as Actions from '../actions';
+import {
+    navigateWelcome
+} from '../actions';
 
 class AboutScreen extends React.Component {
     static navigationOptions = {
@@ -15,20 +18,21 @@ class AboutScreen extends React.Component {
     };
 
     render() {
-        const navigation = this.props.navigation;
+        const { navigateWelcome } = this.props;
         return (
             <View>
-                <Button title="Welcome" onPress={() => navigation.dispatch(Actions.navigateWelcome())} />
-                <Text>
-                    Hello
-                </Text>
+                <Button title="Welcome" onPress={() => navigateWelcome()} />
             </View>
         );
     }
 }
 
 AboutScreen.propTypes = {
-    navigation: PropTypes.object.isRequired,
+    navigateWelcome: PropTypes.func.isRequired,
 };
 
-export default AboutScreen
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps, {
+    navigateWelcome
+})(AboutScreen);

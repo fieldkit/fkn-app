@@ -1,27 +1,44 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import {
+    View,
     Button
 } from 'react-native'
 
-import * as Actions from '../actions';
+import {
+    deviceHello,
+    navigateAbout
+} from '../actions';
 
 class WelcomeScreen extends React.Component {
     static navigationOptions = {
         title: 'Welcome',
     };
 
+    componentDidMount() {
+        this.props.deviceHello();
+    }
+
     render() {
-        const navigation = this.props.navigation;
+        const { navigateAbout } = this.props;
         return (
-                <Button title="About" onPress={() => navigation.dispatch(Actions.navigateAbout())} />
+            <View>
+                <Button title="About" onPress={() => navigateAbout()} />
+            </View>
         );
     }
 }
 
 WelcomeScreen.propTypes = {
-    navigation: PropTypes.object.isRequired,
+    deviceHello: PropTypes.func.isRequired,
+    navigateAbout: PropTypes.func.isRequired,
 };
 
-export default WelcomeScreen
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps, {
+    deviceHello,
+    navigateAbout
+})(WelcomeScreen);

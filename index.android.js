@@ -6,6 +6,8 @@ import { createStore, applyMiddleware, combineReducers, compose} from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import reducer from './app/reducers'
+import webApiMiddleware from './app/middleware/web-api'
+import deviceApiMiddleware from './app/middleware/device-api'
 
 const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__  });
 
@@ -14,6 +16,8 @@ function configureStore(initialState) {
         applyMiddleware(
             thunkMiddleware, // lets us dispatch() functions
             loggerMiddleware,
+            webApiMiddleware,
+            deviceApiMiddleware,
         ),
     );
     return createStore(reducer, initialState, enhancer)
