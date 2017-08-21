@@ -5,6 +5,8 @@ import {
     Button
 } from 'react-native'
 
+import * as Actions from '../actions';
+
 class WelcomeScreen extends React.Component {
     static navigationOptions = {
         title: 'Welcome',
@@ -13,7 +15,7 @@ class WelcomeScreen extends React.Component {
     render() {
         const navigation = this.props.navigation;
         return (
-                <Button title="About" onPress={() => navigation.dispatch({ type: 'About' })} />
+                <Button title="About" onPress={() => navigation.dispatch(Actions.navigateAbout())} />
         );
     }
 }

@@ -7,6 +7,8 @@ import {
     Button
 } from 'react-native'
 
+import * as Actions from '../actions';
+
 class AboutScreen extends React.Component {
     static navigationOptions = {
         title: 'About',
@@ -16,7 +18,7 @@ class AboutScreen extends React.Component {
         const navigation = this.props.navigation;
         return (
             <View>
-                <Button title="Welcome" onPress={() => navigation.dispatch({ type: 'Welcome' })} />
+                <Button title="Welcome" onPress={() => navigation.dispatch(Actions.navigateWelcome())} />
                 <Text>
                     Hello
                 </Text>
