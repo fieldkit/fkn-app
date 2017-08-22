@@ -10,8 +10,8 @@ export const CALL_DEVICE_API = Symbol('Call Device API');
 const root = protobuf.Root.fromJSON(require("./fieldkit-device.proto.json"));
 const RequestHeader = root.lookupType("fieldkitdevice.RequestHeader");
 const ResponseHeader = root.lookupType("fieldkitdevice.ResponseHeader");
-const HelloRequest = root.lookupType("fieldkitdevice.HelloRequest");
-const HelloResponse = root.lookupType("fieldkitdevice.HelloResponse");
+const PingRequest = root.lookupType("fieldkitdevice.PingRequest");
+const PingResponse = root.lookupType("fieldkitdevice.PingResponse");
 const MessageType = root.lookup("fieldkitdevice.RequestHeader.MessageType");
 
 function discoverDevice() {

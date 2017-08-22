@@ -5,9 +5,11 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
 import WelcomeScreen from '../containers/WelcomeScreen';
 import AboutScreen from '../containers/AboutScreen';
+import ConnectingScreen from '../containers/ConnectingScreen';
 
 export const AppNavigator = StackNavigator({
     Welcome: { screen: WelcomeScreen },
+    Connecting: { screen: ConnectingScreen },
     About: { screen: AboutScreen },
 });
 
@@ -16,7 +18,6 @@ const AppWithNavigationState = ({ dispatch, nav }) => (
 );
 
 AppWithNavigationState.propTypes = {
-    dispatch: PropTypes.func.isRequired,
     nav: PropTypes.object.isRequired,
 };
 

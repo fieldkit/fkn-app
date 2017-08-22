@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 
 import {
-    deviceHello,
+    navigateConnecting,
     navigateAbout
 } from '../actions';
 
@@ -19,14 +19,11 @@ class WelcomeScreen extends React.Component {
         title: 'Welcome',
     };
 
-    componentDidMount() {
-        this.props.deviceHello();
-    }
-
     render() {
-        const { navigateAbout } = this.props;
+        const { navigateConnecting, navigateAbout } = this.props;
         return (
             <View>
+                <Button title="Connect" onPress={() => navigateConnecting()} />
                 <Button title="About" onPress={() => navigateAbout()} />
             </View>
         );
@@ -34,13 +31,13 @@ class WelcomeScreen extends React.Component {
 }
 
 WelcomeScreen.propTypes = {
-    deviceHello: PropTypes.func.isRequired,
+    navigateConnecting: PropTypes.func.isRequired,
     navigateAbout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps, {
-    deviceHello,
+    navigateConnecting,
     navigateAbout
 })(WelcomeScreen);

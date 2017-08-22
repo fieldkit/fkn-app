@@ -19,6 +19,12 @@ export function nav(state = initialState, action) {
             state
         );
         break;
+    case ActionTypes.NAVIGATION_CONNECTING:
+        nextState = AppNavigator.router.getStateForAction(
+            NavigationActions.navigate({ routeName: 'Connecting' }),
+            state
+        );
+        break;
     case ActionTypes.NAVIGATION_ABOUT:
         nextState = AppNavigator.router.getStateForAction(
             NavigationActions.navigate({ routeName: 'About' }),
