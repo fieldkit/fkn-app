@@ -2,6 +2,12 @@
   "nested": {
     "fieldkitdevice": {
       "nested": {
+        "PingRequest": {
+          "fields": {}
+        },
+        "PingResponse": {
+          "fields": {}
+        },
         "HelloRequest": {
           "fields": {
             "name": {
@@ -28,7 +34,8 @@
           "nested": {
             "MessageType": {
               "values": {
-                "SAY_HELLO": 0
+                "PING": 0,
+                "SAY_HELLO": 1
               }
             }
           }
@@ -47,6 +54,10 @@
         },
         "Service": {
           "methods": {
+            "Ping": {
+              "requestType": "PingRequest",
+              "responseType": "PingResponse"
+            },
             "SayHello": {
               "requestType": "HelloRequest",
               "responseType": "HelloResponse"

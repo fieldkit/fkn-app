@@ -1,17 +1,16 @@
 syntax = "proto3";
 package fieldkitdevice;
 
-message HelloRequest {
-  string name = 1;
+message PingRequest {
 }
 
-message HelloResponse {
-  string message = 1;
+message PingResponse {
 }
 
 message RequestHeader {
   enum MessageType {
-    SAY_HELLO = 0;
+    PING = 0;
+    SAY_HELLO = 1;
   }
   MessageType type = 1;
 }
@@ -22,5 +21,6 @@ message ResponseHeader {
 }
 
 service Service {
+  rpc Ping (PingRequest) returns (PingResponse) {}
   rpc SayHello (HelloRequest) returns (HelloResponse) {}
 }

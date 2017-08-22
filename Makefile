@@ -9,5 +9,8 @@ fake-device/fieldkit-device-proto/fieldkit-device.pb.go: fieldkit-device.proto
 fake-device/fake-device: fake-device/fake-device.go
 	go build -o fake-device/fake-device fake-device/*.go
 
+run-fake-device: fake-device/fake-device
+	fake-device/fake-device
+
 clean:
 	rm -f fake-device/fake-device

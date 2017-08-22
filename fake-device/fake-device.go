@@ -55,6 +55,21 @@ type rpcDispatcher struct {
 	handlers map[pb.RequestHeader_MessageType]rpcHandler
 }
 
+func rpcPing(rc *rpcContext) error {
+	request := &pb.PingRequest{}
+	err := rc.readMessage(request)
+	if err != nil {
+		return err
+	}
+
+	log.Printf("Handling %v", request)
+
+	response := &pb.PingResponse{}
+	rc.writeMessage(response)
+
+	return nil
+}
+
 func rpcSayHello(rc *rpcContext) error {
 	request := &pb.HelloRequest{}
 	err := rc.readMessage(request)
@@ -74,6 +89,7 @@ func rpcSayHello(rc *rpcContext) error {
 
 func newRpcDispatcher() *rpcDispatcher {
 	handlers := make(map[pb.RequestHeader_MessageType]rpcHandler)
+	handlers[pb.RequestHeader_PING] = rpcPing
 	handlers[pb.RequestHeader_SAY_HELLO] = rpcSayHello
 	return &rpcDispatcher{
 		handlers: handlers,
@@ -216,6 +232,7 @@ func main() {
 	defer l.Close()
 
 	go publishAddressOverMdns()
+
 	go publishAddressOverUdp()
 
 	rd := newRpcDispatcher()
