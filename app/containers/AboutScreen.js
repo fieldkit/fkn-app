@@ -12,7 +12,7 @@ import {
 
 import {
     navigateWelcome
-} from '../actions';
+} from '../actions/nav';
 
 class AboutScreen extends React.Component {
     static navigationOptions = {

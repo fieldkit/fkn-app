@@ -5,7 +5,7 @@ import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
 import * as ActionTypes from '../actions/types';
 
-const firstAction = AppNavigator.router.getActionForPathAndParams('Welcome');
+const firstAction = AppNavigator.router.getActionForPathAndParams('/');
 const initialState = AppNavigator.router.getStateForAction(
     AppNavigator.router.getStateForAction(firstAction),
 );
@@ -15,13 +15,22 @@ export function nav(state = initialState, action) {
     switch (action.type) {
     case ActionTypes.NAVIGATION_WELCOME:
         nextState = AppNavigator.router.getStateForAction(
-            NavigationActions.back(),
+            NavigationActions.reset({
+                index: 0,
+                actions: [firstAction]
+            }),
             state
         );
         break;
     case ActionTypes.NAVIGATION_CONNECTING:
         nextState = AppNavigator.router.getStateForAction(
             NavigationActions.navigate({ routeName: 'Connecting' }),
+            state
+        );
+        break;
+    case ActionTypes.NAVIGATION_DEVICE_MENU:
+        nextState = AppNavigator.router.getStateForAction(
+            NavigationActions.navigate({ routeName: 'DeviceMenu' }),
             state
         );
         break;

@@ -30,6 +30,7 @@
     "readable-stream": "^1.0.33",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
+    "redux-saga": "^0.15.6",
     "redux-thunk": "^2.2.0",
     "stream-browserify": "^1.0.0"
   },

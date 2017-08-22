@@ -42,7 +42,7 @@ export default store => next => action => {
                 if (response.status === 401) {
                     next({
                         type: WEB_API_AUTHENTICATION_REDIRECTED,
-                        network: {
+                        webApi: {
                             pending: false
                         }
                     })
@@ -55,7 +55,7 @@ export default store => next => action => {
                 }
                 else {
                     next(actionWith({
-                        network: {
+                        webApi: {
                             pending: false
                         },
                         type: callApi.types[callApi.types.length == 1 ? 0 : 1],

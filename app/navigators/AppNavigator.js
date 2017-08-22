@@ -6,11 +6,25 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import WelcomeScreen from '../containers/WelcomeScreen';
 import AboutScreen from '../containers/AboutScreen';
 import ConnectingScreen from '../containers/ConnectingScreen';
+import DeviceMenuScreen from '../containers/DeviceMenuScreen';
 
 export const AppNavigator = StackNavigator({
-    Welcome: { screen: WelcomeScreen },
-    Connecting: { screen: ConnectingScreen },
-    About: { screen: AboutScreen },
+    Welcome: {
+        path: '/',
+        screen: WelcomeScreen
+    },
+    Connecting: {
+        path: '/connecting',
+        screen: ConnectingScreen
+    },
+    DeviceMenu: {
+        path: '/device',
+        screen: DeviceMenuScreen
+    },
+    About: {
+        path: '/about',
+        screen: AboutScreen
+    },
 });
 
 const AppWithNavigationState = ({ dispatch, nav }) => (

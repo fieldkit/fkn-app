@@ -1,10 +1,7 @@
-export const appStyle = {
-    resultText: {
-        backgroundColor: '#000',
-        color: '#FFF',
-        height: 20,
-    },
-    resultImage: {
-        height: 150,
-    },
+export default appStyle = {
+    heading: {
+        fontSize: 25,
+        textAlign: 'center',
+        height: 60,
+    }
 }

@@ -2,7 +2,6 @@
 
 import Promise from "bluebird";
 import net from "net";
-import ServiceDiscovery from "react-native-service-discovery";
 import protobuf from "protobufjs";
 
 export const CALL_DEVICE_API = Symbol('Call Device API');
@@ -14,36 +13,26 @@ const PingRequest = root.lookupType("fieldkitdevice.PingRequest");
 const PingResponse = root.lookupType("fieldkitdevice.PingResponse");
 const MessageType = root.lookup("fieldkitdevice.RequestHeader.MessageType");
 
-function discoverDevice() {
-    return new Promise(function (resolve, reject) {
-        const sd = new ServiceDiscovery();
-
-        sd.on('service-resolved', (ev) => {
-            console.log("SVC", ev);
-        });
-
-        sd.on('udp-discovery', (ev) => {
-            console.log("UDP", ev);
-            sd.stop();
-            resolve(ev);
-        });
-
-        sd.start();
-    });
-}
-
 function toUnderscoreUpper(camelCase) {
     return camelCase.replace(/([A-Z])/g, function($1) {
         return "_" + $1;
     }).substring(1).toUpperCase();
 }
 
-function rpcImplFactory(address, port) {
+function debug() {
+    if (__DEV__) {
+        let args = [].slice.call(arguments);
+        args.unshift('device-api');
+        console.log.apply(console, args);
+    }
+};
+
+function rpcImplFactory(host, port) {
     return (method, requestData, callback) => {
         const enumName = toUnderscoreUpper(method.name);
         const messageType = MessageType.values[enumName];
         if (typeof(messageType) == undefined) {
-            console.log("Unknown message type: " + method.name + " (" + enumName + ")");
+            debug("Unknown message type:", method.name, "(" + enumName + ")");
             throw "Unknown message type: " + method.name;
         }
 
@@ -51,12 +40,20 @@ function rpcImplFactory(address, port) {
             type: messageType
         }).finish();
 
-        console.log("Connecting to " + address + ":" + port + "...");
+        debug("Connecting to", host + ":" + port);
 
-        const client = net.createConnection(port, address);
+        const client = net.createConnection({
+            host: host,
+            port: port,
+            timeout: 1000
+        });
+
+        client.on('end', () => {
+            debug("Close");
+        });
 
         client.on('error', (error) => {
-            console.log("Error", error);
+            debug("Error", error);
         });
 
         client.on('data', (responseData) => {
@@ -64,7 +61,7 @@ function rpcImplFactory(address, port) {
         });
 
         client.on('connect', () => {
-            console.log("Connected, executing", method.name);
+            debug("Connected, executing", method.name);
 
             client.write(new Buffer(headerData));
             client.write(new Buffer(requestData));
@@ -72,11 +69,9 @@ function rpcImplFactory(address, port) {
     };
 }
 
-function api() {
-    return discoverDevice().then(info => {
-        const Service = root.lookup("Service");
-        return Promise.promisifyAll(Service.create(rpcImplFactory(info.address, info.port), false, false));
-    });
+function api(address) {
+    const Service = root.lookup("Service");
+    return Promise.resolve(Promise.promisifyAll(Service.create(rpcImplFactory(address.host, address.port), false, false)));
 }
 
 export default store => next => action => {
@@ -93,7 +88,7 @@ export default store => next => action => {
 
     if (callApi.types.length > 1) {
         next(actionWith({
-            network: {
+            deviceApi: {
                 pending: true
             },
             type: callApi.types[0]
@@ -101,16 +96,18 @@ export default store => next => action => {
     }
 
     function makeRequest(callApi) {
-        return api()
+        return api(callApi.address)
             .then(callApi.call)
             .then(response => {
-                next(actionWith({
-                    network: {
+                const nextAction = actionWith({
+                    deviceApi: {
                         pending: false
                     },
                     type: callApi.types[callApi.types.length == 1 ? 0 : 1],
                     response: response
-                }));
+                });
+
+                next(nextAction);
             });
     }
 

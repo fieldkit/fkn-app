@@ -17,18 +17,12 @@ import {
     deviceStopConnect
 } from '../actions/device-status';
 
-import { unixNow } from '../lib/helpers';
-
 import styles from '../styles';
 
-class ConnectingScreen extends React.Component {
+class DeviceMenuScreen extends React.Component {
     static navigationOptions = {
-        title: 'Connecting',
+        title: 'Device',
     };
-
-    componentWillUpdate(nextProps, nextState) {
-        const { device } = nextProps;
-    }
 
     componentDidMount() {
         this.props.deviceStartConnect()
@@ -39,28 +33,16 @@ class ConnectingScreen extends React.Component {
     }
 
     render() {
-        const { device } = this.props;
-        let status = "Searching...";
-        if (device.address.valid) {
-            status = "Connecting...";
-        }
-        if (device.ping.success && unixNow() - device.ping.time < 10) {
-            status = "Connected";
-        }
-
         return (
             <View>
-                <Button title="Cancel" onPress={() => this.props.navigateWelcome()} />
-                <Text style={styles.heading}>{status}</Text>
+                <Button title="Home" onPress={() => this.props.navigateWelcome()} />
             </View>
         );
     }
 }
 
-ConnectingScreen.propTypes = {
+DeviceMenuScreen.propTypes = {
     navigateWelcome: PropTypes.func.isRequired,
-    deviceStartConnect: PropTypes.func.isRequired,
-    deviceStopConnect: PropTypes.func.isRequired,
     device: PropTypes.object.isRequired,
 };
 
@@ -72,4 +54,4 @@ export default connect(mapStateToProps, {
     deviceStartConnect,
     deviceStopConnect,
     navigateWelcome
-})(ConnectingScreen);
+})(DeviceMenuScreen);
