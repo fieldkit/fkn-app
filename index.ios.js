@@ -15,9 +15,9 @@ function configureStore(initialState) {
     const enhancer = compose(
         applyMiddleware(
             thunkMiddleware, // lets us dispatch() functions
-            loggerMiddleware,
             webApiMiddleware,
             deviceApiMiddleware,
+            loggerMiddleware,
         ),
     );
     return createStore(reducer, initialState, enhancer)
