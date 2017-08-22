@@ -3,23 +3,17 @@
     "fieldkitdevice": {
       "nested": {
         "PingRequest": {
-          "fields": {}
-        },
-        "PingResponse": {
-          "fields": {}
-        },
-        "HelloRequest": {
           "fields": {
-            "name": {
-              "type": "string",
+            "time": {
+              "type": "int64",
               "id": 1
             }
           }
         },
-        "HelloResponse": {
+        "PingResponse": {
           "fields": {
-            "message": {
-              "type": "string",
+            "time": {
+              "type": "int64",
               "id": 1
             }
           }
@@ -57,10 +51,6 @@
             "Ping": {
               "requestType": "PingRequest",
               "responseType": "PingResponse"
-            },
-            "SayHello": {
-              "requestType": "HelloRequest",
-              "responseType": "HelloResponse"
             }
           }
         }

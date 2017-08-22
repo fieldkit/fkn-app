@@ -2,9 +2,11 @@ syntax = "proto3";
 package fieldkitdevice;
 
 message PingRequest {
+  int64 time = 1;
 }
 
 message PingResponse {
+  int64 time = 1;
 }
 
 message RequestHeader {
@@ -22,5 +24,4 @@ message ResponseHeader {
 
 service Service {
   rpc Ping (PingRequest) returns (PingResponse) {}
-  rpc SayHello (HelloRequest) returns (HelloResponse) {}
 }

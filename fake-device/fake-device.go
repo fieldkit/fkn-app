@@ -28,6 +28,7 @@ func (rc *rpcContext) writeMessage(m proto.Message) error {
 	if err != nil {
 		return err
 	}
+
 	_, err = rc.c.Write(data)
 	if err != nil {
 		return err
@@ -62,25 +63,10 @@ func rpcPing(rc *rpcContext) error {
 		return err
 	}
 
-	log.Printf("Handling %v", request)
+	log.Printf("Handling %v", *request)
 
-	response := &pb.PingResponse{}
-	rc.writeMessage(response)
-
-	return nil
-}
-
-func rpcSayHello(rc *rpcContext) error {
-	request := &pb.HelloRequest{}
-	err := rc.readMessage(request)
-	if err != nil {
-		return err
-	}
-
-	log.Printf("Handling %v", request)
-
-	response := &pb.HelloResponse{
-		Message: fmt.Sprintf("Hey there %s", request.Name),
+	response := &pb.PingResponse{
+		Time: request.Time,
 	}
 	rc.writeMessage(response)
 
@@ -90,13 +76,14 @@ func rpcSayHello(rc *rpcContext) error {
 func newRpcDispatcher() *rpcDispatcher {
 	handlers := make(map[pb.RequestHeader_MessageType]rpcHandler)
 	handlers[pb.RequestHeader_PING] = rpcPing
-	handlers[pb.RequestHeader_SAY_HELLO] = rpcSayHello
 	return &rpcDispatcher{
 		handlers: handlers,
 	}
 }
 
 func (rd *rpcDispatcher) handleRequest(c net.Conn) {
+	defer c.Close()
+
 	rc := &rpcContext{
 		c: c,
 	}
@@ -109,13 +96,14 @@ func (rd *rpcDispatcher) handleRequest(c net.Conn) {
 
 	log.Printf("Header: %v", requestHeader.Type)
 
-	err = rd.handlers[requestHeader.Type](rc)
+	handler := rd.handlers[requestHeader.Type]
+	err = handler(rc)
 	if err != nil {
 		log.Printf("Error handling RPC %v", err.Error())
 		return
 	}
 
-	c.Close()
+	log.Printf("Done")
 }
 
 func getLanIp() (lanIp *net.IP, lanNet *net.IPNet, err error) {
@@ -211,6 +199,8 @@ func publishAddressOverUdp() {
 	i := 0
 
 	for {
+		fmt.Printf(".")
+
 		msg := strconv.Itoa(i)
 		buf := []byte(msg)
 		_, err = c.Write(buf)
