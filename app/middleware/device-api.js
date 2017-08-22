@@ -1,3 +1,5 @@
+'use strict';
+
 import Promise from "bluebird";
 import net from "net";
 import ServiceDiscovery from "react-native-service-discovery";

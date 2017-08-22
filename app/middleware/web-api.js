@@ -1,3 +1,5 @@
+'use strict';
+
 import Promise from "bluebird";
 
 export const CALL_WEB_API = Symbol('Call Web API');

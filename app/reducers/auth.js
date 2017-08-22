@@ -1,3 +1,5 @@
+'use strict';
+
 const initialAuthState = { isLoggedIn: false };
 
 export function auth(state = initialAuthState, action) {
