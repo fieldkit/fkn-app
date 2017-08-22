@@ -34,17 +34,13 @@ class ConnectingScreen extends React.Component {
         this.props.deviceStartConnect()
     }
 
-    componentWillUnmount() {
-        this.props.deviceStopConnect();
-    }
-
     render() {
         const { device } = this.props;
         let status = "Searching...";
         if (device.address.valid) {
             status = "Connecting...";
         }
-        if (device.ping.success && unixNow() - device.ping.time < 10) {
+        if (device.ping.success) {
             status = "Connected";
         }
 

@@ -48,12 +48,10 @@ function rpcImplFactory(host, port) {
             timeout: 1000
         });
 
-        client.on('end', () => {
-            debug("Close");
-        });
-
         client.on('error', (error) => {
-            debug("Error", error);
+            debug("Error", error.message);
+
+            callback(error, null);
         });
 
         client.on('data', (responseData) => {
@@ -86,14 +84,12 @@ export default store => next => action => {
         return finalAction;
     }
 
-    if (callApi.types.length > 1) {
-        next(actionWith({
-            deviceApi: {
-                pending: true
-            },
-            type: callApi.types[0]
-        }));
-    }
+    next(actionWith({
+        deviceApi: {
+            pending: true
+        },
+        type: callApi.types[0]
+    }));
 
     function makeRequest(callApi) {
         return api(callApi.address)
@@ -103,8 +99,18 @@ export default store => next => action => {
                     deviceApi: {
                         pending: false
                     },
-                    type: callApi.types[callApi.types.length == 1 ? 0 : 1],
+                    type: callApi.types[1],
                     response: response
+                });
+
+                next(nextAction);
+            }, error => {
+                const nextAction = actionWith({
+                    deviceApi: {
+                        pending: false
+                    },
+                    type: callApi.types[2],
+                    error: error.message
                 });
 
                 next(nextAction);

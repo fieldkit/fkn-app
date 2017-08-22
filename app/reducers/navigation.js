@@ -5,32 +5,49 @@ import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
 import * as ActionTypes from '../actions/types';
 
-const firstAction = AppNavigator.router.getActionForPathAndParams('/');
-const initialState = AppNavigator.router.getStateForAction(
-    AppNavigator.router.getStateForAction(firstAction),
+const welcomeAction = AppNavigator.router.getActionForPathAndParams('/');
+const welcomeState = AppNavigator.router.getStateForAction(
+    AppNavigator.router.getStateForAction(welcomeAction),
 );
 
-export function nav(state = initialState, action) {
+const deviceMenuAction = AppNavigator.router.getActionForPathAndParams('/device');
+
+export function nav(state = welcomeState, action) {
     let nextState;
     switch (action.type) {
     case ActionTypes.NAVIGATION_WELCOME:
         nextState = AppNavigator.router.getStateForAction(
             NavigationActions.reset({
                 index: 0,
-                actions: [firstAction]
+                actions: [welcomeAction]
             }),
             state
         );
         break;
     case ActionTypes.NAVIGATION_CONNECTING:
         nextState = AppNavigator.router.getStateForAction(
-            NavigationActions.navigate({ routeName: 'Connecting' }),
+            NavigationActions.navigate({
+                routeName: 'Connecting',
+                params: {
+                    connecting: true
+                }
+            }),
             state
         );
         break;
     case ActionTypes.NAVIGATION_DEVICE_MENU:
         nextState = AppNavigator.router.getStateForAction(
-            NavigationActions.navigate({ routeName: 'DeviceMenu' }),
+            NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({
+                        routeName: 'DeviceMenu',
+                        params: {
+                            connectionRequired: true
+                        }
+                    })
+                ]
+            }),
             state
         );
         break;

@@ -4,10 +4,10 @@ import { combineReducers } from 'redux'
 
 import * as navigationReducer from './navigation'
 import * as authReducer from './auth'
-import * as deviceReducer from './device'
+import * as deviceStatusReducer from './device-status'
 
 export default combineReducers(Object.assign(
     navigationReducer,
     authReducer,
-    deviceReducer,
+    deviceStatusReducer,
 ));

@@ -7,13 +7,16 @@ import * as Types from './types';
 import { CALL_DEVICE_API } from '../middleware/device-api';
 import { unixNow } from '../lib/helpers';
 
-import { navigateDeviceMenu } from './nav';
+import {
+    navigateWelcome,
+    navigateDeviceMenu
+} from './nav';
 
 export function devicePing() {
     return (dispatch, getState) => {
         return dispatch({
             [CALL_DEVICE_API]: {
-                types: [Types.DEVICE_PING_START, Types.DEVICE_PING_SUCCESS, Types.DEVICE_PING_FAILED],
+                types: [Types.DEVICE_PING_START, Types.DEVICE_PING_SUCCESS, Types.DEVICE_PING_FAIL],
                 address: getState().device.address,
                 call: (api) => api.ping({ time: unixNow() }),
             },
@@ -27,18 +30,34 @@ let pingTimer = null;
 function tick() {
     return (dispatch, getState) => {
         const { nav, device } = getState();
+        const route = nav.routes[nav.index];
 
-        if (device.address.valid && !device.api.pending) {
-            if (unixNow() - device.ping.time > 10) {
-                devicePing()(dispatch, getState);
+        if (device.address.valid) {
+            if (!device.api.pending) {
+                if (unixNow() - device.ping.time > 10) {
+                    devicePing()(dispatch, getState);
+                }
+                else {
+                    if (device.ping.success) {
+                        if (_.isObject(route.params) && route.params.connecting === true) {
+                            dispatch(navigateDeviceMenu());
+                        }
+                    }
+                    else {
+                        if (_.isObject(route.params) && route.params.connectionRequired === true) {
+                            dispatch(navigateWelcome());
+                        }
+                    }
+                }
             }
             else {
-                if (device.ping.success) {
-                    const route = nav.routes[nav.index];
-                    console.log(route);
-                    if (route.routeName == "Connecting") {
-                        dispatch(navigateDeviceMenu());
-                    }
+
+            }
+        }
+        else {
+            if (unixNow() - device.started > 30) {
+                if (_.isObject(route.params) && route.params.connecting === true) {
+                    dispatch(navigateWelcome());
                 }
             }
         }

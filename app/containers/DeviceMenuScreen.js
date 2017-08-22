@@ -24,14 +24,6 @@ class DeviceMenuScreen extends React.Component {
         title: 'Device',
     };
 
-    componentDidMount() {
-        this.props.deviceStartConnect()
-    }
-
-    componentWillUnmount() {
-        this.props.deviceStopConnect();
-    }
-
     render() {
         return (
             <View>

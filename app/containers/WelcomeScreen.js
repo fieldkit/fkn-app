@@ -14,6 +14,12 @@ import {
     navigateAbout
 } from '../actions/nav';
 
+const viewStyle = {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+};
+
 class WelcomeScreen extends React.Component {
     static navigationOptions = {
         title: 'Welcome',
@@ -22,7 +28,7 @@ class WelcomeScreen extends React.Component {
     render() {
         const { navigateConnecting, navigateAbout } = this.props;
         return (
-            <View>
+            <View style={viewStyle}>
                 <Button title="Connect" onPress={() => navigateConnecting()} />
                 <Button title="About" onPress={() => navigateAbout()} />
             </View>
