@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 
 import {
     View,
-    Text,
-    Button
+    Text
 } from 'react-native'
+
+import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
 import {
     navigateWelcome
@@ -23,7 +24,9 @@ class AboutScreen extends React.Component {
         const { navigateWelcome } = this.props;
         return (
             <View>
-                <Button title="Welcome" onPress={() => navigateWelcome()} />
+                <MenuButtonContainer>
+                    <MenuButton title="Welcome" onPress={() => navigateWelcome()} />
+                </MenuButtonContainer>
             </View>
         );
     }

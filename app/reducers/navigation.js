@@ -7,9 +7,10 @@ import * as ActionTypes from '../actions/types';
 
 const welcomeAction = AppNavigator.router.getActionForPathAndParams('/');
 const welcomeState = AppNavigator.router.getStateForAction(
-    AppNavigator.router.getStateForAction(welcomeAction),
+    AppNavigator.router.getStateForAction(welcomeAction)
 );
 
+const connectingAction = AppNavigator.router.getActionForPathAndParams('/connecting');
 const deviceMenuAction = AppNavigator.router.getActionForPathAndParams('/device');
 
 export function nav(state = welcomeState, action) {
@@ -26,11 +27,16 @@ export function nav(state = welcomeState, action) {
         break;
     case ActionTypes.NAVIGATION_CONNECTING:
         nextState = AppNavigator.router.getStateForAction(
-            NavigationActions.navigate({
-                routeName: 'Connecting',
-                params: {
-                    connecting: true
-                }
+            NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({
+                        routeName: 'Connecting',
+                        params: {
+                            connecting: true
+                        }
+                    })
+                ]
             }),
             state
         );

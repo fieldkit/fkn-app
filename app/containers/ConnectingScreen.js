@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 
 import {
     View,
-    Text,
-    Button
+    Text
 } from 'react-native'
+
+import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
 import { navigateWelcome } from '../actions/nav';
 
@@ -23,7 +24,7 @@ import styles from '../styles';
 
 class ConnectingScreen extends React.Component {
     static navigationOptions = {
-        title: 'Connecting',
+        title: 'Connecting...',
     };
 
     componentWillUpdate(nextProps, nextState) {
@@ -46,8 +47,10 @@ class ConnectingScreen extends React.Component {
 
         return (
             <View>
-                <Button title="Cancel" onPress={() => this.props.navigateWelcome()} />
-                <Text style={styles.heading}>{status}</Text>
+                <MenuButtonContainer>
+                    <MenuButton title="Cancel" onPress={() => this.props.navigateWelcome()} />
+                </MenuButtonContainer>
+                <Text style={styles.connecting.status}>{status}</Text>
             </View>
         );
     }

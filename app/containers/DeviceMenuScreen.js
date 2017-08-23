@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 
 import {
     View,
-    Text,
-    Button
+    Text
 } from 'react-native'
+
+import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
 import { navigateWelcome } from '../actions/nav';
 
@@ -27,7 +28,9 @@ class DeviceMenuScreen extends React.Component {
     render() {
         return (
             <View>
-                <Button title="Home" onPress={() => this.props.navigateWelcome()} />
+                <MenuButtonContainer>
+                    <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
+                </MenuButtonContainer>
             </View>
         );
     }

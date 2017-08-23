@@ -5,20 +5,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
-    View,
-    Button
+    View
 } from 'react-native'
+
+import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
 import {
     navigateConnecting,
     navigateAbout
 } from '../actions/nav';
 
-const viewStyle = {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-};
+import styles from '../styles';
 
 class WelcomeScreen extends React.Component {
     static navigationOptions = {
@@ -28,9 +25,11 @@ class WelcomeScreen extends React.Component {
     render() {
         const { navigateConnecting, navigateAbout } = this.props;
         return (
-            <View style={viewStyle}>
-                <Button title="Connect" onPress={() => navigateConnecting()} />
-                <Button title="About" onPress={() => navigateAbout()} />
+            <View style={styles.mainView}>
+                <MenuButtonContainer>
+                    <MenuButton title="Connect" onPress={() => navigateConnecting()} />
+                    <MenuButton title="About" onPress={() => navigateAbout()} />
+                </MenuButtonContainer>
             </View>
         );
     }
