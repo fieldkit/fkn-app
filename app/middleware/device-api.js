@@ -7,11 +7,11 @@ import protobuf from "protobufjs";
 export const CALL_DEVICE_API = Symbol('Call Device API');
 
 const root = protobuf.Root.fromJSON(require("fk-app-protocol"));
-const RequestHeader = root.lookupType("fieldkitdevice.RequestHeader");
-const ResponseHeader = root.lookupType("fieldkitdevice.ResponseHeader");
-const PingRequest = root.lookupType("fieldkitdevice.PingRequest");
-const PingResponse = root.lookupType("fieldkitdevice.PingResponse");
-const MessageType = root.lookup("fieldkitdevice.RequestHeader.MessageType");
+const RequestHeader = root.lookupType("fk_app.RequestHeader");
+const ResponseHeader = root.lookupType("fk_app.ResponseHeader");
+const PingRequest = root.lookupType("fk_app.PingRequest");
+const PingResponse = root.lookupType("fk_app.PingResponse");
+const MessageType = root.lookup("fk_app.RequestHeader.MessageType");
 
 function toUnderscoreUpper(camelCase) {
     return camelCase.replace(/([A-Z])/g, function($1) {
