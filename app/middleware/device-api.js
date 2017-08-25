@@ -6,7 +6,7 @@ import protobuf from "protobufjs";
 
 export const CALL_DEVICE_API = Symbol('Call Device API');
 
-const root = protobuf.Root.fromJSON(require("./fieldkit-device.proto.json"));
+const root = protobuf.Root.fromJSON(require("fk-app-protocol"));
 const RequestHeader = root.lookupType("fieldkitdevice.RequestHeader");
 const ResponseHeader = root.lookupType("fieldkitdevice.ResponseHeader");
 const PingRequest = root.lookupType("fieldkitdevice.PingRequest");
