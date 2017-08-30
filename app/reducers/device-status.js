@@ -36,7 +36,7 @@ export function device(state = initialState, action) {
         return { ...nextState, ...{ address: action.address } };
     case ActionTypes.DEVICE_PING_SUCCESS:
         nextState.ping = {
-            time: action.response.time,
+            time: unixNow(),
             success: true
         };
         return nextState;

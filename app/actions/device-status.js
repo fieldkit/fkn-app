@@ -12,13 +12,22 @@ import {
     navigateDeviceMenu
 } from './nav';
 
+import {
+    QueryType
+} from '../lib/protocol';
+
 export function devicePing() {
     return (dispatch, getState) => {
         return dispatch({
             [CALL_DEVICE_API]: {
                 types: [Types.DEVICE_PING_START, Types.DEVICE_PING_SUCCESS, Types.DEVICE_PING_FAIL],
                 address: getState().device.address,
-                call: (api) => api.ping({ time: unixNow() }),
+                message: {
+                    type: QueryType.values.QUERY_CAPABILITIES,
+                    queryCapabilities: {
+                        version: 1
+                    }
+                }
             },
         });
     };

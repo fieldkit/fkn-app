@@ -4,14 +4,13 @@ import Promise from "bluebird";
 import net from "net";
 import protobuf from "protobufjs";
 
-export const CALL_DEVICE_API = Symbol('Call Device API');
+import {
+    WireMessageQuery,
+    WireMessageReply,
+    QueryType
+} from '../lib/protocol';
 
-const root = protobuf.Root.fromJSON(require("fk-app-protocol"));
-const RequestHeader = root.lookupType("fk_app.RequestHeader");
-const ResponseHeader = root.lookupType("fk_app.ResponseHeader");
-const PingRequest = root.lookupType("fk_app.PingRequest");
-const PingResponse = root.lookupType("fk_app.PingResponse");
-const MessageType = root.lookup("fk_app.RequestHeader.MessageType");
+export const CALL_DEVICE_API = Symbol('Call Device API');
 
 function toUnderscoreUpper(camelCase) {
     return camelCase.replace(/([A-Z])/g, function($1) {
@@ -27,19 +26,8 @@ function debug() {
     }
 };
 
-function rpcImplFactory(host, port) {
-    return (method, requestData, callback) => {
-        const enumName = toUnderscoreUpper(method.name);
-        const messageType = MessageType.values[enumName];
-        if (typeof(messageType) == undefined) {
-            debug("Unknown message type:", method.name, "(" + enumName + ")");
-            throw "Unknown message type: " + method.name;
-        }
-
-        const headerData = RequestHeader.encode({
-            type: messageType
-        }).finish();
-
+function rpcImplFactory(host, port, wireQuery) {
+    return new Promise((resolve, reject) => {
         debug("Connecting to", host + ":" + port);
 
         const client = net.createConnection({
@@ -48,28 +36,30 @@ function rpcImplFactory(host, port) {
             timeout: 1000
         });
 
+        let received = false;
+
+        client.on('close', () => {
+            debug("closed");
+            if (!received) {
+                reject("No reply");
+            }
+        });
+
         client.on('error', (error) => {
             debug("Error", error.message);
-
-            callback(error, null);
+            reject(error);
         });
 
         client.on('data', (responseData) => {
-            callback(null, responseData);
+            received = true;
+            resolve(responseData);
         });
 
         client.on('connect', () => {
-            debug("Connected, executing", method.name);
-
-            client.write(new Buffer(headerData));
-            client.write(new Buffer(requestData));
+            debug("Connected, sending query...");
+            client.write(new Buffer(wireQuery));
         });
-    };
-}
-
-function api(address) {
-    const Service = root.lookup("Service");
-    return Promise.resolve(Promise.promisifyAll(Service.create(rpcImplFactory(address.host, address.port), false, false)));
+    });
 }
 
 export default store => next => action => {
@@ -92,8 +82,11 @@ export default store => next => action => {
     }));
 
     function makeRequest(callApi) {
-        return api(callApi.address)
-            .then(callApi.call)
+        return Promise.resolve(callApi.address)
+            .then(address => {
+                const encoded = WireMessageQuery.encodeDelimited(callApi.message).finish();
+                return rpcImplFactory(address.host, address.port, encoded);
+            })
             .then(response => {
                 const nextAction = actionWith({
                     deviceApi: {
