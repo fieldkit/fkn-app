@@ -24,7 +24,7 @@ class WelcomeScreen extends React.Component {
 
     componentDidMount() {
         // TODO: Remove, this is for debugging.
-        this.props.navigateConnecting();
+        // this.props.navigateConnecting();
     }
 
     render() {
