@@ -4,7 +4,7 @@ import _ from 'lodash';
 import * as ActionTypes from '../actions/types';
 import { unixNow } from '../lib/helpers';
 
-const initialState = {
+const initialDeviceStatusState = {
     started: 0,
     address: {
         valid: false
@@ -17,7 +17,7 @@ const initialState = {
     }
 };
 
-export function device(state = initialState, action) {
+export function deviceStatus(state = initialDeviceStatusState, action) {
     let nextState = state;
 
     if (_.isObject(action.deviceApi)) {
@@ -49,6 +49,19 @@ export function device(state = initialState, action) {
             success: false
         };
         return nextState;
+    default:
+        return nextState;
+    }
+}
+
+const initialDeviceCapabilitiesState = {};
+
+export function deviceCapabilities(state = initialDeviceCapabilitiesState, action) {
+    let nextState = state;
+
+    switch (action.type) {
+    case ActionTypes.DEVICE_CAPABILITIES_SUCCESS:
+        return action.response.capabilities;
     default:
         return nextState;
     }
