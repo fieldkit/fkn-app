@@ -29,9 +29,13 @@ export default appStyle = {
         fontWeight: "bold",
         fontSize: 30
     },
-    sensorName: {
+    sensor: {
         paddingLeft: 20,
+    },
+    sensorName: {
         paddingBottom: 6,
         fontSize: 20
+    },
+    sensorFrequency: {
     }
 }

@@ -15,6 +15,8 @@ import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
 import { navigateWelcome } from '../actions/nav';
 
+import Loading from '../components/Loading';
+
 import {
     deviceStartConnect,
     deviceStopConnect
@@ -30,25 +32,28 @@ class DeviceMenuScreen extends React.Component {
     render() {
         const { deviceCapabilities: caps } = this.props;
 
-        let info = (
-            <View>
-            </View>
-        );
-        if (_.isArray(caps.sensors)) {
-            info = (
-                <View>
-                    <Text style={styles.deviceName}>{caps.name}</Text>
-                    {caps.sensors.map((s, i) => <Text key={i} style={styles.sensorName}>{s.name}</Text>)}
-                </View>
-            );
+        if (!_.isArray(caps.sensors)) {
+            return (<Loading />);
         }
 
         return  (
             <View>
-                {info}
+                <View>
+                    <Text style={styles.deviceName}>{caps.name}</Text>
+                    {caps.sensors.map((s, i) => this.renderSensor(s, i))}
+                </View>
                 <MenuButtonContainer>
-                <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
+                    <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
                 </MenuButtonContainer>
+            </View>
+        );
+    }
+
+    renderSensor(sensor, id) {
+        return (
+            <View key={id} style={styles.sensor}>
+                <Text style={styles.sensorName}>{sensor.name}</Text>
+                <Text style={styles.sensorFrequency}>Frequency: {sensor.frequency}</Text>
             </View>
         );
     }
