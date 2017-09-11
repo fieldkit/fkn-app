@@ -36,12 +36,12 @@ class ConnectingScreen extends React.Component {
     }
 
     render() {
-        const { device } = this.props;
+        const { deviceStatus } = this.props;
         let status = "Searching...";
-        if (device.address.valid) {
+        if (deviceStatus.address.valid) {
             status = "Connecting...";
         }
-        if (device.ping.success) {
+        if (deviceStatus.ping.success) {
             status = "Connected";
         }
 
@@ -60,11 +60,11 @@ ConnectingScreen.propTypes = {
     navigateWelcome: PropTypes.func.isRequired,
     deviceStartConnect: PropTypes.func.isRequired,
     deviceStopConnect: PropTypes.func.isRequired,
-    device: PropTypes.object.isRequired,
+    deviceStatus: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-    device: state.device
+    deviceStatus: state.deviceStatus
 });
 
 export default connect(mapStateToProps, {

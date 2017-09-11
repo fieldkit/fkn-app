@@ -23,5 +23,15 @@ export default appStyle = {
             height: 80,
             padding: 20,
         }
+    },
+    deviceName: {
+        padding: 20,
+        fontWeight: "bold",
+        fontSize: 30
+    },
+    sensorName: {
+        paddingLeft: 20,
+        paddingBottom: 6,
+        fontSize: 20
     }
 }

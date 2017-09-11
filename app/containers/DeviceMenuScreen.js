@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import _ from 'lodash';
+
 import {
     View,
     Text
@@ -26,10 +28,26 @@ class DeviceMenuScreen extends React.Component {
     };
 
     render() {
-        return (
+        const { deviceCapabilities: caps } = this.props;
+
+        let info = (
             <View>
+            </View>
+        );
+        if (_.isArray(caps.sensors)) {
+            info = (
+                <View>
+                    <Text style={styles.deviceName}>{caps.name}</Text>
+                    {caps.sensors.map((s, i) => <Text key={i} style={styles.sensorName}>{s.name}</Text>)}
+                </View>
+            );
+        }
+
+        return  (
+            <View>
+                {info}
                 <MenuButtonContainer>
-                    <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
+                <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
                 </MenuButtonContainer>
             </View>
         );
@@ -38,11 +56,13 @@ class DeviceMenuScreen extends React.Component {
 
 DeviceMenuScreen.propTypes = {
     navigateWelcome: PropTypes.func.isRequired,
-    device: PropTypes.object.isRequired,
+    deviceStatus: PropTypes.object.isRequired,
+    deviceCapabilities: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-    device: state.device
+    deviceStatus: state.deviceStatus,
+    deviceCapabilities: state.deviceCapabilities
 });
 
 export default connect(mapStateToProps, {

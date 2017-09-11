@@ -55,17 +55,18 @@ let pingTimer = null;
 
 function tick() {
     return (dispatch, getState) => {
-        const { nav, device } = getState();
+        const { nav, deviceStatus } = getState();
         const route = nav.routes[nav.index];
 
-        if (device.address.valid) {
-            if (!device.api.pending) {
-                if (unixNow() - device.ping.time > 10) {
+        if (deviceStatus.address.valid) {
+            if (!deviceStatus.api.pending) {
+                if (unixNow() - deviceStatus.ping.time > 10) {
                     devicePing()(dispatch, getState);
                 }
                 else {
-                    if (device.ping.success) {
+                    if (deviceStatus.ping.success) {
                         if (_.isObject(route.params) && route.params.connecting === true) {
+                            dispatch(queryDeviceCapabilities());
                             dispatch(navigateDeviceMenu());
                         }
                     }
@@ -81,7 +82,7 @@ function tick() {
             }
         }
         else {
-            if (unixNow() - device.started > 30) {
+            if (unixNow() - deviceStatus.started > 30) {
                 if (_.isObject(route.params) && route.params.connecting === true) {
                     dispatch(navigateWelcome());
                 }
@@ -103,7 +104,7 @@ export function deviceStartConnect() {
             });
 
             serviceDiscovery.on('udp-discovery', (ev) => {
-                const oldAddress = getState().device.address;
+                const oldAddress = getState().deviceStatus.address;
                 const address = {
                     host: ev.address,
                     port: ev.port,
