@@ -38,6 +38,16 @@ function rpcImplFactory(host, port, wireQuery) {
 
         let received = false;
 
+        client.on('connect', () => {
+            debug("Connected, sending query...");
+            client.write(new Buffer(wireQuery));
+        });
+
+        client.on('data', (responseData) => {
+            received = true;
+            resolve(responseData);
+        });
+
         client.on('close', () => {
             debug("closed");
             if (!received) {
@@ -48,16 +58,6 @@ function rpcImplFactory(host, port, wireQuery) {
         client.on('error', (error) => {
             debug("Error", error.message);
             reject(error);
-        });
-
-        client.on('data', (responseData) => {
-            received = true;
-            resolve(responseData);
-        });
-
-        client.on('connect', () => {
-            debug("Connected, sending query...");
-            client.write(new Buffer(wireQuery));
         });
     });
 }
@@ -88,12 +88,13 @@ export default store => next => action => {
                 return rpcImplFactory(address.host, address.port, encoded);
             })
             .then(response => {
+                const decoded = WireMessageReply.decodeDelimited(protobuf.Reader.create(response));
                 const nextAction = actionWith({
                     deviceApi: {
                         pending: false
                     },
                     type: callApi.types[1],
-                    response: response
+                    response: decoded
                 });
 
                 next(nextAction);
