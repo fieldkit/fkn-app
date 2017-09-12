@@ -7,7 +7,8 @@ import protobuf from "protobufjs";
 import {
     WireMessageQuery,
     WireMessageReply,
-    QueryType
+    QueryType,
+    ReplyType
 } from '../lib/protocol';
 
 export const CALL_DEVICE_API = Symbol('Call Device API');
@@ -51,13 +52,13 @@ function rpcImplFactory(host, port, wireQuery) {
         client.on('close', () => {
             debug("closed");
             if (!received) {
-                reject("No reply");
+                reject(new Error("No reply"));
             }
         });
 
         client.on('error', (error) => {
             debug("Error", error.message);
-            reject(error);
+            reject(new Error(error));
         });
     });
 }
@@ -81,6 +82,27 @@ export default store => next => action => {
         type: callApi.types[0]
     }));
 
+    function transformResponse(response) {
+        const decoded = WireMessageReply.decodeDelimited(protobuf.Reader.create(response));
+        if (decoded.type == ReplyType.values.REPLY_ERROR) {
+            return actionWith({
+                deviceApi: {
+                    pending: false
+                },
+                type: callApi.types[2],
+                response: decoded
+            });
+        }
+
+        return actionWith({
+            deviceApi: {
+                pending: false
+            },
+            type: callApi.types[1],
+            response: decoded
+        });
+    }
+
     function makeRequest(callApi) {
         return Promise.resolve(callApi.address)
             .then(address => {
@@ -88,16 +110,7 @@ export default store => next => action => {
                 return rpcImplFactory(address.host, address.port, encoded);
             })
             .then(response => {
-                const decoded = WireMessageReply.decodeDelimited(protobuf.Reader.create(response));
-                const nextAction = actionWith({
-                    deviceApi: {
-                        pending: false
-                    },
-                    type: callApi.types[1],
-                    response: decoded
-                });
-
-                next(nextAction);
+                next(transformResponse(response));
             }, error => {
                 const nextAction = actionWith({
                     deviceApi: {
