@@ -75,7 +75,7 @@ function tick() {
 
         if (deviceStatus.address.valid) {
             if (!deviceStatus.api.pending) {
-                if (unixNow() - deviceStatus.ping.time > 10) {
+                if (unixNow() - deviceStatus.ping.time > 30) {
                     devicePing()(dispatch, getState);
                 }
                 else {
@@ -97,7 +97,7 @@ function tick() {
             }
         }
         else {
-            if (unixNow() - deviceStatus.started > 30) {
+            if (unixNow() - deviceStatus.started > 60) {
                 if (_.isObject(route.params) && route.params.connecting === true) {
                     dispatch(navigateWelcome());
                 }
