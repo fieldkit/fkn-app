@@ -7,6 +7,7 @@ import WelcomeScreen from '../containers/WelcomeScreen';
 import AboutScreen from '../containers/AboutScreen';
 import ConnectingScreen from '../containers/ConnectingScreen';
 import DeviceMenuScreen from '../containers/DeviceMenuScreen';
+import DataSetsScreen from '../containers/DataSetsScreen';
 
 export const AppNavigator = StackNavigator({
     Welcome: {
@@ -20,6 +21,10 @@ export const AppNavigator = StackNavigator({
     DeviceMenu: {
         path: '/device',
         screen: DeviceMenuScreen
+    },
+    DataSets: {
+        path: '/data-sets',
+        screen: DataSetsScreen
     },
     About: {
         path: '/about',

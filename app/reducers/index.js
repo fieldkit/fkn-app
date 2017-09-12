@@ -2,12 +2,14 @@
 
 import { combineReducers } from 'redux'
 
-import * as navigationReducer from './navigation'
-import * as authReducer from './auth'
-import * as deviceStatusReducer from './device-status'
+import * as navigationReducers from './navigation'
+import * as authReducers from './auth'
+import * as deviceStatusReducers from './device-status'
+import * as dataSetsReducers from './data-sets'
 
 export default combineReducers(Object.assign(
-    navigationReducer,
-    authReducer,
-    deviceStatusReducer,
+    navigationReducers,
+    authReducers,
+    deviceStatusReducers,
+    dataSetsReducers,
 ));

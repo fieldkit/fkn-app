@@ -57,6 +57,12 @@ export function nav(state = welcomeState, action) {
             state
         );
         break;
+    case ActionTypes.NAVIGATION_DATA_SETS:
+        nextState = AppNavigator.router.getStateForAction(
+            NavigationActions.navigate({ routeName: 'DataSets' }),
+            state
+        );
+        break;
     case ActionTypes.NAVIGATION_ABOUT:
         nextState = AppNavigator.router.getStateForAction(
             NavigationActions.navigate({ routeName: 'About' }),

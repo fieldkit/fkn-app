@@ -20,6 +20,7 @@
     "bluebird": "3.5.0",
     "fk-app-protocol": "file:../fk-app-protocol",
     "lodash": "^4.17.4",
+    "moment": "^2.18.1",
     "process": "^0.11.10",
     "protobufjs": "^6.8.0",
     "react": "16.0.0-alpha.12",

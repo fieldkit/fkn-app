@@ -37,5 +37,17 @@ export default appStyle = {
         fontSize: 20
     },
     sensorFrequency: {
+    dataSet: {
+        container: {
+            paddingLeft: 20,
+            paddingBottom: 10,
+        },
+        name: {
+            fontSize: 25,
+            fontWeight: "bold"
+        },
+        details: {
+
+        }
     }
 }

@@ -13,7 +13,7 @@ import {
 
 import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
-import { navigateWelcome } from '../actions/nav';
+import { navigateWelcome, navigateDataSets } from '../actions/nav';
 
 import Loading from '../components/Loading';
 
@@ -43,6 +43,7 @@ class DeviceMenuScreen extends React.Component {
                     {caps.sensors.map((s, i) => this.renderSensor(s, i))}
                 </View>
                 <MenuButtonContainer>
+                    <MenuButton title="Data" onPress={() => this.props.navigateDataSets()} />
                     <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
                 </MenuButtonContainer>
             </View>
@@ -61,6 +62,7 @@ class DeviceMenuScreen extends React.Component {
 
 DeviceMenuScreen.propTypes = {
     navigateWelcome: PropTypes.func.isRequired,
+    navigateDataSets: PropTypes.func.isRequired,
     deviceStatus: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
 };
@@ -73,5 +75,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
     deviceStartConnect,
     deviceStopConnect,
+    navigateDataSets,
     navigateWelcome
 })(DeviceMenuScreen);

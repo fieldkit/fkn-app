@@ -25,3 +25,15 @@ export function navigateAbout() {
         type: Types.NAVIGATION_ABOUT,
     };
 }
+
+export function navigateDataSets() {
+    return {
+        type: Types.NAVIGATION_DATA_SETS,
+    };
+}
+
+export function navigateBack() {
+    return {
+        type: Types.NAVIGATION_BACK,
+    };
+}

@@ -50,6 +50,21 @@ export function queryDeviceCapabilities() {
     };
 }
 
+export function queryDataSets() {
+    return (dispatch, getState) => {
+        return dispatch({
+            [CALL_DEVICE_API]: {
+                types: [Types.DEVICE_DATA_SETS_START, Types.DEVICE_DATA_SETS_SUCCESS, Types.DEVICE_DATA_SETS_FAIL],
+                address: getState().deviceStatus.address,
+                message: {
+                    type: QueryType.values.QUERY_DATA_SETS,
+                    queryDataSets: {}
+                }
+            },
+        });
+    };
+}
+
 let serviceDiscovery = null;
 let pingTimer = null;
 
