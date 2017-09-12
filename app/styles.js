@@ -37,6 +37,14 @@ export default appStyle = {
         fontSize: 20
     },
     sensorFrequency: {
+    },
+    loading: {
+        alignItems: 'center',
+        fontSize: 25,
+        textAlign: 'center',
+        height: 80,
+        padding: 20,
+    },
     dataSet: {
         container: {
             paddingLeft: 20,
