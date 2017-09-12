@@ -30,13 +30,15 @@ export default appStyle = {
         fontSize: 30
     },
     sensor: {
-        paddingLeft: 20,
-    },
-    sensorName: {
-        paddingBottom: 6,
-        fontSize: 20
-    },
-    sensorFrequency: {
+        container: {
+            paddingLeft: 20,
+        },
+        name: {
+            paddingBottom: 6,
+            fontSize: 20
+        },
+        frequency: {
+        },
     },
     loading: {
         alignItems: 'center',

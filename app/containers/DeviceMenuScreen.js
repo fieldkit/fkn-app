@@ -52,9 +52,9 @@ class DeviceMenuScreen extends React.Component {
 
     renderSensor(sensor, id) {
         return (
-            <View key={id} style={styles.sensor}>
-                <Text style={styles.sensorName}>{sensor.name}</Text>
-                <Text style={styles.sensorFrequency}>Frequency: {sensor.frequency}</Text>
+            <View key={id} style={styles.sensor.container}>
+                <Text style={styles.sensor.name}>{sensor.name}</Text>
+                <Text style={styles.sensor.frequency}>Frequency: {sensor.frequency}</Text>
             </View>
         );
     }
