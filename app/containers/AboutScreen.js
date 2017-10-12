@@ -15,7 +15,7 @@ import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
 import {
     navigateWelcome
-} from '../actions/nav';
+} from '../actions/navigation';
 
 class AboutScreen extends React.Component {
     static navigationOptions = {

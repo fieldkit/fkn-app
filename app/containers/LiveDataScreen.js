@@ -13,7 +13,7 @@ import { BackgroundView } from '../components/BackgroundView';
 
 import {
     navigateBack
-} from '../actions/nav';
+} from '../actions/navigation';
 
 class LiveDataScreen extends React.Component {
     static navigationOptions = {

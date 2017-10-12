@@ -16,7 +16,7 @@ import {
 import { BackgroundView } from '../components/BackgroundView';
 import { SmallButton } from '../components/Buttons';
 
-import { navigateBack, navigateViewDataSet } from '../actions/nav';
+import { navigateBack, navigateViewDataSet } from '../actions/navigation';
 import { queryDataSets } from '../actions/device-status';
 
 import Loading from '../components/Loading';

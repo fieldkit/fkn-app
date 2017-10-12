@@ -18,7 +18,7 @@ import {
     navigateWelcome,
     navigateDataSets,
     navigateLiveData
-} from '../actions/nav';
+} from '../actions/navigation';
 
 import Loading from '../components/Loading';
 

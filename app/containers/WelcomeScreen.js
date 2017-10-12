@@ -15,7 +15,7 @@ import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 import {
     navigateConnecting,
     navigateAbout
-} from '../actions/nav';
+} from '../actions/navigation';
 
 import styles from '../styles';
 

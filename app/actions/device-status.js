@@ -10,7 +10,7 @@ import { unixNow } from '../lib/helpers';
 import {
     navigateWelcome,
     navigateDeviceMenu
-} from './nav';
+} from './navigation';
 
 import {
     QueryType
