@@ -24,13 +24,3 @@ export class MenuButton extends React.Component {
         );
     }
 }
-
-export class SmallButton extends React.Component {
-    render() {
-        const { title, onPress } = this.props;
-
-        return (
-                <View style={{ width: 100 }}><Button title={title} onPress={onPress} /></View>
-        );
-    }
-}

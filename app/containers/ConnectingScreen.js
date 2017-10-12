@@ -9,6 +9,7 @@ import {
     Text
 } from 'react-native'
 
+import { BackgroundView } from '../components/BackgroundView';
 import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
 import { navigateWelcome } from '../actions/nav';
@@ -46,12 +47,12 @@ class ConnectingScreen extends React.Component {
         }
 
         return (
-            <View>
+            <BackgroundView>
                 <MenuButtonContainer>
                     <MenuButton title="Cancel" onPress={() => this.props.navigateWelcome()} />
                 </MenuButtonContainer>
                 <Text style={styles.connecting.status}>{status}</Text>
-            </View>
+            </BackgroundView>
         );
     }
 }

@@ -13,7 +13,8 @@ import {
     Button
 } from 'react-native'
 
-import { SmallButton } from '../components/MenuButtons';
+import { BackgroundView } from '../components/BackgroundView';
+import { SmallButton } from '../components/Buttons';
 
 import { navigateBack, navigateViewDataSet } from '../actions/nav';
 import { queryDataSets } from '../actions/device-status';
@@ -39,9 +40,9 @@ class DataSetsScreen extends React.Component {
         }
 
         return (
-            <View>
+            <BackgroundView>
                 {dataSets.dataSets.map((ds, i) => this.renderDataSet(ds, i))}
-            </View>
+            </BackgroundView>
         );
     }
 

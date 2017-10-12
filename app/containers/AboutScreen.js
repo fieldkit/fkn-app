@@ -9,6 +9,7 @@ import {
     Text
 } from 'react-native'
 
+import { BackgroundView } from '../components/BackgroundView';
 import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
 import {
@@ -23,11 +24,11 @@ class AboutScreen extends React.Component {
     render() {
         const { navigateWelcome } = this.props;
         return (
-            <View>
+            <BackgroundView>
                 <MenuButtonContainer>
                     <MenuButton title="Welcome" onPress={() => navigateWelcome()} />
                 </MenuButtonContainer>
-            </View>
+            </BackgroundView>
         );
     }
 }

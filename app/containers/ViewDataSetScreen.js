@@ -13,7 +13,8 @@ import {
     Button
 } from 'react-native'
 
-import { SmallButton } from '../components/MenuButtons';
+import { BackgroundView } from '../components/BackgroundView';
+import { SmallButton } from '../components/Buttons';
 
 import { navigateBack } from '../actions/nav';
 import { queryDataSet, eraseDataSet } from '../actions/device-status';
@@ -52,12 +53,12 @@ class ViewDataSetScreen extends React.Component {
         const time = moment(dataSet.time).format("MMM Do hA");
 
         return (
-            <View style={styles.dataSet.container}>
+            <BackgroundView style={styles.dataSet.container}>
                 <Text style={styles.dataSet.name}>{dataSet.name}</Text>
                 <Text style={styles.dataSet.details}>{time} Size: {dataSet.size}</Text>
 
                 <SmallButton title="Erase" onPress={() => this.props.eraseDataSet(dataSet.id)} />
-            </View>
+            </BackgroundView>
         );
     }
 }

@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
-    View
+    View,
+    Image
 } from 'react-native';
 
+import { BackgroundView } from '../components/BackgroundView';
 import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
 import {
@@ -31,10 +33,12 @@ class WelcomeScreen extends React.Component {
         const { navigateConnecting, navigateAbout } = this.props;
         return (
             <View style={styles.mainView}>
-                <MenuButtonContainer>
-                    <MenuButton title="Connect" onPress={() => navigateConnecting()} />
-                    <MenuButton title="About" onPress={() => navigateAbout()} />
-                </MenuButtonContainer>
+                <BackgroundView>
+                    <MenuButtonContainer>
+                        <MenuButton title="Connect" onPress={() => navigateConnecting()} />
+                        <MenuButton title="About" onPress={() => navigateAbout()} />
+                    </MenuButtonContainer>
+                </BackgroundView>
             </View>
         );
     }

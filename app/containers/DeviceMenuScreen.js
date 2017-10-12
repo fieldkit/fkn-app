@@ -11,6 +11,7 @@ import {
     Text
 } from 'react-native'
 
+import { BackgroundView } from '../components/BackgroundView';
 import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
 import { navigateWelcome, navigateDataSets } from '../actions/nav';
@@ -37,7 +38,7 @@ class DeviceMenuScreen extends React.Component {
         }
 
         return  (
-            <View>
+            <BackgroundView>
                 <View>
                     <Text style={styles.deviceName}>{caps.name}</Text>
                     {caps.sensors.map((s, i) => this.renderSensor(s, i))}
@@ -46,7 +47,7 @@ class DeviceMenuScreen extends React.Component {
                     <MenuButton title="Data" onPress={() => this.props.navigateDataSets()} />
                     <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
                 </MenuButtonContainer>
-            </View>
+            </BackgroundView>
         );
     }
 
