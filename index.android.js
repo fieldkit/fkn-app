@@ -33,4 +33,6 @@ const App = () => (
     </Provider>
 )
 
+console.ignoredYellowBox = ['Remote debugger'];
+
 AppRegistry.registerComponent('FieldKit', () => App)
