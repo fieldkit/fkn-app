@@ -2,6 +2,7 @@
 
 import _ from 'lodash';
 import ServiceDiscovery from "react-native-service-discovery";
+import { ToastAndroid } from 'react-native';
 
 import * as Types from './types';
 import { CALL_DEVICE_API } from '../middleware/device-api';
@@ -86,6 +87,7 @@ export function eraseDataSet(id) {
 
 export function emailDataSet(id) {
     return (dispatch, getState) => {
+        ToastAndroid.show('E-Mail sent!', ToastAndroid.SHORT);
         return dispatch({
             type: Types.EMAIL_DATA_SET,
             id: id
