@@ -14,7 +14,11 @@ import {
 import { BackgroundView } from '../components/BackgroundView';
 import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
-import { navigateWelcome, navigateDataSets } from '../actions/nav';
+import {
+    navigateWelcome,
+    navigateDataSets,
+    navigateLiveData
+} from '../actions/nav';
 
 import Loading from '../components/Loading';
 
@@ -45,6 +49,7 @@ class DeviceMenuScreen extends React.Component {
                 </View>
                 <MenuButtonContainer>
                     <MenuButton title="Data Sets" onPress={() => this.props.navigateDataSets()} />
+                    <MenuButton title="Live Data" onPress={() => this.props.navigateLiveData()} />
                     <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
                 </MenuButtonContainer>
             </BackgroundView>
@@ -64,6 +69,7 @@ class DeviceMenuScreen extends React.Component {
 DeviceMenuScreen.propTypes = {
     navigateWelcome: PropTypes.func.isRequired,
     navigateDataSets: PropTypes.func.isRequired,
+    navigateLiveData: PropTypes.func.isRequired,
     deviceStatus: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
 };
@@ -77,5 +83,6 @@ export default connect(mapStateToProps, {
     deviceStartConnect,
     deviceStopConnect,
     navigateDataSets,
+    navigateLiveData,
     navigateWelcome
 })(DeviceMenuScreen);

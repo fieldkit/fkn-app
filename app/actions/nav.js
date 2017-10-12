@@ -32,6 +32,12 @@ export function navigateDataSets() {
     };
 }
 
+export function navigateLiveData() {
+    return {
+        type: Types.NAVIGATION_LIVE_DATA,
+    };
+}
+
 export function navigateViewDataSet(id) {
     return {
         type: Types.NAVIGATION_VIEW_DATA_SET,

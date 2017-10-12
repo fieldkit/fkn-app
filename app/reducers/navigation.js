@@ -63,6 +63,12 @@ export function nav(state = welcomeState, action) {
             state
         );
         break;
+    case ActionTypes.NAVIGATION_LIVE_DATA:
+        nextState = AppNavigator.router.getStateForAction(
+            NavigationActions.navigate({ routeName: 'LiveData' }),
+            state
+        );
+        break;
     case ActionTypes.NAVIGATION_VIEW_DATA_SET:
         nextState = AppNavigator.router.getStateForAction(
             NavigationActions.navigate({
