@@ -10,7 +10,7 @@ export class SmallButton extends React.Component {
         const { title, onPress } = this.props;
 
         return (
-                <View style={{ width: 100 }}><Button title={title} onPress={onPress} /></View>
+                <View style={styles.buttons.small}><Button title={title} onPress={onPress} /></View>
         );
     }
 }

@@ -84,6 +84,15 @@ export function eraseDataSet(id) {
     };
 }
 
+export function emailDataSet(id) {
+    return (dispatch, getState) => {
+        return dispatch({
+            type: Types.EMAIL_DATA_SET,
+            id: id
+        });
+    };
+}
+
 export function queryDataSets() {
     return (dispatch, getState) => {
         return dispatch({

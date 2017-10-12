@@ -17,7 +17,7 @@ import { BackgroundView } from '../components/BackgroundView';
 import { SmallButton } from '../components/Buttons';
 
 import { navigateBack } from '../actions/nav';
-import { queryDataSet, eraseDataSet } from '../actions/device-status';
+import { queryDataSet, eraseDataSet, emailDataSet } from '../actions/device-status';
 
 import Loading from '../components/Loading';
 
@@ -56,8 +56,14 @@ class ViewDataSetScreen extends React.Component {
             <BackgroundView style={styles.dataSet.container}>
                 <Text style={styles.dataSet.name}>{dataSet.name}</Text>
                 <Text style={styles.dataSet.details}>{time} Size: {dataSet.size}</Text>
-
-                <SmallButton title="Erase" onPress={() => this.props.eraseDataSet(dataSet.id)} />
+                <View style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        width: '100%'
+                    }}>
+                    <SmallButton title="Erase" onPress={() => this.props.eraseDataSet(dataSet.id)} />
+                    <SmallButton title="E-Mail" onPress={() => this.props.emailDataSet(dataSet.id)} />
+                </View>
             </BackgroundView>
         );
     }
@@ -67,6 +73,7 @@ ViewDataSetScreen.propTypes = {
     navigateBack: PropTypes.func.isRequired,
     queryDataSet: PropTypes.func.isRequired,
     eraseDataSet: PropTypes.func.isRequired,
+    emailDataSet: PropTypes.func.isRequired,
     dataSetId: PropTypes.number,
     dataSet: PropTypes.object,
 };
@@ -83,5 +90,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
     navigateBack,
     queryDataSet,
-    eraseDataSet
+    eraseDataSet,
+    emailDataSet
 })(ViewDataSetScreen);
