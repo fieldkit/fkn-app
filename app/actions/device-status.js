@@ -50,6 +50,40 @@ export function queryDeviceCapabilities() {
     };
 }
 
+export function queryDataSet(id) {
+    return (dispatch, getState) => {
+        return dispatch({
+            [CALL_DEVICE_API]: {
+                types: [Types.DEVICE_DATA_SET_START, Types.DEVICE_DATA_SET_SUCCESS, Types.DEVICE_DATA_SET_FAIL],
+                address: getState().deviceStatus.address,
+                message: {
+                    type: QueryType.values.QUERY_DATA_SET,
+                    queryDataSet: {
+                        id: id
+                    }
+                }
+            },
+        });
+    };
+}
+
+export function eraseDataSet(id) {
+    return (dispatch, getState) => {
+        return dispatch({
+            [CALL_DEVICE_API]: {
+                types: [Types.DEVICE_ERASE_DATA_SET_START, Types.DEVICE_ERASE_DATA_SET_SUCCESS, Types.DEVICE_ERASE_DATA_SET_FAIL],
+                address: getState().deviceStatus.address,
+                message: {
+                    type: QueryType.values.QUERY_ERASE_DATA_SET,
+                    eraseDataSet: {
+                        id: id
+                    }
+                }
+            },
+        });
+    };
+}
+
 export function queryDataSets() {
     return (dispatch, getState) => {
         return dispatch({

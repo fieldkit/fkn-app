@@ -16,3 +16,20 @@ export function dataSets(state = initialDataSetsState, action) {
         return nextState;
     }
 }
+
+const initialDataSetState = null;
+
+export function dataSet(state = initialDataSetState, action) {
+    let nextState = state;
+
+    switch (action.type) {
+    case ActionTypes.DEVICE_DATA_SET_SUCCESS:
+        return _.cloneDeep(action.response.dataSets.dataSets[0]);
+    case ActionTypes.DEVICE_ERASE_DATA_SET_SUCCESS:
+        nextState = _.cloneDeep(state);
+        nextState.erased = true;
+        return nextState;
+    default:
+        return nextState;
+    }
+}

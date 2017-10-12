@@ -8,6 +8,7 @@ import AboutScreen from '../containers/AboutScreen';
 import ConnectingScreen from '../containers/ConnectingScreen';
 import DeviceMenuScreen from '../containers/DeviceMenuScreen';
 import DataSetsScreen from '../containers/DataSetsScreen';
+import ViewDataSetScreen from '../containers/ViewDataSetScreen';
 
 export const AppNavigator = StackNavigator({
     Welcome: {
@@ -25,6 +26,10 @@ export const AppNavigator = StackNavigator({
     DataSets: {
         path: '/data-sets',
         screen: DataSetsScreen
+    },
+    DataSet: {
+        path: '/data-sets/:id',
+        screen: ViewDataSetScreen
     },
     About: {
         path: '/about',

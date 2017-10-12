@@ -1,12 +1,12 @@
 'use strict';
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
     View
-} from 'react-native'
+} from 'react-native';
 
 import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 

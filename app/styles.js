@@ -59,5 +59,10 @@ export default appStyle = {
         details: {
 
         }
+    },
+    buttons: {
+        small: {
+            fontSize: 30,
+        }
     }
 }

@@ -63,9 +63,24 @@ export function nav(state = welcomeState, action) {
             state
         );
         break;
+    case ActionTypes.NAVIGATION_VIEW_DATA_SET:
+        nextState = AppNavigator.router.getStateForAction(
+            NavigationActions.navigate({
+                routeName: 'DataSet',
+                params: action.params
+            }),
+            state
+        );
+        break;
     case ActionTypes.NAVIGATION_ABOUT:
         nextState = AppNavigator.router.getStateForAction(
             NavigationActions.navigate({ routeName: 'About' }),
+            state
+        );
+        break;
+    case ActionTypes.NAVIGATION_BACK:
+        nextState = AppNavigator.router.getStateForAction(
+            NavigationActions.back(),
             state
         );
         break;

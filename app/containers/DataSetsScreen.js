@@ -9,12 +9,13 @@ import moment from 'moment';
 
 import {
     View,
-    Text
+    Text,
+    Button
 } from 'react-native'
 
-import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
+import { SmallButton } from '../components/MenuButtons';
 
-import { navigateBack } from '../actions/nav';
+import { navigateBack, navigateViewDataSet } from '../actions/nav';
 import { queryDataSets } from '../actions/device-status';
 
 import Loading from '../components/Loading';
@@ -46,10 +47,12 @@ class DataSetsScreen extends React.Component {
 
     renderDataSet(dataSet, id) {
         const time = moment(dataSet.time).format("MMM Do hA");
+
         return (
             <View key={id} style={styles.dataSet.container}>
                 <Text style={styles.dataSet.name}>{dataSet.name}</Text>
                 <Text style={styles.dataSet.details}>{time} Size: {dataSet.size}</Text>
+                <SmallButton title="View" onPress={() => this.props.navigateViewDataSet(dataSet.id)} />
             </View>
         );
     }
@@ -57,6 +60,7 @@ class DataSetsScreen extends React.Component {
 
 DataSetsScreen.propTypes = {
     navigateBack: PropTypes.func.isRequired,
+    navigateViewDataSet: PropTypes.func.isRequired,
     queryDataSets: PropTypes.func.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
 };
@@ -68,5 +72,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
     navigateBack,
+    navigateViewDataSet,
     queryDataSets
 })(DataSetsScreen);

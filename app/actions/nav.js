@@ -32,6 +32,15 @@ export function navigateDataSets() {
     };
 }
 
+export function navigateViewDataSet(id) {
+    return {
+        type: Types.NAVIGATION_VIEW_DATA_SET,
+        params: {
+            id
+        }
+    };
+}
+
 export function navigateBack() {
     return {
         type: Types.NAVIGATION_BACK,
