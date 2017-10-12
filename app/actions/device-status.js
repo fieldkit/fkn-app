@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 import ServiceDiscovery from "react-native-service-discovery";
-import { ToastAndroid } from 'react-native';
+import { Alert, ToastAndroid } from 'react-native';
 
 import * as Types from './types';
 import { CALL_DEVICE_API } from '../middleware/device-api';
@@ -16,6 +16,8 @@ import {
 import {
     QueryType
 } from '../lib/protocol';
+
+import Mailer from 'react-native-mail';
 
 export function devicePing() {
     return (dispatch, getState) => {
@@ -87,10 +89,35 @@ export function eraseDataSet(id) {
 
 export function emailDataSet(id) {
     return (dispatch, getState) => {
-        ToastAndroid.show('E-Mail sent!', ToastAndroid.SHORT);
-        return dispatch({
-            type: Types.EMAIL_DATA_SET,
-            id: id
+        Mailer.mail({
+            subject: 'FieldKit NOAA-CTD Data',
+            recipients: ['jlewalle@gmail.com'],
+            body: '<p>Please see the attached file, data.csv.</p><br/><p>Thanks!</p>',
+            isHTML: true,
+            /*
+            attachment: {
+                path: '',
+                type: 'text/csv',
+                name: 'data.csv',
+            }
+            */
+        }, (error, event) => {
+            Alert.alert(
+                error,
+                event,
+                [
+                    {text: 'Ok', onPress: () => console.log('OK: Email Error Response')},
+                    {text: 'Cancel', onPress: () => console.log('CANCEL: Email Error Response')}
+                ],
+                { cancelable: true }
+            )
+
+            dispatch({
+                type: Types.EMAIL_DATA_SET_SUCCESS,
+                id: id
+            });
+
+            ToastAndroid.show('E-mail sent successfully.', ToastAndroid.SHORT);
         });
     };
 }
