@@ -44,7 +44,7 @@ class DeviceMenuScreen extends React.Component {
                     {caps.sensors.map((s, i) => this.renderSensor(s, i))}
                 </View>
                 <MenuButtonContainer>
-                    <MenuButton title="Data" onPress={() => this.props.navigateDataSets()} />
+                    <MenuButton title="Data Sets" onPress={() => this.props.navigateDataSets()} />
                     <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
                 </MenuButtonContainer>
             </BackgroundView>

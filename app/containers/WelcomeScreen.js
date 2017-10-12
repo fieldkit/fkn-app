@@ -34,6 +34,12 @@ class WelcomeScreen extends React.Component {
         return (
             <View style={styles.mainView}>
                 <BackgroundView>
+                     <Image source={require('../../assets/fk-header.png')}
+                        style={{
+                            resizeMode: 'contain',
+                            width: '100%',
+                            height: 200,
+                        }} />
                     <MenuButtonContainer>
                         <MenuButton title="Connect" onPress={() => navigateConnecting()} />
                         <MenuButton title="About" onPress={() => navigateAbout()} />

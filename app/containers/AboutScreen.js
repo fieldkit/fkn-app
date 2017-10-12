@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 
 import {
     View,
-    Text
+    Text,
+    Image
 } from 'react-native'
 
 import { BackgroundView } from '../components/BackgroundView';
@@ -25,6 +26,12 @@ class AboutScreen extends React.Component {
         const { navigateWelcome } = this.props;
         return (
             <BackgroundView>
+                <Image source={require('../../assets/fk-header.png')}
+                    style={{
+                        resizeMode: 'contain',
+                        width: '100%',
+                        height: 200,
+                    }} />
                 <MenuButtonContainer>
                     <MenuButton title="Welcome" onPress={() => navigateWelcome()} />
                 </MenuButtonContainer>
