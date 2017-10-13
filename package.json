@@ -26,6 +26,7 @@
     "protobufjs": "^6.8.0",
     "react": "16.0.0-alpha.12",
     "react-native": "0.47.1",
+    "react-native-fs": "^2.8.1",
     "react-native-mail": "^3.0.4",
     "react-native-service-discovery": "https://github.com/Conservify/react-native-service-discovery.git",
     "react-native-tcp": "https://github.com/PeelTechnologies/react-native-tcp.git",

@@ -3,6 +3,8 @@ package com.fieldkit;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.chirag.RNMail.RNMail;
+import com.rnfs.RNFSPackage;
 import com.peel.react.TcpSocketsModule;
 import org.conservify.react.ServiceDiscoveryModule;
 import com.facebook.react.ReactNativeHost;
@@ -25,6 +27,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNMail(),
+            new RNFSPackage(),
             new TcpSocketsModule(),
             new ServiceDiscoveryModule()
       );

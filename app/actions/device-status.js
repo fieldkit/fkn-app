@@ -18,6 +18,8 @@ import {
 } from '../lib/protocol';
 
 import Mailer from 'react-native-mail';
+import RNFS from 'react-native-fs';
+import Promise from "bluebird";
 
 export function devicePing() {
     return (dispatch, getState) => {
@@ -89,22 +91,37 @@ export function eraseDataSet(id) {
 
 export function emailDataSet(id) {
     return (dispatch, getState) => {
-        Mailer.mail({
-            subject: 'FieldKit NOAA-CTD Data',
-            recipients: ['jlewalle@gmail.com'],
-            body: '<p>Please see the attached file, data.csv.</p><br/><p>Thanks!</p>',
-            isHTML: true,
-            /*
-            attachment: {
-                path: '',
-                type: 'text/csv',
-                name: 'data.csv',
-            }
-            */
-        }, (error, event) => {
+        RNFS.readDir(RNFS.DocumentDirectoryPath).then((res) => {
+            return Promise.all([RNFS.stat(res[0].path), res[0].path]);
+        }).then(() => {
+            const path = RNFS.ExternalDirectoryPath + '/data.csv';
+            return RNFS.writeFile(path, 'Time,Depth,Temperature,Conductivity\n', 'utf8');
+        }).then(() => {
+            return new Promise((resolve, reject) => {
+                Mailer.mail({
+                    subject: 'FieldKit NOAA-CTD Data',
+                    recipients: ['jlewalle@gmail.com'],
+                    body: '<p>Please see the attached file, data.csv.</p><br/><p>Thanks!</p>',
+                    isHTML: true,
+                    attachment: {
+                        path: RNFS.ExternalDirectoryPath + '/data.csv',
+                        type: 'text/csv',
+                        name: 'data.csv',
+                    }
+                }, (err, ev) => {
+                    // Right now, this isn't called unless there's an error.
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        resolve(ev);
+                    }
+                })
+            });
+        }).then(ev => {
             Alert.alert(
-                error,
-                event,
+                null,
+                ev,
                 [
                     {text: 'Ok', onPress: () => console.log('OK: Email Error Response')},
                     {text: 'Cancel', onPress: () => console.log('CANCEL: Email Error Response')}
@@ -118,6 +135,8 @@ export function emailDataSet(id) {
             });
 
             ToastAndroid.show('E-mail sent successfully.', ToastAndroid.SHORT);
+        }).catch((err) => {
+            console.log(err.message, err.code);
         });
     };
 }
