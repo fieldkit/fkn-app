@@ -118,23 +118,6 @@ export function emailDataSet(id) {
                     }
                 })
             });
-        }).then(ev => {
-            Alert.alert(
-                null,
-                ev,
-                [
-                    {text: 'Ok', onPress: () => console.log('OK: Email Error Response')},
-                    {text: 'Cancel', onPress: () => console.log('CANCEL: Email Error Response')}
-                ],
-                { cancelable: true }
-            )
-
-            dispatch({
-                type: Types.EMAIL_DATA_SET_SUCCESS,
-                id: id
-            });
-
-            ToastAndroid.show('E-mail sent successfully.', ToastAndroid.SHORT);
         }).catch((err) => {
             console.log(err.message, err.code);
         });
