@@ -17,10 +17,6 @@ import {
     QueryType
 } from '../lib/protocol';
 
-import Mailer from 'react-native-mail';
-import RNFS from 'react-native-fs';
-import Promise from "bluebird";
-
 export function devicePing() {
     return (dispatch, getState) => {
         return dispatch({
@@ -55,89 +51,6 @@ export function queryDeviceCapabilities() {
     };
 }
 
-export function queryDataSet(id) {
-    return (dispatch, getState) => {
-        return dispatch({
-            [CALL_DEVICE_API]: {
-                types: [Types.DEVICE_DATA_SET_START, Types.DEVICE_DATA_SET_SUCCESS, Types.DEVICE_DATA_SET_FAIL],
-                address: getState().deviceStatus.address,
-                message: {
-                    type: QueryType.values.QUERY_DATA_SET,
-                    queryDataSet: {
-                        id: id
-                    }
-                }
-            },
-        });
-    };
-}
-
-export function eraseDataSet(id) {
-    return (dispatch, getState) => {
-        return dispatch({
-            [CALL_DEVICE_API]: {
-                types: [Types.DEVICE_ERASE_DATA_SET_START, Types.DEVICE_ERASE_DATA_SET_SUCCESS, Types.DEVICE_ERASE_DATA_SET_FAIL],
-                address: getState().deviceStatus.address,
-                message: {
-                    type: QueryType.values.QUERY_ERASE_DATA_SET,
-                    eraseDataSet: {
-                        id: id
-                    }
-                }
-            },
-        });
-    };
-}
-
-export function emailDataSet(id) {
-    return (dispatch, getState) => {
-        RNFS.readDir(RNFS.DocumentDirectoryPath).then((res) => {
-            return Promise.all([RNFS.stat(res[0].path), res[0].path]);
-        }).then(() => {
-            const path = RNFS.ExternalDirectoryPath + '/data.csv';
-            return RNFS.writeFile(path, 'Time,Depth,Temperature,Conductivity\n', 'utf8');
-        }).then(() => {
-            return new Promise((resolve, reject) => {
-                Mailer.mail({
-                    subject: 'FieldKit NOAA-CTD Data',
-                    recipients: ['jlewalle@gmail.com'],
-                    body: '<p>Please see the attached file, data.csv.</p><br/><p>Thanks!</p>',
-                    isHTML: true,
-                    attachment: {
-                        path: RNFS.ExternalDirectoryPath + '/data.csv',
-                        type: 'text/csv',
-                        name: 'data.csv',
-                    }
-                }, (err, ev) => {
-                    // Right now, this isn't called unless there's an error.
-                    if (err) {
-                        reject(err);
-                    }
-                    else {
-                        resolve(ev);
-                    }
-                })
-            });
-        }).catch((err) => {
-            console.log(err.message, err.code);
-        });
-    };
-}
-
-export function queryDataSets() {
-    return (dispatch, getState) => {
-        return dispatch({
-            [CALL_DEVICE_API]: {
-                types: [Types.DEVICE_DATA_SETS_START, Types.DEVICE_DATA_SETS_SUCCESS, Types.DEVICE_DATA_SETS_FAIL],
-                address: getState().deviceStatus.address,
-                message: {
-                    type: QueryType.values.QUERY_DATA_SETS,
-                    queryDataSets: {}
-                }
-            },
-        });
-    };
-}
 
 let serviceDiscovery = null;
 let pingTimer = null;
