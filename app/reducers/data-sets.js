@@ -33,3 +33,38 @@ export function dataSet(state = initialDataSetState, action) {
         return nextState;
     }
 }
+
+const initialDownloadState = {
+    active: false,
+    progress: 0,
+    pages: [],
+};
+
+export function download(state = initialDownloadState, action) {
+    let nextState = state;
+
+    switch (action.type) {
+    case ActionTypes.DOWNLOAD_DATA_SET_START:
+        return {
+            active: true,
+            progress: 0,
+            pages: [],
+        };
+    case ActionTypes.DOWNLOAD_DATA_SET_DONE:
+        return initialDownloadState;
+    case ActionTypes.DEVICE_DOWNLOAD_DATA_SET_SUCCESS:
+        return {
+            active: true,
+            progress: state.progress,
+            pages: state.pages.concat([ action.response.dataSetData ])
+        };
+    case ActionTypes.DOWNLOAD_DATA_SET_PROGRESS:
+        return {
+            active: true,
+            progress: action.progress,
+            pages: state.pages
+        };
+    default:
+        return nextState;
+    }
+}

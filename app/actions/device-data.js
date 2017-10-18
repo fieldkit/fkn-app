@@ -5,9 +5,7 @@ import _ from 'lodash';
 import * as Types from './types';
 import { CALL_DEVICE_API } from '../middleware/device-api';
 
-import {
-    QueryType
-} from '../lib/protocol';
+import { QueryType } from '../lib/protocol';
 
 export function queryDataSets() {
     return (dispatch, getState) => {
@@ -54,6 +52,15 @@ export function eraseDataSet(id) {
                     }
                 }
             },
+        });
+    };
+}
+
+export function startDownloadDataSet(id) {
+    return (dispatch, getState) => {
+        return dispatch({
+            type: Types.DOWNLOAD_DATA_SET_START,
+            id: id,
         });
     };
 }

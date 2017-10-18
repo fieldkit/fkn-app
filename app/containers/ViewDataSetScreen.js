@@ -15,9 +15,10 @@ import {
 
 import { BackgroundView } from '../components/BackgroundView';
 import { SmallButton } from '../components/Buttons';
+import { ProgressModal } from '../components/ProgressModal';
 
 import { navigateBack } from '../actions/navigation';
-import { queryDataSet, eraseDataSet } from '../actions/device-data';
+import { queryDataSet, eraseDataSet, startDownloadDataSet } from '../actions/device-data';
 import { emailDataSet } from '../actions/emails';
 
 import Loading from '../components/Loading';
@@ -45,7 +46,7 @@ class ViewDataSetScreen extends React.Component {
     }
 
     render() {
-        const { dataSet } = this.props;
+        const { dataSet, download } = this.props;
 
         if (!dataSet) {
             return (<Loading />);
@@ -63,8 +64,10 @@ class ViewDataSetScreen extends React.Component {
                         width: '100%'
                     }}>
                     <SmallButton title="Erase" onPress={() => this.props.eraseDataSet(dataSet.id)} />
+                    <SmallButton title="Download" onPress={() => this.props.startDownloadDataSet(dataSet.id)} />
                     <SmallButton title="E-Mail" onPress={() => this.props.emailDataSet(dataSet.id)} />
                 </View>
+                <ProgressModal visible={download.active} progress={download.progress} />
             </BackgroundView>
         );
     }
@@ -74,9 +77,11 @@ ViewDataSetScreen.propTypes = {
     navigateBack: PropTypes.func.isRequired,
     queryDataSet: PropTypes.func.isRequired,
     eraseDataSet: PropTypes.func.isRequired,
+    startDownloadDataSet: PropTypes.func.isRequired,
     emailDataSet: PropTypes.func.isRequired,
     dataSetId: PropTypes.number,
     dataSet: PropTypes.object,
+    download: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -85,6 +90,7 @@ const mapStateToProps = (state) => {
         deviceCapabilities: state.deviceCapabilities,
         dataSetId: route.params ? route.params.id : null,
         dataSet: state.dataSet,
+        download: state.download,
     };
 };
 
@@ -92,5 +98,6 @@ export default connect(mapStateToProps, {
     navigateBack,
     queryDataSet,
     eraseDataSet,
+    startDownloadDataSet,
     emailDataSet
 })(ViewDataSetScreen);
