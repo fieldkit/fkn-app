@@ -8,7 +8,11 @@ import { CALL_DEVICE_API, invokeDeviceApi } from '../middleware/device-api';
 
 import { QueryType } from '../lib/protocol';
 
-import { createChannel } from './channels';
+import { serviceDiscovery } from './discovery';
+
+import { unixNow } from '../lib/helpers';
+
+import { navigateWelcome, navigateDeviceMenu } from './navigation';
 
 export function* downloadDataSaga() {
     yield takeLatest(Types.DOWNLOAD_DATA_SET_START, function* watcher(action) {
@@ -60,51 +64,6 @@ export function* downloadDataSaga() {
     });
 }
 
-import _ from 'lodash';
-import ServiceDiscovery from "react-native-service-discovery";
-import { unixNow } from '../lib/helpers';
-
-let serviceDiscovery = null;
-let channel = null;
-
-function createServiceDiscoveryChannel() {
-    if (serviceDiscovery === null) {
-        serviceDiscovery = new ServiceDiscovery();
-
-        serviceDiscovery.on('service-resolved', (ev) => {
-        });
-
-        serviceDiscovery.on('udp-discovery', (ev) => {
-            const address = {
-                host: ev.address,
-                port: ev.port,
-                valid: true
-            };
-            channel.put({
-                type: Types.DEVICE_CONNECT_INFO,
-                address: address
-            });
-        });
-
-        channel = createChannel();
-    }
-
-    serviceDiscovery.start();
-
-    return channel;
-}
-
-function* monitorServiceDiscoveryEvents(channel) {
-    let lastInfo = null;
-    while (true) {
-        const info = yield call(channel.take)
-        if (lastInfo == null || !_.isEqual(lastInfo, info)) {
-            yield put(info);
-        }
-        lastInfo = info;
-    }
-}
-
 function* deviceCall(raw) {
     yield put({
         type: raw.types[0]
@@ -122,7 +81,7 @@ function* deviceCall(raw) {
 
 function* discoverDevice() {
     const { deviceStatus, to } = yield race({
-        deviceStatus: take(Types.DEVICE_CONNECT_INFO),
+        deviceStatus: take(Types.FIND_DEVICE_INFO),
         to: delay(60 * 1000)
     });
 
@@ -139,18 +98,18 @@ function* discoverDevice() {
         });
 
         yield put({
-            type: Types.DEVICE_CONNECT_SUCCESS,
+            type: Types.FIND_DEVICE_SUCCESS,
         });
     }
     else {
         yield put({
-            type: Types.DEVICE_CONNECT_FAIL,
+            type: Types.FIND_DEVICE_FAIL,
         });
     }
 }
 
 function* pingDevice() {
-    yield takeLatest([Types.DEVICE_CONNECT_SUCCESS, Types.DEVICE_PING_SUCCESS], function* () {
+    yield takeLatest([Types.FIND_DEVICE_SUCCESS, Types.DEVICE_PING_SUCCESS], function* () {
         yield delay(20 * 1000);
 
         const { deviceStatus } = yield select();
@@ -175,8 +134,6 @@ function* pingDevice() {
     });
 }
 
-import { navigateWelcome, navigateDeviceMenu } from './navigation';
-
 function* connectionRelatedNavigation() {
     yield takeLatest([Types.NAVIGATION_CONNECTING], function* (nav) {
         const { deviceStatus } = yield select();
@@ -186,11 +143,11 @@ function* connectionRelatedNavigation() {
         }
         else {
             const returned = yield take([
-                Types.DEVICE_CONNECT_SUCCESS,
-                Types.DEVICE_CONNECT_FAIL
+                Types.FIND_DEVICE_SUCCESS,
+                Types.FIND_DEVICE_FAIL
             ]);
 
-            if (returned.type == Types.DEVICE_CONNECT_SUCCESS) {
+            if (returned.type == Types.FIND_DEVICE_SUCCESS) {
                 yield put(navigateDeviceMenu());
             }
             else {
@@ -201,7 +158,7 @@ function* connectionRelatedNavigation() {
 }
 
 function* deviceConnection() {
-    yield takeLatest(Types.DEVICE_CONNECT_START, function* () {
+    yield takeLatest(Types.FIND_DEVICE_START, function* () {
         yield all([
             discoverDevice(),
             pingDevice(),
@@ -211,7 +168,7 @@ function* deviceConnection() {
 
 export function* rootSaga() {
     yield all([
-        call(monitorServiceDiscoveryEvents, createServiceDiscoveryChannel()),
+        serviceDiscovery(),
         deviceConnection(),
         connectionRelatedNavigation(),
         downloadDataSaga(),

@@ -31,13 +31,13 @@ export function deviceStatus(state = initialDeviceStatusState, action) {
     }
 
     switch (action.type) {
-    case ActionTypes.DEVICE_CONNECT_START:
+    case ActionTypes.FIND_DEVICE_START:
         return { ...nextState, ...{ started: unixNow() } };
-    case ActionTypes.DEVICE_CONNECT_INFO:
+    case ActionTypes.FIND_DEVICE_INFO:
         return { ...nextState, ...{ address: action.address } };
-    case ActionTypes.DEVICE_CONNECT_SUCCESS:
+    case ActionTypes.FIND_DEVICE_SUCCESS:
         return { ...nextState, ...{ connected: true } };
-    case ActionTypes.DEVICE_CONNECT_LOST:
+    case ActionTypes.FIND_DEVICE_LOST:
         return { ...nextState, ...{ connected: false } };
     case ActionTypes.DEVICE_PING_SUCCESS:
         nextState.ping = {

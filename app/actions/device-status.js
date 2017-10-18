@@ -41,7 +41,7 @@ export function queryDeviceCapabilities() {
 export function deviceStartConnect() {
     return (dispatch, getState) => {
         dispatch({
-            type: Types.DEVICE_CONNECT_START,
+            type: Types.FIND_DEVICE_START,
         });
     };
 }
@@ -49,7 +49,7 @@ export function deviceStartConnect() {
 export function deviceStopConnect() {
     return (dispatch, getState) => {
         dispatch({
-            type: Types.DEVICE_CONNECT_STOP,
+            type: Types.FIND_DEVICE_STOP,
         });
     };
 }
