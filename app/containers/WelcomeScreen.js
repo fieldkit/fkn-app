@@ -31,6 +31,7 @@ class WelcomeScreen extends React.Component {
 
     render() {
         const { navigateConnecting, navigateAbout } = this.props;
+
         return (
             <View style={styles.mainView}>
                 <BackgroundView>

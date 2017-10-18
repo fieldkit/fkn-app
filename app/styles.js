@@ -62,7 +62,7 @@ export default appStyle = {
     },
     buttons: {
         small: {
-            width: 100,
+            width: 120,
             height: 40,
             paddingRight: 10
         }

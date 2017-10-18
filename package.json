@@ -28,6 +28,7 @@
     "react-native": "0.47.1",
     "react-native-fs": "^2.8.1",
     "react-native-mail": "^3.0.4",
+    "react-native-progress-circle": "^2.0.0",
     "react-native-service-discovery": "https://github.com/Conservify/react-native-service-discovery.git",
     "react-native-tcp": "https://github.com/PeelTechnologies/react-native-tcp.git",
     "react-navigation": "^1.0.0-beta.11",
