@@ -17,6 +17,8 @@ import {
     navigateAbout
 } from '../actions/navigation';
 
+import { deviceStartConnect, deviceStopConnect } from '../actions/device-status';
+
 import styles from '../styles';
 
 class WelcomeScreen extends React.Component {
@@ -27,6 +29,7 @@ class WelcomeScreen extends React.Component {
     componentDidMount() {
         // TODO: Remove, this is for debugging.
         // this.props.navigateConnecting();
+        this.props.deviceStartConnect()
     }
 
     render() {
@@ -54,11 +57,13 @@ class WelcomeScreen extends React.Component {
 WelcomeScreen.propTypes = {
     navigateConnecting: PropTypes.func.isRequired,
     navigateAbout: PropTypes.func.isRequired,
+    deviceStartConnect: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps, {
     navigateConnecting,
-    navigateAbout
+    navigateAbout,
+    deviceStartConnect
 })(WelcomeScreen);

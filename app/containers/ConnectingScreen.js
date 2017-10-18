@@ -13,11 +13,7 @@ import { BackgroundView } from '../components/BackgroundView';
 import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 
 import { navigateWelcome } from '../actions/navigation';
-
-import {
-    deviceStartConnect,
-    deviceStopConnect
-} from '../actions/device-status';
+import { deviceStartConnect, deviceStopConnect } from '../actions/device-status';
 
 import { unixNow } from '../lib/helpers';
 
