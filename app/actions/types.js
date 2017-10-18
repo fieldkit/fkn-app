@@ -9,6 +9,10 @@ export const NAVIGATION_VIEW_DATA_SET = 'NAVIGATION_VIEW_DATA_SET';
 export const NAVIGATION_LIVE_DATA = 'NAVIGATION_LIVE_DATA';
 export const NAVIGATION_BACK = 'NAVIGATION_BACK';
 
+export function isNavigationAction(action) {
+    return /NAVIGATION_(.+)/.test(action.type);
+}
+
 export const DEVICE_PING_START = 'DEVICE_PING_START';
 export const DEVICE_PING_SUCCESS = 'DEVICE_PING_SUCCESS';
 export const DEVICE_PING_FAIL = 'DEVICE_PING_FAIL';

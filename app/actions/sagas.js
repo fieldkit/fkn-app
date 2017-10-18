@@ -109,6 +109,7 @@ function* pingDevice() {
         yield delay(20 * 1000);
 
         const { deviceStatus } = yield select();
+
         if (!deviceStatus.api.pending) {
             try {
                 yield call(deviceCall, {
@@ -130,7 +131,7 @@ function* pingDevice() {
     });
 }
 
-function* connectionRelatedNavigation() {
+function* navigateToDeviceMenuFromConnecting() {
     yield takeLatest([Types.NAVIGATION_CONNECTING], function* (nav) {
         const { deviceStatus } = yield select();
 
@@ -151,6 +152,24 @@ function* connectionRelatedNavigation() {
             }
         }
     });
+}
+
+function* navigateHomeOnConnectionLost() {
+    yield takeLatest(Types.FIND_DEVICE_LOST, function* () {
+        const { nav } = yield select();
+        const route = nav.routes[nav.index];
+
+        if (route.params && route.params.connectionRequired === true) { 
+            yield put(navigateWelcome()); 
+        } 
+    });
+}
+
+function* connectionRelatedNavigation() {
+    return yield all([
+        navigateToDeviceMenuFromConnecting(),
+        navigateHomeOnConnectionLost()
+    ]);
 }
 
 function* deviceConnection() {
