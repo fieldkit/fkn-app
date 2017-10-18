@@ -35,9 +35,7 @@ function* monitorServiceDiscoveryEvents(channel) {
     let lastInfo = null;
     while (true) {
         const info = yield call(channel.take)
-        if (lastInfo == null || !_.isEqual(lastInfo, info)) {
-            yield put(info);
-        }
+        yield put(info);
         lastInfo = info;
     }
 }
