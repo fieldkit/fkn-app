@@ -11,6 +11,7 @@ import reducer from './app/reducers'
 import webApiMiddleware from './app/middleware/web-api'
 import deviceApiMiddleware from './app/middleware/device-api'
 import createSagaMiddleware from 'redux-saga'
+import { rootSaga } from './app/actions/sagas'
 
 const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__  });
 const sagaMiddleware = createSagaMiddleware();
@@ -25,21 +26,21 @@ function configureStore(initialState) {
             loggerMiddleware,
         ),
     );
-    return createStore(reducer, initialState, enhancer)
+    return createStore(reducer, initialState, enhancer);
 }
 
 const store = configureStore({});
 
-import { rootSaga } from './app/actions/sagas'
-
-sagaMiddleware.run(rootSaga)
+sagaMiddleware.run(rootSaga);
 
 const App = () => (
     <Provider store={store}>
         <AppContainer />
     </Provider>
-)
+);
+
+export default App;
 
 console.ignoredYellowBox = ['Remote debugger'];
 
-AppRegistry.registerComponent('FieldKit', () => App)
+AppRegistry.registerComponent('FieldKit', () => App);

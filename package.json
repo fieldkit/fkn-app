@@ -49,7 +49,22 @@
     "rn-nodeify": "^7.0.1"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "globals": {
+        "__SPECS__": true
+    },
+    "setupFiles": [
+        "./specs/setup.js"
+    ],
+    "testMatch": [
+        "<rootDir>/app/**/(.*)_spec.js"
+    ],
+    "testPathIgnorePatterns": [
+        "/node_modules/"
+    ],
+    "transformIgnorePatterns": [
+        "node_modules/(?!react-native|react-navigation)/"
+    ]
   },
   "react-native": {
     "net": "react-native-tcp",
