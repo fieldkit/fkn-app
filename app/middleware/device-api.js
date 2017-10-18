@@ -63,66 +63,68 @@ function rpcImplFactory(host, port, wireQuery) {
     });
 }
 
-export default store => next => action => {
-    const callApi = action[CALL_DEVICE_API];
-    if (typeof callApi === 'undefined') {
-        return next(action);
+function transformResponse(callApi, response) {
+    const decoded = WireMessageReply.decodeDelimited(protobuf.Reader.create(response));
+    if (decoded.type == ReplyType.values.REPLY_ERROR) {
+        return {
+            deviceApi: {
+                pending: false
+            },
+            type: callApi.types[2],
+            response: decoded
+        };
     }
 
-    function actionWith(data) {
-        const finalAction = Object.assign({}, action, data);
-        delete finalAction[CALL_DEVICE_API];
-        return finalAction;
-    }
-
-    next(actionWith({
+    return {
         deviceApi: {
-            pending: true
+            pending: false
         },
-        type: callApi.types[0]
-    }));
+        type: callApi.types[1],
+        response: decoded
+    };
+}
 
-    function transformResponse(response) {
-        const decoded = WireMessageReply.decodeDelimited(protobuf.Reader.create(response));
-        if (decoded.type == ReplyType.values.REPLY_ERROR) {
-            return actionWith({
+function makeRequest(callApi) {
+    return Promise.resolve(callApi.address)
+        .then(address => {
+            const encoded = WireMessageQuery.encodeDelimited(callApi.message).finish();
+            return rpcImplFactory(address.host, address.port, encoded);
+        })
+        .then(response => {
+            return transformResponse(callApi, response);
+        }, error => {
+            const rejecting = new Error();
+            rejecting.action = {
                 deviceApi: {
                     pending: false
                 },
                 type: callApi.types[2],
-                response: decoded
-            });
-        }
-
-        return actionWith({
-            deviceApi: {
-                pending: false
-            },
-            type: callApi.types[1],
-            response: decoded
+                error: error.message
+            };
+            return rejecting;
         });
-    }
+}
 
-    function makeRequest(callApi) {
-        return Promise.resolve(callApi.address)
-            .then(address => {
-                const encoded = WireMessageQuery.encodeDelimited(callApi.message).finish();
-                return rpcImplFactory(address.host, address.port, encoded);
-            })
-            .then(response => {
-                next(transformResponse(response));
-            }, error => {
-                const nextAction = actionWith({
-                    deviceApi: {
-                        pending: false
-                    },
-                    type: callApi.types[2],
-                    error: error.message
-                });
-
-                next(nextAction);
-            });
-    }
-
+export function invokeDeviceApi(callApi) {
     return makeRequest(callApi);
+}
+
+export default store => dispatch => action => {
+    const callApi = action[CALL_DEVICE_API];
+    if (typeof callApi === 'undefined') {
+        return dispatch(action);
+    }
+
+    dispatch({
+        deviceApi: {
+            pending: true
+        },
+        type: callApi.types[0]
+    });
+
+    return makeRequest(callApi).then(good => {
+        dispatch(good);
+    }, bad => {
+        dispatch(bad);
+    });
 };

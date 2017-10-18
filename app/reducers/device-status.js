@@ -14,7 +14,8 @@ const initialDeviceStatusState = {
     },
     ping: {
         time: 0
-    }
+    },
+    connected: false
 };
 
 export function deviceStatus(state = initialDeviceStatusState, action) {
@@ -34,6 +35,10 @@ export function deviceStatus(state = initialDeviceStatusState, action) {
         return { ...nextState, ...{ started: unixNow() } };
     case ActionTypes.DEVICE_CONNECT_INFO:
         return { ...nextState, ...{ address: action.address } };
+    case ActionTypes.DEVICE_CONNECT_SUCCESS:
+        return { ...nextState, ...{ connected: true } };
+    case ActionTypes.DEVICE_CONNECT_LOST:
+        return { ...nextState, ...{ connected: false } };
     case ActionTypes.DEVICE_PING_SUCCESS:
         nextState.ping = {
             time: unixNow(),

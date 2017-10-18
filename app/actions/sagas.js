@@ -1,12 +1,14 @@
 'use strict'
 
 import { delay } from 'redux-saga'
-import { put, take, takeLatest, takeEvery, select, all } from 'redux-saga/effects'
+import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects'
 
 import * as Types from './types';
-import { CALL_DEVICE_API } from '../middleware/device-api';
+import { CALL_DEVICE_API, invokeDeviceApi } from '../middleware/device-api';
 
 import { QueryType } from '../lib/protocol';
+
+import { createChannel } from './channels';
 
 export function* downloadDataSaga() {
     yield takeLatest(Types.DOWNLOAD_DATA_SET_START, function* watcher(action) {
@@ -58,8 +60,160 @@ export function* downloadDataSaga() {
     });
 }
 
+import _ from 'lodash';
+import ServiceDiscovery from "react-native-service-discovery";
+import { unixNow } from '../lib/helpers';
+
+let serviceDiscovery = null;
+let channel = null;
+
+function createServiceDiscoveryChannel() {
+    if (serviceDiscovery === null) {
+        serviceDiscovery = new ServiceDiscovery();
+
+        serviceDiscovery.on('service-resolved', (ev) => {
+        });
+
+        serviceDiscovery.on('udp-discovery', (ev) => {
+            const address = {
+                host: ev.address,
+                port: ev.port,
+                valid: true
+            };
+            channel.put({
+                type: Types.DEVICE_CONNECT_INFO,
+                address: address
+            });
+        });
+
+        channel = createChannel();
+    }
+
+    serviceDiscovery.start();
+
+    return channel;
+}
+
+function* monitorServiceDiscoveryEvents(channel) {
+    let lastInfo = null;
+    while (true) {
+        const info = yield call(channel.take)
+        if (lastInfo == null || !_.isEqual(lastInfo, info)) {
+            yield put(info);
+        }
+        lastInfo = info;
+    }
+}
+
+function* deviceCall(raw) {
+    yield put({
+        type: raw.types[0]
+    })
+    try {
+        const returned = yield call(invokeDeviceApi, raw);
+        yield put(returned);
+        return returned;
+    }
+    catch (err) {
+        yield put(err.action)
+        throw err;
+    }
+}
+
+function* discoverDevice() {
+    const { deviceStatus, to } = yield race({
+        deviceStatus: take(Types.DEVICE_CONNECT_INFO),
+        to: delay(60 * 1000)
+    });
+
+    if (deviceStatus && deviceStatus.address.valid) {
+        yield call(deviceCall, {
+            types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
+            address: deviceStatus.address,
+            message: {
+                type: QueryType.values.QUERY_CAPABILITIES,
+                queryCapabilities: {
+                    version: 1
+                }
+            }
+        });
+
+        yield put({
+            type: Types.DEVICE_CONNECT_SUCCESS,
+        });
+    }
+    else {
+        yield put({
+            type: Types.DEVICE_CONNECT_FAIL,
+        });
+    }
+}
+
+function* pingDevice() {
+    yield takeLatest([Types.DEVICE_CONNECT_SUCCESS, Types.DEVICE_PING_SUCCESS], function* () {
+        yield delay(20 * 1000);
+
+        const { deviceStatus } = yield select();
+        if (!deviceStatus.api.pending) {
+            try {
+                yield call(deviceCall, {
+                    types: [Types.DEVICE_PING_START, Types.DEVICE_PING_SUCCESS, Types.DEVICE_PING_FAIL],
+                    address: deviceStatus.address,
+                    message: {
+                        type: QueryType.values.QUERY_CAPABILITIES,
+                        queryCapabilities: {
+                            version: 1
+                        }
+                    }
+                });
+            }
+            catch (err) {
+                // Try again.
+                console.log(err);
+            }
+        }
+    });
+}
+
+import { navigateWelcome, navigateDeviceMenu } from './navigation';
+
+function* connectionRelatedNavigation() {
+    yield takeLatest([Types.NAVIGATION_CONNECTING], function* (nav) {
+        const { deviceStatus } = yield select();
+
+        if (deviceStatus.connected) {
+            yield put(navigateDeviceMenu());
+        }
+        else {
+            const returned = yield take([
+                Types.DEVICE_CONNECT_SUCCESS,
+                Types.DEVICE_CONNECT_FAIL
+            ]);
+
+            if (returned.type == Types.DEVICE_CONNECT_SUCCESS) {
+                yield put(navigateDeviceMenu());
+            }
+            else {
+                yield put(navigateWelcome());
+            }
+        }
+    });
+}
+
+function* deviceConnection() {
+    yield takeLatest(Types.DEVICE_CONNECT_START, function* () {
+        yield all([
+            discoverDevice(),
+            pingDevice(),
+        ])
+    });
+}
+
 export function* rootSaga() {
     yield all([
+        call(monitorServiceDiscoveryEvents, createServiceDiscoveryChannel()),
+        deviceConnection(),
+        connectionRelatedNavigation(),
         downloadDataSaga(),
     ])
 }
