@@ -7,32 +7,24 @@ import ServiceDiscovery from "react-native-service-discovery";
 import { createChannel } from './channels';
 import * as Types from './types';
 
-let serviceDiscovery = null;
-let channel = null;
-
 function createServiceDiscoveryChannel() {
-    if (channel == null) {
-        channel = createChannel();
-    }
+    const channel = createChannel();
+    const serviceDiscovery = new ServiceDiscovery();
 
-    if (serviceDiscovery === null) {
-        serviceDiscovery = new ServiceDiscovery();
+    serviceDiscovery.on('service-resolved', (ev) => {
+    });
 
-        serviceDiscovery.on('service-resolved', (ev) => {
+    serviceDiscovery.on('udp-discovery', (ev) => {
+        const address = {
+            host: ev.address,
+            port: ev.port,
+            valid: true
+        };
+        channel.put({
+            type: Types.FIND_DEVICE_INFO,
+            address: address
         });
-
-        serviceDiscovery.on('udp-discovery', (ev) => {
-            const address = {
-                host: ev.address,
-                port: ev.port,
-                valid: true
-            };
-            channel.put({
-                type: Types.FIND_DEVICE_INFO,
-                address: address
-            });
-        });
-    }
+    });
 
     serviceDiscovery.start();
 
