@@ -10,8 +10,10 @@ import { createLogger } from 'redux-logger'
 import reducer from './app/reducers'
 import webApiMiddleware from './app/middleware/web-api'
 import deviceApiMiddleware from './app/middleware/device-api'
+import createSagaMiddleware from 'redux-saga'
 
 const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__  });
+const sagaMiddleware = createSagaMiddleware();
 
 function configureStore(initialState) {
     const enhancer = compose(
@@ -19,6 +21,7 @@ function configureStore(initialState) {
             thunkMiddleware, // lets us dispatch() functions
             webApiMiddleware,
             deviceApiMiddleware,
+            sagaMiddleware,
             loggerMiddleware,
         ),
     );
@@ -26,6 +29,10 @@ function configureStore(initialState) {
 }
 
 const store = configureStore({});
+
+import { rootSaga } from './app/actions/sagas'
+
+sagaMiddleware.run(rootSaga)
 
 const App = () => (
     <Provider store={store}>
