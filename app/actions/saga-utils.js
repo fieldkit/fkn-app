@@ -5,7 +5,8 @@ import { invokeDeviceApi } from '../middleware/device-api';
 
 export function* deviceCall(raw) {
     yield put({
-        type: raw.types[0]
+        type: raw.types[0],
+        message: raw.message
     })
     try {
         const returned = yield call(invokeDeviceApi, raw);

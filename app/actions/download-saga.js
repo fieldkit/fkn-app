@@ -4,7 +4,7 @@ import { delay } from 'redux-saga'
 import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects'
 
 import * as Types from './types';
-import { deviceCall } from './saga_utils';
+import { deviceCall } from './saga-utils';
 
 import { QueryType } from '../lib/protocol';
 

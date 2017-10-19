@@ -4,7 +4,7 @@ import SagaTester from 'redux-saga-tester';
 import Promise from "bluebird";
 
 import * as Types from './types';
-import { downloadDataSaga } from './download_saga';
+import { downloadDataSaga } from './download-saga';
 import { useFakeDeviceConnection } from '../middleware/device-api';
 import { QueryType, ReplyType } from '../lib/protocol';
 

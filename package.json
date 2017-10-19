@@ -60,7 +60,7 @@
       "./specs/setup.js"
     ],
     "testMatch": [
-      "<rootDir>/app/**/(.*)_spec.js"
+      "<rootDir>/app/**/(.*)specs.js"
     ],
     "testPathIgnorePatterns": [
       "/node_modules/"

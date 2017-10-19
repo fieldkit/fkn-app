@@ -5,12 +5,12 @@ import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux
 
 import Config from '../config';
 import * as Types from './types';
-import { deviceCall } from './saga_utils';
+import { deviceCall } from './saga-utils';
 
 import { QueryType } from '../lib/protocol';
 
 import { serviceDiscovery } from './discovery';
-import { downloadDataSaga } from './download_saga';
+import { downloadDataSaga } from './download-saga';
 import { navigateWelcome, navigateDeviceMenu } from './navigation';
 
 export function* discoverDevice() {
