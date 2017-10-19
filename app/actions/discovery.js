@@ -15,15 +15,7 @@ function createServiceDiscoveryChannel() {
     });
 
     serviceDiscovery.on('udp-discovery', (ev) => {
-        const address = {
-            host: ev.address,
-            port: ev.port,
-            valid: true
-        };
-        channel.put({
-            type: Types.FIND_DEVICE_INFO,
-            address: address
-        });
+        channel.put(findDeviceInfo(ev.address, ev.port));
     });
 
     serviceDiscovery.start();
@@ -38,6 +30,17 @@ function* monitorServiceDiscoveryEvents(channel) {
         yield put(info);
         lastInfo = info;
     }
+}
+
+export function findDeviceInfo(host, port) {
+    return {
+        type: Types.FIND_DEVICE_INFO,
+        address: {
+            host: host,
+            port: port,
+            valid: port > 0
+        }
+    };
 }
 
 export function* serviceDiscovery() {

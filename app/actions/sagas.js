@@ -14,6 +14,8 @@ import { unixNow } from '../lib/helpers';
 
 import { navigateWelcome, navigateDeviceMenu } from './navigation';
 
+import Config from '../config';
+
 function* deviceCall(raw) {
     yield put({
         type: raw.types[0]
@@ -75,10 +77,10 @@ export function* downloadDataSaga() {
     });
 }
 
-function* discoverDevice() {
+export function* discoverDevice() {
     const { deviceStatus, to } = yield race({
         deviceStatus: take(Types.FIND_DEVICE_INFO),
-        to: delay(60 * 1000)
+        to: delay(Config.findDeviceTimeout)
     });
 
     if (deviceStatus && deviceStatus.address.valid) {
@@ -104,7 +106,7 @@ function* discoverDevice() {
     }
 }
 
-function* pingDevice() {
+export function* pingDevice() {
     yield takeLatest([Types.FIND_DEVICE_SUCCESS, Types.DEVICE_PING_SUCCESS], function* () {
         yield delay(20 * 1000);
 
@@ -131,7 +133,16 @@ function* pingDevice() {
     });
 }
 
-function* navigateToDeviceMenuFromConnecting() {
+export function* deviceConnection() {
+    yield takeLatest(Types.FIND_DEVICE_START, function* () {
+        yield all([
+            discoverDevice(),
+            pingDevice(),
+        ])
+    });
+}
+
+export function* navigateToDeviceMenuFromConnecting() {
     yield takeLatest([Types.NAVIGATION_CONNECTING], function* (nav) {
         const { deviceStatus } = yield select();
 
@@ -154,7 +165,7 @@ function* navigateToDeviceMenuFromConnecting() {
     });
 }
 
-function* navigateHomeOnConnectionLost() {
+export function* navigateHomeOnConnectionLost() {
     yield takeLatest(Types.FIND_DEVICE_LOST, function* () {
         const { nav } = yield select();
         const route = nav.routes[nav.index];
@@ -165,20 +176,11 @@ function* navigateHomeOnConnectionLost() {
     });
 }
 
-function* connectionRelatedNavigation() {
+export function* connectionRelatedNavigation() {
     return yield all([
         navigateToDeviceMenuFromConnecting(),
         navigateHomeOnConnectionLost()
     ]);
-}
-
-function* deviceConnection() {
-    yield takeLatest(Types.FIND_DEVICE_START, function* () {
-        yield all([
-            discoverDevice(),
-            pingDevice(),
-        ])
-    });
 }
 
 export function* rootSaga() {

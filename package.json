@@ -46,6 +46,7 @@
     "babel-preset-react-native": "2.0.0",
     "jest": "20.0.4",
     "react-test-renderer": "16.0.0-alpha.12",
+    "redux-saga-tester": "^1.0.373",
     "rn-nodeify": "^7.0.1"
   },
   "jest": {
@@ -55,16 +56,16 @@
         "__SPECS__": true
     },
     "setupFiles": [
-        "./specs/setup.js"
+      "./specs/setup.js"
     ],
     "testMatch": [
-        "<rootDir>/app/**/(.*)_spec.js"
+      "<rootDir>/app/**/(.*)_spec.js"
     ],
     "testPathIgnorePatterns": [
-        "/node_modules/"
+      "/node_modules/"
     ],
     "transformIgnorePatterns": [
-        "node_modules/(?!react-native|react-navigation)/"
+      "node_modules/(?!react-native|react-navigation)/"
     ]
   },
   "react-native": {
