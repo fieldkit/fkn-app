@@ -45,6 +45,7 @@
     "babel-jest": "20.0.3",
     "babel-preset-react-native": "2.0.0",
     "jest": "20.0.4",
+    "jest-html-reporter": "^0.5.1",
     "react-test-renderer": "16.0.0-alpha.12",
     "redux-saga-tester": "^1.0.373",
     "rn-nodeify": "^7.0.1"
@@ -52,8 +53,8 @@
   "jest": {
     "preset": "react-native",
     "globals": {
-        "__ENV__": "test",
-        "__SPECS__": true
+      "__ENV__": "test",
+      "__SPECS__": true
     },
     "setupFiles": [
       "./specs/setup.js"
@@ -66,7 +67,8 @@
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!react-native|react-navigation)/"
-    ]
+    ],
+    "testResultsProcessor": "./node_modules/jest-html-reporter"
   },
   "react-native": {
     "net": "react-native-tcp",

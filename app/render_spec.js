@@ -6,11 +6,12 @@ import renderer from 'react-test-renderer';
 import AndroidApp from '../index.android.js';
 import IOSApp from '../index.ios.js';
 
+describe('top level rendering', () => {
+    it('renders iOS correctly', () => {
+        const tree = renderer.create(<IOSApp />);
+    });
 
-it('renders iOS correctly', () => {
-    const tree = renderer.create(<IOSApp />);
-});
-
-it('renders Android correctly', () => {
-    const tree = renderer.create(<AndroidApp />);
+    it('renders Android correctly', () => {
+        const tree = renderer.create(<AndroidApp />);
+    });
 });
