@@ -66,5 +66,18 @@ export default appStyle = {
             height: 40,
             paddingRight: 10
         }
+    },
+    liveData: {
+        container: {
+            padding: 10
+        },
+        sensor: {
+            name: {
+                fontSize: 25,
+                fontWeight: "bold"
+            },
+            value: {
+            }
+        }
     }
 }

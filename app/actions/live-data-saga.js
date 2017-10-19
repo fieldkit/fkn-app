@@ -25,7 +25,12 @@ export function* deviceLiveDataPoll(interval) {
 export function* liveDataSaga() {
     yield takeLatest(Types.LIVE_DATA_POLL_START, function* watcher(action) {
         while (true) {
-            yield deviceLiveDataPoll(1000);
+            try {
+                yield deviceLiveDataPoll(1000);
+            }
+            catch (err) {
+                console.log(err);
+            }
 
             const { stop } = yield race({
                 stop: take(Types.LIVE_DATA_POLL_STOP),

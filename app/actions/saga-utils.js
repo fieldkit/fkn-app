@@ -14,6 +14,8 @@ export function* deviceCall(raw) {
         return returned;
     }
     catch (err) {
+        console.log('GOT', err);
+        console.log('PUT', err.action);
         yield put(err.action)
         throw err;
     }

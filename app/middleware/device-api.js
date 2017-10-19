@@ -89,6 +89,7 @@ class DeviceConnection {
                 return this.transformResponse(callApi, response);
             }, error => {
                 const rejecting = new Error();
+                console.log("REJECTING", rejecting);
                 rejecting.action = {
                     deviceApi: {
                         pending: false
@@ -96,7 +97,7 @@ class DeviceConnection {
                     type: callApi.types[2],
                     error: error.message
                 };
-                return rejecting;
+                return Promise.reject(rejecting);
             });
     }
 }
