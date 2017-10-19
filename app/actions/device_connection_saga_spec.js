@@ -1,10 +1,5 @@
 import 'react-native';
 
-import React from 'react';
-import renderer from 'react-test-renderer';
-import { createMockTask, cloneableGenerator } from 'redux-saga/utils';
-import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects'
-import { delay } from 'redux-saga'
 import SagaTester from 'redux-saga-tester';
 import Promise from "bluebird";
 
