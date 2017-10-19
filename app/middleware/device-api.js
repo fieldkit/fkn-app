@@ -117,7 +117,7 @@ export class FakeDeviceConnection {
             throw new Error("No enqueued fake replies!");
         }
 
-        const pair = this.queue.pop();
+        const pair = this.queue.shift();
 
         // console.log('CALL', callApi, 'REPLY', pair.reply);
 
