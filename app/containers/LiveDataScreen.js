@@ -11,14 +11,21 @@ import {
 
 import { BackgroundView } from '../components/BackgroundView';
 
-import {
-    navigateBack
-} from '../actions/navigation';
+import { navigateBack } from '../actions/navigation';
+import { startLiveDataPoll, stopLiveDataPoll } from '../actions/device-data';
 
 class LiveDataScreen extends React.Component {
     static navigationOptions = {
         title: 'Live Data',
     };
+
+    componentDidMount() {
+        this.props.startLiveDataPoll();
+    }
+
+    componentWillUnmount() {
+        this.props.stopLiveDataPoll();
+    }
 
     render() {
         return (
@@ -30,10 +37,14 @@ class LiveDataScreen extends React.Component {
 
 LiveDataScreen.propTypes = {
     navigateBack: PropTypes.func.isRequired,
+    startLiveDataPoll: PropTypes.func.isRequired,
+    stopLiveDataPoll: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps, {
-    navigateBack
+    navigateBack,
+    startLiveDataPoll,
+    stopLiveDataPoll
 })(LiveDataScreen);

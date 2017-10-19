@@ -11,6 +11,7 @@ import { QueryType } from '../lib/protocol';
 
 import { serviceDiscovery } from './discovery';
 import { downloadDataSaga } from './download-saga';
+import { liveDataSaga } from './live-data-saga';
 import { navigateWelcome, navigateDeviceMenu } from './navigation';
 
 export function* discoverDevice() {
@@ -125,5 +126,6 @@ export function* rootSaga() {
         deviceConnection(),
         connectionRelatedNavigation(),
         downloadDataSaga(),
+        liveDataSaga(),
     ])
 }
