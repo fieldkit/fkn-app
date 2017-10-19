@@ -4,10 +4,12 @@ if (typeof(__ENV__) == 'undefined') {
 
 const configs = {
     test: {
-        findDeviceTimeout: 2 * 1000 
+        findDeviceTimeout: 2 * 1000,
+        pingDeviceInterval: 500,
     },
     dev: {
-        findDeviceTimeout: 60 * 1000
+        findDeviceTimeout: 60 * 1000,
+        pingDeviceInterval: 20 * 1000,
     }
 };
 

@@ -113,10 +113,14 @@ export class FakeDeviceConnection {
 
     execute(callApi) {
         if (this.queue.length == 0) {
-            console.log("No enqueued fake replies!");
+            console.log("No enqueued fake replies!", callApi);
             throw new Error("No enqueued fake replies!");
         }
+
         const pair = this.queue.pop();
+
+        // console.log('CALL', callApi, 'REPLY', pair.reply);
+
         return Promise.resolve({
             deviceApi: {
                 pending: false

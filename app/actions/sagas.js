@@ -107,8 +107,8 @@ export function* discoverDevice() {
 }
 
 export function* pingDevice() {
-    yield takeLatest([Types.FIND_DEVICE_SUCCESS, Types.DEVICE_PING_SUCCESS], function* () {
-        yield delay(20 * 1000);
+    yield takeLatest([Types.FIND_DEVICE_SUCCESS, Types.DEVICE_PING_SUCCESS], function* (a) {
+        yield delay(Config.pingDeviceInterval);
 
         const { deviceStatus } = yield select();
 
