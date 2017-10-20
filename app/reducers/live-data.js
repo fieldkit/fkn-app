@@ -16,6 +16,10 @@ export function liveData(state = initialLiveDataState, action) {
     case ActionTypes.LIVE_DATA_POLL_START:
     case ActionTypes.LIVE_DATA_POLL_STOP:
         nextState = _.cloneDeep(state);
+        _.forEach(nextState.sensors, sensor => {
+            sensor.data = [];
+            sensor.value = "N/A";
+        });
         return nextState;
     case ActionTypes.DEVICE_CAPABILITIES_SUCCESS:
         nextState = _.cloneDeep(state);
