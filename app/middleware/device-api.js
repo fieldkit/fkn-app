@@ -82,6 +82,12 @@ class DeviceConnection {
     execute(callApi) {
         return Promise.resolve(callApi.address)
             .then(address => {
+                if (!address.valid) {
+                    return Promise.reject(new Error("Invalid address"));
+                }
+                return address;
+            })
+            .then(address => {
                 const encoded = WireMessageQuery.encodeDelimited(callApi.message).finish();
                 return this.rpcImplFactory(address.host, address.port, encoded);
             })
