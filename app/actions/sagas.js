@@ -8,11 +8,50 @@ import * as Types from './types';
 import { deviceCall } from './saga-utils';
 
 import { QueryType } from '../lib/protocol';
+import { unixNow } from '../lib/helpers';
 
 import { serviceDiscovery } from './discovery';
 import { downloadDataSaga } from './download-saga';
 import { liveDataSaga } from './live-data-saga';
 import { navigateWelcome, navigateDeviceMenu } from './navigation';
+
+/*
+export function devicePing() {
+    return (dispatch, getState) => {
+        return dispatch({
+            [CALL_DEVICE_API]: {
+                types: [Types.DEVICE_PING_START, Types.DEVICE_PING_SUCCESS, Types.DEVICE_PING_FAIL],
+                address: getState().deviceStatus.address,
+                message: {
+                    type: QueryType.values.QUERY_CAPABILITIES,
+                    queryCapabilities: {
+                        version: 1,
+                        callerTime: unixNow()
+                    }
+                }
+            },
+        });
+    };
+}
+
+export function queryDeviceCapabilities() {
+    return (dispatch, getState) => {
+        return dispatch({
+            [CALL_DEVICE_API]: {
+                types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
+                address: getState().deviceStatus.address,
+                message: {
+                    type: QueryType.values.QUERY_CAPABILITIES,
+                    queryCapabilities: {
+                        version: 1,
+                        callerTime: unixNow()
+                    }
+                }
+            },
+        });
+    };
+}
+*/
 
 export function* discoverDevice() {
     const { deviceStatus, to } = yield race({
@@ -27,7 +66,8 @@ export function* discoverDevice() {
             message: {
                 type: QueryType.values.QUERY_CAPABILITIES,
                 queryCapabilities: {
-                    version: 1
+                    version: 1,
+                    callerTime: unixNow()
                 }
             }
         });
@@ -44,7 +84,7 @@ export function* discoverDevice() {
 }
 
 export function* pingDevice() {
-    yield takeLatest([Types.FIND_DEVICE_SUCCESS, Types.DEVICE_PING_SUCCESS], function* (a) {
+    yield takeLatest([Types.FIND_DEVICE_SUCCESS, Types.DEVICE_PING_SUCCESS], function* () {
         yield delay(Config.pingDeviceInterval);
 
         const { deviceStatus } = yield select();
@@ -57,7 +97,8 @@ export function* pingDevice() {
                     message: {
                         type: QueryType.values.QUERY_CAPABILITIES,
                         queryCapabilities: {
-                            version: 1
+                            version: 1,
+                            callerTime: unixNow()
                         }
                     }
                 });

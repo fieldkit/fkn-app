@@ -36,6 +36,9 @@ export function liveData(state = initialLiveDataState, action) {
                     sensor.value = "N/A";
                 }
             }
+            else {
+                sensor.value = "N/A";
+            }
         });
 
         return nextState;
