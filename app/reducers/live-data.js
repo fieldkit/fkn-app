@@ -39,6 +39,10 @@ export function liveData(state = initialLiveDataState, action) {
                         x: new Date(),
                         y: sensor.value
                     })
+
+                    while (sensor.data.length > 20) {
+                        sensor.data.shift();
+                    }
                 }
                 else {
                     sensor.value = "N/A";
