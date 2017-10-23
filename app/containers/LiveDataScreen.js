@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { View, Text } from 'react-native'
-import { VictoryLine, VictoryChart, VictoryTheme } from "victory-native";
+import { VictoryLine, VictoryChart, VictoryTheme, VictoryLegend } from "victory-native";
 
 import { BackgroundView } from '../components/BackgroundView';
 import Loading from '../components/Loading';
@@ -28,6 +28,33 @@ class LiveDataScreen extends React.Component {
         this.props.stopLiveDataPoll();
     }
 
+    render() {
+        const { liveData } = this.props;
+
+        return (
+            <View style={styles.liveData.container}>
+                <View style={{ flex: 1 }}>
+                    {liveData.sensors.map((s, i) => this.renderSensor(s, s.id))}
+                </View>
+                <View style={styles.liveData.chart.container}>
+                    {this.renderChart()}
+                </View>
+            </View>
+        );
+    }
+
+    renderSensor(sensor, id) {
+        const colors = VictoryTheme.material.legend.colorScale;
+        const dotStyle = Object.assign({ backgroundColor: colors[id] }, styles.liveData.legend.dotStyle)
+        return (
+            <View key={id} style={styles.liveData.legend.container}>
+                <View style={dotStyle} />
+                <Text style={styles.liveData.legend.sensor.name}>{sensor.name}: </Text>
+                <Text style={styles.liveData.legend.sensor.value}>{sensor.value}</Text>
+            </View>
+        );
+    }
+
     renderChart() {
         const { liveData } = this.props;
 
@@ -39,38 +66,10 @@ class LiveDataScreen extends React.Component {
     }
 
     renderSensorLine(sensor, id) {
+        const colors = VictoryTheme.material.legend.colorScale;
         return (
-            <VictoryLine key={id} style={{
-                    data: { stroke: "#c43a31" },
-                    parent: { border: "1px solid #ccc"}
-                }}
-                data={sensor.data}
-            />
+            <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id] } }} />
         )
-    }
-
-    render() {
-        const { liveData } = this.props;
-
-        return (
-            <View style={{ flex: 1 }}>
-                <BackgroundView>
-                    {liveData.sensors.map((s, i) => this.renderSensor(s, s.id))}
-                </BackgroundView>
-                <View style={{ width: '100%', backgroundColor: '#fff', borderTopWidth: 1, borderColor: '#000', position: 'absolute', bottom: 0 }}>
-                    {this.renderChart()}
-                </View>
-            </View>
-        );
-    }
-
-    renderSensor(sensor, id) {
-        return (
-            <View key={id} style={styles.liveData.container}>
-                <Text style={styles.liveData.sensor.name}>{sensor.name}</Text>
-                <Text style={styles.liveData.sensor.value}>{sensor.value}</Text>
-            </View>
-        );
     }
 }
 

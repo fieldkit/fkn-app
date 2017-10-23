@@ -32,24 +32,19 @@ export function liveData(state = initialLiveDataState, action) {
     case ActionTypes.DEVICE_LIVE_DATA_POLL_SUCCESS:
         nextState = _.cloneDeep(state);
 
-        const bySensor = _.keyBy(action.response.liveData.dataSetDatas, ds => ds.sensor);
+        const bySensor = _.keyBy(action.response.liveData.samples, sample => sample.sensor || 0);
 
         _.forEach(nextState.sensors, sensor => {
             if (bySensor[sensor.id]) {
                 const data = bySensor[sensor.id];
-                if (_.isArray(data.floats) && data.floats.length > 0) {
-                    sensor.value = data.floats[data.floats.length - 1];
-                    sensor.data.push({
-                        x: new Date(),
-                        y: sensor.value
-                    })
+                sensor.value = data.value,
+                sensor.data.push({
+                    x: new Date(data.time),
+                    y: sensor.value
+                })
 
-                    while (sensor.data.length > 20) {
-                        sensor.data.shift();
-                    }
-                }
-                else {
-                    sensor.value = "N/A";
+                while (sensor.data.length > 20) {
+                    sensor.data.shift();
                 }
             }
             else {
