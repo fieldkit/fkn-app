@@ -21,6 +21,8 @@ function debug() {
     }
 };
 
+let pendingExecution = null;
+
 class DeviceConnection {
     rpcImplFactory(host, port, wireQuery) {
         return new Promise((resolve, reject) => {
@@ -145,7 +147,12 @@ export function useFakeDeviceConnection() {
 }
 
 export function invokeDeviceApi(callApi) {
-    return deviceConnection.execute(callApi);
+    if (pendingExecution != null) {
+        return pendingExecution.then(() => {
+            return deviceConnection.execute(callApi);
+        });
+    }
+    return pendingExecution = deviceConnection.execute(callApi);
 }
 
 export default store => dispatch => action => {
