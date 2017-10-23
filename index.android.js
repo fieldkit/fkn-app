@@ -12,8 +12,12 @@ import webApiMiddleware from './app/middleware/web-api'
 import deviceApiMiddleware from './app/middleware/device-api'
 import createSagaMiddleware from 'redux-saga'
 import { rootSaga } from './app/actions/sagas'
+import * as Types from './app/actions/types';
 
-const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__  });
+const loggerMiddleware = createLogger({
+    predicate: (getState, action) => __DEV__,
+    collapsed: (getState, action) => action.type === Types.FIND_DEVICE_INFO || true
+});
 const sagaMiddleware = createSagaMiddleware();
 
 function configureStore(initialState) {
