@@ -48,7 +48,7 @@ export function liveData(state = initialLiveDataState, action) {
                 }
             }
             else {
-                sensor.value = "N/A";
+                sensor.value = null;
             }
         });
 

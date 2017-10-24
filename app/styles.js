@@ -39,6 +39,8 @@ export default appStyle = {
         },
         frequency: {
         },
+        unitOfMeasure: {
+        }
     },
     loading: {
         alignItems: 'center',
