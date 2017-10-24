@@ -96,8 +96,8 @@ class DeviceConnection {
             .then(response => {
                 return this.transformResponse(callApi, response);
             }, error => {
+                console.log("REJECTING", error);
                 const rejecting = new Error();
-                console.log("REJECTING", rejecting);
                 rejecting.action = {
                     deviceApi: {
                         pending: false

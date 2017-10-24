@@ -4,8 +4,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { View, Text } from 'react-native'
-import { VictoryLine, VictoryChart, VictoryTheme, VictoryLegend } from "victory-native";
+import { View, Text, FlatList, ScrollView } from 'react-native';
+import { VictoryLine, VictoryChart, VictoryTheme, VictoryLegend, VictoryCursorContainer, VictoryContainer } from "victory-native";
 
 import { BackgroundView } from '../components/BackgroundView';
 import Loading from '../components/Loading';
@@ -28,8 +28,32 @@ class LiveDataScreen extends React.Component {
         this.props.stopLiveDataPoll();
     }
 
+    state = {
+        scrollEnabled: true
+    }
+
+    changeScroll(scrollEnabled) {
+        this.setState({ scrollEnabled });
+    }
+
+    keyExtractor(sensor, index) {
+        return sensor.id;
+    }
+
     render() {
         const { liveData } = this.props;
+
+        if (true) {
+            return (
+                <View style={styles.liveData.container}>
+                    <FlatList
+                        scrollEnabled={this.state.scrollEnabled}
+                        data={liveData.sensors}
+                        renderItem={(item) => this.renderSensorChart(item)}
+                        keyExtractor={this.keyExtractor} />
+                </View>
+            );
+        }
 
         return (
             <View style={styles.liveData.container}>
@@ -43,7 +67,7 @@ class LiveDataScreen extends React.Component {
         );
     }
 
-    renderSensor(sensor, id) {
+    renderSensor(sensor) {
         const colors = VictoryTheme.material.legend.colorScale;
         const dotStyle = Object.assign({ backgroundColor: colors[id] }, styles.liveData.legend.dotStyle)
         return (
@@ -53,6 +77,41 @@ class LiveDataScreen extends React.Component {
                 <Text style={styles.liveData.legend.sensor.value}>{sensor.value}</Text>
             </View>
         );
+    }
+
+    renderSensorChart(item) {
+        const sensor = item.item;
+        const id = item.index;
+        const colors = VictoryTheme.material.legend.colorScale;
+        const dotStyle = Object.assign({ backgroundColor: colors[id] }, styles.liveData.legend.dotStyle)
+
+        let chart = (<Loading />);
+
+        if (sensor.data.length > 2) {
+            const self = this;
+            chart = (
+                    <VictoryChart theme={VictoryTheme.material} scale={{x: "time"}}
+                        containerComponent={
+                            <VictoryCursorContainer
+                                onTouchStart={() => { console.log(self); self.changeScroll(false); }}
+                                onTouchEnd={() => { console.log(self); self.changeScroll(true); }}
+                            />}
+                    >
+                    <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id] } }} />
+                    </VictoryChart>
+            );
+        }
+
+        return (
+            <View key={id}>
+                <View style={styles.liveData.legend.container}>
+                    <View style={dotStyle} />
+                    <Text style={styles.liveData.legend.sensor.name}>{sensor.name}: </Text>
+                    <Text style={styles.liveData.legend.sensor.value}>{sensor.value}</Text>
+                </View>
+                {chart}
+            </View>
+        )
     }
 
     renderChart() {
