@@ -4,8 +4,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { View, Text, FlatList, ScrollView } from 'react-native';
+import { View, Text, FlatList, ScrollView, Dimensions } from 'react-native';
 import { VictoryLine, VictoryChart, VictoryTheme, VictoryLegend, VictoryCursorContainer, VictoryContainer } from "victory-native";
+import Svg from 'react-native-svg';
 
 import { BackgroundView } from '../components/BackgroundView';
 import Loading from '../components/Loading';
@@ -20,20 +21,16 @@ class LiveDataScreen extends React.Component {
         title: 'Live Data',
     };
 
+    state = {
+        chartPerSensor: true
+    }
+
     componentDidMount() {
         this.props.startLiveDataPoll();
     }
 
     componentWillUnmount() {
         this.props.stopLiveDataPoll();
-    }
-
-    state = {
-        scrollEnabled: true
-    }
-
-    changeScroll(scrollEnabled) {
-        this.setState({ scrollEnabled });
     }
 
     keyExtractor(sensor, index) {
@@ -43,11 +40,11 @@ class LiveDataScreen extends React.Component {
     render() {
         const { liveData } = this.props;
 
-        if (true) {
+        // This can't be changed, for now. Just trying out different approaches.
+        if (this.state.chartPerSensor) {
             return (
                 <View style={styles.liveData.container}>
                     <FlatList
-                        scrollEnabled={this.state.scrollEnabled}
                         data={liveData.sensors}
                         renderItem={(item) => this.renderSensorChart(item)}
                         keyExtractor={this.keyExtractor} />
@@ -67,7 +64,7 @@ class LiveDataScreen extends React.Component {
         );
     }
 
-    renderSensor(sensor) {
+    renderSensorHeader(sensor, id) {
         const colors = VictoryTheme.material.legend.colorScale;
         const dotStyle = Object.assign({ backgroundColor: colors[id] }, styles.liveData.legend.dotStyle)
         return (
@@ -86,49 +83,47 @@ class LiveDataScreen extends React.Component {
         const dotStyle = Object.assign({ backgroundColor: colors[id] }, styles.liveData.legend.dotStyle)
 
         let chart = (<Loading />);
-
         if (sensor.data.length > 2) {
-            const self = this;
+            const { width: windowWidth } = Dimensions.get('window');
+            const chartWidth = windowWidth;
+            const chartHeight = 250;
+            const viewBox = "0 0 " + chartWidth + " " + chartHeight;
             chart = (
-                    <VictoryChart theme={VictoryTheme.material} scale={{x: "time"}}
-                        containerComponent={
-                            <VictoryCursorContainer
-                                onTouchStart={() => { console.log(self); self.changeScroll(false); }}
-                                onTouchEnd={() => { console.log(self); self.changeScroll(true); }}
-                            />}
-                    >
-                    <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id] } }} />
+                // This Svg wrapper is a workaround for this bug:
+                // https://github.com/FormidableLabs/victory-native/issues/96
+                // Basically, scrolling on Android is broken due to a bug in either
+                // react native or react-native-svg and nobody knows what's going on.
+                // There were some other workarounds, although none of them worked for
+                // me. This seems to work best.
+                <Svg width={chartWidth} height={chartHeight} viewBox={viewBox} style={{ width: "100%", height: "auto" }}>
+                    <VictoryChart theme={VictoryTheme.material} scale={{x: "time"}} standalone={false} width={chartWidth} height={chartHeight}>
+                        <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id] } }} />
                     </VictoryChart>
+                </Svg>
             );
         }
 
         return (
             <View key={id}>
-                <View style={styles.liveData.legend.container}>
-                    <View style={dotStyle} />
-                    <Text style={styles.liveData.legend.sensor.name}>{sensor.name}: </Text>
-                    <Text style={styles.liveData.legend.sensor.value}>{sensor.value}</Text>
-                </View>
+                {this.renderSensorHeader(sensor, id)}
                 {chart}
             </View>
         )
     }
 
-    renderChart() {
+    renderChartWithAllSensors() {
         const { liveData } = this.props;
+        const colors = VictoryTheme.material.legend.colorScale;
 
         return (
             <VictoryChart theme={VictoryTheme.material} scale={{x: "time"}}>
-                {liveData.sensors.filter(s => s.data.length > 1).map((s, i) => this.renderSensorLine(s, s.id))}
+                {liveData.sensors.filter(s => s.data.length > 1).map((sensor, id) => {
+                    return (
+                        <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id] } }} />
+                    )
+                })}
             </VictoryChart>
         );
-    }
-
-    renderSensorLine(sensor, id) {
-        const colors = VictoryTheme.material.legend.colorScale;
-        return (
-            <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id] } }} />
-        )
     }
 }
 
