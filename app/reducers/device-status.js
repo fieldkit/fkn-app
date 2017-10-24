@@ -45,10 +45,13 @@ export function deviceStatus(state = initialDeviceStatusState, action) {
             success: true
         };
         return nextState;
-    case ActionTypes.DEVICE_PING_FAIL:
+    case ActionTypes.FIND_DEVICE_LOST: {
         nextState.address = {
             valid: false
         };
+        return nextState;
+    }
+    case ActionTypes.DEVICE_PING_FAIL:
         nextState.ping = {
             time: unixNow(),
             success: false

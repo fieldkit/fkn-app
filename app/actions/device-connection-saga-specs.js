@@ -89,5 +89,15 @@ describe('device connection saga', () => {
                 expect(fakeDevice.queue).toHaveLength(0);
             });
         });
+
+        it('should dispatch FIND_DEVICE_LIST when ping fails', async () => {
+            fakeDevice.pushError({}, "No reply");
+
+            tester.dispatch({
+                type: Types.FIND_DEVICE_SUCCESS
+            });
+
+            await tester.waitFor(Types.FIND_DEVICE_LOST);
+        });
     });
 });

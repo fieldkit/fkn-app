@@ -1,5 +1,7 @@
 'use strict'
 
+import Promise from "bluebird";
+import { Alert } from 'react-native';
 import { delay } from 'redux-saga'
 import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects'
 
@@ -104,18 +106,33 @@ export function* pingDevice() {
                 });
             }
             catch (err) {
-                // Try again.
-                console.log(err);
+                // console.log('Ping failed', err);
+                yield put({
+                    type: Types.FIND_DEVICE_LOST
+                });
             }
         }
     });
 }
 
+export function alert(message, title) {
+    return new Promise((resolve) => {
+        Alert.alert(
+            title,
+            message,
+            [
+                { text: 'OK', onPress: () => resolve() },
+            ],
+            { cancelable: false }
+        ) 
+    });
+}
+
 export function* deviceConnection() {
-    yield takeLatest(Types.FIND_DEVICE_START, function* () {
+    yield takeLatest([Types.FIND_DEVICE_START, Types.FIND_DEVICE_LOST], function* () {
         yield all([
             discoverDevice(),
-            pingDevice(),
+            pingDevice()
         ])
     });
 }
@@ -148,8 +165,9 @@ export function* navigateHomeOnConnectionLost() {
         const { nav } = yield select();
         const route = nav.routes[nav.index];
 
-        if (route.params && route.params.connectionRequired === true) { 
+        if (route.params && route.params.connectionRequired === true) {
             yield put(navigateWelcome()); 
+            yield call(alert, "Device disconnected.", "Alert");
         } 
     });
 }

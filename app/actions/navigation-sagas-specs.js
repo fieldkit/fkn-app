@@ -79,15 +79,24 @@ describe('device connection navigation', () => {
         expect(tester.getLatestCalledAction()).toEqual(navigateWelcome());
     });
 
-    it('should navigate to WelcomeScreen from any connectionRequired route after FIND_DEVICE_LOST', () => {
+    it('should navigate to WelcomeScreen from any connectionRequired route after FIND_DEVICE_LOST', async () => {
         const { nav } = tester.getState();
         nav.routes[0].params.connectionRequired = true;
+
+        jest.mock('Alert', () => {
+            return {
+                alert: jest.fn()
+            }
+        });
 
         tester.dispatch({
             type: Types.FIND_DEVICE_LOST
         });
 
-        expect(tester.getLatestCalledAction()).toEqual(navigateWelcome());
+        expect(Alert.alert).toHaveBeenCalled();
+        Alert.alert.mock.calls[0][2][0].onPress()
+
+        await tester.waitFor(Types.NAVIGATION_WELCOME);
     });
 
     it('should navigate nowhere on no connectionRequired route after FIND_DEVICE_LOST', () => {

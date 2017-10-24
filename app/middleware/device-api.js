@@ -120,6 +120,13 @@ export class FakeDeviceConnection {
         });
     }
 
+    pushError(query, error) {
+        this.queue.push({
+            query,
+            error
+        });
+    }
+
     execute(callApi) {
         if (this.queue.length == 0) {
             console.log("No enqueued fake replies!", callApi);
@@ -127,6 +134,20 @@ export class FakeDeviceConnection {
         }
 
         const pair = this.queue.shift();
+
+        if (pair.error) {
+            // console.log('CALL', callApi, 'ERROR', pair.error);
+
+            const rejecting = new Error();
+            rejecting.action = {
+                deviceApi: {
+                    pending: false
+                },
+                type: callApi.types[2],
+                error: pair.error
+            };
+            return Promise.reject(rejecting);
+        }
 
         // console.log('CALL', callApi, 'REPLY', pair.reply);
 
