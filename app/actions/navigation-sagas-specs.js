@@ -3,6 +3,8 @@ import 'react-native';
 import SagaTester from 'redux-saga-tester';
 import Promise from "bluebird";
 
+import { Alert } from 'react-native';
+
 import * as Types from './types';
 import { findDeviceInfo } from './discovery';
 import { connectionRelatedNavigation } from './sagas';
