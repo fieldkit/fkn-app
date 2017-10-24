@@ -59,13 +59,19 @@ export function nav(state = welcomeState, action) {
         break;
     case ActionTypes.NAVIGATION_DATA_SETS:
         nextState = AppNavigator.router.getStateForAction(
-            NavigationActions.navigate({ routeName: 'DataSets' }),
+            NavigationActions.navigate({
+                routeName: 'DataSets',
+                params: { connectionRequired: true }
+            }),
             state
         );
         break;
     case ActionTypes.NAVIGATION_LIVE_DATA:
         nextState = AppNavigator.router.getStateForAction(
-            NavigationActions.navigate({ routeName: 'LiveData' }),
+            NavigationActions.navigate({
+                routeName: 'LiveData',
+                params: { connectionRequired: true }
+            }),
             state
         );
         break;
@@ -73,7 +79,7 @@ export function nav(state = welcomeState, action) {
         nextState = AppNavigator.router.getStateForAction(
             NavigationActions.navigate({
                 routeName: 'DataSet',
-                params: action.params
+                params: Object.assign({ connectionRequired: true }, action.params)
             }),
             state
         );
