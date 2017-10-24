@@ -39,7 +39,7 @@ export function liveData(state = initialLiveDataState, action) {
                 const data = bySensor[sensor.id];
                 sensor.value = data.value,
                 sensor.data.push({
-                    x: new Date(data.time),
+                    x: new Date(data.time * 1000),
                     y: sensor.value
                 })
 

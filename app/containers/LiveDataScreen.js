@@ -83,7 +83,7 @@ class LiveDataScreen extends React.Component {
         const dotStyle = Object.assign({ backgroundColor: colors[id] }, styles.liveData.legend.dotStyle)
 
         let chart = (<Loading />);
-        if (sensor.data.length > 2) {
+        if (sensor.data.length > 1) {
             const { width: windowWidth } = Dimensions.get('window');
             const chartWidth = windowWidth;
             const chartHeight = 250;
