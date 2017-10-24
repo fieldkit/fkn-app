@@ -71,7 +71,7 @@ class LiveDataScreen extends React.Component {
             <View key={id} style={styles.liveData.legend.container}>
                 <View style={dotStyle} />
                 <Text style={styles.liveData.legend.sensor.name}>{sensor.name}: </Text>
-                <Text style={styles.liveData.legend.sensor.value}>{ sensor.value && (sensor.value + sensor.unitOfMeasure)}</Text>
+                <Text style={styles.liveData.legend.sensor.value}>{ sensor.value ? (sensor.value + sensor.unitOfMeasure) : "Collecting..."}</Text>
             </View>
         );
     }
