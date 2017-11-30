@@ -14,7 +14,12 @@ export function* deviceCall(raw) {
         return returned;
     }
     catch (err) {
-        yield put(err.action)
+        if (err.action) {
+            yield put(err.action)
+        }
+        else {
+            console.log("Error had no Action", err)
+        }
         throw err;
     }
 }
