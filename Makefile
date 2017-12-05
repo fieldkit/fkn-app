@@ -5,3 +5,5 @@ test:
 	npm test
 
 clean:
+
+veryclean:

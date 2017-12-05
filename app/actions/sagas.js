@@ -62,21 +62,33 @@ export function* discoverDevice() {
     });
 
     if (deviceStatus && deviceStatus.address.valid) {
-        yield call(deviceCall, {
-            types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
-            address: deviceStatus.address,
-            message: {
-                type: QueryType.values.QUERY_CAPABILITIES,
-                queryCapabilities: {
-                    version: 1,
-                    callerTime: unixNow()
-                }
-            }
-        });
+        while (true) {
+            try
+            {
+                yield call(deviceCall, {
+                    types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
+                    address: deviceStatus.address,
+                    message: {
+                        type: QueryType.values.QUERY_CAPABILITIES,
+                        queryCapabilities: {
+                            version: 1,
+                            callerTime: unixNow()
+                        }
+                    }
+                });
 
-        yield put({
-            type: Types.FIND_DEVICE_SUCCESS,
-        });
+                yield put({
+                    type: Types.FIND_DEVICE_SUCCESS,
+                });
+
+                break;
+            }
+            catch (e) {
+                console.log(e);
+
+                yield delay(5000);
+            }
+        }
     }
     else {
         yield put({

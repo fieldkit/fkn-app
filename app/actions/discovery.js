@@ -2,6 +2,7 @@
 
 import _ from 'lodash';
 import { put, call } from 'redux-saga/effects'
+import { delay } from 'redux-saga'
 
 import ServiceDiscovery from "react-native-service-discovery";
 import { createChannel } from './channels';
@@ -26,9 +27,10 @@ function createServiceDiscoveryChannel() {
 function* monitorServiceDiscoveryEvents(channel) {
     let lastInfo = null;
     while (true) {
-        const info = yield call(channel.take)
-        yield put(info);
-        lastInfo = info;
+        // const info = yield call(channel.take)
+        yield put(findDeviceInfo('192.168.0.136', 12345));
+        yield delay(1000);
+        // lastInfo = info;
     }
 }
 
