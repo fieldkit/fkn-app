@@ -5,7 +5,7 @@
   "scripts": {
     "postinstall": "rn-nodeify --install stream,process,util --hack",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest -i --forceExit"
+    "test": "jest"
   },
   "browser": {
     "net": "react-native-tcp",
