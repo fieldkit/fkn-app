@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { View, Text, FlatList, ScrollView, Dimensions } from 'react-native';
-import { VictoryLine, VictoryChart, VictoryTheme, VictoryLegend, VictoryCursorContainer, VictoryContainer } from "victory-native";
+import { VictoryLine, VictoryChart, VictoryTheme, VictoryLegend, VictoryCursorContainer, VictoryContainer, VictoryAxis } from "victory-native";
 import Svg from 'react-native-svg';
 
 import { BackgroundView } from '../components/BackgroundView';
@@ -67,11 +67,12 @@ class LiveDataScreen extends React.Component {
     renderSensorHeader(sensor, id) {
         const colors = VictoryTheme.material.legend.colorScale;
         const dotStyle = Object.assign({ backgroundColor: colors[id] }, styles.liveData.legend.dotStyle)
+        const rounded = Math.round(sensor.value * 1000) / 1000;
         return (
             <View key={id} style={styles.liveData.legend.container}>
                 <View style={dotStyle} />
                 <Text style={styles.liveData.legend.sensor.name}>{sensor.name}: </Text>
-                <Text style={styles.liveData.legend.sensor.value}>{ sensor.value ? (sensor.value + sensor.unitOfMeasure) : "Collecting..."}</Text>
+                <Text style={styles.liveData.legend.sensor.value}>{ sensor.value ? (rounded + " " + sensor.unitOfMeasure) : "Collecting..."}</Text>
             </View>
         );
     }
@@ -97,6 +98,8 @@ class LiveDataScreen extends React.Component {
                 // me. This seems to work best.
                 <Svg width={chartWidth} height={chartHeight} viewBox={viewBox} style={{ width: "100%", height: "auto" }}>
                     <VictoryChart theme={VictoryTheme.material} scale={{x: "time"}} standalone={false} width={chartWidth} height={chartHeight}>
+                    <VictoryAxis />
+                    <VictoryAxis dependentAxis tickFormat={(x) => (`${Math.round(x * 100) / 100}`)} />
                         <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id] } }} />
                     </VictoryChart>
                 </Svg>
