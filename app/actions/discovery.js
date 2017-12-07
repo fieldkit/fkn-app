@@ -30,7 +30,12 @@ function* monitorServiceDiscoveryEvents(channel) {
     if (Config.serviceDiscoveryOnStartup) {
         while (true) {
             const info = yield call(channel.take)
-            // yield put(findDeviceInfo('192.168.0.136', 12345));
+            yield put(info);
+            yield delay(1000);
+        }
+    } else if (Config.fixedDeviceInfo) {
+        while (true) {
+            yield put(findDeviceInfo(Config.fixedDeviceInfo.address, Config.fixedDeviceInfo.port));
             yield delay(1000);
         }
     }
