@@ -42,6 +42,11 @@ export function* liveDataSaga() {
             }
         }
 
-        yield deviceLiveDataPoll(0);
+        try {
+            yield deviceLiveDataPoll(0);
+        }
+        catch (err) {
+            console.log(err);
+        }
     });
 }
