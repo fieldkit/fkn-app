@@ -11,6 +11,8 @@ import {
     ReplyType
 } from '../lib/protocol';
 
+import * as Types from '../actions/types';
+
 export const CALL_DEVICE_API = Symbol('Call Device API');
 
 function debug() {
@@ -96,15 +98,27 @@ class DeviceConnection {
             .then(response => {
                 return this.transformResponse(callApi, response);
             }, error => {
-                console.log("REJECTING", error);
-                const rejecting = new Error();
-                rejecting.action = {
+                console.log("Rejecting", error.message);
+
+                const rejecting = new Error(error.message);
+                rejecting.actions = [];
+
+                if (error.message == 'Error: Connection refused') {
+                    rejecting.actions.push({
+                        type: Types.DEVICE_CONNECTION_ERROR
+                    });
+                }
+
+                rejecting.actions.push({
                     deviceApi: {
+                        error: true,
                         pending: false
                     },
                     type: callApi.types[2],
-                    error: error.message
-                };
+                    message: error.message,
+                    error: error
+                });
+
                 return Promise.reject(rejecting);
             });
     }
@@ -169,10 +183,14 @@ export function useFakeDeviceConnection() {
 
 export function invokeDeviceApi(callApi) {
     if (pendingExecution != null) {
-        return pendingExecution.then(() => {
+        console.log("Append execution chain...");
+        return pendingExecution = pendingExecution.then(() => {
+            return deviceConnection.execute(callApi);
+        }, (ignoredError) => {
             return deviceConnection.execute(callApi);
         });
     }
+    console.log("New execution chain...");
     return pendingExecution = deviceConnection.execute(callApi);
 }
 

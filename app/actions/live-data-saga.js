@@ -24,11 +24,17 @@ export function* deviceLiveDataPoll(interval) {
 
 export function* liveDataSaga() {
     yield takeLatest(Types.LIVE_DATA_POLL_START, function* watcher(action) {
-        while (true) {
+        console.log("Starting liveDataPoll");
+
+        let numberOfErrors = 0;
+
+        while (numberOfErrors < 3) {
             try {
                 yield deviceLiveDataPoll(1000);
+                numberOfErrors = 0;
             }
             catch (err) {
+                numberOfErrors++;
                 console.log(err);
             }
 
@@ -38,6 +44,7 @@ export function* liveDataSaga() {
             });
 
             if (stop) {
+                console.log("Stop");
                 break;
             }
         }

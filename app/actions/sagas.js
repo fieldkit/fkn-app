@@ -84,8 +84,6 @@ export function* discoverDevice() {
                 break;
             }
             catch (e) {
-                console.log(e);
-
                 yield delay(5000);
             }
         }

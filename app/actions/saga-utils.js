@@ -7,15 +7,17 @@ export function* deviceCall(raw) {
     yield put({
         type: raw.types[0],
         message: raw.message
-    })
+    });
     try {
         const returned = yield call(invokeDeviceApi, raw);
         yield put(returned);
         return returned;
     }
     catch (err) {
-        if (err.action) {
-            yield put(err.action)
+        if (err.actions) {
+            for (let action of err.actions) {
+                yield put(action);
+            }
         }
         else {
             console.log("Error had no Action", err)
