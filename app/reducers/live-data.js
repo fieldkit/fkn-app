@@ -43,7 +43,7 @@ export function liveData(state = initialLiveDataState, action) {
                     y: sensor.value
                 })
 
-                while (sensor.data.length > 20) {
+                while (sensor.data.length > 100) {
                     sensor.data.shift();
                 }
             }
