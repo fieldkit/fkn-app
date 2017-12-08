@@ -66,7 +66,7 @@ class LiveDataScreen extends React.Component {
 
     renderSensorHeader(sensor, id) {
         const colors = VictoryTheme.material.legend.colorScale;
-        const dotStyle = Object.assign({ backgroundColor: colors[id] }, styles.liveData.legend.dotStyle)
+        const dotStyle = Object.assign({ backgroundColor: colors[id + 3] }, styles.liveData.legend.dotStyle)
         const rounded = Math.round(sensor.value * 1000) / 1000;
         return (
             <View key={id} style={styles.liveData.legend.container}>
@@ -81,7 +81,7 @@ class LiveDataScreen extends React.Component {
         const sensor = item.item;
         const id = item.index;
         const colors = VictoryTheme.material.legend.colorScale;
-        const dotStyle = Object.assign({ backgroundColor: colors[id] }, styles.liveData.legend.dotStyle)
+        const dotStyle = Object.assign({ backgroundColor: colors[id + 3] }, styles.liveData.legend.dotStyle)
 
         let chart = (<Loading />);
         if (sensor.data.length > 1) {
@@ -100,7 +100,7 @@ class LiveDataScreen extends React.Component {
                     <VictoryChart theme={VictoryTheme.material} scale={{x: "time"}} standalone={false} width={chartWidth} height={chartHeight}>
                     <VictoryAxis />
                     <VictoryAxis dependentAxis tickFormat={(x) => (`${Math.round(x * 100) / 100}`)} />
-                        <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id] } }} />
+                        <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id + 3] } }} />
                     </VictoryChart>
                 </Svg>
             );
@@ -122,7 +122,7 @@ class LiveDataScreen extends React.Component {
             <VictoryChart theme={VictoryTheme.material} scale={{x: "time"}}>
                 {liveData.sensors.filter(s => s.data.length > 1).map((sensor, id) => {
                     return (
-                        <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id] } }} />
+                        <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id + 1] } }} />
                     )
                 })}
             </VictoryChart>
