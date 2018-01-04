@@ -210,6 +210,14 @@ export default store => dispatch => action => {
     return deviceConnection.execute(callApi).then(good => {
         dispatch(good);
     }, bad => {
-        dispatch(bad);
+        if (bad.action) {
+            dispatch(bad.action);
+        } else if (bad.actions) {
+            for (let action of bad.actions) {
+                dispatch(action);
+            }
+        } else {
+            console.log("No failure action!");
+        }
     });
 };
