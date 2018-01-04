@@ -21,7 +21,7 @@ function createServiceDiscoveryChannel() {
         channel.put(findDeviceInfo(ev.address, ev.port));
     });
 
-    serviceDiscovery.start();
+    serviceDiscovery.start(54321);
 
     return channel;
 }

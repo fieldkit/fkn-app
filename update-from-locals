@@ -1,0 +1,9 @@
+#!/bin/bash
+
+rm -rf node_modules/react-native-service-discovery
+cp -ar ~/conservify/react-native-service-discovery node_modules
+rm -rf node_modules/react-native-service-discovery/.git
+
+rm -rf node_modules/app-protocol
+cp -ar ~/fieldkit/app-protocol node_modules
+rm -rf node_modules/app-protocol/.git
