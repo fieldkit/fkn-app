@@ -7,6 +7,7 @@ import WelcomeScreen from '../containers/WelcomeScreen';
 import AboutScreen from '../containers/AboutScreen';
 import ConnectingScreen from '../containers/ConnectingScreen';
 import DeviceMenuScreen from '../containers/DeviceMenuScreen';
+import SensorsScreen from '../containers/SensorsScreen';
 import DataSetsScreen from '../containers/DataSetsScreen';
 import ViewDataSetScreen from '../containers/ViewDataSetScreen';
 import LiveDataScreen from '../containers/LiveDataScreen';
@@ -23,6 +24,10 @@ export const AppNavigator = StackNavigator({
     DeviceMenu: {
         path: '/device',
         screen: DeviceMenuScreen
+    },
+    Sensors: {
+        path: '/sensors',
+        screen: SensorsScreen
     },
     DataSets: {
         path: '/data-sets',

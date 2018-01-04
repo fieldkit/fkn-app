@@ -66,6 +66,15 @@ export function nav(state = welcomeState, action) {
             state
         );
         break;
+    case ActionTypes.NAVIGATION_SENSORS:
+        nextState = AppNavigator.router.getStateForAction(
+            NavigationActions.navigate({
+                routeName: 'Sensors',
+                params: { connectionRequired: true }
+            }),
+            state
+        );
+        break;
     case ActionTypes.NAVIGATION_LIVE_DATA:
         nextState = AppNavigator.router.getStateForAction(
             NavigationActions.navigate({

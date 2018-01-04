@@ -17,6 +17,7 @@ import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 import {
     navigateWelcome,
     navigateDataSets,
+    navigateSensors,
     navigateLiveData
 } from '../actions/navigation';
 
@@ -45,23 +46,14 @@ class DeviceMenuScreen extends React.Component {
             <BackgroundView>
                 <View>
                     <Text style={styles.deviceName}>{caps.name}</Text>
-                    {caps.sensors.map((s, i) => this.renderSensor(s, i))}
                 </View>
                 <MenuButtonContainer>
                     <MenuButton title="Data Sets" onPress={() => this.props.navigateDataSets()} />
                     <MenuButton title="Live Data" onPress={() => this.props.navigateLiveData()} />
+                    <MenuButton title="Sensors" onPress={() => this.props.navigateSensors()} />
                     <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
                 </MenuButtonContainer>
             </BackgroundView>
-        );
-    }
-
-    renderSensor(sensor, id) {
-        return (
-            <View key={id} style={styles.sensor.container}>
-                <Text style={styles.sensor.name}>{sensor.name} <Text style={styles.sensor.unitOfMeasure}>({sensor.unitOfMeasure})</Text></Text>
-                <Text style={styles.sensor.frequency}>Frequency: {sensor.frequency}</Text>
-            </View>
         );
     }
 }
@@ -69,6 +61,7 @@ class DeviceMenuScreen extends React.Component {
 DeviceMenuScreen.propTypes = {
     navigateWelcome: PropTypes.func.isRequired,
     navigateDataSets: PropTypes.func.isRequired,
+    navigateSensors: PropTypes.func.isRequired,
     navigateLiveData: PropTypes.func.isRequired,
     deviceStatus: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
@@ -83,6 +76,7 @@ export default connect(mapStateToProps, {
     deviceStartConnect,
     deviceStopConnect,
     navigateDataSets,
+    navigateSensors,
     navigateLiveData,
     navigateWelcome
 })(DeviceMenuScreen);

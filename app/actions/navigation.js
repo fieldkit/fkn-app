@@ -20,6 +20,12 @@ export function navigateDeviceMenu() {
     };
 }
 
+export function navigateSensors() {
+    return {
+        type: Types.NAVIGATION_SENSORS,
+    };
+}
+
 export function navigateAbout() {
     return {
         type: Types.NAVIGATION_ABOUT,
