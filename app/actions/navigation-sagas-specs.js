@@ -47,20 +47,6 @@ describe('device connection navigation', () => {
         expect(tester.getLatestCalledAction()).toEqual(findDeviceSuccess);
     });
 
-    it('should navigate directly to DeviceMenuScreen from ConnectingScreen if already connected and only 1 found device', () => {
-        const { deviceStatus } = tester.getState();
-        deviceStatus.connected = { address: '192.168.0.100' };
-        deviceStatus.addresses = {
-            '192.168.0.100': deviceStatus.connected
-        }
-
-        tester.dispatch({
-            type: Types.NAVIGATION_CONNECTING
-        });
-
-        expect(tester.getLatestCalledAction()).toEqual(navigateDeviceMenu());
-    });
-
     it('should navigate nowhere from ConnectingScreen more than 1 found device', () => {
         const { deviceStatus } = tester.getState();
         deviceStatus.connected = { address: '192.168.0.100' };
@@ -76,28 +62,26 @@ describe('device connection navigation', () => {
         expect(tester.getLatestCalledAction()).toEqual(navigateConnecting());
     });
 
-    it.skip('should navigate to DeviceMenuScreen from ConnectingScreen after FIND_DEVICE_SUCCESS', () => {
+    it('should navigate to DeviceMenuScreen from ConnectingScreen after FIND_DEVICE_SELECT', () => {
         tester.dispatch({
             type: Types.NAVIGATION_CONNECTING
         });
 
         tester.dispatch({
-            type: Types.FIND_DEVICE_SUCCESS
+            type: Types.FIND_DEVICE_SELECT
         });
 
         expect(tester.getLatestCalledAction()).toEqual(navigateDeviceMenu());
     });
 
-    it('should navigate to WelcomeScreen from ConnectingScreen after FIND_DEVICE_FAIL', () => {
+    it.only('should navigate to WelcomeScreen from ConnectingScreen after no devices found after timeout', () => {
         tester.dispatch({
             type: Types.NAVIGATION_CONNECTING
         });
 
-        tester.dispatch({
-            type: Types.FIND_DEVICE_FAIL
+        return Promise.delay(Config.findDeviceTimeout + 100).then(() => {
+            expect(tester.getLatestCalledAction()).toEqual(navigateWelcome());
         });
-
-        expect(tester.getLatestCalledAction()).toEqual(navigateWelcome());
     });
 
     it('should navigate to WelcomeScreen from any connectionRequired route after FIND_DEVICE_LOST', async () => {

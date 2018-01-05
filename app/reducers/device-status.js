@@ -85,3 +85,20 @@ export function deviceCapabilities(state = initialDeviceCapabilitiesState, actio
         return nextState;
     }
 }
+
+const initialDeviceInfoState = {};
+
+export function deviceInfo(state = initialDeviceInfoState, action) {
+    let nextState = state;
+
+    switch (action.type) {
+    case ActionTypes.FIND_DEVICE_SELECT: {
+        return { ...nextState, ...{ address: action.address.host } };
+    }
+    case ActionTypes.DEVICE_CAPABILITIES_SUCCESS: {
+        return { ...nextState, ...{ name: action.response.capabilities.name } };
+    }
+    default:
+        return nextState;
+    }
+}

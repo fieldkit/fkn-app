@@ -5,6 +5,7 @@ if (typeof(__ENV__) == 'undefined') {
 const configs = {
     test: {
         serviceDiscoveryOnStartup: false,
+        findDeviceInterval: 1000,
         findDeviceTimeout: 2 * 1000,
         deviceQueryInterval: 2 * 1000,
         pingDeviceInterval: 500,
@@ -15,12 +16,14 @@ const configs = {
             address: '192.168.0.136',
             port: 12345,
         },
+        findDeviceInterval: 1000,
         findDeviceTimeout: 10 * 1000,
         deviceQueryInterval: 10 * 1000,
         pingDeviceInterval: 20 * 1000,
     },
     dev: {
         serviceDiscoveryOnStartup: true,
+        findDeviceInterval: 1000,
         findDeviceTimeout: 10 * 1000,
         deviceQueryInterval: 10 * 1000,
         pingDeviceInterval: 20 * 1000,

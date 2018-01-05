@@ -23,7 +23,7 @@ export function* discoverDevices() {
     while (true) {
         const { discovered, to } = yield race({
             discovered: take(Types.FIND_DEVICE_INFO),
-            to: delay(Config.findDeviceTimeout)
+            to: delay(Config.findDeviceInterval)
         });
 
         if (discovered && discovered.address.valid) {
@@ -168,23 +168,18 @@ export function* deviceConnection() {
 
 export function* navigateToDeviceMenuFromConnecting() {
     yield takeLatest([Types.NAVIGATION_CONNECTING], function* (nav) {
-        const { deviceStatus } = yield select();
+        const { device, to } = yield race({
+            device: take(Types.FIND_DEVICE_SELECT),
+            to: delay(Config.findDeviceTimeout)
+        });
 
-        const numberOfDevices = Object.keys(deviceStatus.addresses).length;
-        if (deviceStatus.connected && numberOfDevices == 1) {
+        if (device && device.type == Types.FIND_DEVICE_SELECT) {
             yield put(navigateDeviceMenu());
         }
         else {
-            const returned = yield take([
-                Types.FIND_DEVICE_SUCCESS,
-                Types.FIND_DEVICE_FAIL,
-                Types.FIND_DEVICE_SELECT,
-            ]);
-
-            if (returned.type == Types.FIND_DEVICE_SELECT) {
-                yield put(navigateDeviceMenu());
-            }
-            else {
+            const { deviceStatus } = yield select();
+            const numberOfDevices = Object.keys(deviceStatus.addresses).length;
+            if (numberOfDevices == 0) {
                 yield put(navigateWelcome());
             }
         }
