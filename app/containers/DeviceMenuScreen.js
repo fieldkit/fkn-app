@@ -22,6 +22,7 @@ import {
 } from '../actions/navigation';
 
 import Loading from '../components/Loading';
+import DeviceInfo from '../components/DeviceInfo';
 
 import {
     deviceStartConnect,
@@ -36,7 +37,7 @@ class DeviceMenuScreen extends React.Component {
     };
 
     render() {
-        const { deviceStatus, deviceCapabilities: caps } = this.props;
+        const { deviceInfo, deviceCapabilities: caps } = this.props;
 
         if (!_.isArray(caps.sensors)) {
             return (<Loading />);
@@ -44,10 +45,7 @@ class DeviceMenuScreen extends React.Component {
 
         return  (
             <BackgroundView>
-                <View>
-                    <Text style={styles.deviceName}>{caps.name}</Text>
-                    <Text style={styles.deviceAddress}>{deviceStatus.connected.host}</Text>
-                </View>
+                <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
                     <MenuButton title="Data Sets" onPress={() => this.props.navigateDataSets()} />
                     <MenuButton title="Live Data" onPress={() => this.props.navigateLiveData()} />
@@ -64,12 +62,12 @@ DeviceMenuScreen.propTypes = {
     navigateDataSets: PropTypes.func.isRequired,
     navigateSensors: PropTypes.func.isRequired,
     navigateLiveData: PropTypes.func.isRequired,
-    deviceStatus: PropTypes.object.isRequired,
+    deviceInfo: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-    deviceStatus: state.deviceStatus,
+    deviceInfo: state.deviceInfo,
     deviceCapabilities: state.deviceCapabilities
 });
 

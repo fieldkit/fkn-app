@@ -24,15 +24,19 @@ export default appStyle = {
             padding: 20,
         }
     },
-    deviceName: {
-        padding: 20,
-        fontWeight: "bold",
-        fontSize: 30
-    },
-    deviceAddress: {
-        paddingLeft: 20,
-        paddingRight: 20,
-        fontSize: 20
+    deviceInfo: {
+        name: {
+            paddingLeft: 20,
+            paddingRight: 20,
+            fontWeight: "bold",
+            fontSize: 30,
+        },
+        address: {
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingBottom: 10,
+            fontSize: 14,
+        },
     },
     sensor: {
         container: {

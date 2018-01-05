@@ -19,8 +19,21 @@ import { BackgroundView } from '../components/BackgroundView';
 import { navigateBack } from '../actions/navigation';
 
 import Loading from '../components/Loading';
+import DeviceInfo from '../components/DeviceInfo';
 
 import styles from '../styles';
+
+class SensorInfo extends React.Component {
+    render() {
+        const { id, sensor } = this.props;
+
+        return (
+            <View key={id} style={styles.sensor.container}>
+                <Text style={styles.sensor.name}>{sensor.name} <Text style={styles.sensor.unitOfMeasure}>({sensor.unitOfMeasure})</Text></Text>
+            </View>
+        );
+    }
+}
 
 class SensorsScreen extends React.Component {
     static navigationOptions = {
@@ -31,37 +44,25 @@ class SensorsScreen extends React.Component {
     }
 
     render() {
-        const { deviceStatus, deviceCapabilities } = this.props;
+        const { deviceInfo, deviceCapabilities } = this.props;
 
         return (
             <ScrollView>
-                <View>
-                    <Text style={styles.deviceName}>{deviceCapabilities.name}</Text>
-                    <Text style={styles.deviceAddress}>{deviceStatus.connected.host}</Text>
-                </View>
-                {deviceCapabilities.sensors.map((s, i) => this.renderSensor(s, i))}
+                <DeviceInfo info={deviceInfo} />
+                {deviceCapabilities.sensors.map((s, i) => <SensorInfo id={i} sensor={s} />)}
             </ScrollView>
-        );
-    }
-
-    renderSensor(sensor, id) {
-        return (
-            <View key={id} style={styles.sensor.container}>
-                <Text style={styles.sensor.name}>{sensor.name} <Text style={styles.sensor.unitOfMeasure}>({sensor.unitOfMeasure})</Text></Text>
-                <Text style={styles.sensor.frequency}>Frequency: {sensor.frequency}</Text>
-            </View>
         );
     }
 }
 
 SensorsScreen.propTypes = {
     navigateBack: PropTypes.func.isRequired,
-    deviceStatus: PropTypes.object.isRequired,
+    deviceInfo: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-    deviceStatus: state.deviceStatus,
+    deviceInfo: state.deviceInfo,
     deviceCapabilities: state.deviceCapabilities,
 });
 
