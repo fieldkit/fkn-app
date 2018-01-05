@@ -29,8 +29,10 @@ describe('device connection saga', () => {
     });
 
     describe('discovery', () => {
+        let task;
+
         beforeEach(() => {
-            tester.start(discoverDevices);
+            task = tester.start(discoverDevices);
         });
 
         it('should timeout and fail after timeout interval', async () => {
@@ -50,6 +52,10 @@ describe('device connection saga', () => {
             tester.dispatch(findDeviceInfo('127.0.0.1', 12345));
             await tester.waitFor(Types.FIND_DEVICE_SUCCESS);
             expect(fakeDevice.queue).toHaveLength(0);
+        });
+
+        afterEach(() => {
+            task.cancel();
         });
     });
 

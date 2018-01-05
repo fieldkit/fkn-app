@@ -34,7 +34,12 @@ describe('device connection navigation', () => {
                 }
             },
         });
+
         task = tester.start(connectionRelatedNavigation);
+    });
+
+    afterEach(() => {
+        task.cancel();
     });
 
     it('should navigate nowhere on WelcomeScreen after FIND_DEVICE_SUCCESS', () => {

@@ -11,6 +11,7 @@ import { QueryType, ReplyType } from '../lib/protocol';
 describe('download data saga', () => {
     let tester;
     let fakeDevice;
+    let task;
 
     beforeEach(() => {
         fakeDevice = useFakeDeviceConnection();
@@ -21,7 +22,12 @@ describe('download data saga', () => {
                 }
             }
         });
-        tester.start(downloadDataSaga);
+
+        task = tester.start(downloadDataSaga);
+    });
+
+    afterEach(() => {
+        task.cancel();
     });
 
     it('should download each page and then finish', async () => {

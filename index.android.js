@@ -35,7 +35,9 @@ function configureStore(initialState) {
 
 const store = configureStore({});
 
-sagaMiddleware.run(rootSaga);
+const sagas = sagaMiddleware.run(rootSaga);
+
+export const Sagas = sagas;
 
 const App = () => (
     <Provider store={store}>
