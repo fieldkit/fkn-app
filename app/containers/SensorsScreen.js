@@ -31,11 +31,15 @@ class SensorsScreen extends React.Component {
     }
 
     render() {
-        const { deviceCapabilities: caps } = this.props;
+        const { deviceStatus, deviceCapabilities } = this.props;
 
         return (
             <ScrollView>
-                {caps.sensors.map((s, i) => this.renderSensor(s, i))}
+                <View>
+                    <Text style={styles.deviceName}>{deviceCapabilities.name}</Text>
+                    <Text style={styles.deviceAddress}>{deviceStatus.connected.host}</Text>
+                </View>
+                {deviceCapabilities.sensors.map((s, i) => this.renderSensor(s, i))}
             </ScrollView>
         );
     }
@@ -52,11 +56,13 @@ class SensorsScreen extends React.Component {
 
 SensorsScreen.propTypes = {
     navigateBack: PropTypes.func.isRequired,
+    deviceStatus: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-    deviceCapabilities: state.deviceCapabilities
+    deviceStatus: state.deviceStatus,
+    deviceCapabilities: state.deviceCapabilities,
 });
 
 export default connect(mapStateToProps, {

@@ -29,6 +29,11 @@ export default appStyle = {
         fontWeight: "bold",
         fontSize: 30
     },
+    deviceAddress: {
+        paddingLeft: 20,
+        paddingRight: 20,
+        fontSize: 20
+    },
     sensor: {
         container: {
             paddingLeft: 20,
@@ -48,6 +53,20 @@ export default appStyle = {
         textAlign: 'center',
         height: 80,
         padding: 20,
+    },
+    device: {
+        container: {
+            flexDirection: 'row',
+            paddingLeft: 20,
+            paddingBottom: 10,
+        },
+        name: {
+            fontSize: 25,
+            fontWeight: "bold"
+        },
+        details: {
+            fontSize: 20,
+        }
     },
     dataSet: {
         container: {

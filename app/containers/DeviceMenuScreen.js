@@ -36,7 +36,7 @@ class DeviceMenuScreen extends React.Component {
     };
 
     render() {
-        const { deviceCapabilities: caps } = this.props;
+        const { deviceStatus, deviceCapabilities: caps } = this.props;
 
         if (!_.isArray(caps.sensors)) {
             return (<Loading />);
@@ -46,6 +46,7 @@ class DeviceMenuScreen extends React.Component {
             <BackgroundView>
                 <View>
                     <Text style={styles.deviceName}>{caps.name}</Text>
+                    <Text style={styles.deviceAddress}>{deviceStatus.connected.host}</Text>
                 </View>
                 <MenuButtonContainer>
                     <MenuButton title="Data Sets" onPress={() => this.props.navigateDataSets()} />

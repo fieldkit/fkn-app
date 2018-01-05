@@ -22,7 +22,10 @@ describe('device connection navigation', () => {
         fakeDevice = useFakeDeviceConnection();
         tester = new SagaTester({
             initialState: {
-                deviceStatus: {},
+                deviceStatus: {
+                    addresses: {
+                    }
+                },
                 nav: {
                     index: 0,
                     routes: [{
@@ -44,9 +47,12 @@ describe('device connection navigation', () => {
         expect(tester.getLatestCalledAction()).toEqual(findDeviceSuccess);
     });
 
-    it('should navigate directly to DeviceMenuScreen from ConnectingScreen if already connected', () => {
+    it('should navigate directly to DeviceMenuScreen from ConnectingScreen if already connected and only 1 found device', () => {
         const { deviceStatus } = tester.getState();
-        deviceStatus.connected = true;
+        deviceStatus.connected = { address: '192.168.0.100' };
+        deviceStatus.addresses = {
+            '192.168.0.100': deviceStatus.connected
+        }
 
         tester.dispatch({
             type: Types.NAVIGATION_CONNECTING
@@ -55,7 +61,22 @@ describe('device connection navigation', () => {
         expect(tester.getLatestCalledAction()).toEqual(navigateDeviceMenu());
     });
 
-    it('should navigate to DeviceMenuScreen from ConnectingScreen after FIND_DEVICE_SUCCESS', () => {
+    it('should navigate nowhere from ConnectingScreen more than 1 found device', () => {
+        const { deviceStatus } = tester.getState();
+        deviceStatus.connected = { address: '192.168.0.100' };
+        deviceStatus.addresses = {
+            '192.168.0.100': deviceStatus.connected,
+            '192.168.0.101': { }
+        }
+
+        tester.dispatch({
+            type: Types.NAVIGATION_CONNECTING
+        });
+
+        expect(tester.getLatestCalledAction()).toEqual(navigateConnecting());
+    });
+
+    it.skip('should navigate to DeviceMenuScreen from ConnectingScreen after FIND_DEVICE_SUCCESS', () => {
         tester.dispatch({
             type: Types.NAVIGATION_CONNECTING
         });

@@ -153,13 +153,13 @@ export class FakeDeviceConnection {
             // console.log('CALL', callApi, 'ERROR', pair.error);
 
             const rejecting = new Error();
-            rejecting.action = {
+            rejecting.actions = [{
                 deviceApi: {
                     pending: false
                 },
                 type: callApi.types[2],
                 error: pair.error
-            };
+            }];
             return Promise.reject(rejecting);
         }
 

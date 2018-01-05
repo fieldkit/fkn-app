@@ -8,6 +8,8 @@ import ServiceDiscovery from "react-native-service-discovery";
 import { createChannel } from './channels';
 import * as Types from './types';
 
+import { unixNow } from '../lib/helpers';
+
 import Config from '../config';
 
 function createServiceDiscoveryChannel() {
@@ -31,7 +33,7 @@ function* monitorServiceDiscoveryEvents(channel) {
         while (true) {
             const info = yield call(channel.take)
             yield put(info);
-            yield delay(1000);
+            yield delay(500);
         }
     } else if (Config.fixedDeviceInfo) {
         while (true) {

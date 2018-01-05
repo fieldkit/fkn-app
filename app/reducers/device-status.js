@@ -6,6 +6,8 @@ import { unixNow } from '../lib/helpers';
 
 const initialDeviceStatusState = {
     started: 0,
+    addresses: {
+    },
     address: {
         valid: false
     },
@@ -15,7 +17,7 @@ const initialDeviceStatusState = {
     ping: {
         time: 0
     },
-    connected: false
+    connected: null
 };
 
 export function deviceStatus(state = initialDeviceStatusState, action) {
@@ -31,23 +33,32 @@ export function deviceStatus(state = initialDeviceStatusState, action) {
     }
 
     switch (action.type) {
-    case ActionTypes.FIND_DEVICE_START:
+    case ActionTypes.FIND_DEVICE_START: {
         return { ...nextState, ...{ started: unixNow() } };
-    case ActionTypes.FIND_DEVICE_INFO:
-        return { ...nextState, ...{ address: action.address } };
-    case ActionTypes.FIND_DEVICE_SUCCESS:
-        return { ...nextState, ...{ connected: true } };
-    case ActionTypes.FIND_DEVICE_LOST:
-        return { ...nextState, ...{ connected: false } };
-    case ActionTypes.DEVICE_PING_SUCCESS:
+    }
+    case ActionTypes.FIND_DEVICE_INFO: {
+        const nextAddresses = { ...nextState.addresses };
+        nextAddresses[action.address.host] = { ...action.address, ...{ seen: unixNow() } };
+        return { ...nextState, ...{ addresses: nextAddresses } };
+    }
+    case ActionTypes.FIND_DEVICE_SELECT: {
+        return { ...nextState, ...{ connected: action.address } };
+    }
+    case ActionTypes.FIND_DEVICE_SUCCESS: {
+        return { ...nextState, ...{ } };
+    }
+    case ActionTypes.FIND_DEVICE_LOST: {
+        const nextAddresses = { ...nextState.addresses };
+        delete nextAddresses[action.address.host];
+        if (state.connected && state.connected.host == action.address.host) {
+            return { ...nextState, ...{ addresses: nextAddresses, connected: null } };
+        }
+        return { ...nextState, ...{ addresses: nextAddresses } };
+    }
+    case ActionTypes.DEVICE_PING_SUCCESS: {
         nextState.ping = {
             time: unixNow(),
             success: true
-        };
-        return nextState;
-    case ActionTypes.FIND_DEVICE_LOST: {
-        nextState.address = {
-            valid: false
         };
         return nextState;
     }

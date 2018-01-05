@@ -10,6 +10,15 @@ export function deviceStartConnect() {
     };
 }
 
+export function deviceSelect(address) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: Types.FIND_DEVICE_SELECT,
+            address: address,
+        });
+    };
+}
+
 export function deviceStopConnect() {
     return (dispatch, getState) => {
         dispatch({

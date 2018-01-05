@@ -26,7 +26,7 @@ export function liveData(state = initialLiveDataState, action) {
         nextState.sensors = _.cloneDeep(action.response.capabilities.sensors);
         _.forEach(nextState.sensors, sensor => {
             sensor.data = [];
-            sensor.value = "N/A";
+            sensor.value = null;
         });
         return nextState;
     case ActionTypes.DEVICE_LIVE_DATA_POLL_SUCCESS:
@@ -46,9 +46,6 @@ export function liveData(state = initialLiveDataState, action) {
                 while (sensor.data.length > 100) {
                     sensor.data.shift();
                 }
-            }
-            else {
-                sensor.value = null;
             }
         });
 

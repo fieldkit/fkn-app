@@ -5,7 +5,7 @@ import Promise from "bluebird";
 
 import * as Types from './types';
 import { findDeviceInfo } from './discovery';
-import { discoverDevice, pingDevice } from './sagas';
+import { discoverDevices, pingConnectedDevice } from './sagas';
 import { useFakeDeviceConnection } from '../middleware/device-api';
 import { QueryType, ReplyType } from '../lib/protocol';
 
@@ -18,6 +18,8 @@ describe('device connection saga', () => {
         tester = new SagaTester({
             initialState: {
                 deviceStatus: {
+                    addresses: { },
+                    connected: null,
                     api: {
                         pending: false
                     }
@@ -28,10 +30,10 @@ describe('device connection saga', () => {
 
     describe('discovery', () => {
         beforeEach(() => {
-            tester.start(discoverDevice);
+            tester.start(discoverDevices);
         });
 
-        it('should timeout and fail after 60s', async () => {
+        it('should timeout and fail after timeout interval', async () => {
             await tester.waitFor(Types.FIND_DEVICE_FAIL);
         });
 
@@ -42,7 +44,8 @@ describe('device connection saga', () => {
 
         it('should query the device for capabilities and return success', async () => {
             fakeDevice.push({}, {
-                type: ReplyType.values.REPLY_CAPABILITIES
+                type: ReplyType.values.REPLY_CAPABILITIES,
+                response: { capabilities: { } }
             })
             tester.dispatch(findDeviceInfo('127.0.0.1', 12345));
             await tester.waitFor(Types.FIND_DEVICE_SUCCESS);
@@ -54,7 +57,7 @@ describe('device connection saga', () => {
         let task;
 
         beforeEach(() => {
-            task = tester.start(pingDevice);
+            task = tester.start(pingConnectedDevice);
         });
 
         afterEach(() => {
@@ -62,13 +65,17 @@ describe('device connection saga', () => {
             task.cancel();
         });
 
-        it('should ping after finding device', () => {
+        it('should ping after selecting device', () => {
+            tester.getState().deviceStatus.connected = {};
+
             fakeDevice.push({}, {
-                type: ReplyType.values.REPLY_CAPABILITIES
+                type: ReplyType.values.REPLY_CAPABILITIES,
+                response: { capabilities: { } }
             });
 
             tester.dispatch({
-                type: Types.FIND_DEVICE_SUCCESS
+                type: Types.FIND_DEVICE_SELECT,
+                address: {}
             });
 
             return Promise.delay(Config.pingDeviceInterval + 100).then(() => {
@@ -77,12 +84,16 @@ describe('device connection saga', () => {
         });
 
         it('should ping after a previous ping', () => {
+            tester.getState().deviceStatus.connected = {};
+
             fakeDevice.push({}, {
-                type: ReplyType.values.REPLY_CAPABILITIES
+                type: ReplyType.values.REPLY_CAPABILITIES,
+                response: { capabilities: { } }
             });
 
             tester.dispatch({
-                type: Types.DEVICE_PING_SUCCESS
+                type: Types.DEVICE_PING_SUCCESS,
+                address: {}
             });
 
             return Promise.delay(Config.pingDeviceInterval + 100).then(() => {
@@ -90,11 +101,14 @@ describe('device connection saga', () => {
             });
         });
 
-        it('should dispatch FIND_DEVICE_LIST when ping fails', async () => {
+        it('should dispatch FIND_DEVICE_LOST when ping fails', async () => {
+            tester.getState().deviceStatus.connected = {};
+
             fakeDevice.pushError({}, "No reply");
 
             tester.dispatch({
-                type: Types.FIND_DEVICE_SUCCESS
+                type: Types.FIND_DEVICE_SELECT,
+                address: {}
             });
 
             await tester.waitFor(Types.FIND_DEVICE_LOST);

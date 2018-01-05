@@ -12,7 +12,7 @@ export function* deviceLiveDataPoll(interval) {
     const state = yield select();
     yield call(deviceCall, {
         types: [Types.DEVICE_LIVE_DATA_POLL_START, Types.DEVICE_LIVE_DATA_POLL_SUCCESS, Types.DEVICE_LIVE_DATA_POLL_FAIL],
-        address: state.deviceStatus.address,
+        address: state.deviceStatus.connected,
         message: {
             type: QueryType.values.QUERY_LIVE_DATA_POLL,
             liveDataPoll: {

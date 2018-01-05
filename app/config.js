@@ -6,6 +6,7 @@ const configs = {
     test: {
         serviceDiscoveryOnStartup: false,
         findDeviceTimeout: 2 * 1000,
+        deviceQueryInterval: 2 * 1000,
         pingDeviceInterval: 500,
     },
     noaa: {
@@ -14,12 +15,14 @@ const configs = {
             address: '192.168.0.136',
             port: 12345,
         },
-        findDeviceTimeout: 60 * 1000,
+        findDeviceTimeout: 10 * 1000,
+        deviceQueryInterval: 10 * 1000,
         pingDeviceInterval: 20 * 1000,
     },
     dev: {
         serviceDiscoveryOnStartup: true,
-        findDeviceTimeout: 60 * 1000,
+        findDeviceTimeout: 10 * 1000,
+        deviceQueryInterval: 10 * 1000,
         pingDeviceInterval: 20 * 1000,
     }
 };

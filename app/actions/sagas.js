@@ -17,95 +17,114 @@ import { downloadDataSaga } from './download-saga';
 import { liveDataSaga } from './live-data-saga';
 import { navigateWelcome, navigateDeviceMenu } from './navigation';
 
-/*
-export function devicePing() {
-    return (dispatch, getState) => {
-        return dispatch({
-            [CALL_DEVICE_API]: {
-                types: [Types.DEVICE_PING_START, Types.DEVICE_PING_SUCCESS, Types.DEVICE_PING_FAIL],
-                address: getState().deviceStatus.address,
-                message: {
-                    type: QueryType.values.QUERY_CAPABILITIES,
-                    queryCapabilities: {
-                        version: 1,
-                        callerTime: unixNow()
-                    }
-                }
-            },
+export function* discoverDevices() {
+    const devices = {};
+
+    while (true) {
+        const { discovered, to } = yield race({
+            discovered: take(Types.FIND_DEVICE_INFO),
+            to: delay(Config.findDeviceTimeout)
         });
-    };
-}
 
-export function queryDeviceCapabilities() {
-    return (dispatch, getState) => {
-        return dispatch({
-            [CALL_DEVICE_API]: {
-                types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
-                address: getState().deviceStatus.address,
-                message: {
-                    type: QueryType.values.QUERY_CAPABILITIES,
-                    queryCapabilities: {
-                        version: 1,
-                        callerTime: unixNow()
-                    }
-                }
-            },
-        });
-    };
-}
-*/
-
-export function* discoverDevice() {
-    const { deviceStatus, to } = yield race({
-        deviceStatus: take(Types.FIND_DEVICE_INFO),
-        to: delay(Config.findDeviceTimeout)
-    });
-
-    if (deviceStatus && deviceStatus.address.valid) {
-        while (true) {
-            try
-            {
-                yield call(deviceCall, {
-                    types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
-                    address: deviceStatus.address,
-                    message: {
-                        type: QueryType.values.QUERY_CAPABILITIES,
-                        queryCapabilities: {
-                            version: 1,
-                            callerTime: unixNow()
+        if (discovered && discovered.address.valid) {
+            const key = discovered.address.host;
+            const entry = devices[key] || { time: 0 };
+            const elapsed = (unixNow() - entry.time) * 1000;
+            if (elapsed >= Config.deviceQueryInterval) {
+                try
+                {
+                    yield call(deviceCall, {
+                        types: [Types.DEVICE_HANDSHAKE_START, Types.DEVICE_HANDSHAKE_SUCCESS, Types.DEVICE_HANDSHAKE_FAIL],
+                        address: discovered.address,
+                        message: {
+                            type: QueryType.values.QUERY_CAPABILITIES,
+                            queryCapabilities: {
+                                version: 1,
+                                callerTime: unixNow()
+                            }
                         }
-                    }
-                });
+                    });
 
-                yield put({
-                    type: Types.FIND_DEVICE_SUCCESS,
-                });
+                    devices[key] = {
+                        address: discovered.address,
+                        time: unixNow()
+                    };
 
-                break;
-            }
-            catch (e) {
-                yield delay(5000);
+                    yield put({
+                        type: Types.FIND_DEVICE_SUCCESS,
+                        address: discovered.address
+                    });
+                }
+                catch (e) {
+                    yield put({
+                        type: Types.FIND_DEVICE_LOST,
+                        address: discovered.address
+                    });
+                }
+            } else {
+                console.log("discoverDevices:", key, "queried recently", elapsed);
             }
         }
-    }
-    else {
-        yield put({
-            type: Types.FIND_DEVICE_FAIL,
-        });
+        else {
+            for (let key in devices) {
+                const entry = devices[key];
+                const elapsed = (unixNow() - entry.time) * 1000;
+                if (elapsed >= (Config.deviceQueryInterval * 2)) {
+                    console.log("Lost", key, "after", elapsed, entry);
+                    yield put({
+                        type: Types.FIND_DEVICE_LOST,
+                        address: entry.address
+                    });
+                    delete devices[key];
+                }
+            }
+
+            yield put({
+                type: Types.FIND_DEVICE_FAIL,
+            });
+        }
     }
 }
 
-export function* pingDevice() {
-    yield takeLatest([Types.FIND_DEVICE_SUCCESS, Types.DEVICE_PING_SUCCESS], function* () {
+export function* queryActiveDeviceInformation() {
+    yield takeLatest([Types.FIND_DEVICE_SELECT], function* (selected) {
+        console.log('queryActiveDeviceInformation', selected);
+
+        try {
+            yield call(deviceCall, {
+                types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
+                address: selected.address,
+                message: {
+                    type: QueryType.values.QUERY_CAPABILITIES,
+                    queryCapabilities: {
+                        version: 1,
+                        callerTime: unixNow()
+                    }
+                }
+            });
+        }
+        catch (err) {
+            yield put({
+                type: Types.FIND_DEVICE_LOST,
+                address: selected.address
+            });
+        }
+    });
+}
+
+export function* pingConnectedDevice() {
+    yield takeLatest([Types.FIND_DEVICE_SELECT, Types.DEVICE_PING_SUCCESS], function* (selected, ping) {
+        console.log('pingConnectedDevice', selected);
+
         yield delay(Config.pingDeviceInterval);
 
         const { deviceStatus } = yield select();
 
-        if (!deviceStatus.api.pending) {
+        if (deviceStatus.connected && !deviceStatus.api.pending) {
             try {
                 yield call(deviceCall, {
                     types: [Types.DEVICE_PING_START, Types.DEVICE_PING_SUCCESS, Types.DEVICE_PING_FAIL],
-                    address: deviceStatus.address,
+                    address: deviceStatus.connected,
                     message: {
                         type: QueryType.values.QUERY_CAPABILITIES,
                         queryCapabilities: {
@@ -116,9 +135,9 @@ export function* pingDevice() {
                 });
             }
             catch (err) {
-                // console.log('Ping failed', err);
                 yield put({
-                    type: Types.FIND_DEVICE_LOST
+                    type: Types.FIND_DEVICE_LOST,
+                    address: deviceStatus.connected
                 });
             }
         }
@@ -134,15 +153,15 @@ export function alert(message, title) {
                 { text: 'OK', onPress: () => resolve() },
             ],
             { cancelable: false }
-        ) 
+        )
     });
 }
 
 export function* deviceConnection() {
-    yield takeLatest([Types.FIND_DEVICE_START, Types.FIND_DEVICE_LOST], function* () {
+    yield takeLatest([Types.FIND_DEVICE_START], function* () {
         yield all([
-            discoverDevice(),
-            pingDevice()
+            pingConnectedDevice(),
+            queryActiveDeviceInformation()
         ])
     });
 }
@@ -151,16 +170,18 @@ export function* navigateToDeviceMenuFromConnecting() {
     yield takeLatest([Types.NAVIGATION_CONNECTING], function* (nav) {
         const { deviceStatus } = yield select();
 
-        if (deviceStatus.connected) {
+        const numberOfDevices = Object.keys(deviceStatus.addresses).length;
+        if (deviceStatus.connected && numberOfDevices == 1) {
             yield put(navigateDeviceMenu());
         }
         else {
             const returned = yield take([
                 Types.FIND_DEVICE_SUCCESS,
-                Types.FIND_DEVICE_FAIL
+                Types.FIND_DEVICE_FAIL,
+                Types.FIND_DEVICE_SELECT,
             ]);
 
-            if (returned.type == Types.FIND_DEVICE_SUCCESS) {
+            if (returned.type == Types.FIND_DEVICE_SELECT) {
                 yield put(navigateDeviceMenu());
             }
             else {
@@ -176,9 +197,9 @@ export function* navigateHomeOnConnectionLost() {
         const route = nav.routes[nav.index];
 
         if (route.params && route.params.connectionRequired === true) {
-            yield put(navigateWelcome()); 
+            yield put(navigateWelcome());
             yield call(alert, "Device disconnected.", "Alert");
-        } 
+        }
     });
 }
 
@@ -192,6 +213,7 @@ export function* connectionRelatedNavigation() {
 export function* rootSaga() {
     yield all([
         serviceDiscovery(),
+        discoverDevices(),
         deviceConnection(),
         connectionRelatedNavigation(),
         downloadDataSaga(),
