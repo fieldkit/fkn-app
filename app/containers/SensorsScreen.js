@@ -25,10 +25,10 @@ import styles from '../styles';
 
 class SensorInfo extends React.Component {
     render() {
-        const { id, sensor } = this.props;
+        const { sensor } = this.props;
 
         return (
-            <View key={id} style={styles.sensor.container}>
+            <View style={styles.sensor.container}>
                 <Text style={styles.sensor.name}>{sensor.name} <Text style={styles.sensor.unitOfMeasure}>({sensor.unitOfMeasure})</Text></Text>
             </View>
         );
@@ -49,7 +49,7 @@ class SensorsScreen extends React.Component {
         return (
             <ScrollView>
                 <DeviceInfo info={deviceInfo} />
-                {deviceCapabilities.sensors.map((s, i) => <SensorInfo id={i} sensor={s} />)}
+                {deviceCapabilities.sensors.map((s, i) => <SensorInfo key={i} sensor={s} />)}
             </ScrollView>
         );
     }
