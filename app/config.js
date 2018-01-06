@@ -8,6 +8,7 @@ const configs = {
         findDeviceInterval: 1000,
         findDeviceTimeout: 2 * 1000,
         deviceQueryInterval: 2 * 1000,
+        deviceExpireInterval: 5 * 1000,
         pingDeviceInterval: 500,
     },
     noaa: {
@@ -19,14 +20,16 @@ const configs = {
         findDeviceInterval: 1000,
         findDeviceTimeout: 10 * 1000,
         deviceQueryInterval: 10 * 1000,
-        pingDeviceInterval: 20 * 1000,
+        deviceExpireInterval: 13 * 1000,
+        pingDeviceInterval: 10 * 1000,
     },
     dev: {
         serviceDiscoveryOnStartup: true,
         findDeviceInterval: 1000,
         findDeviceTimeout: 10 * 1000,
         deviceQueryInterval: 10 * 1000,
-        pingDeviceInterval: 20 * 1000,
+        deviceExpireInterval: 13 * 1000,
+        pingDeviceInterval: 10 * 1000,
     }
 };
 

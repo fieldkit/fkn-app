@@ -65,23 +65,20 @@ export function* discoverDevices() {
                 console.log("discoverDevices:", key, "queried recently", elapsed);
             }
         }
-        else {
-            for (let key in devices) {
-                const entry = devices[key];
-                const elapsed = (unixNow() - entry.time) * 1000;
-                if (elapsed >= (Config.deviceQueryInterval * 2)) {
-                    console.log("Lost", key, "after", elapsed, entry);
-                    yield put({
-                        type: Types.FIND_DEVICE_LOST,
-                        address: entry.address
-                    });
-                    delete devices[key];
-                }
-            }
 
-            yield put({
-                type: Types.FIND_DEVICE_FAIL,
-            });
+        for (let key in devices) {
+            const entry = devices[key];
+            const elapsed = (unixNow() - entry.time) * 1000;
+            if (elapsed >= Config.deviceExpireInterval) {
+                console.log("discoverDevices: Lost", key, "after", elapsed, entry);
+                yield put({
+                    type: Types.FIND_DEVICE_LOST,
+                    address: entry.address
+                });
+                delete devices[key];
+            } else {
+                console.log("discoverDevices: Kept", key, "after", elapsed);
+            }
         }
     }
 }
@@ -91,6 +88,8 @@ export function* queryActiveDeviceInformation() {
         console.log('queryActiveDeviceInformation', selected);
 
         try {
+            yield put(navigateDeviceMenu());
+
             yield call(deviceCall, {
                 types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
                 address: selected.address,
