@@ -32,6 +32,7 @@
     "react-native-service-discovery": "https://github.com/Conservify/react-native-service-discovery.git",
     "react-native-svg": "5.4.2",
     "react-native-tcp": "https://github.com/PeelTechnologies/react-native-tcp.git",
+    "react-native-udp": "^2.3.1",
     "react-navigation": "1.0.0-beta.11",
     "react-redux": "5.0.6",
     "readable-stream": "1.0.33",

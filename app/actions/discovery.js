@@ -5,6 +5,7 @@ import { put, call } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 
 import { Platform } from 'react-native';
+import dgram from 'react-native-udp';
 
 import ServiceDiscovery from "react-native-service-discovery";
 import { createChannel } from './channels';
@@ -17,18 +18,26 @@ import Config from '../config';
 function createServiceDiscoveryChannel() {
     const channel = createChannel();
 
-    if (Platform.OS != 'ios') {
-        const serviceDiscovery = new ServiceDiscovery();
+    // This is no longer being used, though may come back. I wanted to keep
+    // creating this just to avoid regressions.
+    const serviceDiscovery = new ServiceDiscovery();
 
-        serviceDiscovery.on('service-resolved', (ev) => {
-        });
+    serviceDiscovery.on('service-resolved', (ev) => {
+    });
 
-        serviceDiscovery.on('udp-discovery', (ev) => {
-            channel.put(findDeviceInfo(ev.address, ev.port));
-        });
+    serviceDiscovery.on('udp-discovery', (ev) => {
+        channel.put(findDeviceInfo(ev.address, ev.port));
+    });
 
-        serviceDiscovery.start(54321);
-    }
+    const port = 54321;
+
+    // serviceDiscovery.start(port);
+
+    const socket = dgram.createSocket("udp4");
+    socket.bind(port);
+    socket.on('message', (data, remoteInfo) => {
+        channel.put(findDeviceInfo(remoteInfo.address, remoteInfo.port));
+    });
 
     return channel;
 }
