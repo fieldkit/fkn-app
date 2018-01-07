@@ -1,13 +1,20 @@
+const colors = {
+    defaultBackground: "#efefef",
+    secondaryButton: 'darkblue',
+};
+
+export const Colors = colors;
+
 export default appStyle = {
     mainView: {
         flex: 1,
         flexDirection: 'column',
+        backgroundColor: colors.defaultBackground,
     },
     menuButton: {
         fontSize: 30,
     },
     menuButtonContainer: {
-        flex: 1,
         flexDirection: 'column',
         alignContent: 'center',
         padding: 20,
@@ -16,15 +23,20 @@ export default appStyle = {
         height: 75
     },
     connecting: {
+        cancel: {
+        },
         status: {
             alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0)',
             fontSize: 25,
             textAlign: 'center',
-            height: 80,
             padding: 20,
         }
     },
     deviceInfo: {
+        container: {
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+        },
         name: {
             paddingLeft: 20,
             paddingRight: 20,
@@ -40,6 +52,7 @@ export default appStyle = {
     },
     sensor: {
         container: {
+            backgroundColor: 'rgba(0, 0, 0, 0)',
             paddingLeft: 20,
         },
         name: {
@@ -60,6 +73,7 @@ export default appStyle = {
     },
     device: {
         container: {
+            backgroundColor: 'rgba(0, 0, 0, 0)',
             flexDirection: 'row',
             paddingLeft: 20,
             paddingBottom: 10,
@@ -74,6 +88,7 @@ export default appStyle = {
     },
     dataSet: {
         container: {
+            backgroundColor: 'rgba(0, 0, 0, 0)',
             paddingLeft: 20,
             paddingBottom: 10,
         },
@@ -87,6 +102,7 @@ export default appStyle = {
     },
     buttons: {
         small: {
+            backgroundColor: colors.defaultBackground,
             width: 120,
             height: 40,
             paddingRight: 10
@@ -94,6 +110,7 @@ export default appStyle = {
     },
     liveData: {
         container: {
+            backgroundColor: 'rgba(0, 0, 0, 0)',
             flex: 1,
             flexDirection: 'column',
             justifyContent: 'space-between'

@@ -10,7 +10,7 @@ export default class DeviceInfo extends React.Component {
         const { info } = this.props;
 
         return (
-            <View>
+            <View style={styles.deviceInfo.container}>
                 <Text style={styles.deviceInfo.name}>{info.name}</Text>
                 <Text style={styles.deviceInfo.address}>{info.address}</Text>
             </View>

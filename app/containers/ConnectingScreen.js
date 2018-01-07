@@ -6,13 +6,9 @@ import { connect } from 'react-redux';
 
 import _ from 'lodash';
 
-import {
-    View,
-    Text
-} from 'react-native'
+import { View, Text, Button } from 'react-native'
 
 import { BackgroundView } from '../components/BackgroundView';
-import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
 import { SmallButton } from '../components/Buttons';
 
 import { navigateWelcome } from '../actions/navigation';
@@ -20,7 +16,7 @@ import { deviceStartConnect, deviceSelect, deviceStopConnect } from '../actions/
 
 import { unixNow } from '../lib/helpers';
 
-import styles from '../styles';
+import styles, { Colors } from '../styles';
 
 class ConnectingScreen extends React.Component {
     static navigationOptions = {
@@ -48,9 +44,7 @@ class ConnectingScreen extends React.Component {
 
         return (
             <BackgroundView>
-                <MenuButtonContainer>
-                    <MenuButton title="Cancel" onPress={() => this.props.navigateWelcome()} />
-                </MenuButtonContainer>
+                <Button style={styles.connecting.cancel} title="Cancel" onPress={() => this.props.navigateWelcome()} />
                 <Text style={styles.connecting.status}>{status}</Text>
                 <View style={{flexDirection: 'column'}}>
                     {_.map(deviceStatus.addresses, (device, _) => this.renderDevice(device))}
@@ -67,7 +61,7 @@ class ConnectingScreen extends React.Component {
                     <Text style={styles.device.details}>FieldKit Device</Text>
                 </View>
                 <View style={{flex: 1, flexDirection: 'column'}}>
-                    <SmallButton title="Connect" onPress={() => this.props.deviceSelect(device)} color={'#ADD8E6'} />
+                    <SmallButton title="Connect" onPress={() => this.props.deviceSelect(device)} color={Colors.secondaryButton} />
                 </View>
             </View>
         );
