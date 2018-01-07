@@ -38,6 +38,18 @@ export function navigateDataSets() {
     };
 }
 
+export function navigateConfigure() {
+    return {
+        type: Types.NAVIGATION_CONFIGURE,
+    };
+}
+
+export function navigateNetwork() {
+    return {
+        type: Types.NAVIGATION_NETWORK,
+    };
+}
+
 export function navigateLiveData() {
     return {
         type: Types.NAVIGATION_LIVE_DATA,

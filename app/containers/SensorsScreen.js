@@ -7,12 +7,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 
-import {
-    View,
-    ScrollView,
-    Text,
-    Button
-} from 'react-native'
+import { View, ScrollView, Text, Button } from 'react-native'
 
 import { BackgroundView } from '../components/BackgroundView';
 

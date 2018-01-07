@@ -8,6 +8,8 @@ import AboutScreen from '../containers/AboutScreen';
 import ConnectingScreen from '../containers/ConnectingScreen';
 import DeviceMenuScreen from '../containers/DeviceMenuScreen';
 import SensorsScreen from '../containers/SensorsScreen';
+import ConfigureScreen from '../containers/ConfigureScreen';
+import NetworkScreen from '../containers/NetworkScreen';
 import DataSetsScreen from '../containers/DataSetsScreen';
 import ViewDataSetScreen from '../containers/ViewDataSetScreen';
 import LiveDataScreen from '../containers/LiveDataScreen';
@@ -28,6 +30,14 @@ export const AppNavigator = StackNavigator({
     Sensors: {
         path: '/sensors',
         screen: SensorsScreen
+    },
+    Configure: {
+        path: '/configure',
+        screen: ConfigureScreen
+    },
+    Configure: {
+        path: '/network',
+        screen: NetworkScreen
     },
     DataSets: {
         path: '/data-sets',
