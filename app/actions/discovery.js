@@ -4,6 +4,8 @@ import _ from 'lodash';
 import { put, call } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 
+import { Platform } from 'react-native';
+
 import ServiceDiscovery from "react-native-service-discovery";
 import { createChannel } from './channels';
 import * as Types from './types';
@@ -14,16 +16,19 @@ import Config from '../config';
 
 function createServiceDiscoveryChannel() {
     const channel = createChannel();
-    const serviceDiscovery = new ServiceDiscovery();
 
-    serviceDiscovery.on('service-resolved', (ev) => {
-    });
+    if (Platform.OS != 'ios') {
+        const serviceDiscovery = new ServiceDiscovery();
 
-    serviceDiscovery.on('udp-discovery', (ev) => {
-        channel.put(findDeviceInfo(ev.address, ev.port));
-    });
+        serviceDiscovery.on('service-resolved', (ev) => {
+        });
 
-    serviceDiscovery.start(54321);
+        serviceDiscovery.on('udp-discovery', (ev) => {
+            channel.put(findDeviceInfo(ev.address, ev.port));
+        });
+
+        serviceDiscovery.start(54321);
+    }
 
     return channel;
 }
