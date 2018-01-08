@@ -57,7 +57,7 @@ class NetworkInfo extends React.Component {
                         <TextInput style={styles.networks.network.editing.ssid} value={ssid} onChangeText={(text) => this.setState({ ssid: text })} />
                         <TextInput style={styles.networks.network.editing.password} value={password} onChangeText={(text) => this.setState({ password: text })} />
                     </View>
-                    <View>
+                    <View style={{flexDirection: 'row'}}>
                         <SmallButton title="Save" onPress={() => this.onSave()} color={Colors.secondaryButton} />
                         <SmallButton title="Cancel" onPress={() => this.onCancel()} color={Colors.secondaryButton} />
                     </View>
@@ -106,8 +106,8 @@ class NetworkScreen extends React.Component {
 
         return (
             <BackgroundView>
-                <DeviceInfo info={deviceInfo} />
                 <Button title="Back" onPress={() => this.props.navigateBack()} />
+                <DeviceInfo info={deviceInfo} />
                 <View style={styles.networks.container}>
                     <Text style={styles.networks.heading}>Saved Networks:</Text>
 

@@ -104,8 +104,8 @@ export default appStyle = {
         small: {
             backgroundColor: colors.defaultBackground,
             width: 120,
-            height: 40,
-            paddingRight: 10
+            marginBottom: 10,
+            marginRight: 10
         }
     },
     liveData: {
@@ -152,6 +152,7 @@ export default appStyle = {
         container: {
             backgroundColor: 'rgba(0, 0, 0, 0)',
             paddingLeft: 20,
+            paddingRight: 20,
             paddingBottom: 10,
         },
         heading: {
@@ -165,12 +166,14 @@ export default appStyle = {
                 ssid: {
                     backgroundColor: 'white',
                     height: 40,
+                    marginBottom: 10,
                     borderColor: 'gray',
                     borderWidth: 1,
                 },
                 password: {
                     backgroundColor: 'white',
                     height: 40,
+                    marginBottom: 10,
                     borderColor: 'gray',
                     borderWidth: 1,
                 },
