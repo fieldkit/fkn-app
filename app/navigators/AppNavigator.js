@@ -35,7 +35,7 @@ export const AppNavigator = StackNavigator({
         path: '/configure',
         screen: ConfigureScreen
     },
-    Configure: {
+    Network: {
         path: '/network',
         screen: NetworkScreen
     },
