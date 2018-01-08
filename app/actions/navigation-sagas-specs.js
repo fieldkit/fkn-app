@@ -79,7 +79,7 @@ describe('device connection navigation', () => {
         expect(tester.getLatestCalledAction()).toEqual(navigateDeviceMenu());
     });
 
-    it.only('should navigate to WelcomeScreen from ConnectingScreen after no devices found after timeout', () => {
+    it('should navigate to WelcomeScreen from ConnectingScreen after no devices found after timeout', () => {
         tester.dispatch({
             type: Types.NAVIGATION_CONNECTING
         });

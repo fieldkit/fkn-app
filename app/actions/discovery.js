@@ -31,13 +31,15 @@ function createServiceDiscoveryChannel() {
 
     const port = 54321;
 
-    // serviceDiscovery.start(port);
+    if (__ENV__ !== 'test') {
+        // serviceDiscovery.start(port);
 
-    const socket = dgram.createSocket("udp4");
-    socket.bind(port);
-    socket.on('message', (data, remoteInfo) => {
-        channel.put(findDeviceInfo(remoteInfo.address, remoteInfo.port));
-    });
+        const socket = dgram.createSocket("udp4");
+        socket.bind(port);
+        socket.on('message', (data, remoteInfo) => {
+            channel.put(findDeviceInfo(remoteInfo.address, remoteInfo.port));
+        });
+    }
 
     return channel;
 }
