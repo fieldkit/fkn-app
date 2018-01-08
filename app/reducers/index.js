@@ -7,6 +7,7 @@ import * as authReducers from './auth';
 import * as deviceStatusReducers from './device-status';
 import * as dataSetsReducers from './data-sets';
 import * as liveDataReducers from './live-data';
+import * as configurationReducers from './configuration';
 
 export default combineReducers(Object.assign(
     navigationReducers,
@@ -14,4 +15,5 @@ export default combineReducers(Object.assign(
     deviceStatusReducers,
     dataSetsReducers,
     liveDataReducers,
+    configurationReducers,
 ));

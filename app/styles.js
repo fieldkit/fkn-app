@@ -144,8 +144,48 @@ export default appStyle = {
                 },
                 value: {
                     fontSize: 20,
-                }
-            }
+                },
+            },
         },
-    }
+    },
+    networks: {
+        container: {
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            paddingLeft: 20,
+            paddingBottom: 10,
+        },
+        heading: {
+            fontSize: 24,
+            fontWeight: "bold"
+        },
+        network: {
+            editing: {
+                container: {
+                },
+                ssid: {
+                    backgroundColor: 'white',
+                    height: 40,
+                    borderColor: 'gray',
+                    borderWidth: 1,
+                },
+                password: {
+                    backgroundColor: 'white',
+                    height: 40,
+                    borderColor: 'gray',
+                    borderWidth: 1,
+                },
+            },
+            viewing: {
+                container: {
+                    flexDirection: 'row',
+                },
+                ssid: {
+                    fontSize: 20,
+                },
+                password: {
+                    fontSize: 20,
+                },
+            },
+        },
+    },
 }

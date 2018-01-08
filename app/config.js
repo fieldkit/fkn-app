@@ -20,7 +20,7 @@ const configs = {
         findDeviceInterval: 1000,
         findDeviceTimeout: 10 * 1000,
         deviceQueryInterval: 10 * 1000,
-        deviceExpireInterval: 13 * 1000,
+        deviceExpireInterval: 15 * 1000,
         pingDeviceInterval: 10 * 1000,
     },
     dev: {
@@ -28,7 +28,7 @@ const configs = {
         findDeviceInterval: 1000,
         findDeviceTimeout: 10 * 1000,
         deviceQueryInterval: 10 * 1000,
-        deviceExpireInterval: 13 * 1000,
+        deviceExpireInterval: 15 * 1000,
         pingDeviceInterval: 10 * 1000,
     }
 };

@@ -145,6 +145,7 @@ export function* pingConnectedDevice() {
 
 export function alert(message, title) {
     return new Promise((resolve) => {
+        console.log("Showing alert", title);
         Alert.alert(
             title,
             message,
