@@ -65,6 +65,7 @@ export function findDeviceInfo(host, port) {
         address: {
             host: host,
             port: port,
+            key: host,
             valid: port > 0
         }
     };

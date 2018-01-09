@@ -17,69 +17,74 @@ import { downloadDataSaga } from './download-saga';
 import { liveDataSaga } from './live-data-saga';
 import { navigateWelcome, navigateDeviceMenu } from './navigation';
 
-export function* discoverDevices() {
-    const devices = {};
+export function* loseExpiredDevices() {
+    const { devices } = yield select();
 
+    for (let key in devices) {
+        const entry = devices[key];
+        const elapsed = (unixNow() - entry.time) * 1000;
+        if (elapsed >= Config.deviceExpireInterval) {
+            console.log("discoverDevices: Lost", key, "after", elapsed, entry);
+            yield put({
+                type: Types.FIND_DEVICE_LOST,
+                address: entry.address
+            });
+            delete devices[key];
+        } else {
+            // console.log("discoverDevices: Kept", key, "after", elapsed);
+        }
+    }
+}
+
+export function* deviceHandshake(device) {
+    try
+    {
+        yield call(deviceCall, {
+            types: [Types.DEVICE_HANDSHAKE_START, Types.DEVICE_HANDSHAKE_SUCCESS, Types.DEVICE_HANDSHAKE_FAIL],
+            address: device.address,
+            message: {
+                type: QueryType.values.QUERY_CAPABILITIES,
+                queryCapabilities: {
+                    version: 1,
+                    callerTime: unixNow()
+                }
+            }
+        });
+
+        yield put({
+            type: Types.FIND_DEVICE_SUCCESS,
+            address: device.address
+        });
+    }
+    catch (e) {
+        yield put({
+            type: Types.FIND_DEVICE_LOST,
+            address: device.address
+        });
+    }
+}
+
+export function* discoverDevices() {
     while (true) {
         const { discovered, to } = yield race({
             discovered: take(Types.FIND_DEVICE_INFO),
             to: delay(Config.findDeviceInterval)
         });
 
+        const { devices } = yield select();
+
         if (discovered && discovered.address.valid) {
-            const key = discovered.address.host;
+            const key = discovered.address.key;
             const entry = devices[key] || { time: 0 };
             const elapsed = (unixNow() - entry.time) * 1000;
             if (elapsed >= Config.deviceQueryInterval) {
-                try
-                {
-                    yield call(deviceCall, {
-                        types: [Types.DEVICE_HANDSHAKE_START, Types.DEVICE_HANDSHAKE_SUCCESS, Types.DEVICE_HANDSHAKE_FAIL],
-                        address: discovered.address,
-                        message: {
-                            type: QueryType.values.QUERY_CAPABILITIES,
-                            queryCapabilities: {
-                                version: 1,
-                                callerTime: unixNow()
-                            }
-                        }
-                    });
-
-                    devices[key] = {
-                        address: discovered.address,
-                        time: unixNow()
-                    };
-
-                    yield put({
-                        type: Types.FIND_DEVICE_SUCCESS,
-                        address: discovered.address
-                    });
-                }
-                catch (e) {
-                    yield put({
-                        type: Types.FIND_DEVICE_LOST,
-                        address: discovered.address
-                    });
-                }
+                yield deviceHandshake(discovered);
             } else {
-                console.log("discoverDevices:", key, "queried recently", elapsed);
+                // console.log("discoverDevices:", key, "queried recently", elapsed);
             }
         }
 
-        for (let key in devices) {
-            const entry = devices[key];
-            const elapsed = (unixNow() - entry.time) * 1000;
-            if (elapsed >= Config.deviceExpireInterval) {
-                console.log("discoverDevices: Lost", key, "after", elapsed, entry);
-                yield put({
-                    type: Types.FIND_DEVICE_LOST,
-                    address: entry.address
-                });
-                delete devices[key];
-            } else {
-                console.log("discoverDevices: Kept", key, "after", elapsed);
-            }
-        }
+        yield loseExpiredDevices();
     }
 }
 
@@ -187,13 +192,15 @@ export function* navigateToDeviceMenuFromConnecting() {
 }
 
 export function* navigateHomeOnConnectionLost() {
-    yield takeLatest(Types.FIND_DEVICE_LOST, function* () {
-        const { nav } = yield select();
+    yield takeLatest(Types.FIND_DEVICE_LOST, function* (lostDevice) {
+        const { deviceStatus, nav } = yield select();
         const route = nav.routes[nav.index];
 
-        if (route.params && route.params.connectionRequired === true) {
-            yield put(navigateWelcome());
-            yield call(alert, "Device disconnected.", "Alert");
+        if (deviceStatus.connected && deviceStatus.connected.key === lostDevice.address.key) {
+            if (route.params && route.params.connectionRequired === true) {
+                yield put(navigateWelcome());
+                yield call(alert, "Device disconnected.", "Alert");
+            }
         }
     });
 }

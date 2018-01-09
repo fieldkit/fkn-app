@@ -34,19 +34,17 @@ class ConnectingScreen extends React.Component {
     render() {
         const { deviceStatus } = this.props;
 
-        let status = "Searching...";
-        if (deviceStatus.address.valid) {
-            status = "Connecting...";
-        }
-        if (deviceStatus.ping.success) {
-            status = "Connected";
+        let status = null;
+
+        if (_.size(deviceStatus.addresses) == 0) {
+            status = "Searching...";
         }
 
         return (
             <BackgroundView>
                 <Button style={styles.connecting.cancel} title="Cancel" onPress={() => this.props.navigateWelcome()} />
-                <Text style={styles.connecting.status}>{status}</Text>
-                <View style={{flexDirection: 'column'}}>
+                { status != null ? <Text style={styles.connecting.status}>{status}</Text> : <View/> }
+                <View style={{marginTop: 10, flexDirection: 'column'}}>
                     {_.map(deviceStatus.addresses, (device, _) => this.renderDevice(device))}
                 </View>
             </BackgroundView>

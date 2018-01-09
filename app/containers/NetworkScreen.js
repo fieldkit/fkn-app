@@ -89,9 +89,6 @@ class NetworkScreen extends React.Component {
 
     onSaveNetwork(index, old, modified) {
         const { saveNetworkConfiguration, deviceConfiguration } = this.props;
-
-        console.log(index, old, modified);
-
         const newNetworkConfiguration = _.cloneDeep(deviceConfiguration.network);
         newNetworkConfiguration.networks[index] = modified;
         saveNetworkConfiguration(newNetworkConfiguration);
@@ -106,7 +103,6 @@ class NetworkScreen extends React.Component {
 
         return (
             <BackgroundView>
-                <Button title="Back" onPress={() => this.props.navigateBack()} />
                 <DeviceInfo info={deviceInfo} />
                 <View style={styles.networks.container}>
                     <Text style={styles.networks.heading}>Saved Networks:</Text>

@@ -17,6 +17,7 @@ describe('device connection saga', () => {
         fakeDevice = useFakeDeviceConnection();
         tester = new SagaTester({
             initialState: {
+                devices: { },
                 deviceStatus: {
                     addresses: { },
                     connected: null,

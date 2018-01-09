@@ -73,6 +73,36 @@ export function deviceStatus(state = initialDeviceStatusState, action) {
     }
 }
 
+const initialDevicesState = {};
+
+export function devices(state = initialDevicesState, action) {
+    let nextState = state;
+
+    if (_.isObject(action.deviceApi)) {
+        if (action.deviceApi.success) {
+            let update = {};
+            update[action.deviceApi.address.key] = {
+                address: action.deviceApi.address,
+                time: unixNow(),
+            };
+            nextState = { ...state, ...update };
+        }
+    }
+
+    switch (action.type) {
+    case ActionTypes.FIND_DEVICE_INFO: {
+        let update = {};
+        update[action.address] = {
+            address: action.address,
+            time: unixNow(),
+        };
+        return { ...nextState, ...update };
+    }
+    default:
+        return nextState;
+    }
+}
+
 const initialDeviceCapabilitiesState = {};
 
 export function deviceCapabilities(state = initialDeviceCapabilitiesState, action) {

@@ -67,7 +67,10 @@ class DeviceConnection {
         if (decoded.type == ReplyType.values.REPLY_ERROR) {
             return {
                 deviceApi: {
-                    pending: false
+                    error: false,
+                    pending: false,
+                    success: true,
+                    address: callApi.address,
                 },
                 type: callApi.types[2],
                 response: decoded
@@ -76,7 +79,10 @@ class DeviceConnection {
 
         return {
             deviceApi: {
-                pending: false
+                error: false,
+                pending: false,
+                success: true,
+                address: callApi.address,
             },
             type: callApi.types[1],
             response: decoded
@@ -112,6 +118,7 @@ class DeviceConnection {
                 rejecting.actions.push({
                     deviceApi: {
                         error: true,
+                        success: false,
                         pending: false
                     },
                     type: callApi.types[2],

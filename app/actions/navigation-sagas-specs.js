@@ -22,7 +22,9 @@ describe('device connection navigation', () => {
         fakeDevice = useFakeDeviceConnection();
         tester = new SagaTester({
             initialState: {
+                devices: { },
                 deviceStatus: {
+                    connected: null,
                     addresses: {
                     }
                 },
@@ -89,9 +91,10 @@ describe('device connection navigation', () => {
         });
     });
 
-    it('should navigate to WelcomeScreen from any connectionRequired route after FIND_DEVICE_LOST', async () => {
-        const { nav } = tester.getState();
+    it('should navigate to WelcomeScreen from any connectionRequired route after FIND_DEVICE_LOST for connected device', async () => {
+        const { nav, deviceStatus } = tester.getState();
         nav.routes[0].params.connectionRequired = true;
+        deviceStatus.connected = { key: '127.0.0.1' };
 
         jest.mock('Alert', () => {
             return {
@@ -100,7 +103,8 @@ describe('device connection navigation', () => {
         });
 
         tester.dispatch({
-            type: Types.FIND_DEVICE_LOST
+            type: Types.FIND_DEVICE_LOST,
+            address: deviceStatus.connected,
         });
 
         expect(Alert.alert).toHaveBeenCalled();
