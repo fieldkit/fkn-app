@@ -1,18 +1,16 @@
 'use strict';
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import _ from 'lodash';
 
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button } from 'react-native';
 
-import { BackgroundView } from '../components/BackgroundView';
-import { SmallButton } from '../components/Buttons';
+import { AppScreen, SmallButton } from '../components';
 
-import { navigateWelcome } from '../actions/navigation';
-import { deviceStartConnect, deviceSelect, deviceStopConnect } from '../actions/device-status';
+import { navigateWelcome, deviceStartConnect, deviceSelect, deviceStopConnect } from '../actions';
 
 import { unixNow } from '../lib/helpers';
 
@@ -41,13 +39,13 @@ class ConnectingScreen extends React.Component {
         }
 
         return (
-            <BackgroundView>
+            <AppScreen>
                 <Button style={styles.connecting.cancel} title="Cancel" onPress={() => this.props.navigateWelcome()} />
                 { status != null ? <Text style={styles.connecting.status}>{status}</Text> : <View/> }
                 <View style={{marginTop: 10, flexDirection: 'column'}}>
                     {_.map(deviceStatus.addresses, (device, _) => this.renderDevice(device))}
                 </View>
-            </BackgroundView>
+            </AppScreen>
         );
     }
 

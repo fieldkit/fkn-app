@@ -5,7 +5,7 @@ import { View, Text } from 'react-native';
 
 import styles from '../styles';
 
-export default class DeviceInfo extends React.Component {
+export class DeviceInfo extends React.Component {
     render() {
         const { info } = this.props;
 

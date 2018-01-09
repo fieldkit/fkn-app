@@ -1,25 +1,17 @@
 'use strict';
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import _ from 'lodash';
 import moment from 'moment';
 
-import {
-    View,
-    Text,
-    Button
-} from 'react-native'
+import { View, Text } from 'react-native';
 
-import { BackgroundView } from '../components/BackgroundView';
-import { SmallButton } from '../components/Buttons';
+import { SmallButton, AppScreen, Loading } from '../components';
 
-import { navigateBack, navigateViewDataSet } from '../actions/navigation';
-import { queryDataSets } from '../actions/device-data';
-
-import Loading from '../components/Loading';
+import { navigateBack, navigateViewDataSet, queryDataSets } from '../actions';
 
 import styles from '../styles';
 
@@ -40,9 +32,9 @@ class DataSetsScreen extends React.Component {
         }
 
         return (
-            <BackgroundView>
+            <AppScreen>
                 {dataSets.dataSets.map((ds, i) => this.renderDataSet(ds, i))}
-            </BackgroundView>
+            </AppScreen>
         );
     }
 

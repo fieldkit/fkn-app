@@ -1,21 +1,14 @@
 'use strict';
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import {
-    View,
-    Text,
-    Image
-} from 'react-native'
+import { View, Text, Image } from 'react-native';
 
-import { BackgroundView } from '../components/BackgroundView';
-import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
+import { AppScreen, MenuButtonContainer, MenuButton } from '../components';
 
-import {
-    navigateWelcome
-} from '../actions/navigation';
+import { navigateWelcome } from '../actions';
 
 class AboutScreen extends React.Component {
     static navigationOptions = {
@@ -25,7 +18,7 @@ class AboutScreen extends React.Component {
     render() {
         const { navigateWelcome } = this.props;
         return (
-            <BackgroundView>
+            <AppScreen>
                 <Image source={require('../../assets/fk-header.png')}
                     style={{
                         resizeMode: 'contain',
@@ -35,7 +28,7 @@ class AboutScreen extends React.Component {
                 <MenuButtonContainer>
                     <MenuButton title="Welcome" onPress={() => navigateWelcome()} />
                 </MenuButtonContainer>
-            </BackgroundView>
+            </AppScreen>
         );
     }
 }

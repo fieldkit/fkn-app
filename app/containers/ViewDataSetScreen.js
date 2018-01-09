@@ -1,27 +1,17 @@
 'use strict';
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import _ from 'lodash';
 import moment from 'moment';
 
-import {
-    View,
-    Text,
-    Button
-} from 'react-native'
+import { View, Text, Button } from 'react-native';
 
-import { BackgroundView } from '../components/BackgroundView';
-import { SmallButton } from '../components/Buttons';
-import { ProgressModal } from '../components/ProgressModal';
+import { AppScreen, SmallButton, ProgressModal, Loading } from '../components';
 
-import { navigateBack } from '../actions/navigation';
-import { queryDataSet, eraseDataSet, startDownloadDataSet } from '../actions/device-data';
-import { emailDataSet } from '../actions/emails';
-
-import Loading from '../components/Loading';
+import { navigateBack, queryDataSet, eraseDataSet, startDownloadDataSet, emailDataSet } from '../actions';
 
 import styles from '../styles';
 
@@ -55,7 +45,7 @@ class ViewDataSetScreen extends React.Component {
         const time = moment(dataSet.time).format("MMM Do hA");
 
         return (
-            <BackgroundView style={styles.dataSet.container}>
+            <AppScreen style={styles.dataSet.container}>
                 <Text style={styles.dataSet.name}>{dataSet.name}</Text>
                 <Text style={styles.dataSet.details}>{time} Size: {dataSet.size}</Text>
                 <View style={{
@@ -68,7 +58,7 @@ class ViewDataSetScreen extends React.Component {
                     <SmallButton title="E-Mail" onPress={() => this.props.emailDataSet(dataSet.id)} />
                 </View>
                 <ProgressModal visible={download.active} progress={download.progress} />
-            </BackgroundView>
+            </AppScreen>
         );
     }
 }

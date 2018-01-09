@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -8,11 +8,9 @@ import { View, Text, FlatList, ScrollView, Dimensions } from 'react-native';
 import { VictoryLine, VictoryChart, VictoryTheme, VictoryLegend, VictoryCursorContainer, VictoryContainer, VictoryAxis } from "victory-native";
 import Svg from 'react-native-svg';
 
-import { BackgroundView } from '../components/BackgroundView';
-import Loading from '../components/Loading';
+import { AppScreen, Loading } from '../components';
 
-import { navigateBack } from '../actions/navigation';
-import { startLiveDataPoll, stopLiveDataPoll } from '../actions/device-data';
+import { navigateBack, startLiveDataPoll, stopLiveDataPoll } from '../actions';
 
 import styles from '../styles';
 
@@ -53,14 +51,16 @@ class LiveDataScreen extends React.Component {
         }
 
         return (
-            <View style={styles.liveData.container}>
-                <View style={{ flex: 1 }}>
-                    {liveData.sensors.map((s, i) => this.renderSensor(s, s.id))}
+            <AppScreen background={false}>
+                <View style={styles.liveData.container}>
+                    <View style={{ flex: 1 }}>
+                        {liveData.sensors.map((s, i) => this.renderSensor(s, s.id))}
+                    </View>
+                    <View style={styles.liveData.chart.container}>
+                        {this.renderChart()}
+                    </View>
                 </View>
-                <View style={styles.liveData.chart.container}>
-                    {this.renderChart()}
-                </View>
-            </View>
+            </AppScreen>
         );
     }
 

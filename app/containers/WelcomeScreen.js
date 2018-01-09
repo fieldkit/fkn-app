@@ -5,11 +5,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Image } from 'react-native';
 
-import { BackgroundView } from '../components/BackgroundView';
-import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
+import { AppScreen, MenuButtonContainer, MenuButton } from '../components';
 
-import { navigateConnecting, navigateAbout } from '../actions/navigation';
-import { deviceStartConnect, deviceStopConnect } from '../actions/device-status';
+import { navigateConnecting, navigateAbout, deviceStartConnect, deviceStopConnect } from '../actions';
 
 import styles from '../styles';
 
@@ -30,20 +28,18 @@ class WelcomeScreen extends React.Component {
         const { navigateConnecting, navigateAbout } = this.props;
 
         return (
-            <View style={styles.mainView}>
-                <BackgroundView>
-                     <Image source={require('../../assets/fk-header.png')}
-                        style={{
-                            resizeMode: 'contain',
-                            width: '100%',
-                            height: 200,
-                        }} />
-                    <MenuButtonContainer>
-                        <MenuButton title="Connect" onPress={() => navigateConnecting()} />
-                        <MenuButton title="About" onPress={() => navigateAbout()} />
-                    </MenuButtonContainer>
-                </BackgroundView>
-            </View>
+            <AppScreen>
+                <Image source={require('../../assets/fk-header.png')}
+                    style={{
+                        resizeMode: 'contain',
+                        width: '100%',
+                        height: 200,
+                    }} />
+                <MenuButtonContainer>
+                    <MenuButton title="Connect" onPress={() => navigateConnecting()} />
+                    <MenuButton title="About" onPress={() => navigateAbout()} />
+                </MenuButtonContainer>
+            </AppScreen>
         );
     }
 }

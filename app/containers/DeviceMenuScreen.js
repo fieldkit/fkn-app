@@ -6,29 +6,19 @@ import { connect } from 'react-redux';
 
 import _ from 'lodash';
 
-import {
-    View,
-    Text
-} from 'react-native'
+import { View, Text } from 'react-native';
 
-import { BackgroundView } from '../components/BackgroundView';
-import { MenuButtonContainer, MenuButton } from '../components/MenuButtons';
+import { AppScreen, Loading, DeviceInfo, MenuButtonContainer, MenuButton } from '../components';
 
 import {
     navigateWelcome,
     navigateDataSets,
     navigateSensors,
     navigateConfigure,
-    navigateLiveData
-} from '../actions/navigation';
-
-import Loading from '../components/Loading';
-import DeviceInfo from '../components/DeviceInfo';
-
-import {
+    navigateLiveData,
     deviceStartConnect,
     deviceStopConnect
-} from '../actions/device-status';
+} from '../actions';
 
 import styles from '../styles';
 
@@ -45,7 +35,7 @@ class DeviceMenuScreen extends React.Component {
         }
 
         return  (
-            <BackgroundView>
+            <AppScreen>
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
                     <MenuButton title="Data Sets" onPress={() => this.props.navigateDataSets()} />
@@ -54,7 +44,7 @@ class DeviceMenuScreen extends React.Component {
                     <MenuButton title="Configure" onPress={() => this.props.navigateConfigure()} />
                     <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
                 </MenuButtonContainer>
-            </BackgroundView>
+            </AppScreen>
         );
     }
 }

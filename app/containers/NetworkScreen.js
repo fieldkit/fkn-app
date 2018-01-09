@@ -8,14 +8,9 @@ import { connect } from 'react-redux';
 
 import { View, Button, Text, TextInput } from 'react-native'
 
-import { BackgroundView } from '../components/BackgroundView';
-import { SmallButton } from '../components/Buttons';
+import { AppScreen, SmallButton, Loading, DeviceInfo } from '../components';
 
-import { navigateNetwork, navigateBack } from '../actions/navigation';
-import { queryConfiguration, saveNetworkConfiguration } from '../actions/device-data';
-
-import Loading from '../components/Loading';
-import DeviceInfo from '../components/DeviceInfo';
+import { navigateNetwork, navigateBack, queryConfiguration, saveNetworkConfiguration } from '../actions';
 
 import styles, { Colors } from '../styles';
 
@@ -102,14 +97,14 @@ class NetworkScreen extends React.Component {
         }
 
         return (
-            <BackgroundView>
+            <AppScreen>
                 <DeviceInfo info={deviceInfo} />
                 <View style={styles.networks.container}>
                     <Text style={styles.networks.heading}>Saved Networks:</Text>
 
                     {deviceConfiguration.network.networks.map((network, i) => <NetworkInfo key={i} network={network} onSave={modified => this.onSaveNetwork(i, network, modified)} />)}
                 </View>
-            </BackgroundView>
+            </AppScreen>
         );
     }
 }
