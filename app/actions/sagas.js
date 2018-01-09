@@ -130,7 +130,7 @@ export function* pingConnectedDevice() {
                     types: [Types.DEVICE_PING_START, Types.DEVICE_PING_SUCCESS, Types.DEVICE_PING_FAIL],
                     address: deviceStatus.connected,
                     message: {
-                        type: QueryType.values.QUERY_CAPABILITIES,
+                        type: QueryType.values.QUERY_STATUS,
                         queryCapabilities: {
                             version: 1,
                             callerTime: unixNow()
