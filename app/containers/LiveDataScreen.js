@@ -65,8 +65,7 @@ class LiveDataScreen extends React.Component {
     }
 
     renderSensorHeader(sensor, id) {
-        const colors = VictoryTheme.material.legend.colorScale;
-        const dotStyle = Object.assign({ backgroundColor: colors[id + 3] }, styles.liveData.legend.dotStyle)
+        const dotStyle = Object.assign({ backgroundColor: this.sensorColor(id) }, styles.liveData.legend.dotStyle)
         const rounded = Math.round(sensor.value * 1000) / 1000;
         return (
             <View key={id} style={styles.liveData.legend.container}>
@@ -77,11 +76,15 @@ class LiveDataScreen extends React.Component {
         );
     }
 
+    sensorColor(id) {
+        const colors = VictoryTheme.material.legend.colorScale;
+        return colors[id % colors.length];
+    }
+
     renderSensorChart(item) {
         const sensor = item.item;
         const id = item.index;
-        const colors = VictoryTheme.material.legend.colorScale;
-        const dotStyle = Object.assign({ backgroundColor: colors[id + 3] }, styles.liveData.legend.dotStyle)
+        const dotStyle = Object.assign({ backgroundColor: this.sensorColor(id) }, styles.liveData.legend.dotStyle)
 
         let chart = (<Loading />);
         if (sensor.data.length > 1) {
@@ -100,7 +103,7 @@ class LiveDataScreen extends React.Component {
                     <VictoryChart theme={VictoryTheme.material} scale={{x: "time"}} standalone={false} width={chartWidth} height={chartHeight}>
                     <VictoryAxis />
                     <VictoryAxis dependentAxis tickFormat={(x) => (`${Math.round(x * 100) / 100}`)} />
-                        <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id + 3] } }} />
+                        <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: this.sensorColor(id) } }} />
                     </VictoryChart>
                 </Svg>
             );
