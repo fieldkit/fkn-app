@@ -16,6 +16,7 @@ import {
     navigateSensors,
     navigateConfigure,
     navigateLiveData,
+    queryInfo,
     deviceStartConnect,
     deviceStopConnect
 } from '../actions';
@@ -26,6 +27,10 @@ class DeviceMenuScreen extends React.Component {
     static navigationOptions = {
         title: 'Device',
     };
+
+    componentDidMount() {
+        this.props.queryInfo();
+    }
 
     render() {
         const { deviceInfo, deviceCapabilities: caps } = this.props;
@@ -55,6 +60,7 @@ DeviceMenuScreen.propTypes = {
     navigateSensors: PropTypes.func.isRequired,
     navigateLiveData: PropTypes.func.isRequired,
     navigateConfigure: PropTypes.func.isRequired,
+    queryInfo: PropTypes.func.isRequired,
     deviceInfo: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
 };
@@ -67,6 +73,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
     deviceStartConnect,
     deviceStopConnect,
+    queryInfo,
     navigateDataSets,
     navigateSensors,
     navigateLiveData,

@@ -125,8 +125,14 @@ export function deviceInfo(state = initialDeviceInfoState, action) {
     case ActionTypes.FIND_DEVICE_SELECT: {
         return { ...nextState, ...{ address: action.address.host } };
     }
+    case ActionTypes.DEVICE_STATUS_SUCCESS: {
+        return { ...nextState, ...{ status: action.response.status } };
+    }
+    case ActionTypes.DEVICE_PING_SUCCESS: {
+        return { ...nextState, ...{ status: action.response.status } };
+    }
     case ActionTypes.DEVICE_CAPABILITIES_SUCCESS: {
-        return { ...nextState, ...{ name: action.response.capabilities.name } };
+        return { ...nextState, ...{ name: action.response.capabilities.name, caps: action.response.capabilities } };
     }
     default:
         return nextState;
