@@ -36,10 +36,10 @@ class SensorsScreen extends React.Component {
     };
 
     render() {
-        const { deviceInfo, deviceCapabilities } = this.props;
+        const { progress, deviceInfo, deviceCapabilities } = this.props;
 
         return (
-            <AppScreen background={false}>
+            <AppScreen progress={progress} background={false}>
                 <ScrollView>
                     <DeviceInfo info={deviceInfo} />
                     {deviceCapabilities.sensors.map((s, i) => <SensorInfo key={i} sensor={s} />)}
@@ -56,6 +56,7 @@ SensorsScreen.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    progress: state.progress,
     deviceInfo: state.deviceInfo,
     deviceCapabilities: state.deviceCapabilities,
 });

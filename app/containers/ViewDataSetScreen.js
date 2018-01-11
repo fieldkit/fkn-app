@@ -36,7 +36,7 @@ class ViewDataSetScreen extends React.Component {
     }
 
     render() {
-        const { dataSet, download } = this.props;
+        const { progress, dataSet, download } = this.props;
 
         if (!dataSet) {
             return (<Loading />);
@@ -45,19 +45,21 @@ class ViewDataSetScreen extends React.Component {
         const time = moment(dataSet.time).format("MMM Do hA");
 
         return (
-            <AppScreen style={styles.dataSet.container}>
-                <Text style={styles.dataSet.name}>{dataSet.name}</Text>
-                <Text style={styles.dataSet.details}>{time} Size: {dataSet.size}</Text>
-                <View style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        width: '100%'
-                    }}>
-                    <SmallButton title="Erase" onPress={() => this.props.eraseDataSet(dataSet.id)} />
-                    <SmallButton title="Download" onPress={() => this.props.startDownloadDataSet(dataSet.id)} />
-                    <SmallButton title="E-Mail" onPress={() => this.props.emailDataSet(dataSet.id)} />
+            <AppScreen progress={progress}>
+                <View style={styles.dataSet.container}>
+                    <Text style={styles.dataSet.name}>{dataSet.name}</Text>
+                    <Text style={styles.dataSet.details}>{time} Size: {dataSet.size}</Text>
+                    <View style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            width: '100%'
+                        }}>
+                        <SmallButton title="Erase" onPress={() => this.props.eraseDataSet(dataSet.id)} />
+                        <SmallButton title="Download" onPress={() => this.props.startDownloadDataSet(dataSet.id)} />
+                        <SmallButton title="E-Mail" onPress={() => this.props.emailDataSet(dataSet.id)} />
+                    </View>
+                    <ProgressModal visible={download.active} progress={download.progress} />
                 </View>
-                <ProgressModal visible={download.active} progress={download.progress} />
             </AppScreen>
         );
     }
@@ -77,6 +79,7 @@ ViewDataSetScreen.propTypes = {
 const mapStateToProps = (state) => {
     const route = state.nav.routes[state.nav.index];
     return {
+        progress: state.progress,
         deviceCapabilities: state.deviceCapabilities,
         dataSetId: route.params ? route.params.id : null,
         dataSet: state.dataSet,

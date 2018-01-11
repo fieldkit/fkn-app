@@ -6,6 +6,11 @@ import { invokeDeviceApi } from '../middleware/device-api';
 export function* deviceCall(raw) {
     yield put({
         type: raw.types[0],
+        deviceApi: {
+            pending: true,
+            blocking: raw.blocking,
+        },
+        address: raw.address,
         message: raw.message
     });
     try {

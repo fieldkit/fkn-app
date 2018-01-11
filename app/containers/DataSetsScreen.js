@@ -25,14 +25,14 @@ class DataSetsScreen extends React.Component {
     }
 
     render() {
-        const { deviceCapabilities: caps, dataSets } = this.props;
+        const { progress, deviceCapabilities: caps, dataSets } = this.props;
 
         if (!_.isArray(dataSets.dataSets)) {
             return (<Loading />);
         }
 
         return (
-            <AppScreen>
+            <AppScreen progress={progress}>
                 {dataSets.dataSets.map((ds, i) => this.renderDataSet(ds, i))}
             </AppScreen>
         );
@@ -55,10 +55,12 @@ DataSetsScreen.propTypes = {
     navigateBack: PropTypes.func.isRequired,
     navigateViewDataSet: PropTypes.func.isRequired,
     queryDataSets: PropTypes.func.isRequired,
+    progress: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
+    progress: state.progress,
     deviceCapabilities: state.deviceCapabilities,
     dataSets: state.dataSets
 });

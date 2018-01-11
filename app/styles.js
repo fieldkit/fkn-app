@@ -43,12 +43,21 @@ export default appStyle = {
             fontWeight: "bold",
             fontSize: 30,
         },
-        address: {
+        lineTwo: {
             paddingLeft: 20,
             paddingRight: 20,
             paddingBottom: 10,
-            fontSize: 14,
+            flexDirection: 'row',
         },
+        address: {
+            fontSize: 14,
+            flex: 2,
+        },
+        battery: {
+            flex: 1,
+            textAlign: "right",
+            fontSize: 14,
+        }
     },
     sensor: {
         container: {

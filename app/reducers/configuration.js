@@ -5,7 +5,9 @@ import * as ActionTypes from '../actions/types';
 import { unixNow } from '../lib/helpers';
 
 const initialConfigurationState = {
-    network: {},
+    network: {
+        networks: []
+    },
 };
 
 export function deviceConfiguration(state = initialConfigurationState, action) {

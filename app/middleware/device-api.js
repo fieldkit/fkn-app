@@ -70,6 +70,7 @@ class DeviceConnection {
                     error: false,
                     pending: false,
                     success: true,
+                    blocking: callApi.blocking,
                     address: callApi.address,
                 },
                 type: callApi.types[2],
@@ -82,6 +83,7 @@ class DeviceConnection {
                 error: false,
                 pending: false,
                 success: true,
+                blocking: callApi.blocking,
                 address: callApi.address,
             },
             type: callApi.types[1],
@@ -119,7 +121,8 @@ class DeviceConnection {
                     deviceApi: {
                         error: true,
                         success: false,
-                        pending: false
+                        pending: false,
+                        blocking: callApi.blocking,
                     },
                     type: callApi.types[2],
                     message: error.message,
@@ -162,7 +165,8 @@ export class FakeDeviceConnection {
             const rejecting = new Error();
             rejecting.actions = [{
                 deviceApi: {
-                    pending: false
+                    pending: false,
+                    blocking: callApi.blocking,
                 },
                 type: callApi.types[2],
                 error: pair.error
@@ -174,7 +178,8 @@ export class FakeDeviceConnection {
 
         return Promise.resolve({
             deviceApi: {
-                pending: false
+                pending: false,
+                blocking: callApi.blocking,
             },
             type: callApi.types[1],
             response: pair.reply
@@ -209,7 +214,8 @@ export default store => dispatch => action => {
 
     dispatch({
         deviceApi: {
-            pending: true
+            pending: true,
+            blocking: callApi.blocking,
         },
         type: callApi.types[0]
     });

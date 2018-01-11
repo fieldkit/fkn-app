@@ -33,14 +33,10 @@ class DeviceMenuScreen extends React.Component {
     }
 
     render() {
-        const { deviceInfo, deviceCapabilities: caps } = this.props;
-
-        if (!_.isArray(caps.sensors)) {
-            return (<Loading />);
-        }
+        const { progress, deviceInfo, deviceCapabilities: caps } = this.props;
 
         return  (
-            <AppScreen>
+            <AppScreen progress={progress}>
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
                     <MenuButton title="Data Sets" onPress={() => this.props.navigateDataSets()} />
@@ -61,11 +57,13 @@ DeviceMenuScreen.propTypes = {
     navigateLiveData: PropTypes.func.isRequired,
     navigateConfigure: PropTypes.func.isRequired,
     queryInfo: PropTypes.func.isRequired,
+    progress: PropTypes.object.isRequired,
     deviceInfo: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
+    progress: state.progress,
     deviceInfo: state.deviceInfo,
     deviceCapabilities: state.deviceCapabilities
 });

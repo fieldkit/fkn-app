@@ -116,7 +116,37 @@ export function deviceCapabilities(state = initialDeviceCapabilitiesState, actio
     }
 }
 
-const initialDeviceInfoState = {};
+const initialProgressState = {
+    depth: 0
+};
+
+export function progress(state = initialProgressState, action) {
+    let nextState = _.clone(state);
+
+    const api = action.deviceApi;
+    if (_.isObject(api)) {
+        if (api.blocking) {
+            if (api.pending) {
+                nextState.depth++;
+            }
+            else {
+                nextState.depth--;
+            }
+        }
+    }
+
+    switch (action.type) {
+    default:
+        return nextState;
+    }
+}
+
+const initialDeviceInfoState = {
+    status: {
+        batteryPercentage: 0,
+        uptime: 0
+    }
+};
 
 export function deviceInfo(state = initialDeviceInfoState, action) {
     let nextState = state;

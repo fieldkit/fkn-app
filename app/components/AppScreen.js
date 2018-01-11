@@ -13,14 +13,14 @@ import styles from '../styles';
 
 export class AppScreen extends React.Component {
     render() {
-        const { background } = this.props;
+        const { background, progress } = this.props;
         const { children } = this.props;
 
         if (background === false) {
             return (
                 <View style={styles.mainView}>
                     {children}
-                    <Spinner visible={false} textContent={"Busy"} textStyle={{color: '#FFF'}} />
+                    <Spinner visible={progress.depth > 0} textContent={"Busy"} textStyle={{color: '#FFF'}} />
                 </View>
             );
         }
@@ -30,13 +30,14 @@ export class AppScreen extends React.Component {
                 <BackgroundView>
                     {children}
                 </BackgroundView>
-                <Spinner visible={false} textContent={"Busy"} textStyle={{color: '#FFF'}} />
+                <Spinner visible={progress.depth > 0} textContent={"Busy"} textStyle={{color: '#FFF'}} />
             </View>
         );
     }
 }
 
 AppScreen.propTypes = {
+    progress: PropTypes.object.isRequired,
     background: PropTypes.bool,
 };
 
