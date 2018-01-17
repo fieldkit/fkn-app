@@ -40,7 +40,86 @@ export function dataSet(state = initialDataSetState, action) {
 const initialDownloadState = {
     active: false,
     progress: 0,
-    pages: [],
+    data: new Uint8Array([])
+};
+
+class BinaryReader {
+    constructor(raw, offset) {
+        this.length = raw.length;
+        this.dv = new DataView(raw.buffer, offset);
+        this.o = 0;
+    }
+
+    readFloat32() {
+        const value = this.dv.getFloat32(this.o, true);
+        this.o += 4;
+        return value;
+    }
+
+    readUint32() {
+        const value = this.dv.getUint32(this.o, true);
+        this.o += 4;
+        return value;
+    }
+
+    isEof() {
+        return this.o >= this.length;
+    }
+}
+
+class DeviceLocation {
+}
+
+class LoggedSensorReading {
+}
+
+class DataEntry {
+}
+
+class DataEntryReader {
+    constructor(reader) {
+        this.r = reader;
+    }
+
+    readDataEntry() {
+        if (this.r.isEof()) {
+            return null;
+        }
+        const de = new DataEntry();
+        de.version = this.r.readUint32(); this.o += 4;
+        de.location = this.readLocation();
+        de.reading = this.readSensorReading();
+        return de;
+    }
+
+    readLocation() {
+        const val = new DeviceLocation();
+        val.fix = this.r.readUint32();
+        val.time = this.r.readUint32();
+        val.lon = this.r.readFloat32();
+        val.lat = this.r.readFloat32();
+        val.alt = this.r.readFloat32();
+        return val;
+    }
+
+    readSensorReading() {
+        const val = new LoggedSensorReading();
+        val.time = this.r.readUint32();
+        val.sensor = this.r.readUint32();
+        val.value = this.r.readFloat32();
+        return val;
+    }
+}
+
+class DataFileReader {
+    constructor(raw) {
+        this.reader = new BinaryReader(raw, 0);
+        this.der = new DataEntryReader(this.reader);
+    }
+
+    read() {
+        return this.der.readDataEntry();
+    }
 };
 
 export function download(state = initialDownloadState, action) {
@@ -51,24 +130,39 @@ export function download(state = initialDownloadState, action) {
         return {
             active: true,
             progress: 0,
-            pages: [],
+            data: new Uint8Array([]),
         };
     case ActionTypes.DOWNLOAD_DATA_SET_DONE:
         // Do something with the data. It's going away after this.
+        const dfr = new DataFileReader(state.data)
+
+        while (true) {
+            const de = dfr.read();
+            if (de == null) {
+                break;
+            }
+            console.log(de)
+        }
+
         return initialDownloadState;
     case ActionTypes.DEVICE_DOWNLOAD_DATA_SET_SUCCESS:
         const { response } = action;
-        console.log(response);
+        const page = response.dataSetData || response.fileData;
+
+        var newData = new Uint8Array(state.data.length + page.data.length);
+        newData.set(state.data);
+        newData.set(page.data, state.data.length);
+
         return {
             active: true,
             progress: state.progress,
-            pages: state.pages.concat([ response.dataSetData || response.fileData ])
+            data: newData
         };
     case ActionTypes.DOWNLOAD_DATA_SET_PROGRESS:
         return {
             active: true,
             progress: action.progress,
-            pages: state.pages
+            data: state.data
         };
     default:
         return nextState;
