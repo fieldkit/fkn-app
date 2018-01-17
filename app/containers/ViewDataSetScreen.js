@@ -50,9 +50,7 @@ class ViewDataSetScreen extends React.Component {
                     <Text style={styles.dataSet.name}>{dataSet.name}</Text>
                     <Text style={styles.dataSet.details}>{time} Size: {dataSet.size}</Text>
                     <View style={{
-                            flex: 1,
-                            flexDirection: 'row',
-                            width: '100%'
+                            flexDirection: 'row'
                         }}>
                         <SmallButton title="Erase" onPress={() => this.props.eraseDataSet(dataSet.id)} />
                         <SmallButton title="Download" onPress={() => this.props.startDownloadDataSet(dataSet.id)} />

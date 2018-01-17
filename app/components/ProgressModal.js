@@ -12,9 +12,10 @@ import styles from '../styles';
 export class ProgressModal extends React.Component {
     render() {
         return (
+            
             <Modal transparent={true} visible={this.props.visible} onRequestClose={() => console.log("onRequestClose")}>
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <View style={{padding: 10, width: '100%', backgroundColor: '#fff', alignItems: 'center'}}>
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0)'}}>
+                    <View style={{padding: 10, width: '100%', backgroundColor: 'rgba(0, 0, 0, 0)', alignItems: 'center'}}>
                         <ProgressCircle
                             percent={this.props.progress}
                             radius={50}
