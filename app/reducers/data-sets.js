@@ -24,7 +24,10 @@ export function dataSet(state = initialDataSetState, action) {
 
     switch (action.type) {
     case ActionTypes.DEVICE_DATA_SET_SUCCESS:
-        return _.cloneDeep(action.response.dataSets.dataSets[0]);
+        if (action.response.dataSets.dataSets.length > 0) {
+            return _.cloneDeep(action.response.dataSets.dataSets[0]);
+        }
+        return nextState;
     case ActionTypes.DEVICE_ERASE_DATA_SET_SUCCESS:
         nextState = _.cloneDeep(state);
         nextState.erased = true;
@@ -51,12 +54,15 @@ export function download(state = initialDownloadState, action) {
             pages: [],
         };
     case ActionTypes.DOWNLOAD_DATA_SET_DONE:
+        // Do something with the data. It's going away after this.
         return initialDownloadState;
     case ActionTypes.DEVICE_DOWNLOAD_DATA_SET_SUCCESS:
+        const { response } = action;
+        console.log(response);
         return {
             active: true,
             progress: state.progress,
-            pages: state.pages.concat([ action.response.dataSetData ])
+            pages: state.pages.concat([ response.dataSetData || response.fileData ])
         };
     case ActionTypes.DOWNLOAD_DATA_SET_PROGRESS:
         return {

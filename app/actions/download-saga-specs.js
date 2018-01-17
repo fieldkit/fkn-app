@@ -18,7 +18,7 @@ describe('download data saga', () => {
         tester = new SagaTester({
             initialState: {
                 deviceStatus: {
-                    address: {}
+                    connected: {}
                 }
             }
         });
@@ -35,6 +35,7 @@ describe('download data saga', () => {
             type: ReplyType.values.REPLY_DATA_SET,
             dataSets: {
                 dataSets: [{
+                    size: 10,
                     pages: 2
                 }]
             }
@@ -42,12 +43,18 @@ describe('download data saga', () => {
 
         fakeDevice.push({}, {
             type: ReplyType.values.REPLY_DOWNLOAD_DATA_SET,
-            downloadDataSet: {}
+            downloadDataSet: {
+                token: new Uint8Array([1]),
+                data: 0,
+            }
         });
 
         fakeDevice.push({}, {
             type: ReplyType.values.REPLY_DOWNLOAD_DATA_SET,
-            downloadDataSet: {}
+            downloadDataSet: {
+                token: new Uint8Array([1]),
+                data: 0,
+            }
         });
 
         tester.dispatch({
