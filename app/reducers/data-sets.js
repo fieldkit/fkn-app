@@ -4,6 +4,9 @@ import _ from 'lodash';
 import * as ActionTypes from '../actions/types';
 import { unixNow } from '../lib/helpers';
 
+import protobuf from "protobufjs";
+import { DataRecord } from '../lib/protocol';
+
 const initialDataSetsState = { dataSets: null };
 
 export function dataSets(state = initialDataSetsState, action) {
@@ -43,82 +46,16 @@ const initialDownloadState = {
     data: new Uint8Array([])
 };
 
-class BinaryReader {
-    constructor(raw, offset) {
-        this.length = raw.length;
-        this.dv = new DataView(raw.buffer, offset);
-        this.o = 0;
-    }
-
-    readFloat32() {
-        const value = this.dv.getFloat32(this.o, true);
-        this.o += 4;
-        return value;
-    }
-
-    readUint32() {
-        const value = this.dv.getUint32(this.o, true);
-        this.o += 4;
-        return value;
-    }
-
-    isEof() {
-        return this.o >= this.length;
-    }
-}
-
-class DeviceLocation {
-}
-
-class LoggedSensorReading {
-}
-
-class DataEntry {
-}
-
-class DataEntryReader {
-    constructor(reader) {
-        this.r = reader;
-    }
-
-    readDataEntry() {
-        if (this.r.isEof()) {
-            return null;
-        }
-        const de = new DataEntry();
-        de.version = this.r.readUint32(); this.o += 4;
-        de.location = this.readLocation();
-        de.reading = this.readSensorReading();
-        return de;
-    }
-
-    readLocation() {
-        const val = new DeviceLocation();
-        val.fix = this.r.readUint32();
-        val.time = this.r.readUint32();
-        val.lon = this.r.readFloat32();
-        val.lat = this.r.readFloat32();
-        val.alt = this.r.readFloat32();
-        return val;
-    }
-
-    readSensorReading() {
-        const val = new LoggedSensorReading();
-        val.time = this.r.readUint32();
-        val.sensor = this.r.readUint32();
-        val.value = this.r.readFloat32();
-        return val;
-    }
-}
-
 class DataFileReader {
     constructor(raw) {
-        this.reader = new BinaryReader(raw, 0);
-        this.der = new DataEntryReader(this.reader);
+        this.reader = protobuf.Reader.create(raw);
     }
 
     read() {
-        return this.der.readDataEntry();
+        if (this.reader.pos >= this.reader.len) {
+            return null;
+        }
+        return DataRecord.decodeDelimited(this.reader);
     }
 };
 
@@ -135,16 +72,21 @@ export function download(state = initialDownloadState, action) {
     case ActionTypes.DOWNLOAD_DATA_SET_DONE:
         // Do something with the data. It's going away after this.
         const dfr = new DataFileReader(state.data)
-
+        const records = [];
         while (true) {
-            const de = dfr.read();
-            if (de == null) {
+            const record = dfr.read();
+            if (record == null) {
                 break;
             }
-            console.log(de)
+            records.push(record);
         }
 
-        return initialDownloadState;
+        return {
+            active: false,
+            progress: 0,
+            data: new Uint8Array([]),
+            records: records,
+        };
     case ActionTypes.DEVICE_DOWNLOAD_DATA_SET_SUCCESS:
         const { response } = action;
         const page = response.dataSetData || response.fileData;
