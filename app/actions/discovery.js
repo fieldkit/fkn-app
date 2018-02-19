@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 
 import _ from 'lodash';
-import { put, call } from 'redux-saga/effects'
-import { delay } from 'redux-saga'
+import { put, call } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 
 import { Platform } from 'react-native';
 import dgram from 'react-native-udp';
@@ -47,7 +47,7 @@ function createServiceDiscoveryChannel() {
 function* monitorServiceDiscoveryEvents(channel) {
     if (Config.serviceDiscoveryOnStartup) {
         while (true) {
-            const info = yield call(channel.take)
+            const info = yield call(channel.take);
             yield put(info);
             yield delay(500);
         }
