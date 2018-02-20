@@ -25,6 +25,10 @@ function debug() {
 
 let pendingExecution = null;
 
+// Disable the really verbose logging from this library. With how often we're connecting this is pretty chatty.
+net.Socket.prototype._debug = function() {
+};
+
 class DeviceConnection {
     rpcImplFactory(host, port, wireQuery) {
         return new Promise((resolve, reject) => {
@@ -49,7 +53,6 @@ class DeviceConnection {
             });
 
             client.on('close', () => {
-                debug("closed");
                 if (!received) {
                     reject(new Error("No reply"));
                 }
