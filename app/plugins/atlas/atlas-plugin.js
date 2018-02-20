@@ -7,6 +7,7 @@ import { Plugin } from '../plugin';
 import AtlasCalibrationScreen from './AtlasCalibrationScreen';
 
 import * as reducers from './reducers';
+import { atlasSagas } from './actions';
 
 export class AtlasPlugin extends Plugin {
     appliesTo(deviceCapabilities) {
@@ -27,5 +28,9 @@ export class AtlasPlugin extends Plugin {
 
     getReducers() {
         return reducers;
+    }
+
+    getSagas() {
+        return atlasSagas;
     }
 };

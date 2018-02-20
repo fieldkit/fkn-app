@@ -22,6 +22,10 @@ export class PluginManager {
         }, {});
     }
 
+    getSagas() {
+        return _(this.plugins).map(p => p.getSagas()).value();
+    }
+
     getActivePlugins(capabilities) {
         return _(this.plugins).filter(p => p.appliesTo(capabilities)).value();
     }

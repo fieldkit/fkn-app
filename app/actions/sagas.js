@@ -1,9 +1,9 @@
-'use strict'
+'use strict';
 
 import Promise from "bluebird";
 import { Alert } from 'react-native';
-import { delay } from 'redux-saga'
-import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects'
+import { delay } from 'redux-saga';
+import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects';
 
 import Config from '../config';
 import * as Types from './types';
@@ -158,7 +158,7 @@ export function alert(message, title) {
                 { text: 'OK', onPress: () => resolve() },
             ],
             { cancelable: false }
-        )
+        );
     });
 }
 
@@ -167,7 +167,7 @@ export function* deviceConnection() {
         yield all([
             pingConnectedDevice(),
             queryActiveDeviceInformation()
-        ])
+        ]);
     });
 }
 
@@ -220,5 +220,5 @@ export function* rootSaga() {
         connectionRelatedNavigation(),
         downloadDataSaga(),
         liveDataSaga(),
-    ])
+    ]);
 }
