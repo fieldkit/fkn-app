@@ -16,6 +16,12 @@ export class PluginManager {
         }, {});
     }
 
+    getReducers() {
+        return _(this.plugins).map(p => p.getReducers()).reduce((res, value, key) => {
+            return Object.assign(res, value);
+        }, {});
+    }
+
     getActivePlugins(capabilities) {
         return _(this.plugins).filter(p => p.appliesTo(capabilities)).value();
     }

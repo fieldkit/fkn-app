@@ -9,6 +9,8 @@ import * as dataSetsReducers from './data-sets';
 import * as liveDataReducers from './live-data';
 import * as configurationReducers from './configuration';
 
+import { pluginManager } from '../../common-startup';
+
 export default combineReducers(Object.assign(
     navigationReducers,
     authReducers,
@@ -16,4 +18,5 @@ export default combineReducers(Object.assign(
     dataSetsReducers,
     liveDataReducers,
     configurationReducers,
+    pluginManager.getReducers(),
 ));

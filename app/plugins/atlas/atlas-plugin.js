@@ -6,6 +6,8 @@ import { Plugin } from '../plugin';
 
 import AtlasCalibrationScreen from './AtlasCalibrationScreen';
 
+import * as reducers from './reducers';
+
 export class AtlasPlugin extends Plugin {
     appliesTo(deviceCapabilities) {
         const atlasSensors = ['pH', 'ORP', 'DO', 'Temp'];
@@ -21,5 +23,9 @@ export class AtlasPlugin extends Plugin {
                 screen: AtlasCalibrationScreen
             }
         };
+    }
+
+    getReducers() {
+        return reducers;
     }
 };

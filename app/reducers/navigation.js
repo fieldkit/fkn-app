@@ -5,9 +5,9 @@ import _ from 'lodash';
 import { NavigationActions } from 'react-navigation';
 
 import { AppNavigator } from '../navigators/AppNavigator';
-import { routesManager } from '../navigators/routes';
-import { pluginManager } from '../../common-startup';
 import * as ActionTypes from '../actions/types';
+
+import { pluginManager } from '../../common-startup';
 
 const welcomeAction = AppNavigator.router.getActionForPathAndParams('/');
 const welcomeState = AppNavigator.router.getStateForAction(
