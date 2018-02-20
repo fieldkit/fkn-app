@@ -1,17 +1,51 @@
 'use strict';
 
+import _ from 'lodash';
+
 import { NavigationActions } from 'react-navigation';
 
 import { AppNavigator } from '../navigators/AppNavigator';
+import { routesManager } from '../navigators/routes';
+import { pluginManager } from '../../common-startup';
 import * as ActionTypes from '../actions/types';
 
 const welcomeAction = AppNavigator.router.getActionForPathAndParams('/');
 const welcomeState = AppNavigator.router.getStateForAction(
     AppNavigator.router.getStateForAction(welcomeAction)
 );
-
 const connectingAction = AppNavigator.router.getActionForPathAndParams('/connecting');
 const deviceMenuAction = AppNavigator.router.getActionForPathAndParams('/device');
+
+export function deviceSpecificRoutes(state = { home: { routes: [] } }, action) {
+    let nextState = state;
+    switch (action.type) {
+    case ActionTypes.DEVICE_CAPABILITIES_SUCCESS: {
+        const plugins = pluginManager.getActivePlugins(action.response.capabilities);
+
+        const routesObj = _(plugins).map(p => p.getRoutes()).reduce((res, value, key) => {
+            return Object.assign(res, value);
+        }, {});
+
+        const routes = _(routesObj).keys().map((k) => {
+            return Object.assign({ name: k }, routesObj[k]);
+        }).map((r, index) => {
+            return {
+                id: index,
+                title: r.title,
+                path: r.path,
+                name: r.name,
+            };
+        }).value();
+
+        return {
+            home: {
+                routes: routes
+            }
+        };
+    }
+    }
+    return state;
+}
 
 export function nav(state = welcomeState, action) {
     let nextState;
@@ -108,6 +142,12 @@ export function nav(state = welcomeState, action) {
                 routeName: 'DataSet',
                 params: Object.assign({ connectionRequired: true }, action.params)
             }),
+            state
+        );
+        break;
+    case ActionTypes.NAVIGATION_NAME_OR_PATH:
+        nextState = AppNavigator.router.getStateForAction(
+            NavigationActions.navigate({ routeName: action.name }),
             state
         );
         break;

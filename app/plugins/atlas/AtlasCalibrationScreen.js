@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { AppScreen, DeviceInfo, MenuButtonContainer, MenuButton } from '../../components';
 
-import { navigateNetwork, navigateBack } from '../../actions/navigation';
+import { navigateBack } from '../../actions/navigation';
 
 import styles from '../../styles';
 
@@ -30,10 +30,9 @@ class AtlasCalibrationScreen extends React.Component {
 };
 
 AtlasCalibrationScreen.propTypes = {
-    navigateNetwork: PropTypes.func.isRequired,
     navigateBack: PropTypes.func.isRequired,
-    deviceInfo: PropTypes.object.isRequired,
     progress: PropTypes.object.isRequired,
+    deviceInfo: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({

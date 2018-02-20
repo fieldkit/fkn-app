@@ -44,6 +44,20 @@ export function navigateConfigure() {
     };
 }
 
+export function navigatePath(path) {
+    return {
+        type: Types.NAVIGATION_NAME_OR_PATH,
+        name: path,
+    };
+}
+
+export function navigateName(name) {
+    return {
+        type: Types.NAVIGATION_NAME_OR_PATH,
+        name: name,
+    };
+}
+
 export function navigateNetwork() {
     return {
         type: Types.NAVIGATION_NETWORK,

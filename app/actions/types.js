@@ -11,6 +11,7 @@ export const NAVIGATION_NETWORK = 'NAVIGATION_NETWORK';
 export const NAVIGATION_VIEW_DATA_SET = 'NAVIGATION_VIEW_DATA_SET';
 export const NAVIGATION_LIVE_DATA = 'NAVIGATION_LIVE_DATA';
 export const NAVIGATION_BACK = 'NAVIGATION_BACK';
+export const NAVIGATION_NAME_OR_PATH = 'NAVIGATION_NAME_OR_PATH';
 
 export function isNavigationAction(action) {
     return /NAVIGATION_(.+)/.test(action.type);

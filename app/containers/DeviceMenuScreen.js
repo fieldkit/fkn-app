@@ -16,6 +16,7 @@ import {
     navigateSensors,
     navigateConfigure,
     navigateLiveData,
+    navigateName,
     queryInfo,
     deviceStartConnect,
     deviceStopConnect
@@ -32,10 +33,22 @@ class DeviceMenuScreen extends React.Component {
         this.props.queryInfo();
     }
 
+    renderDeviceSpecific() {
+        const { deviceSpecificRoutes } = this.props;
+
+        return (
+            <View>
+                {deviceSpecificRoutes.home.routes.map((r, i) => {
+                    return <MenuButton key={i} title={r.title} onPress={() => this.props.navigateName(r.name)} />
+                })}
+            </View>
+        );
+    }
+
     render() {
         const { progress, deviceInfo, deviceCapabilities: caps } = this.props;
 
-        return  (
+        return (
             <AppScreen progress={progress}>
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
@@ -43,6 +56,7 @@ class DeviceMenuScreen extends React.Component {
                     <MenuButton title="Live Data" onPress={() => this.props.navigateLiveData()} />
                     <MenuButton title="Sensors" onPress={() => this.props.navigateSensors()} />
                     <MenuButton title="Configure" onPress={() => this.props.navigateConfigure()} />
+                    {this.renderDeviceSpecific()}
                     <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
                 </MenuButtonContainer>
             </AppScreen>
@@ -56,16 +70,19 @@ DeviceMenuScreen.propTypes = {
     navigateSensors: PropTypes.func.isRequired,
     navigateLiveData: PropTypes.func.isRequired,
     navigateConfigure: PropTypes.func.isRequired,
+    navigateName: PropTypes.func.isRequired,
     queryInfo: PropTypes.func.isRequired,
     progress: PropTypes.object.isRequired,
     deviceInfo: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
+    deviceSpecificRoutes: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
     progress: state.progress,
     deviceInfo: state.deviceInfo,
-    deviceCapabilities: state.deviceCapabilities
+    deviceCapabilities: state.deviceCapabilities,
+    deviceSpecificRoutes: state.deviceSpecificRoutes,
 });
 
 export default connect(mapStateToProps, {
@@ -76,5 +93,6 @@ export default connect(mapStateToProps, {
     navigateSensors,
     navigateLiveData,
     navigateConfigure,
+    navigateName,
     navigateWelcome
 })(DeviceMenuScreen);

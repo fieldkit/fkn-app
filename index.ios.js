@@ -2,11 +2,14 @@ import 'es6-symbol/implement';
 
 import React from 'react'
 import { AppRegistry } from 'react-native'
-import AppContainer from './app/containers/AppContainer'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, combineReducers, compose} from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
+
+import { pluginManager } from './common-startup';
+import AppContainer from './app/containers/AppContainer'
+
 import reducer from './app/reducers'
 import webApiMiddleware from './app/middleware/web-api'
 import deviceApiMiddleware from './app/middleware/device-api'

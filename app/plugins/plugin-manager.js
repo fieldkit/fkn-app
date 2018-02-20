@@ -15,4 +15,8 @@ export class PluginManager {
             return Object.assign(res, value);
         }, {});
     }
+
+    getActivePlugins(capabilities) {
+        return _(this.plugins).filter(p => p.appliesTo(capabilities)).value();
+    }
 };
