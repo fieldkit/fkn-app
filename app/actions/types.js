@@ -81,3 +81,7 @@ export const FIND_DEVICE_SELECT = 'FIND_DEVICE_SELECT';
 
 export const LIVE_DATA_POLL_START = 'LIVE_DATA_POLL_START';
 export const LIVE_DATA_POLL_STOP = 'LIVE_DATA_POLL_STOP';
+
+export const TIMER_START = 'TIMER_START';
+export const TIMER_TICK = 'TIMER_TICK';
+export const TIMER_DONE = 'TIMER_DONE';

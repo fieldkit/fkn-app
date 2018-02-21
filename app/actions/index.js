@@ -6,5 +6,6 @@ export * from './navigation';
 export * from './emails';
 export * from './device-status';
 export * from './device-data';
+export * from './timers';
 
 export const Types = ActionTypes;

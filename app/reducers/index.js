@@ -8,6 +8,7 @@ import * as deviceStatusReducers from './device-status';
 import * as dataSetsReducers from './data-sets';
 import * as liveDataReducers from './live-data';
 import * as configurationReducers from './configuration';
+import * as timersReducers from './timers';
 
 import { pluginManager } from '../../common-startup';
 
@@ -18,5 +19,6 @@ export default combineReducers(Object.assign(
     dataSetsReducers,
     liveDataReducers,
     configurationReducers,
+    timersReducers,
     pluginManager.getReducers(),
 ));

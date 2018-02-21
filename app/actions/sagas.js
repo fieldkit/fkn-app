@@ -16,6 +16,7 @@ import { serviceDiscovery } from './discovery';
 import { downloadDataSaga } from './download-saga';
 import { liveDataSaga } from './live-data-saga';
 import { navigateWelcome, navigateDeviceMenu } from './navigation';
+import { timerTick, timerDone } from './timers';
 
 export function* loseExpiredDevices() {
     const { devices } = yield select();
@@ -212,6 +213,16 @@ export function* connectionRelatedNavigation() {
     ]);
 }
 
+export function* timersSaga() {
+    yield takeEvery(Types.TIMER_START, function* (start){
+        for (let i = 0; i < start.seconds; ++i) {
+            yield put(timerTick(start.name, start.seconds, start.seconds - i));
+            yield delay(1000);
+        }
+        yield put(timerDone(start.name, start.seconds));
+    });
+}
+
 export function* rootSaga() {
     yield all([
         serviceDiscovery(),
@@ -220,5 +231,6 @@ export function* rootSaga() {
         connectionRelatedNavigation(),
         downloadDataSaga(),
         liveDataSaga(),
+        timersSaga(),
     ]);
 }
