@@ -49,25 +49,30 @@ class AtlasCalibrationScreen extends React.Component {
         return <AtlasPhThreePointScript timerStart={timerStart} deviceModuleQuery={deviceModuleQuery} timer={timer} atlasReplies={atlasReplies} onCancel={() => this.onCancel()} />;
     }
 
+
+    renderScript(script) {
+        const { progress, deviceInfo } = this.props;
+
+        return <AppScreen progress={progress}>{script()}</AppScreen>;
+    }
+
     render() {
         const { progress, deviceInfo } = this.props;
         const { script } = this.state;
 
         if (script) {
-            return script();
+            return this.renderScript(script);
         }
 
-        return (
-            <AppScreen progress={progress}>
-                <DeviceInfo info={deviceInfo} />
-                <MenuButtonContainer>
-                    <MenuButton title="pH One-Point" onPress={() => this.startCalibration(this.phOnePointScript.bind(this))} />
-                    <MenuButton title="pH Two-Point" onPress={() => this.startCalibration(this.phTwoPointScript.bind(this))} />
-                    <MenuButton title="pH Three-Point" onPress={() => this.startCalibration(this.phThreePointScript.bind(this))} />
-                    <MenuButton title="Back" onPress={() => this.props.navigateBack()} />
-                </MenuButtonContainer>
-            </AppScreen>
-        );
+        return <AppScreen progress={progress}>
+            <DeviceInfo info={deviceInfo} />
+            <MenuButtonContainer>
+                <MenuButton title="pH One-Point" onPress={() => this.startCalibration(this.phOnePointScript.bind(this))} />
+                <MenuButton title="pH Two-Point" onPress={() => this.startCalibration(this.phTwoPointScript.bind(this))} />
+                <MenuButton title="pH Three-Point" onPress={() => this.startCalibration(this.phThreePointScript.bind(this))} />
+                <MenuButton title="Back" onPress={() => this.props.navigateBack()} />
+            </MenuButtonContainer>
+        </AppScreen>;
     }
 };
 

@@ -26,7 +26,7 @@ class ConnectingScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.props.deviceStartConnect()
+        this.props.deviceStartConnect();
     }
 
     render() {

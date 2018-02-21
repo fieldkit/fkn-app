@@ -5,6 +5,7 @@ import { View, Text, Button } from 'react-native';
 import { SensorType, atlasSensorQuery, encodeWireAtlasQuery, decodeWireAtlasReply } from './protocol';
 
 import styles from '../../styles';
+import atlasStyles  from './styles';
 
 export class ScriptButtons extends React.Component {
     render() {
@@ -14,9 +15,9 @@ export class ScriptButtons extends React.Component {
             return <View><Button title="Done" onPress={() => onCancel()} /></View>;
         }
 
-        return <View>
-            <Button title="Next" onPress={() => onMoveNextStep()} disabled={!canMoveNext} />
-            <Button title="Cancel" onPress={() => onCancel()} />
+        return <View style={atlasStyles.script.buttons.container}>
+            <View style={atlasStyles.script.buttons.button}><Button title="Next" onPress={() => onMoveNextStep()} disabled={!canMoveNext} /></View>
+            <View style={atlasStyles.script.buttons.button}><Button title="Cancel" onPress={() => onCancel()} /></View>
         </View>;
     }
 };
@@ -30,13 +31,11 @@ export class CalibrationStep extends React.Component {
         const props = this.props;
         const { children } = this.props;
 
-        return (
-            <View>
-                {this.renderStep()}
-                <View>{children}</View>
-                <ScriptButtons {...props} canMoveNext={this.canMoveNext()} />
-            </View>
-        );
+        return <View style={atlasStyles.script.step.container}>
+            {this.renderStep()}
+            <View style={atlasStyles.script.step.children.container}>{children}</View>
+            <ScriptButtons {...props} canMoveNext={this.canMoveNext()} />
+        </View>;
     }
 
     renderStep() {
@@ -45,6 +44,7 @@ export class CalibrationStep extends React.Component {
 };
 
 export class InstructionsStep extends CalibrationStep {
+
 };
 
 export class WaitingStep extends CalibrationStep {
@@ -64,7 +64,7 @@ export class WaitingStep extends CalibrationStep {
         if (!timer) {
             return <View></View>;
         }
-        return <Text>{timer.remaining} Seconds</Text>;
+        return <Text style={atlasStyles.script.step.waiting.remaining}>{timer.remaining} Seconds</Text>;
     }
 };
 
@@ -80,6 +80,21 @@ export class AtlasCommandStep extends CalibrationStep {
         return !replies.failed;
     }
 
+    renderStep() {
+        const { command, replies } = this.props;
+        const r = [
+            <Text key={0} style={atlasStyles.script.step.command.command}>{command}</Text>
+        ];
+        if (!replies.pending) {
+            if (replies.busy || replies.failed) {
+                r.push(<Text key={r.length} style={atlasStyles.script.step.command.failed}>Failed!</Text>);
+            }
+            else {
+                r.push(<Text key={r.length} style={atlasStyles.script.step.command.success}>Success!</Text>);
+            }
+        }
+        return <View>{r}</View>;
+    }
 };
 
 export class AtlasScript extends React.Component {
