@@ -6,6 +6,10 @@ import { decodeWireAtlasReply } from './protocol';
 
 export function atlasReplies(state = {}, action) {
     switch (action.type) {
+    case ActionTypes.DEVICE_MODULE_QUERY_SUCCESS:
+        return {
+            pending: true,
+        };
     case ActionTypes.DEVICE_MODULE_QUERY_FAIL:
         return {
             failed: true,
