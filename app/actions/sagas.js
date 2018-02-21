@@ -214,10 +214,15 @@ export function* connectionRelatedNavigation() {
 }
 
 export function* timersSaga() {
-    yield takeEvery(Types.TIMER_START, function* (start){
-        for (let i = 0; i < start.seconds; ++i) {
-            yield put(timerTick(start.name, start.seconds, start.seconds - i));
-            yield delay(1000);
+    yield takeEvery(Types.TIMER_START, function* (start) {
+        const started = unixNow();
+        while (true) {
+            const elapsed = unixNow() - started;
+            if (elapsed >= start.seconds) {
+                break;
+            }
+            yield put(timerTick(start.name, start.seconds, start.seconds - elapsed));
+            yield delay(800);
         }
         yield put(timerDone(start.name, start.seconds));
     });
