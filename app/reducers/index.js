@@ -10,7 +10,7 @@ import * as liveDataReducers from './live-data';
 import * as configurationReducers from './configuration';
 import * as timersReducers from './timers';
 
-import { pluginManager } from '../../common-startup';
+import { pluginManager } from '../services';
 
 export default combineReducers(Object.assign(
     navigationReducers,

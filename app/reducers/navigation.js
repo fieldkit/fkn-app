@@ -7,7 +7,7 @@ import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
 import * as ActionTypes from '../actions/types';
 
-import { pluginManager } from '../../common-startup';
+import { pluginManager } from '../services';
 
 const welcomeAction = AppNavigator.router.getActionForPathAndParams('/');
 const welcomeState = AppNavigator.router.getStateForAction(
