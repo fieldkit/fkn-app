@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { View, Text, Button } from 'react-native';
 
 import { SensorType } from './protocol';
-import { Paragraph, AtlasScript, CalibrationStep, InstructionsStep, WaitingStep, AtlasCalibrationCommandStep } from './AtlasScript';
+import { Paragraph, AtlasScript, ScriptStep, InstructionsStep, WaitingStep, AtlasCalibrationCommandStep } from './AtlasScript';
 
 import atlasStyles from './styles';
 
-class ConductivityProbeTypeStep extends CalibrationStep {
+class ConductivityProbeTypeStep extends ScriptStep {
     onSetProbe(k) {
         const { atlasSetProbeType } = this.props;
 
@@ -15,24 +15,24 @@ class ConductivityProbeTypeStep extends CalibrationStep {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { atlasCalibration, onMoveNextStep } = this.props;
+        const { atlasState, onMoveNextStep } = this.props;
 
-        if (atlasCalibration.probeConfigured) {
+        if (atlasState.probeConfiguration.done) {
             onMoveNextStep();
         }
     }
 
     canMoveNext() {
-        const { atlasCalibration } = this.props;
+        const { atlasState } = this.props;
 
-        return atlasCalibration.probeConfigured;
+        return atlasState.probeConfiguration.done;
     }
 
     renderStep() {
-        const { atlasCalibration } = this.props;
+        const { atlasState } = this.props;
 
         return <View>
-            <ReadingsDisplay atlasCalibration={atlasCalibration} />
+            <ReadingsDisplay atlasState={atlasState} />
 
             <Paragraph>Please select the probe you're using.</Paragraph>
 
@@ -44,10 +44,10 @@ class ConductivityProbeTypeStep extends CalibrationStep {
 };
 
 ConductivityProbeTypeStep.propTypes = {
-    atlasCalibration: PropTypes.object.isRequired,
+    atlasState: PropTypes.object.isRequired,
 };
 
-class TemperatureCompensationStep extends CalibrationStep {
+class TemperatureCompensationStep extends ScriptStep {
     renderStep() {
         return <View>
             <Paragraph>
@@ -63,19 +63,20 @@ TemperatureCompensationStep.propTypes = {
 
 class ReadingsDisplay extends React.Component {
     render() {
-        const { atlasCalibration } = this.props;
-        const { values } = atlasCalibration;
+        const { atlasState } = this.props;
+        const { values } = atlasState;
+
+        if (values.length == 0) {
+            return <Text style={atlasStyles.readings.text}>Reading...</Text>;
+        }
 
         const display = values.map(v => v.toString()).join(", ");
-
-        return <View>
-            <Text style={atlasStyles.readings.text}>{display}</Text>
-        </View>;
+        return <Text style={atlasStyles.readings.text}>{display}</Text>;
     }
 };
 
 ReadingsDisplay.propTypes = {
-    atlasCalibration: PropTypes.object.isRequired,
+    atlasState: PropTypes.object.isRequired,
 };
 
 export class AtlasEcScript extends React.Component {
@@ -86,30 +87,32 @@ export class AtlasEcScript extends React.Component {
     }
 
     render() {
-        const { timerStart, atlasCalibrate, onCancel, timer, atlasCalibration, atlasReadSensor, atlasSetProbeType } = this.props;
+        const { timerStart, atlasCalibrate, onCancel, timer, atlasState, atlasReadSensor, atlasSetProbeType } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
-                <ReadingsDisplay atlasCalibration={atlasCalibration} />
+                <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>The most important part of calibration is watching the readings during the calibration process.</Paragraph>
             </InstructionsStep>
 
-            <ConductivityProbeTypeStep atlasCalibration={atlasCalibration} atlasSetProbeType={atlasSetProbeType} />
+            <ConductivityProbeTypeStep atlasState={atlasState} atlasSetProbeType={atlasSetProbeType} />
 
             <InstructionsStep>
+                <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Please ensure that the probe is dry before we perform the dry calibration.</Paragraph>
             </InstructionsStep>
 
-            <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={"Cal,dry"} atlasCalibration={atlasCalibration} atlasCalibrate={atlasCalibrate}>
-                <ReadingsDisplay atlasCalibration={atlasCalibration} />
+            <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={"Cal,dry"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
+                <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Performing dry calibration.</Paragraph>
             </AtlasCalibrationCommandStep>
 
             <TemperatureCompensationStep>
+                <ReadingsDisplay atlasState={atlasState} />
             </TemperatureCompensationStep>
 
             <InstructionsStep>
-                <ReadingsDisplay atlasCalibration={atlasCalibration} />
+                <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>
                     Pour a small amount of the calibration solution into a cup. Shake the probe to make sure you do not have trapped air bubbles in the sensing area. You should see readings that are off by 1 – 40% from the stated value of the calibration solution. Wait for readings to stabilize (small movement from one reading to the next is normal).
                 </Paragraph>
@@ -117,17 +120,17 @@ export class AtlasEcScript extends React.Component {
             </InstructionsStep>
 
             <WaitingStep delay={30} canSkip={true} timer={timer} timerStart={timerStart}>
-                <ReadingsDisplay atlasCalibration={atlasCalibration} />
+                <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Let the probe sit in calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
 
-            <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={"Cal,low,1413"} atlasCalibration={atlasCalibration} atlasCalibrate={atlasCalibrate}>
-                <ReadingsDisplay atlasCalibration={atlasCalibration} />
+            <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={"Cal,low,1413"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
+                <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Performing low point calibration.</Paragraph>
             </AtlasCalibrationCommandStep>
 
             <InstructionsStep>
-                <ReadingsDisplay atlasCalibration={atlasCalibration} />
+                <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>
                     Pour a small amount of the calibration solution into a cup. Shake the probe to make sure you do not have trapped air bubbles in the sensing area. You should see readings that are off by 1 – 40% from the stated value of the calibration solution. Wait for readings to stabilize (small movement from one reading to the next is normal).
                 </Paragraph>
@@ -135,17 +138,17 @@ export class AtlasEcScript extends React.Component {
             </InstructionsStep>
 
             <WaitingStep delay={30} canSkip={true} timer={timer} timerStart={timerStart}>
-                <ReadingsDisplay atlasCalibration={atlasCalibration} />
+                <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Let the probe sit in calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
 
-            <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={"Cal,low,12880"} atlasCalibration={atlasCalibration} atlasCalibrate={atlasCalibrate}>
-                <ReadingsDisplay atlasCalibration={atlasCalibration} />
+            <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={"Cal,low,12880"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
+                <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Performing low point calibration.</Paragraph>
             </AtlasCalibrationCommandStep>
 
             <InstructionsStep>
-                <ReadingsDisplay atlasCalibration={atlasCalibration} />
+                <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
             </InstructionsStep>
         </AtlasScript>;
@@ -158,6 +161,6 @@ AtlasEcScript.propTypes = {
     atlasCalibrate: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     timer: PropTypes.object.isRequired,
-    atlasCalibration: PropTypes.object.isRequired,
+    atlasState: PropTypes.object.isRequired,
 };
 

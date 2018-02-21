@@ -29,7 +29,7 @@ ScriptButtons.propTypes = {
     onCancel: PropTypes.func.isRequired,
 };
 
-export class CalibrationStep extends React.Component {
+export class ScriptStep extends React.Component {
     canMoveNext() {
         return true;
     }
@@ -51,17 +51,17 @@ export class CalibrationStep extends React.Component {
     }
 };
 
-CalibrationStep.propTypes = {
+ScriptStep.propTypes = {
 };
 
-export class InstructionsStep extends CalibrationStep {
+export class InstructionsStep extends ScriptStep {
 
 };
 
 InstructionsStep.propTypes = {
 };
 
-export class WaitingStep extends CalibrationStep {
+export class WaitingStep extends ScriptStep {
     state = {
         skipped: false
     }
@@ -100,7 +100,7 @@ WaitingStep.propTypes = {
     delay: PropTypes.number.isRequired,
 };
 
-export class AtlasCalibrationCommandStep extends CalibrationStep {
+export class AtlasCalibrationCommandStep extends ScriptStep {
     componentDidMount() {
         this.onRetry();
     }
@@ -112,26 +112,32 @@ export class AtlasCalibrationCommandStep extends CalibrationStep {
     }
 
     canMoveNext() {
-        const { atlasCalibration } = this.props;
+        const { atlasState } = this.props;
 
-        return atlasCalibration.calibrated;
+        return atlasState.calibration.done;
     }
 
     renderStep() {
-        const { command, atlasCalibration } = this.props;
+        const { command, atlasState } = this.props;
+        const { calibration } = atlasState;
 
         const r = [
             <Text key={0} style={atlasStyles.script.step.command.command}>{command}</Text>
         ];
 
-        if (!atlasCalibration.pending && !atlasCalibration.calibrated) {
-            if (atlasCalibration.busy || atlasCalibration.error) {
+        console.log(calibration);
+
+        if (!calibration.pending) {
+            if (calibration.error) {
                 r.push(<Text key={r.length} style={atlasStyles.script.step.command.failed}>Failed!</Text>);
             }
             else {
                 r.push(<Text key={r.length} style={atlasStyles.script.step.command.success}>Success!</Text>);
             }
-            r.push(<Button key={r.length} title="Retry" onPress={() => this.onRetry()} />);
+
+            if (!calibration.done) {
+                r.push(<Button key={r.length} title="Retry" onPress={() => this.onRetry()} />);
+            }
         }
 
         return <View>{r}</View>;
@@ -140,7 +146,7 @@ export class AtlasCalibrationCommandStep extends CalibrationStep {
 
 AtlasCalibrationCommandStep.propTypes = {
     atlasCalibrate: PropTypes.func.isRequired,
-    atlasCalibration: PropTypes.object.isRequired,
+    atlasState: PropTypes.object.isRequired,
     sensor: PropTypes.number.isRequired,
     command: PropTypes.string.isRequired,
 };
@@ -167,7 +173,6 @@ export class AtlasScript extends React.Component {
     }
 
     onMoveNextStep() {
-        const { atlasCalibrationStep } = this.props;
         const { currentStepIndex } = this.state;
 
         this.setState({

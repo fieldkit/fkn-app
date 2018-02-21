@@ -6,31 +6,43 @@ import * as AtlasActionTypes from './types';
 import { ReplyType as AppReplyType } from '../../lib/protocol';
 import { ReplyType as AtlasReplyType, decodeWireAtlasReply } from './protocol';
 
-const initialAtlasCalibrationState = {
+const initialReplyState = {
     pending: true,
-    busy: false,
     error: false,
-    probeConfigured: false,
-    calibrated: false,
+    done: false,
     lastReply: null,
-    values: [],
 };
+
+const initialAtlasCalibrationState = {
+    values: [],
+    probeConfiguration: initialReplyState,
+    calibration: initialReplyState,
+    reading: initialReplyState,
+};
+
+function getPendingReplyState(action) {
+    return {
+        pending: true,
+        error: false,
+        done: false,
+        lastReply: null,
+    };
+}
 
 function getReplyState(action) {
     if (action.response.type == AppReplyType.values.REPLY_BUSY) {
-        return { pending: false, error: false, busy: true, lastReply: null };
+        return { pending: false, error: true, done: false, lastReply: null };
     }
 
     const reply = decodeWireAtlasReply(action.response.module.message);
-
     if (reply.type == AtlasReplyType.values.REPLY_ERROR) {
-        return { pending: false, error: true, busy: false, lastReply: reply };
+        return { pending: false, error: true, done: false, lastReply: reply };
     }
 
-    return { pending: false, error: false, busy: false, lastReply: reply };
+    return { pending: false, error: false, done: true, lastReply: reply };
 }
 
-export function atlasCalibration(state = initialAtlasCalibrationState, action) {
+export function atlasState(state = initialAtlasCalibrationState, action) {
     switch (action.type) {
     case AtlasActionTypes.ATLAS_CALIBRATION_BEGIN: {
         return initialAtlasCalibrationState;
@@ -39,30 +51,28 @@ export function atlasCalibration(state = initialAtlasCalibrationState, action) {
         return initialAtlasCalibrationState;
     }
     case AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_START: {
-        return { ...state, ...{ pending: true, probeConfigured: false } };
+        return { ...state, ...{ probeConfiguration: getPendingReplyState(action) } };
     }
     case AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_SUCCESS: {
         const replyState = getReplyState(action);
-        return { ...state, ...replyState, ...{ probeConfigured: true } };
+        return { ...state, ...{ probeConfiguration: getReplyState(action) } };
     }
     case AtlasActionTypes.DEVICE_ATLAS_SENSOR_CALIBRATE_START: {
-        return { ...state, ...{ pending: true, calibrated: false } };
+        return { ...state, ...{ calibration: getPendingReplyState(action) } };
     }
     case AtlasActionTypes.DEVICE_ATLAS_SENSOR_CALIBRATE_SUCCESS: {
-        const replyState = getReplyState(action);
-        return { ...state, ...replyState, ...{ calibrated: true } };
+        return { ...state, ...{ calibration: getReplyState(action) } };
     }
     case AtlasActionTypes.DEVICE_ATLAS_SENSOR_READING_START: {
-        return { ...state, ...{ pending: true } };
+        return { ...state, ...{ reading: getPendingReplyState(action) } };
     }
     case AtlasActionTypes.DEVICE_ATLAS_SENSOR_READING_SUCCESS: {
         const replyState = getReplyState(action);
-        if (!replyState.error) {
-            return { ...state, ...replyState, ...{ values: [] } };
+        if (replyState.error || replyState.lastReply == null) {
+            return { ...state, ...{ values: [], reading: replyState } };
         }
-
         const values = replyState.lastReply.atlasReply.reply.split(",").map(s => Number(s));
-        return { ...state, ...replyState, ...{ values: values } };
+        return { ...state, ...{ values: values, reading: replyState } };
     }
     }
     return state;
