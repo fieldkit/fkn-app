@@ -9,6 +9,7 @@ import * as dataSetsReducers from './data-sets';
 import * as liveDataReducers from './live-data';
 import * as configurationReducers from './configuration';
 import * as timersReducers from './timers';
+import * as moduleReplyReducers from './modules';
 
 import { pluginManager } from '../services';
 
@@ -20,5 +21,6 @@ export default combineReducers(Object.assign(
     liveDataReducers,
     configurationReducers,
     timersReducers,
+    moduleReplyReducers,
     pluginManager.getReducers(),
 ));
