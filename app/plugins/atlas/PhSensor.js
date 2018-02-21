@@ -3,36 +3,30 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 
 import { SensorType } from './protocol';
-import { AtlasScript, InstructionsStep, WaitingStep, AtlasCommandStep } from './AtlasScript';
+import { Paragraph, AtlasScript, InstructionsStep, WaitingStep, AtlasCalibrationCommandStep } from './AtlasScript';
 
 import atlasStyles from './styles';
 
 const phDelay = 60 * 2;
 
-class AtlasText extends React.Component {
-    render() {
-        return <Text style={atlasStyles.script.step.instructions.text}>{this.props.children}</Text>;
-    }
-};
-
 export class AtlasPhOnePointScript extends React.Component {
     render() {
-        const { timerStart, deviceModuleQuery, onCancel, timer, atlasReplies } = this.props;
+        const { timerStart, atlasCalibrate, onCancel, timer, atlasCalibration } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
-                <AtlasText>Remove soaker bottle and rinse off pH probe.</AtlasText>
-                <AtlasText>Pour a small amount of the calibration solution into a cup.</AtlasText>
-                <AtlasText>Place the probe into the cup.</AtlasText>
+                <Paragraph>Remove soaker bottle and rinse off pH probe.</Paragraph>
+                <Paragraph>Pour a small amount of the calibration solution into a cup.</Paragraph>
+                <Paragraph>Place the probe into the cup.</Paragraph>
             </InstructionsStep>
             <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart}>
-                <AtlasText>Let the probe sit in calibration solution untill readings stabalize.</AtlasText>
+                <Paragraph>Let the probe sit in calibration solution untill readings stabalize.</Paragraph>
             </WaitingStep>
-            <AtlasCommandStep sensor={SensorType.values.SensorType_PH} command={"Cal,mid,7"} replies={atlasReplies} deviceModuleQuery={deviceModuleQuery}>
-                <AtlasText>Calibrating</AtlasText>
-            </AtlasCommandStep>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={"Cal,mid,7"} atlasCalibration={atlasCalibration} atlasCalibrate={atlasCalibrate}>
+                <Paragraph>Calibrating</Paragraph>
+            </AtlasCalibrationCommandStep>
             <InstructionsStep>
-                <AtlasText>Do not pour the calibration solution back into the bottle.</AtlasText>
+                <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
             </InstructionsStep>
         </AtlasScript>;
     }
@@ -40,45 +34,45 @@ export class AtlasPhOnePointScript extends React.Component {
 
 AtlasPhOnePointScript.propTypes = {
     timerStart: PropTypes.func.isRequired,
-    deviceModuleQuery: PropTypes.func.isRequired,
+    atlasCalibrate: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     timer: PropTypes.object.isRequired,
-    atlasReplies: PropTypes.object.isRequired,
+    atlasCalibration: PropTypes.object.isRequired,
 };
 
 export class AtlasPhTwoPointScript extends React.Component {
     render() {
-        const { timerStart, deviceModuleQuery, onCancel, timer, atlasReplies } = this.props;
+        const { timerStart, atlasCalibrate, onCancel, timer, atlasCalibration } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
-                <AtlasText>Remove soaker bottle and rinse off pH probe.</AtlasText>
-                <AtlasText>Pour a small amount of the calibration solution into a cup.</AtlasText>
-                <AtlasText>Place the probe into the cup.</AtlasText>
+                <Paragraph>Remove soaker bottle and rinse off pH probe.</Paragraph>
+                <Paragraph>Pour a small amount of the calibration solution into a cup.</Paragraph>
+                <Paragraph>Place the probe into the cup.</Paragraph>
             </InstructionsStep>
             <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart}>
-                <AtlasText>Let the probe sit in calibration solution untill readings stabalize.</AtlasText>
+                <Paragraph>Let the probe sit in calibration solution untill readings stabalize.</Paragraph>
             </WaitingStep>
-            <AtlasCommandStep sensor={SensorType.values.SensorType_PH} command={"Cal,mid,7"} replies={atlasReplies} deviceModuleQuery={deviceModuleQuery}>
-                <AtlasText>Calibrating</AtlasText>
-            </AtlasCommandStep>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={"Cal,mid,7"} atlasCalibration={atlasCalibration} atlasCalibrate={atlasCalibrate}>
+                <Paragraph>Calibrating</Paragraph>
+            </AtlasCalibrationCommandStep>
             <InstructionsStep>
-                <AtlasText>Do not pour the calibration solution back into the bottle.</AtlasText>
+                <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
             </InstructionsStep>
 
             <InstructionsStep>
-                <AtlasText>Remove soaker bottle and rinse off pH probe.</AtlasText>
-                <AtlasText>Pour a small amount of the calibration solution into a cup.</AtlasText>
-                <AtlasText>Place the probe into the cup.</AtlasText>
+                <Paragraph>Remove soaker bottle and rinse off pH probe.</Paragraph>
+                <Paragraph>Pour a small amount of the calibration solution into a cup.</Paragraph>
+                <Paragraph>Place the probe into the cup.</Paragraph>
             </InstructionsStep>
             <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart}>
-                <AtlasText>Let the probe sit in calibration solution untill readings stabalize.</AtlasText>
+                <Paragraph>Let the probe sit in calibration solution untill readings stabalize.</Paragraph>
             </WaitingStep>
-            <AtlasCommandStep sensor={SensorType.values.SensorType_PH} command={"Cal,low,4"} replies={atlasReplies} deviceModuleQuery={deviceModuleQuery}>
-                <AtlasText>Calibrating</AtlasText>
-            </AtlasCommandStep>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={"Cal,low,4"} atlasCalibration={atlasCalibration} atlasCalibrate={atlasCalibrate}>
+                <Paragraph>Calibrating</Paragraph>
+            </AtlasCalibrationCommandStep>
             <InstructionsStep>
-                <AtlasText>Do not pour the calibration solution back into the bottle.</AtlasText>
+                <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
             </InstructionsStep>
         </AtlasScript>;
     }
@@ -86,60 +80,60 @@ export class AtlasPhTwoPointScript extends React.Component {
 
 AtlasPhTwoPointScript.propTypes = {
     timerStart: PropTypes.func.isRequired,
-    deviceModuleQuery: PropTypes.func.isRequired,
+    atlasCalibrate: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     timer: PropTypes.object.isRequired,
-    atlasReplies: PropTypes.object.isRequired,
+    atlasCalibration: PropTypes.object.isRequired,
 };
 
 export class AtlasPhThreePointScript extends React.Component {
     render() {
-        const { timerStart, deviceModuleQuery, onCancel, timer, atlasReplies } = this.props;
+        const { timerStart, atlasCalibrate, onCancel, timer, atlasCalibration } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
-                <AtlasText>Remove soaker bottle and rinse off pH probe.</AtlasText>
-                <AtlasText>Pour a small amount of the calibration solution into a cup.</AtlasText>
-                <AtlasText>Place the probe into the cup.</AtlasText>
+                <Paragraph>Remove soaker bottle and rinse off pH probe.</Paragraph>
+                <Paragraph>Pour a small amount of the calibration solution into a cup.</Paragraph>
+                <Paragraph>Place the probe into the cup.</Paragraph>
             </InstructionsStep>
             <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart}>
-                <AtlasText>Let the probe sit in calibration solution untill readings stabalize.</AtlasText>
+                <Paragraph>Let the probe sit in calibration solution untill readings stabalize.</Paragraph>
             </WaitingStep>
-            <AtlasCommandStep sensor={SensorType.values.SensorType_PH} command={"Cal,mid,7"} replies={atlasReplies} deviceModuleQuery={deviceModuleQuery}>
-                <AtlasText>Calibrating</AtlasText>
-            </AtlasCommandStep>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={"Cal,mid,7"} atlasCalibration={atlasCalibration} atlasCalibrate={atlasCalibrate}>
+                <Paragraph>Calibrating</Paragraph>
+            </AtlasCalibrationCommandStep>
             <InstructionsStep>
-                <AtlasText>Do not pour the calibration solution back into the bottle.</AtlasText>
+                <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
             </InstructionsStep>
 
             <InstructionsStep>
-                <AtlasText>Remove soaker bottle and rinse off pH probe.</AtlasText>
-                <AtlasText>Pour a small amount of the calibration solution into a cup.</AtlasText>
-                <AtlasText>Place the probe into the cup.</AtlasText>
+                <Paragraph>Remove soaker bottle and rinse off pH probe.</Paragraph>
+                <Paragraph>Pour a small amount of the calibration solution into a cup.</Paragraph>
+                <Paragraph>Place the probe into the cup.</Paragraph>
             </InstructionsStep>
             <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart}>
-                <AtlasText>Let the probe sit in calibration solution untill readings stabalize.</AtlasText>
+                <Paragraph>Let the probe sit in calibration solution untill readings stabalize.</Paragraph>
             </WaitingStep>
-            <AtlasCommandStep sensor={SensorType.values.SensorType_PH} command={"Cal,low,4"} replies={atlasReplies} deviceModuleQuery={deviceModuleQuery}>
-                <AtlasText>Calibrating</AtlasText>
-            </AtlasCommandStep>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={"Cal,low,4"} atlasCalibration={atlasCalibration} atlasCalibrate={atlasCalibrate}>
+                <Paragraph>Calibrating</Paragraph>
+            </AtlasCalibrationCommandStep>
             <InstructionsStep>
-                <AtlasText>Do not pour the calibration solution back into the bottle.</AtlasText>
+                <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
             </InstructionsStep>
 
             <InstructionsStep>
-                <AtlasText>Remove soaker bottle and rinse off pH probe.</AtlasText>
-                <AtlasText>Pour a small amount of the calibration solution into a cup.</AtlasText>
-                <AtlasText>Place the probe into the cup.</AtlasText>
+                <Paragraph>Remove soaker bottle and rinse off pH probe.</Paragraph>
+                <Paragraph>Pour a small amount of the calibration solution into a cup.</Paragraph>
+                <Paragraph>Place the probe into the cup.</Paragraph>
             </InstructionsStep>
             <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart}>
-                <AtlasText>Let the probe sit in calibration solution untill readings stabalize.</AtlasText>
+                <Paragraph>Let the probe sit in calibration solution untill readings stabalize.</Paragraph>
             </WaitingStep>
-            <AtlasCommandStep sensor={SensorType.values.SensorType_PH} command={"Cal,high,10"} replies={atlasReplies} deviceModuleQuery={deviceModuleQuery}>
-                <AtlasText>Calibrating</AtlasText>
-            </AtlasCommandStep>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={"Cal,high,10"} atlasCalibration={atlasCalibration} atlasCalibrate={atlasCalibrate}>
+                <Paragraph>Calibrating</Paragraph>
+            </AtlasCalibrationCommandStep>
             <InstructionsStep>
-                <AtlasText>Do not pour the calibration solution back into the bottle.</AtlasText>
+                <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
             </InstructionsStep>
         </AtlasScript>;
     }
@@ -147,8 +141,8 @@ export class AtlasPhThreePointScript extends React.Component {
 
 AtlasPhThreePointScript.propTypes = {
     timerStart: PropTypes.func.isRequired,
-    deviceModuleQuery: PropTypes.func.isRequired,
+    atlasCalibrate: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     timer: PropTypes.object.isRequired,
-    atlasReplies: PropTypes.object.isRequired,
+    atlasCalibration: PropTypes.object.isRequired,
 };

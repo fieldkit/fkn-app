@@ -4,11 +4,15 @@ import { connect } from 'react-redux';
 import { View, Text, Button } from 'react-native';
 
 import { AppScreen, DeviceInfo, MenuButtonContainer, MenuButton } from '../../components';
-import { navigateBack, timerStart, deviceModuleQuery } from '../../actions';
+
+import { navigateBack, timerStart } from '../../actions';
+
+import { atlasCalibrationBegin, atlasCalibrationEnd, atlasReadSensor, atlasSensorCommand, atlasSetProbeType, atlasCalibrate } from './actions';
+
+import { SensorType } from './protocol';
 
 import { AtlasPhOnePointScript, AtlasPhTwoPointScript, AtlasPhThreePointScript } from './PhSensor';
-
-import styles from '../../styles';
+import { AtlasEcScript } from './EcSensor';
 
 class AtlasCalibrationScreen extends React.Component {
     static navigationOptions = {
@@ -19,36 +23,49 @@ class AtlasCalibrationScreen extends React.Component {
         script: null
     }
 
-    startCalibration(script) {
+    componentDidMount() {
+        this.props.atlasCalibrationEnd();
+    }
+
+    startCalibration(sensor, script) {
+        this.props.atlasCalibrationBegin(sensor);
+
         this.setState({
             script: script
         });
     }
 
     onCancel() {
+        this.props.atlasCalibrationEnd();
+
         this.setState({
             script: null
         });
     }
 
     phOnePointScript() {
-        const { timerStart, deviceModuleQuery, timer, atlasReplies } = this.props;
+        const { timerStart, atlasCalibrate, timer, atlasCalibration } = this.props;
 
-        return <AtlasPhOnePointScript timerStart={timerStart} deviceModuleQuery={deviceModuleQuery} timer={timer} atlasReplies={atlasReplies} onCancel={() => this.onCancel()} />;
+        return <AtlasPhOnePointScript timerStart={timerStart} atlasCalibrate={atlasCalibrate} timer={timer} atlasCalibration={atlasCalibration} onCancel={() => this.onCancel()} />;
     }
 
     phTwoPointScript() {
-        const { timerStart, deviceModuleQuery, timer, atlasReplies } = this.props;
+        const { timerStart, atlasCalibrate, timer, atlasCalibration } = this.props;
 
-        return <AtlasPhTwoPointScript timerStart={timerStart} deviceModuleQuery={deviceModuleQuery} timer={timer} atlasReplies={atlasReplies} onCancel={() => this.onCancel()} />;
+        return <AtlasPhTwoPointScript timerStart={timerStart} atlasCalibrate={atlasCalibrate} timer={timer} atlasCalibration={atlasCalibration} onCancel={() => this.onCancel()} />;
     }
 
     phThreePointScript() {
-        const { timerStart, deviceModuleQuery, timer, atlasReplies } = this.props;
+        const { timerStart, atlasCalibrate, timer, atlasCalibration } = this.props;
 
-        return <AtlasPhThreePointScript timerStart={timerStart} deviceModuleQuery={deviceModuleQuery} timer={timer} atlasReplies={atlasReplies} onCancel={() => this.onCancel()} />;
+        return <AtlasPhThreePointScript timerStart={timerStart} atlasCalibrate={atlasCalibrate} timer={timer} atlasCalibration={atlasCalibration} onCancel={() => this.onCancel()} />;
     }
 
+    ecScript() {
+        const { timerStart, atlasCalibrate, timer, atlasCalibration, atlasReadSensor, atlasSetProbeType } = this.props;
+
+        return <AtlasEcScript timerStart={timerStart} atlasCalibrate={atlasCalibrate} timer={timer} atlasCalibration={atlasCalibration} onCancel={() => this.onCancel()} atlasReadSensor={atlasReadSensor} atlasSetProbeType={atlasSetProbeType } />;
+    }
 
     renderScript(script) {
         const { progress, deviceInfo } = this.props;
@@ -67,9 +84,10 @@ class AtlasCalibrationScreen extends React.Component {
         return <AppScreen progress={progress}>
             <DeviceInfo info={deviceInfo} />
             <MenuButtonContainer>
-                <MenuButton title="pH One-Point" onPress={() => this.startCalibration(this.phOnePointScript.bind(this))} />
-                <MenuButton title="pH Two-Point" onPress={() => this.startCalibration(this.phTwoPointScript.bind(this))} />
-                <MenuButton title="pH Three-Point" onPress={() => this.startCalibration(this.phThreePointScript.bind(this))} />
+                <MenuButton title="pH One-Point" onPress={() => this.startCalibration(SensorType.values.PH, this.phOnePointScript.bind(this))} />
+                <MenuButton title="pH Two-Point" onPress={() => this.startCalibration(SensorType.values.PH, this.phTwoPointScript.bind(this))} />
+                <MenuButton title="pH Three-Point" onPress={() => this.startCalibration(SensorType.values.PH, this.phThreePointScript.bind(this))} />
+                <MenuButton title="Conductivity" onPress={() => this.startCalibration(SensorType.values.EC, this.ecScript.bind(this))} />
                 <MenuButton title="Back" onPress={() => this.props.navigateBack()} />
             </MenuButtonContainer>
         </AppScreen>;
@@ -77,23 +95,34 @@ class AtlasCalibrationScreen extends React.Component {
 };
 
 AtlasCalibrationScreen.propTypes = {
+    atlasCalibrationBegin: PropTypes.func.isRequired,
+    atlasCalibrationEnd: PropTypes.func.isRequired,
+    atlasReadSensor: PropTypes.func.isRequired,
     timerStart: PropTypes.func.isRequired,
-    deviceModuleQuery: PropTypes.func.isRequired,
+    atlasSensorCommand: PropTypes.func.isRequired,
+    atlasSetProbeType: PropTypes.func.isRequired,
+    atlasCalibrate: PropTypes.func.isRequired,
     navigateBack: PropTypes.func.isRequired,
+
     progress: PropTypes.object.isRequired,
     deviceInfo: PropTypes.object.isRequired,
-    atlasReplies: PropTypes.object.isRequired,
+    atlasCalibration: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
     progress: state.progress,
     deviceInfo: state.deviceInfo,
-    timer: state.timers.Atlas || {},
-    atlasReplies: state.atlasReplies,
+    timer: state.timers.Atlas || { done: false },
+    atlasCalibration: state.atlasCalibration,
 });
 
 export default connect(mapStateToProps, {
     timerStart,
-    deviceModuleQuery,
     navigateBack,
+    atlasCalibrationBegin,
+    atlasCalibrationEnd,
+    atlasReadSensor,
+    atlasSensorCommand,
+    atlasSetProbeType,
+    atlasCalibrate,
 })(AtlasCalibrationScreen);

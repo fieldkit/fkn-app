@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Button } from 'react-native';
 
-import { SensorType, atlasSensorQuery, encodeWireAtlasQuery, decodeWireAtlasReply } from './protocol';
+import { SensorType } from './protocol';
 
 import styles from '../../styles';
 import atlasStyles  from './styles';
@@ -22,19 +22,27 @@ export class ScriptButtons extends React.Component {
     }
 };
 
+ScriptButtons.propTypes = {
+    canMoveNext: PropTypes.bool.isRequired,
+    lastStep: PropTypes.bool.isRequired,
+    onMoveNextStep: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+};
+
 export class CalibrationStep extends React.Component {
     canMoveNext() {
         return true;
     }
 
     render() {
-        const props = this.props;
         const { children } = this.props;
+        const props = this.props;
+        const canMoveNext = this.canMoveNext();
 
         return <View style={atlasStyles.script.step.container}>
             {this.renderStep()}
             <View style={atlasStyles.script.step.children.container}>{children}</View>
-            <ScriptButtons {...props} canMoveNext={this.canMoveNext()} />
+            <ScriptButtons {...props} canMoveNext={canMoveNext} />
         </View>;
     }
 
@@ -43,11 +51,21 @@ export class CalibrationStep extends React.Component {
     }
 };
 
+CalibrationStep.propTypes = {
+};
+
 export class InstructionsStep extends CalibrationStep {
 
 };
 
+InstructionsStep.propTypes = {
+};
+
 export class WaitingStep extends CalibrationStep {
+    state = {
+        skipped: false
+    }
+
     componentDidMount() {
         const { timerStart, delay } = this.props;
 
@@ -56,45 +74,84 @@ export class WaitingStep extends CalibrationStep {
 
     canMoveNext() {
         const { timer } = this.props;
-        return timer && timer.done;
+        const { skipped } = this.state;
+
+        return (timer && timer.done) || skipped;
+    }
+
+    onSkipped() {
+        this.setState({
+            skipped: true
+        });
     }
 
     renderStep() {
         const { timer } = this.props;
+
         if (!timer) {
             return <View></View>;
         }
-        return <Text style={atlasStyles.script.step.waiting.remaining}>{timer.remaining} Seconds</Text>;
+        return <Text style={atlasStyles.script.step.waiting.remaining} onPress={() => this.onSkipped()}>{timer.remaining} Seconds</Text>;
     }
 };
 
-export class AtlasCommandStep extends CalibrationStep {
+WaitingStep.propTypes = {
+    timerStart: PropTypes.func.isRequired,
+    delay: PropTypes.number.isRequired,
+};
+
+export class AtlasCalibrationCommandStep extends CalibrationStep {
     componentDidMount() {
-        const { deviceModuleQuery, sensor, command } = this.props;
-        const query = atlasSensorQuery(sensor, command);
-        deviceModuleQuery(8, 8, encodeWireAtlasQuery(query));
+        this.onRetry();
+    }
+
+    onRetry() {
+        const { atlasCalibrate, sensor, command } = this.props;
+
+        atlasCalibrate(sensor, command);
     }
 
     canMoveNext() {
-        const { replies } = this.props;
-        return !replies.failed;
+        const { atlasCalibration } = this.props;
+
+        return atlasCalibration.calibrated;
     }
 
     renderStep() {
-        const { command, replies } = this.props;
+        const { command, atlasCalibration } = this.props;
+
         const r = [
             <Text key={0} style={atlasStyles.script.step.command.command}>{command}</Text>
         ];
-        if (!replies.pending) {
-            if (replies.busy || replies.failed) {
+
+        if (!atlasCalibration.pending && !atlasCalibration.calibrated) {
+            if (atlasCalibration.busy || atlasCalibration.error) {
                 r.push(<Text key={r.length} style={atlasStyles.script.step.command.failed}>Failed!</Text>);
             }
             else {
                 r.push(<Text key={r.length} style={atlasStyles.script.step.command.success}>Success!</Text>);
             }
+            r.push(<Button key={r.length} title="Retry" onPress={() => this.onRetry()} />);
         }
+
         return <View>{r}</View>;
     }
+};
+
+AtlasCalibrationCommandStep.propTypes = {
+    atlasCalibrate: PropTypes.func.isRequired,
+    atlasCalibration: PropTypes.object.isRequired,
+    sensor: PropTypes.number.isRequired,
+    command: PropTypes.string.isRequired,
+};
+
+export class Paragraph extends React.Component {
+    render() {
+        return <Text style={atlasStyles.script.step.instructions.text}>{this.props.children}</Text>;
+    }
+};
+
+Paragraph.propTypes = {
 };
 
 export class AtlasScript extends React.Component {
@@ -131,14 +188,15 @@ export class AtlasScript extends React.Component {
         const lastStep = this.isLastStep();
 
         const newProps = {
-            canMoveNext: true,
             lastStep: lastStep,
             onMoveNextStep: this.onMoveNextStep.bind(this),
-            timerStart: timerStart,
-            deviceModuleQuery: deviceModuleQuery,
             onCancel: onCancel,
         };
 
         return React.cloneElement(step, { ...newProps });
     }
+};
+
+AtlasScript.propTypes = {
+    onCancel: PropTypes.func.isRequired,
 };

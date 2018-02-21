@@ -1,4 +1,19 @@
 export default atlasStyles = {
+    readings: {
+        text: {
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: 20,
+        }
+    },
+    buttons: {
+        button: {
+            paddingBottom: 10,
+        },
+        largeButton: {
+            paddingBottom: 10,
+        }
+    },
     script: {
         buttons: {
             container: {

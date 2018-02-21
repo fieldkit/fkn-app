@@ -1,9 +1,22 @@
-'use strict'
+'use strict';
 
-import { put, call } from 'redux-saga/effects'
-import { invokeDeviceApi } from '../middleware/device-api';
+import _ from 'lodash';
+import { put, call, select } from 'redux-saga/effects';
+import { CALL_DEVICE_API, invokeDeviceApi } from '../middleware/device-api';
 
 export function* deviceCall(raw) {
+    if (_.isFunction(raw)) {
+        const state = yield select();
+        const actions = [];
+        raw(action => actions.push(action), () => state);
+        if (actions.length != 1) {
+            console.log("Error: Not sure how to handle two actions from dispatch!");
+            return null;
+        }
+        const deviceRaw = actions[0][CALL_DEVICE_API];
+        return yield call(deviceCall, deviceRaw);
+    }
+
     yield put({
         type: raw.types[0],
         deviceApi: {
@@ -25,7 +38,7 @@ export function* deviceCall(raw) {
             }
         }
         else {
-            console.log("Error had no Action", err)
+            console.log("Error had no Action", err);
         }
         throw err;
     }

@@ -16,8 +16,11 @@ import * as Types from './actions/types';
 import { rootSaga } from './actions/sagas';
 
 const loggerMiddleware = createLogger({
-    predicate: (getState, action) => action.type !== Types.FIND_DEVICE_INFO && action.type !== Types.TIMER_TICK,
-    collapsed: (getState, action) => action.type === Types.FIND_DEVICE_INFO || true
+    predicate: (getState, action) => action.type !== Types.FIND_DEVICE_INFO && action.type !== Types.TIMER_TICK && action.type != Types.DEVICE_HANDSHAKE_START && action.type != Types.DEVICE_HANDSHAKE_SUCCESS,
+    collapsed: (getState, action) => action.type === Types.FIND_DEVICE_INFO || true,
+    stateTransformer: state => {
+        return 'state';
+    },
 });
 
 const sagaMiddleware = createSagaMiddleware();
