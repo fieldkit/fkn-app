@@ -70,8 +70,6 @@ export function atlasReading(sensor) {
 
 function* takeAtlasReadings() {
     yield takeLatest([AtlasActionTypes.ATLAS_READ_SENSOR_START], function* (start) {
-        console.log("Starting", start);
-
         while (true) {
             yield call(deviceCall, atlasReading(start.sensor));
 
@@ -81,7 +79,6 @@ function* takeAtlasReadings() {
             });
 
             if (stopped) {
-                console.log("Ended");
                 break;
             }
         }

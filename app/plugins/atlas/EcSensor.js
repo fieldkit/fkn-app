@@ -150,6 +150,7 @@ export class AtlasEcScript extends React.Component {
             <InstructionsStep>
                 <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
+                <Paragraph>You're done. Please review the manual for maintenance procedures and recalibration schedule.</Paragraph>
             </InstructionsStep>
         </AtlasScript>;
     }

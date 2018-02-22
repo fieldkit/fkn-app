@@ -27,6 +27,7 @@ export class AtlasPhOnePointScript extends React.Component {
             </AtlasCalibrationCommandStep>
             <InstructionsStep>
                 <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
+                <Paragraph>You're done. Please review the manual for maintenance procedures and recalibration schedule.</Paragraph>
             </InstructionsStep>
         </AtlasScript>;
     }
@@ -73,6 +74,7 @@ export class AtlasPhTwoPointScript extends React.Component {
             </AtlasCalibrationCommandStep>
             <InstructionsStep>
                 <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
+                <Paragraph>You're done. Please review the manual for maintenance procedures and recalibration schedule.</Paragraph>
             </InstructionsStep>
         </AtlasScript>;
     }
@@ -134,6 +136,7 @@ export class AtlasPhThreePointScript extends React.Component {
             </AtlasCalibrationCommandStep>
             <InstructionsStep>
                 <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
+                <Paragraph>You're done. Please review the manual for maintenance procedures and recalibration schedule.</Paragraph>
             </InstructionsStep>
         </AtlasScript>;
     }
