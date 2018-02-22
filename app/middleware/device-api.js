@@ -223,7 +223,7 @@ export default store => dispatch => action => {
         type: callApi.types[0]
     });
 
-    return deviceConnection.execute(callApi).then(good => {
+    return invokeDeviceApi(callApi).then(good => {
         dispatch(good);
     }, bad => {
         if (bad.action) {
