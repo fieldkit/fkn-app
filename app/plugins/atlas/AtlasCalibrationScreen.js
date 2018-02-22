@@ -7,7 +7,7 @@ import { AppScreen, DeviceInfo, MenuButtonContainer, MenuButton } from '../../co
 
 import { navigateBack, timerStart, timerCancel } from '../../actions';
 
-import { atlasCalibrationBegin, atlasCalibrationEnd, atlasReadSensor, atlasSensorCommand, atlasSetProbeType, atlasCalibrate } from './actions';
+import { atlasCalibrationBegin, atlasCalibrationEnd, atlasCalibrationTemperatureSet, atlasReadSensor, atlasSensorCommand, atlasSetProbeType, atlasCalibrate } from './actions';
 
 import { SensorType } from './protocol';
 
@@ -65,9 +65,9 @@ class AtlasCalibrationScreen extends React.Component {
     }
 
     ecScript() {
-        const { timerStart, timerCancel, atlasCalibrate, timer, atlasState, atlasReadSensor, atlasSetProbeType } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, timer, atlasState, atlasReadSensor, atlasSetProbeType, atlasCalibrationTemperatureSet } = this.props;
 
-        return <AtlasEcScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} atlasReadSensor={atlasReadSensor} atlasSetProbeType={atlasSetProbeType} />;
+        return <AtlasEcScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} atlasReadSensor={atlasReadSensor} atlasSetProbeType={atlasSetProbeType} atlasCalibrationTemperatureSet={atlasCalibrationTemperatureSet} />;
     }
 
     orpScript() {
@@ -136,6 +136,7 @@ AtlasCalibrationScreen.propTypes = {
     atlasSensorCommand: PropTypes.func.isRequired,
     atlasSetProbeType: PropTypes.func.isRequired,
     atlasCalibrate: PropTypes.func.isRequired,
+    atlasCalibrationTemperatureSet: PropTypes.func.isRequired,
     navigateBack: PropTypes.func.isRequired,
     progress: PropTypes.object.isRequired,
     deviceInfo: PropTypes.object.isRequired,
@@ -158,5 +159,6 @@ export default connect(mapStateToProps, {
     atlasReadSensor,
     atlasSensorCommand,
     atlasSetProbeType,
+    atlasCalibrationTemperatureSet,
     atlasCalibrate,
 })(AtlasCalibrationScreen);

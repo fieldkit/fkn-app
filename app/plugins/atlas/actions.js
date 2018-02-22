@@ -23,6 +23,13 @@ export function atlasCalibrationEnd() {
     };
 }
 
+export function atlasCalibrationTemperatureSet(temperature) {
+    return {
+        type: AtlasActionTypes.ATLAS_CALIBRATION_TEMPERATURE_SET,
+        temperature: temperature,
+    };
+}
+
 export function atlasReadSensor(sensor) {
     return {
         type: AtlasActionTypes.ATLAS_READ_SENSOR_START,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Slider } from 'react-native';
 
 import { SensorType } from './protocol';
 
@@ -39,9 +39,9 @@ class ConductivityProbeTypeStep extends ScriptStep {
 
             <Paragraph>Please select the probe you're using.</Paragraph>
 
-            <View style={atlasStyles.buttons.largeButton}><Button title="0.1" onPress={() => this.onSetProbe(0.1) }/></View>
-            <View style={atlasStyles.buttons.largeButton}><Button title="1" onPress={() => this.onSetProbe(1) }/></View>
-            <View style={atlasStyles.buttons.largeButton}><Button title="10" onPress={() => this.onSetProbe(10) }/></View>
+            <View style={atlasStyles.buttons.largeButton}><Button title="K = 0.1" onPress={() => this.onSetProbe(0.1) }/></View>
+            <View style={atlasStyles.buttons.largeButton}><Button title="K = 1" onPress={() => this.onSetProbe(1) }/></View>
+            <View style={atlasStyles.buttons.largeButton}><Button title="K = 10" onPress={() => this.onSetProbe(10) }/></View>
         </View>;
     }
 };
@@ -51,17 +51,40 @@ ConductivityProbeTypeStep.propTypes = {
 };
 
 class TemperatureCompensationStep extends ScriptStep {
+    state = {
+        temperature: 25,
+    }
+
+    onTemperatureChange(value) {
+        this.props.atlasCalibrationTemperatureSet(value);
+        this.setState({
+            temperature: value,
+        });
+    }
+
     renderStep() {
+        const { temperature } = this.state;
+
         return <View>
             <Paragraph>
                 Temperature has a significant effect on conductivity readings. The EZO™ Conductivity circuit has its temperature compensation set to 25˚ C as the default. If the calibration solution is not within 5˚ of 25˚ C, check the temperature chart on the side of the calibration bottle, and calibrate to that value.
             </Paragraph>
+            <Paragraph>What is the temperature of the solution?</Paragraph>
+            <Paragraph style={{ textAlign: "center" }}>{temperature}°C</Paragraph>
+            <Slider
+                style={{ paddingTop: 20, paddingBottom: 20 }}
+                step={5}
+                minimumValue={5}
+                maximumValue={50}
+                onValueChange={this.onTemperatureChange.bind(this)}
+                value={temperature}
+            />
         </View>;
     }
 };
 
 TemperatureCompensationStep.propTypes = {
-
+    atlasCalibrationTemperatureSet: PropTypes.func.isRequired,
 };
 
 export class AtlasEcScript extends React.Component {
@@ -72,7 +95,7 @@ export class AtlasEcScript extends React.Component {
     }
 
     render() {
-        const { timerStart, timerCancel, atlasCalibrate, onCancel, timer, atlasState, atlasReadSensor, atlasSetProbeType } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, onCancel, timer, atlasState, atlasReadSensor, atlasSetProbeType, atlasCalibrationTemperatureSet } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
@@ -81,6 +104,8 @@ export class AtlasEcScript extends React.Component {
             </InstructionsStep>
 
             <ConductivityProbeTypeStep atlasState={atlasState} atlasSetProbeType={atlasSetProbeType} />
+
+            <TemperatureCompensationStep atlasCalibrationTemperatureSet={atlasCalibrationTemperatureSet} atlasState={atlasState} />
 
             <InstructionsStep>
                 <ReadingsDisplay atlasState={atlasState} />
@@ -91,10 +116,6 @@ export class AtlasEcScript extends React.Component {
                 <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Performing dry calibration.</Paragraph>
             </AtlasCalibrationCommandStep>
-
-            <TemperatureCompensationStep>
-                <ReadingsDisplay atlasState={atlasState} />
-            </TemperatureCompensationStep>
 
             <InstructionsStep>
                 <ReadingsDisplay atlasState={atlasState} />
@@ -145,6 +166,7 @@ AtlasEcScript.propTypes = {
     timerStart: PropTypes.func.isRequired,
     timerCancel: PropTypes.func.isRequired,
     atlasSetProbeType: PropTypes.func.isRequired,
+    atlasCalibrationTemperatureSet: PropTypes.func.isRequired,
     atlasCalibrate: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     timer: PropTypes.object.isRequired,
