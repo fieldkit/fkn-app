@@ -48,17 +48,20 @@ export default atlasStyles = {
                     fontWeight: "bold",
                     fontSize: 30,
                 },
-                failed: {
-                    backgroundColor: '#ffaaaa',
+                base: {
                     textAlign: "center",
                     fontWeight: "bold",
                     fontSize: 30,
+                    marginBottom: 20,
+                },
+                busy: {
+                    backgroundColor: '#f5f500',
+                },
+                failed: {
+                    backgroundColor: '#ffaaaa',
                 },
                 success: {
                     backgroundColor: '#aaffaa',
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: 30,
                 }
             }
         }

@@ -6,7 +6,7 @@ import { SensorType } from './protocol';
 
 import { AtlasScript } from './AtlasScript';
 import { ScriptStep, InstructionsStep, WaitingStep, AtlasCalibrationCommandStep } from './ScriptSteps';
-import { Paragraph, ReadingsDisplay } from './Components';
+import { Paragraph, ReadingsDisplay, AtlasCommandStatus } from './Components';
 
 import atlasStyles from './styles';
 
@@ -31,6 +31,10 @@ class ConductivityProbeTypeStep extends ScriptStep {
         return atlasState.probeConfiguration.done;
     }
 
+    isNextVisible() {
+        return false;
+    }
+
     renderStep() {
         const { atlasState } = this.props;
 
@@ -42,6 +46,8 @@ class ConductivityProbeTypeStep extends ScriptStep {
             <View style={atlasStyles.buttons.largeButton}><Button title="K = 0.1" onPress={() => this.onSetProbe(0.1) }/></View>
             <View style={atlasStyles.buttons.largeButton}><Button title="K = 1" onPress={() => this.onSetProbe(1) }/></View>
             <View style={atlasStyles.buttons.largeButton}><Button title="K = 10" onPress={() => this.onSetProbe(10) }/></View>
+
+            <AtlasCommandStatus command={atlasState.probeConfiguration} />
         </View>;
     }
 };

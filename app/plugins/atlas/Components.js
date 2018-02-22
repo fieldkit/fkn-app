@@ -6,14 +6,14 @@ import atlasStyles  from './styles';
 
 export class ScriptButtons extends React.Component {
     render() {
-        const { canMoveNext, lastStep, onMoveNextStep, onCancel } = this.props;
+        const { canMoveNext, lastStep, showNext, onMoveNextStep, onCancel } = this.props;
 
         if (lastStep) {
             return <View><Button title="Done" onPress={() => onCancel()} /></View>;
         }
 
         return <View style={atlasStyles.script.buttons.container}>
-            <View style={atlasStyles.script.buttons.button}><Button title="Next" onPress={() => onMoveNextStep()} disabled={!canMoveNext} /></View>
+            { showNext && <View style={atlasStyles.script.buttons.button}><Button title="Next" onPress={() => onMoveNextStep()} disabled={!canMoveNext} /></View>}
             <View style={atlasStyles.script.buttons.button}><Button title="Cancel" onPress={() => onCancel()} /></View>
         </View>;
     }
@@ -53,4 +53,36 @@ export class ReadingsDisplay extends React.Component {
 
 ReadingsDisplay.propTypes = {
     atlasState: PropTypes.object.isRequired,
+};
+
+export class AtlasCommandStatus extends React.Component {
+    render() {
+        const { command, onRetry } = this.props;
+
+        let retry = <View></View>;
+        let message;
+
+        if (!command.pending) {
+            if (command.busy) {
+                message = <Text style={[atlasStyles.script.step.command.base, atlasStyles.script.step.command.busy]}>Busy, try again.</Text>;
+            }
+            else if (command.error) {
+                message = <Text style={[atlasStyles.script.step.command.base, atlasStyles.script.step.command.failed]}>An error occured.</Text>;
+            }
+            else {
+                message = <Text style={[atlasStyles.script.step.command.base, atlasStyles.script.step.command.success]}>Success</Text>;
+            }
+
+            if (!command.done) {
+                retry = <Button title="Retry" onPress={() => onRetry()} />;
+            }
+        }
+
+        return <View>{message}{retry}</View>;
+    }
+}
+
+AtlasCommandStatus.propTypes = {
+    command: PropTypes.object.isRequired,
+    onRetry: PropTypes.func,
 };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Button } from 'react-native';
 
-import { ScriptButtons } from './Components';
+import { ScriptButtons, AtlasCommandStatus } from './Components';
 
 import atlasStyles  from './styles';
 
@@ -11,15 +11,20 @@ export class ScriptStep extends React.Component {
         return true;
     }
 
+    isNextVisible() {
+        return true;
+    }
+
     render() {
         const { children } = this.props;
         const props = this.props;
         const canMoveNext = this.canMoveNext();
+        const showNext = this.isNextVisible();
 
         return <View style={atlasStyles.script.step.container}>
             {this.renderStep()}
             <View style={atlasStyles.script.step.children.container}>{children}</View>
-            <ScriptButtons {...props} canMoveNext={canMoveNext} />
+            <ScriptButtons {...props} canMoveNext={canMoveNext} showNext={showNext} />
         </View>;
     }
 
@@ -105,24 +110,10 @@ export class AtlasCalibrationCommandStep extends ScriptStep {
         const { command, atlasState } = this.props;
         const { calibration } = atlasState;
 
-        const r = [
-            <Text key={0} style={atlasStyles.script.step.command.command}>{command}</Text>
-        ];
-
-        if (!calibration.pending) {
-            if (calibration.error) {
-                r.push(<Text key={r.length} style={atlasStyles.script.step.command.failed}>Failed!</Text>);
-            }
-            else {
-                r.push(<Text key={r.length} style={atlasStyles.script.step.command.success}>Success!</Text>);
-            }
-
-            if (!calibration.done) {
-                r.push(<Button key={r.length} title="Retry" onPress={() => this.onRetry()} />);
-            }
-        }
-
-        return <View>{r}</View>;
+        return <View>
+            <Text style={atlasStyles.script.step.command.command}>{command}</Text>
+            <AtlasCommandStatus command={calibration} onRetry={() => this.onRetry()} />
+        </View>;
     }
 };
 

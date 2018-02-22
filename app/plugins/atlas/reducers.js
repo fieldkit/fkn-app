@@ -37,15 +37,15 @@ function getPendingReplyState(action) {
 
 function getReplyState(action) {
     if (action.response.type == AppReplyType.values.REPLY_BUSY) {
-        return { pending: false, error: true, done: false, lastReply: null };
+        return { pending: false, error: true, busy: true, done: false, lastReply: null };
     }
 
     const reply = decodeWireAtlasReply(action.response.module.message);
     if (reply.type == AtlasReplyType.values.REPLY_ERROR) {
-        return { pending: false, error: true, done: false, lastReply: reply };
+        return { pending: false, error: true, busy: false, done: false, lastReply: reply };
     }
 
-    return { pending: false, error: false, done: true, lastReply: reply };
+    return { pending: false, error: false, busy: false, done: true, lastReply: reply };
 }
 
 export function atlasState(state = initialAtlasCalibrationState, action) {

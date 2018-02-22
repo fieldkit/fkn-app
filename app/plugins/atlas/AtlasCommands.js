@@ -49,10 +49,10 @@ export class AtlasCommands {
                 CalibrateWet: "I",
             },
             Orp: {
-                Calibrate: "0",
+                Calibrate: "I",
             },
             Temperature: {
-                Calibrate: "0",
+                Calibrate: "I",
             }
         };
     }
