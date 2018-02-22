@@ -20,7 +20,7 @@ describe('Atlas Plugin', () => {
             },
             atlasState: {
                 values: [],
-                commands: atlasCommands.getCommands(25),
+                commands: atlasCommands.getCommands(25, "1"),
             },
             timerStart: jest.fn(),
             timerCancel: jest.fn(),

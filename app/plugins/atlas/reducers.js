@@ -20,7 +20,12 @@ const initialReplyState = {
 const initialAtlasCalibrationState = {
     values: [],
     temperature: 25,
-    commands: atlasCommands.getCommands(25),
+    probeType: "1",
+    conductivity: {
+        low: 0,
+        high: 0,
+    },
+    commands: atlasCommands.getCommands(25, "1"),
     probeConfiguration: initialReplyState,
     calibration: initialReplyState,
     reading: initialReplyState,
@@ -57,7 +62,10 @@ export function atlasState(state = initialAtlasCalibrationState, action) {
         return initialAtlasCalibrationState;
     }
     case AtlasActionTypes.ATLAS_CALIBRATION_TEMPERATURE_SET: {
-        return { ...state, ...{ temperature: action.temperature, commands: atlasCommands.getCommands(action.temperature) } };
+        return { ...state, ...{ temperature: action.temperature, commands: atlasCommands.getCommands(action.temperature, state.probeType) } };
+    }
+    case AtlasActionTypes.ATLAS_CALIBRATION_PROBE_TYPE_SET: {
+        return { ...state, ...{ probeType: action.probeType, commands: atlasCommands.getCommands(state.temperature, action.probeType) } };
     }
     case AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_START: {
         return { ...state, ...{ probeConfiguration: getPendingReplyState(action) } };

@@ -14,7 +14,7 @@ class ConductivityProbeTypeStep extends ScriptStep {
     onSetProbe(k) {
         const { atlasState, atlasSetProbeType } = this.props;
 
-        atlasSetProbeType(SensorType.values.EC, atlasState.commands.Ec.SetProbe[k]);
+        atlasSetProbeType(SensorType.values.EC, atlasState.commands.Ec.SetProbe[k], k);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -43,9 +43,9 @@ class ConductivityProbeTypeStep extends ScriptStep {
 
             <Paragraph>Please select the probe you're using.</Paragraph>
 
-            <View style={atlasStyles.buttons.largeButton}><Button title="K = 0.1" onPress={() => this.onSetProbe(0.1) }/></View>
-            <View style={atlasStyles.buttons.largeButton}><Button title="K = 1" onPress={() => this.onSetProbe(1) }/></View>
-            <View style={atlasStyles.buttons.largeButton}><Button title="K = 10" onPress={() => this.onSetProbe(10) }/></View>
+            <View style={atlasStyles.buttons.largeButton}><Button title="K = 0.1" onPress={() => this.onSetProbe("0.1") }/></View>
+            <View style={atlasStyles.buttons.largeButton}><Button title="K = 1" onPress={() => this.onSetProbe("1") }/></View>
+            <View style={atlasStyles.buttons.largeButton}><Button title="K = 10" onPress={() => this.onSetProbe("10") }/></View>
 
             <AtlasCommandStatus command={atlasState.probeConfiguration} />
         </View>;
@@ -53,6 +53,7 @@ class ConductivityProbeTypeStep extends ScriptStep {
 };
 
 ConductivityProbeTypeStep.propTypes = {
+    atlasSetProbeType: PropTypes.func.isRequired,
     atlasState: PropTypes.object.isRequired,
 };
 

@@ -60,9 +60,17 @@ export function atlasSensorCommand(types, blocking, sensor, command) {
     };
 }
 
-export function atlasSetProbeType(sensor, command) {
-    const types = [AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_START, AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_SUCCESS, AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_FAIL];
-    return atlasSensorCommand(types, true, sensor, command);
+export function atlasSetProbeType(sensor, command, probeType) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: AtlasActionTypes.ATLAS_CALIBRATION_PROBE_TYPE_SET,
+            probeType: probeType,
+        });
+
+        const types = [AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_START, AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_SUCCESS, AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_FAIL];
+        const sensorCommand = atlasSensorCommand(types, true, sensor, command);
+        return sensorCommand(dispatch, getState);
+    };
 }
 
 export function atlasCalibrate(sensor, command) {

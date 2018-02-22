@@ -67,13 +67,15 @@ class AtlasCalibrationScreen extends React.Component {
     ecScript() {
         const { timerStart, timerCancel, atlasCalibrate, timer, atlasState, atlasReadSensor, atlasSetProbeType, atlasCalibrationTemperatureSet } = this.props;
 
-        return <AtlasEcScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} atlasReadSensor={atlasReadSensor} atlasSetProbeType={atlasSetProbeType} atlasCalibrationTemperatureSet={atlasCalibrationTemperatureSet} />;
+        return <AtlasEcScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()}
+                atlasReadSensor={atlasReadSensor} atlasSetProbeType={atlasSetProbeType} atlasCalibrationTemperatureSet={atlasCalibrationTemperatureSet} />;
     }
 
     orpScript() {
         const { timerStart, timerCancel, atlasCalibrate, timer, atlasState } = this.props;
 
-        return <AtlasOrpScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} atlasReadSensor={atlasReadSensor} atlasSetProbeType={atlasSetProbeType} />;
+        return <AtlasOrpScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()}
+                atlasReadSensor={atlasReadSensor} atlasSetProbeType={atlasSetProbeType} />;
     }
 
     doOnePointScript() {
