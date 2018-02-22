@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 
 import { SensorType } from './protocol';
-import { Paragraph, AtlasScript, InstructionsStep, WaitingStep, AtlasCalibrationCommandStep } from './AtlasScript';
+
+import { AtlasScript } from './AtlasScript';
+import { InstructionsStep, WaitingStep, AtlasCalibrationCommandStep } from './ScriptSteps';
+import { Paragraph } from './Components';
 
 import atlasStyles from './styles';
 

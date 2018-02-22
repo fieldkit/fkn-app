@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { View, Text, Button } from 'react-native';
 
 import { SensorType } from './protocol';
-import { Paragraph, AtlasScript, ScriptStep, InstructionsStep, WaitingStep, AtlasCalibrationCommandStep } from './AtlasScript';
+
+import { AtlasScript } from './AtlasScript';
+import { ScriptStep, InstructionsStep, WaitingStep, AtlasCalibrationCommandStep } from './ScriptSteps';
+import { Paragraph, ReadingsDisplay } from './Components';
 
 import atlasStyles from './styles';
 
@@ -59,24 +62,6 @@ class TemperatureCompensationStep extends ScriptStep {
 
 TemperatureCompensationStep.propTypes = {
 
-};
-
-class ReadingsDisplay extends React.Component {
-    render() {
-        const { atlasState } = this.props;
-        const { values } = atlasState;
-
-        if (values.length == 0) {
-            return <Text style={atlasStyles.readings.text}>Reading...</Text>;
-        }
-
-        const display = values.map(v => v.toString()).join(", ");
-        return <Text style={atlasStyles.readings.text}>{display}</Text>;
-    }
-};
-
-ReadingsDisplay.propTypes = {
-    atlasState: PropTypes.object.isRequired,
 };
 
 export class AtlasEcScript extends React.Component {
