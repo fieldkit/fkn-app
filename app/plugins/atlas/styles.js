@@ -8,61 +8,57 @@ export default atlasStyles = {
     },
     buttons: {
         button: {
-            paddingBottom: 10,
+            marginBottom: 10,
         },
         largeButton: {
-            paddingBottom: 10,
+            marginBottom: 10,
+        },
+        container: {
+        },
+        button: {
+            marginBottom: 10,
         }
     },
-    script: {
-        buttons: {
+    step: {
+        container: {
+        },
+        children: {
             container: {
-            },
-            button: {
-                paddingBottom: 10,
             }
         },
-        step: {
-            container: {
-            },
-            children: {
-                container: {
-                }
-            },
-            instructions: {
-                text: {
-                    fontSize: 18,
-                    padding: 5,
-                }
-            },
-            waiting: {
-                remaining: {
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: 30,
-                }
-            },
+        instructions: {
+            text: {
+                fontSize: 18,
+                padding: 5,
+            }
+        },
+        waiting: {
+            remaining: {
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: 30,
+            }
+        },
+        command: {
             command: {
-                command: {
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: 30,
-                },
-                base: {
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: 30,
-                    marginBottom: 20,
-                },
-                busy: {
-                    backgroundColor: '#f5f500',
-                },
-                failed: {
-                    backgroundColor: '#ffaaaa',
-                },
-                success: {
-                    backgroundColor: '#aaffaa',
-                }
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: 30,
+            },
+            base: {
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: 30,
+                marginBottom: 20,
+            },
+            busy: {
+                backgroundColor: '#f5f500',
+            },
+            failed: {
+                backgroundColor: '#ffaaaa',
+            },
+            success: {
+                backgroundColor: '#aaffaa',
             }
         }
     }

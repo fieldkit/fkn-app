@@ -21,9 +21,9 @@ export class ScriptStep extends React.Component {
         const canMoveNext = this.canMoveNext();
         const showNext = this.isNextVisible();
 
-        return <View style={atlasStyles.script.step.container}>
+        return <View style={atlasStyles.step.container}>
             {this.renderStep()}
-            <View style={atlasStyles.script.step.children.container}>{children}</View>
+            <View style={atlasStyles.step.children.container}>{children}</View>
             <ScriptButtons {...props} canMoveNext={canMoveNext} showNext={showNext} />
         </View>;
     }
@@ -79,7 +79,7 @@ export class WaitingStep extends ScriptStep {
         if (!timer) {
             return <View></View>;
         }
-        return <Text style={atlasStyles.script.step.waiting.remaining} onPress={() => this.onSkipped()}>{timer.remaining} Seconds</Text>;
+        return <Text style={atlasStyles.step.waiting.remaining} onPress={() => this.onSkipped()}>{timer.remaining} Seconds</Text>;
     }
 };
 
@@ -111,7 +111,7 @@ export class AtlasCalibrationCommandStep extends ScriptStep {
         const { calibration } = atlasState;
 
         return <View>
-            <Text style={atlasStyles.script.step.command.command}>{command}</Text>
+            <Text style={atlasStyles.step.command.command}>{command}</Text>
             <AtlasCommandStatus command={calibration} onRetry={() => this.onRetry()} />
         </View>;
     }

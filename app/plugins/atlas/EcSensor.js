@@ -76,7 +76,7 @@ class TemperatureCompensationStep extends ScriptStep {
                 Temperature has a significant effect on conductivity readings. The EZO™ Conductivity circuit has its temperature compensation set to 25˚ C as the default. If the calibration solution is not within 5˚ of 25˚ C, check the temperature chart on the side of the calibration bottle, and calibrate to that value.
             </Paragraph>
             <Paragraph>What is the temperature of the solution?</Paragraph>
-            <Paragraph style={{ textAlign: "center" }}>{temperature}°C</Paragraph>
+            <Paragraph style={{ textAlign: "center", fontWeight: "bold" }}>{temperature}°C</Paragraph>
             <Slider
                 style={{ paddingTop: 20, paddingBottom: 20 }}
                 step={5}

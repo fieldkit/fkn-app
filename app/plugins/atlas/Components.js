@@ -12,9 +12,9 @@ export class ScriptButtons extends React.Component {
             return <View><Button title="Done" onPress={() => onCancel()} /></View>;
         }
 
-        return <View style={atlasStyles.script.buttons.container}>
-            { showNext && <View style={atlasStyles.script.buttons.button}><Button title="Next" onPress={() => onMoveNextStep()} disabled={!canMoveNext} /></View>}
-            <View style={atlasStyles.script.buttons.button}><Button title="Cancel" onPress={() => onCancel()} /></View>
+        return <View style={atlasStyles.buttons.container}>
+            { showNext && <View style={atlasStyles.buttons.button}><Button title="Next" onPress={() => onMoveNextStep()} disabled={!canMoveNext} /></View>}
+            <View style={atlasStyles.buttons.button}><Button title="Cancel" onPress={() => onCancel()} /></View>
         </View>;
     }
 };
@@ -30,7 +30,7 @@ export class Paragraph extends React.Component {
     render() {
         const { style } = this.props;
 
-        return <Text style={[atlasStyles.script.step.instructions.text, style]}>{this.props.children}</Text>;
+        return <Text style={[atlasStyles.step.instructions.text, style]}>{this.props.children}</Text>;
     }
 };
 
@@ -64,13 +64,13 @@ export class AtlasCommandStatus extends React.Component {
 
         if (!command.pending) {
             if (command.busy) {
-                message = <Text style={[atlasStyles.script.step.command.base, atlasStyles.script.step.command.busy]}>Busy, try again.</Text>;
+                message = <Text style={[atlasStyles.step.command.base, atlasStyles.step.command.busy]}>Busy, try again.</Text>;
             }
             else if (command.error) {
-                message = <Text style={[atlasStyles.script.step.command.base, atlasStyles.script.step.command.failed]}>An error occured.</Text>;
+                message = <Text style={[atlasStyles.step.command.base, atlasStyles.step.command.failed]}>An error occured.</Text>;
             }
             else {
-                message = <Text style={[atlasStyles.script.step.command.base, atlasStyles.script.step.command.success]}>Success</Text>;
+                message = <Text style={[atlasStyles.step.command.base, atlasStyles.step.command.success]}>Success</Text>;
             }
 
             if (!command.done) {
