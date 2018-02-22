@@ -12,13 +12,13 @@ import atlasStyles from './styles';
 
 export class AtlasDoOnePointScript extends React.Component {
     render() {
-        const { timerStart, atlasCalibrate, onCancel, timer, atlasState, atlasSetProbeType } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, onCancel, timer, atlasState, atlasSetProbeType } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
                 <Paragraph>Pull off and discard cap from the Dissolved Oxygen probe. (Only used to protect probe during shipping).</Paragraph>
             </InstructionsStep>
-            <WaitingStep delay={30} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={30} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe sit exposed to air until readings stabalize.</Paragraph>
             </WaitingStep>
             <AtlasCalibrationCommandStep sensor={SensorType.values.DO} command={"Cal"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
@@ -42,13 +42,13 @@ AtlasDoOnePointScript.propTypes = {
 
 export class AtlasDoTwoPointScript extends React.Component {
     render() {
-        const { timerStart, atlasCalibrate, onCancel, timer, atlasState, atlasSetProbeType } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, onCancel, timer, atlasState, atlasSetProbeType } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
                 <Paragraph>Pull off and discard cap from the Dissolved Oxygen probe. (Only used to protect probe during shipping).</Paragraph>
             </InstructionsStep>
-            <WaitingStep delay={30} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={30} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe sit exposed to air until readings stabalize.</Paragraph>
             </WaitingStep>
             <AtlasCalibrationCommandStep sensor={SensorType.values.DO} command={"Cal"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
@@ -76,6 +76,7 @@ export class AtlasDoTwoPointScript extends React.Component {
 
 AtlasDoTwoPointScript.propTypes = {
     timerStart: PropTypes.func.isRequired,
+    timerCancel: PropTypes.func.isRequired,
     atlasCalibrate: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     timer: PropTypes.object.isRequired,

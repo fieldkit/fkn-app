@@ -72,7 +72,7 @@ export class AtlasEcScript extends React.Component {
     }
 
     render() {
-        const { timerStart, atlasCalibrate, onCancel, timer, atlasState, atlasReadSensor, atlasSetProbeType } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, onCancel, timer, atlasState, atlasReadSensor, atlasSetProbeType } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
@@ -104,7 +104,7 @@ export class AtlasEcScript extends React.Component {
                 <Paragraph>You cannot calibration to zero.</Paragraph>
             </InstructionsStep>
 
-            <WaitingStep delay={30} canSkip={true} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={30} canSkip={true} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Let the probe sit in calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
@@ -122,7 +122,7 @@ export class AtlasEcScript extends React.Component {
                 <Paragraph>You cannot calibration to zero.</Paragraph>
             </InstructionsStep>
 
-            <WaitingStep delay={30} canSkip={true} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={30} canSkip={true} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Let the probe sit in calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
@@ -143,6 +143,7 @@ export class AtlasEcScript extends React.Component {
 
 AtlasEcScript.propTypes = {
     timerStart: PropTypes.func.isRequired,
+    timerCancel: PropTypes.func.isRequired,
     atlasSetProbeType: PropTypes.func.isRequired,
     atlasCalibrate: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,

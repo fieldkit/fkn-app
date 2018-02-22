@@ -5,7 +5,7 @@ import { View, Text, Button, ScrollView } from 'react-native';
 
 import { AppScreen, DeviceInfo, MenuButtonContainer, MenuButton } from '../../components';
 
-import { navigateBack, timerStart } from '../../actions';
+import { navigateBack, timerStart, timerCancel } from '../../actions';
 
 import { atlasCalibrationBegin, atlasCalibrationEnd, atlasReadSensor, atlasSensorCommand, atlasSetProbeType, atlasCalibrate } from './actions';
 
@@ -27,7 +27,7 @@ class AtlasCalibrationScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.props.atlasCalibrationEnd();
+        this.onCancel();
     }
 
     startCalibration(sensor, script) {
@@ -47,51 +47,51 @@ class AtlasCalibrationScreen extends React.Component {
     }
 
     phOnePointScript() {
-        const { timerStart, atlasCalibrate, timer, atlasState } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, timer, atlasState } = this.props;
 
-        return <AtlasPhOnePointScript timerStart={timerStart} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
+        return <AtlasPhOnePointScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
     }
 
     phTwoPointScript() {
-        const { timerStart, atlasCalibrate, timer, atlasState } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, timer, atlasState } = this.props;
 
-        return <AtlasPhTwoPointScript timerStart={timerStart} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
+        return <AtlasPhTwoPointScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
     }
 
     phThreePointScript() {
-        const { timerStart, atlasCalibrate, timer, atlasState } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, timer, atlasState } = this.props;
 
-        return <AtlasPhThreePointScript timerStart={timerStart} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
+        return <AtlasPhThreePointScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
     }
 
     ecScript() {
-        const { timerStart, atlasCalibrate, timer, atlasState, atlasReadSensor, atlasSetProbeType } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, timer, atlasState, atlasReadSensor, atlasSetProbeType } = this.props;
 
-        return <AtlasEcScript timerStart={timerStart} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} atlasReadSensor={atlasReadSensor} atlasSetProbeType={atlasSetProbeType} />;
+        return <AtlasEcScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} atlasReadSensor={atlasReadSensor} atlasSetProbeType={atlasSetProbeType} />;
     }
 
     orpScript() {
-        const { timerStart, atlasCalibrate, timer, atlasState } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, timer, atlasState } = this.props;
 
-        return <AtlasOrpScript timerStart={timerStart} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} atlasReadSensor={atlasReadSensor} atlasSetProbeType={atlasSetProbeType} />;
+        return <AtlasOrpScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} atlasReadSensor={atlasReadSensor} atlasSetProbeType={atlasSetProbeType} />;
     }
 
     doOnePointScript() {
-        const { timerStart, atlasCalibrate, timer, atlasState } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, timer, atlasState } = this.props;
 
-        return <AtlasDoOnePointScript timerStart={timerStart} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
+        return <AtlasDoOnePointScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
     }
 
     doTwoPointScript() {
-        const { timerStart, atlasCalibrate, timer, atlasState } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, timer, atlasState } = this.props;
 
-        return <AtlasDoTwoPointScript timerStart={timerStart} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
+        return <AtlasDoTwoPointScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
     }
 
     temperatureScript() {
-        const { timerStart, atlasCalibrate, timer, atlasState } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, timer, atlasState } = this.props;
 
-        return <AtlasTemperatureScript timerStart={timerStart} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
+        return <AtlasTemperatureScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
     }
 
     renderScript(script) {
@@ -132,6 +132,7 @@ AtlasCalibrationScreen.propTypes = {
     atlasCalibrationEnd: PropTypes.func.isRequired,
     atlasReadSensor: PropTypes.func.isRequired,
     timerStart: PropTypes.func.isRequired,
+    timerCancel: PropTypes.func.isRequired,
     atlasSensorCommand: PropTypes.func.isRequired,
     atlasSetProbeType: PropTypes.func.isRequired,
     atlasCalibrate: PropTypes.func.isRequired,
@@ -150,6 +151,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
     timerStart,
+    timerCancel,
     navigateBack,
     atlasCalibrationBegin,
     atlasCalibrationEnd,

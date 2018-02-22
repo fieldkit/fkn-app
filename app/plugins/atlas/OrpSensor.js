@@ -12,13 +12,13 @@ import atlasStyles from './styles';
 
 export class AtlasOrpScript extends React.Component {
     render() {
-        const { timerStart, atlasCalibrate, onCancel, timer, atlasState } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, onCancel, timer, atlasState } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
                 <Paragraph>Remove soaker bottle and place probe in ORP calibration solution.</Paragraph>
             </InstructionsStep>
-            <WaitingStep delay={60} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={60} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe soak in the calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
             <AtlasCalibrationCommandStep sensor={SensorType.values.ORP} command={"Cal,225"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
@@ -34,6 +34,7 @@ export class AtlasOrpScript extends React.Component {
 
 AtlasOrpScript.propTypes = {
     timerStart: PropTypes.func.isRequired,
+    timerCancel: PropTypes.func.isRequired,
     atlasCalibrate: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     timer: PropTypes.object.isRequired,

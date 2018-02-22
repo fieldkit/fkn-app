@@ -9,13 +9,13 @@ import atlasStyles from './styles';
 
 export class AtlasTemperatureScript extends React.Component {
     render() {
-        const { timerStart, atlasCalibrate, onCancel, timer, atlasState } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, onCancel, timer, atlasState } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
                 <Paragraph>Boil some water and place the probe in.</Paragraph>
             </InstructionsStep>
-            <WaitingStep delay={5} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={5} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe soak for a few seconds.</Paragraph>
             </WaitingStep>
             <AtlasCalibrationCommandStep sensor={SensorType.values.ORP} command={"Cal,100"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
@@ -30,6 +30,7 @@ export class AtlasTemperatureScript extends React.Component {
 
 AtlasTemperatureScript.propTypes = {
     timerStart: PropTypes.func.isRequired,
+    timerCancel: PropTypes.func.isRequired,
     atlasCalibrate: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     timer: PropTypes.object.isRequired,

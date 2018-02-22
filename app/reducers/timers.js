@@ -23,6 +23,11 @@ export function timers(state = { }, action) {
         timer[action.name] = { ...{ finished: unixNow() }, ...action };
         return { ...nextState, ...timer };
     }
+    case ActionTypes.TIMER_CANCEL: {
+        nextState = _.clone(state);
+        delete nextState[action.name];
+        return nextState;
+    }
     default:
         return nextState;
     }

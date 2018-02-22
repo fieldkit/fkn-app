@@ -49,6 +49,12 @@ export class WaitingStep extends ScriptStep {
         timerStart('Atlas', delay);
     }
 
+    componentWillUnmount() {
+        const { timerCancel } = this.props;
+
+        timerCancel('Atlas');
+    }
+
     canMoveNext() {
         const { timer } = this.props;
         const { skipped } = this.state;
@@ -74,6 +80,7 @@ export class WaitingStep extends ScriptStep {
 
 WaitingStep.propTypes = {
     timerStart: PropTypes.func.isRequired,
+    timerCancel: PropTypes.func.isRequired,
     delay: PropTypes.number.isRequired,
 };
 

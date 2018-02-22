@@ -14,7 +14,7 @@ const phDelay = 60 * 2;
 
 export class AtlasPhOnePointScript extends React.Component {
     render() {
-        const { timerStart, atlasCalibrate, onCancel, timer, atlasState } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, onCancel, timer, atlasState } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
@@ -22,7 +22,7 @@ export class AtlasPhOnePointScript extends React.Component {
                 <Paragraph>Pour a small amount of the calibration solution into a cup.</Paragraph>
                 <Paragraph>Place the probe into the cup.</Paragraph>
             </InstructionsStep>
-            <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe sit in calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
             <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={"Cal,mid,7"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
@@ -38,6 +38,7 @@ export class AtlasPhOnePointScript extends React.Component {
 
 AtlasPhOnePointScript.propTypes = {
     timerStart: PropTypes.func.isRequired,
+    timerCancel: PropTypes.func.isRequired,
     atlasCalibrate: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     timer: PropTypes.object.isRequired,
@@ -46,7 +47,7 @@ AtlasPhOnePointScript.propTypes = {
 
 export class AtlasPhTwoPointScript extends React.Component {
     render() {
-        const { timerStart, atlasCalibrate, onCancel, timer, atlasState } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, onCancel, timer, atlasState } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
@@ -54,7 +55,7 @@ export class AtlasPhTwoPointScript extends React.Component {
                 <Paragraph>Pour a small amount of the calibration solution into a cup.</Paragraph>
                 <Paragraph>Place the probe into the cup.</Paragraph>
             </InstructionsStep>
-            <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe sit in calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
             <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={"Cal,mid,7"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
@@ -69,7 +70,7 @@ export class AtlasPhTwoPointScript extends React.Component {
                 <Paragraph>Pour a small amount of the calibration solution into a cup.</Paragraph>
                 <Paragraph>Place the probe into the cup.</Paragraph>
             </InstructionsStep>
-            <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe sit in calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
             <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={"Cal,low,4"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
@@ -85,6 +86,7 @@ export class AtlasPhTwoPointScript extends React.Component {
 
 AtlasPhTwoPointScript.propTypes = {
     timerStart: PropTypes.func.isRequired,
+    timerCancel: PropTypes.func.isRequired,
     atlasCalibrate: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     timer: PropTypes.object.isRequired,
@@ -93,7 +95,7 @@ AtlasPhTwoPointScript.propTypes = {
 
 export class AtlasPhThreePointScript extends React.Component {
     render() {
-        const { timerStart, atlasCalibrate, onCancel, timer, atlasState } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, onCancel, timer, atlasState } = this.props;
 
         return <AtlasScript onCancel={() => onCancel()}>
             <InstructionsStep>
@@ -101,7 +103,7 @@ export class AtlasPhThreePointScript extends React.Component {
                 <Paragraph>Pour a small amount of the calibration solution into a cup.</Paragraph>
                 <Paragraph>Place the probe into the cup.</Paragraph>
             </InstructionsStep>
-            <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe sit in calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
             <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={"Cal,mid,7"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
@@ -116,7 +118,7 @@ export class AtlasPhThreePointScript extends React.Component {
                 <Paragraph>Pour a small amount of the calibration solution into a cup.</Paragraph>
                 <Paragraph>Place the probe into the cup.</Paragraph>
             </InstructionsStep>
-            <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe sit in calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
             <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={"Cal,low,4"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
@@ -131,7 +133,7 @@ export class AtlasPhThreePointScript extends React.Component {
                 <Paragraph>Pour a small amount of the calibration solution into a cup.</Paragraph>
                 <Paragraph>Place the probe into the cup.</Paragraph>
             </InstructionsStep>
-            <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={phDelay} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe sit in calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
             <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={"Cal,high,10"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
@@ -147,6 +149,7 @@ export class AtlasPhThreePointScript extends React.Component {
 
 AtlasPhThreePointScript.propTypes = {
     timerStart: PropTypes.func.isRequired,
+    timerCancel: PropTypes.func.isRequired,
     atlasCalibrate: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     timer: PropTypes.object.isRequired,

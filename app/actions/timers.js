@@ -22,6 +22,13 @@ export function timerTick(name, seconds, remaining) {
     };
 }
 
+export function timerCancel(name) {
+    return {
+        type: ActionTypes.TIMER_CANCEL,
+        name: name,
+    };
+}
+
 export function timerDone(name, seconds) {
     return {
         type: ActionTypes.TIMER_DONE,

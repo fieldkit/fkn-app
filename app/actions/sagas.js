@@ -219,12 +219,18 @@ export function* timersSaga() {
         while (true) {
             const elapsed = unixNow() - started;
             if (elapsed >= start.seconds) {
+                yield put(timerDone(start.name, start.seconds));
                 break;
             }
             yield put(timerTick(start.name, start.seconds, start.seconds - elapsed));
-            yield delay(800);
+            const { cancel, to } = yield race({
+                cancel: take(Types.TIMER_CANCEL),
+                to: delay(800)
+            });
+            if (cancel && cancel.name === start.name) {
+                break;
+            }
         }
-        yield put(timerDone(start.name, start.seconds));
     });
 }
 
