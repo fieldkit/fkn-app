@@ -23,7 +23,6 @@ class ConfigureScreen extends React.Component {
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
                     <MenuButton title="Network" onPress={() => this.props.navigateNetwork()} />
-                    <MenuButton title="Back" onPress={() => this.props.navigateBack()} />
                 </MenuButtonContainer>
             </AppScreen>
         );

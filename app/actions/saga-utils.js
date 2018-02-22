@@ -17,6 +17,10 @@ export function* deviceCall(raw) {
         return yield call(deviceCall, deviceRaw);
     }
 
+    if (!_.isObject(raw.address)) {
+        throw new Error("Bad address given to deviceCall");
+    }
+
     yield put({
         type: raw.types[0],
         deviceApi: {

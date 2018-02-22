@@ -122,7 +122,6 @@ class AtlasCalibrationScreen extends React.Component {
                     <MenuButton title="DO One-Point" onPress={() => this.startCalibration(SensorType.values.DO, this.doOnePointScript.bind(this))} />
                     <MenuButton title="DO Two-Point" onPress={() => this.startCalibration(SensorType.values.DO, this.doTwoPointScript.bind(this))} />
                     <MenuButton title="Temperature" onPress={() => this.startCalibration(SensorType.values.DO, this.temperatureScript.bind(this))} />
-                    <MenuButton title="Back" onPress={() => this.props.navigateBack()} />
                 </MenuButtonContainer>
             </ScrollView>
         </AppScreen>;

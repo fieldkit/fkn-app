@@ -26,7 +26,7 @@ import styles from '../styles';
 
 class DeviceMenuScreen extends React.Component {
     static navigationOptions = {
-        title: 'Device',
+        title: 'Device Menu',
     };
 
     componentDidMount() {

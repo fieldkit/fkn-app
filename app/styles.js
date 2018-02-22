@@ -35,7 +35,10 @@ export default appStyle = {
     },
     deviceInfo: {
         container: {
-            backgroundColor: 'rgba(0, 0, 0, 0)',
+            backgroundColor: 'rgba(196, 196, 196, 64)',
+            borderBottomWidth: 1,
+            borderColor: '#000',
+            marginBottom: 10,
         },
         name: {
             paddingLeft: 20,
