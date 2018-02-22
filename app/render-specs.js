@@ -3,8 +3,8 @@ import 'react-native';
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import AndroidApp, { Sagas as AndroidSagas } from '../index.android.js';
-import IOSApp, { Sagas as IOsSagas} from '../index.ios.js';
+import AndroidApp, { Sagas as AndroidSagas } from '../index.android';
+import IOSApp, { Sagas as IOsSagas} from '../index.ios';
 
 describe('top level rendering', () => {
     it('renders iOS correctly', () => {

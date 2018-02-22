@@ -60,7 +60,7 @@ export class AtlasDoTwoPointScript extends React.Component {
             <InstructionsStep>
                 <Paragraph>Stir the probe in Zero D.O. calibration solution to remove trapped air.</Paragraph>
             </InstructionsStep>
-            <WaitingStep delay={90} timer={timer} timerStart={timerStart}>
+            <WaitingStep delay={90} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
             </WaitingStep>
             <AtlasCalibrationCommandStep sensor={SensorType.values.DO} command={atlasState.commands.Do.CalibrateWet} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
