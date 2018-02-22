@@ -21,7 +21,7 @@ export class AtlasOrpScript extends React.Component {
             <WaitingStep delay={60} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe soak in the calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
-            <AtlasCalibrationCommandStep sensor={SensorType.values.ORP} command={"Cal,225"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.ORP} command={atlasState.commands.Orp.Calibrate} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                 <Paragraph>Performing calibration.</Paragraph>
             </AtlasCalibrationCommandStep>
             <InstructionsStep>

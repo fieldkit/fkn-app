@@ -21,7 +21,7 @@ export class AtlasDoOnePointScript extends React.Component {
             <WaitingStep delay={30} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe sit exposed to air until readings stabalize.</Paragraph>
             </WaitingStep>
-            <AtlasCalibrationCommandStep sensor={SensorType.values.DO} command={"Cal"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.DO} command={atlasState.commands.Do.CalibrateDry} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                 <Paragraph>Performing calibration.</Paragraph>
             </AtlasCalibrationCommandStep>
             <InstructionsStep>
@@ -51,7 +51,7 @@ export class AtlasDoTwoPointScript extends React.Component {
             <WaitingStep delay={30} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe sit exposed to air until readings stabalize.</Paragraph>
             </WaitingStep>
-            <AtlasCalibrationCommandStep sensor={SensorType.values.DO} command={"Cal"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.DO} command={atlasState.commands.Do.CalibrateDry} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                 <Paragraph>Performing calibration.</Paragraph>
             </AtlasCalibrationCommandStep>
             <InstructionsStep>
@@ -63,7 +63,7 @@ export class AtlasDoTwoPointScript extends React.Component {
             <WaitingStep delay={90} timer={timer} timerStart={timerStart}>
                 <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
             </WaitingStep>
-            <AtlasCalibrationCommandStep sensor={SensorType.values.DO} command={"Cal,0"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.DO} command={atlasState.commands.Do.CalibrateWet} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                 <Paragraph>Performing calibration.</Paragraph>
             </AtlasCalibrationCommandStep>
             <InstructionsStep>

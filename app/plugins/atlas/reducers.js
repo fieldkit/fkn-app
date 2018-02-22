@@ -6,6 +6,10 @@ import * as AtlasActionTypes from './types';
 import { ReplyType as AppReplyType } from '../../lib/protocol';
 import { ReplyType as AtlasReplyType, decodeWireAtlasReply } from './protocol';
 
+import { AtlasCommands } from './AtlasCommands';
+
+const atlasCommands = new AtlasCommands();
+
 const initialReplyState = {
     pending: true,
     error: false,
@@ -16,6 +20,7 @@ const initialReplyState = {
 const initialAtlasCalibrationState = {
     values: [],
     temperature: 25,
+    commands: atlasCommands.getCommands(25),
     probeConfiguration: initialReplyState,
     calibration: initialReplyState,
     reading: initialReplyState,
@@ -52,7 +57,7 @@ export function atlasState(state = initialAtlasCalibrationState, action) {
         return initialAtlasCalibrationState;
     }
     case AtlasActionTypes.ATLAS_CALIBRATION_TEMPERATURE_SET: {
-        return { ...state, ...{ temperature: action.temperature } };
+        return { ...state, ...{ temperature: action.temperature, commands: atlasCommands.getCommands(action.temperature) } };
     }
     case AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_START: {
         return { ...state, ...{ probeConfiguration: getPendingReplyState(action) } };

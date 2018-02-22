@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { View, Text, Button } from 'react-native';
 
 import { SensorType } from './protocol';
-import { Paragraph, AtlasScript, ScriptStep, InstructionsStep, WaitingStep, AtlasCalibrationCommandStep } from './AtlasScript';
+
+import { AtlasScript } from './AtlasScript';
+import { InstructionsStep, WaitingStep, AtlasCalibrationCommandStep } from './ScriptSteps';
+import { Paragraph } from './Components';
 
 import atlasStyles from './styles';
 
@@ -18,7 +21,7 @@ export class AtlasTemperatureScript extends React.Component {
             <WaitingStep delay={5} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
                 <Paragraph>Let the probe soak for a few seconds.</Paragraph>
             </WaitingStep>
-            <AtlasCalibrationCommandStep sensor={SensorType.values.ORP} command={"Cal,100"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.ORP} command={atlasState.commands.Temperature.Calibrate} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                 <Paragraph>Performing calibration.</Paragraph>
             </AtlasCalibrationCommandStep>
             <InstructionsStep>

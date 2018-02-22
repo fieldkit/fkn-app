@@ -12,9 +12,9 @@ import atlasStyles from './styles';
 
 class ConductivityProbeTypeStep extends ScriptStep {
     onSetProbe(k) {
-        const { atlasSetProbeType } = this.props;
+        const { atlasState, atlasSetProbeType } = this.props;
 
-        atlasSetProbeType(SensorType.values.EC, "K," + k);
+        atlasSetProbeType(SensorType.values.EC, atlasState.commands.Ec.SetProbe[k]);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -112,7 +112,7 @@ export class AtlasEcScript extends React.Component {
                 <Paragraph>Please ensure that the probe is dry before we perform the dry calibration.</Paragraph>
             </InstructionsStep>
 
-            <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={"Cal,dry"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={atlasState.commands.Ec.CalibrateDry} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                 <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Performing dry calibration.</Paragraph>
             </AtlasCalibrationCommandStep>
@@ -130,7 +130,7 @@ export class AtlasEcScript extends React.Component {
                 <Paragraph>Let the probe sit in calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
 
-            <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={"Cal,low,1413"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={atlasState.commands.Ec.CalibrateLow} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                 <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Performing low point calibration.</Paragraph>
             </AtlasCalibrationCommandStep>
@@ -148,7 +148,7 @@ export class AtlasEcScript extends React.Component {
                 <Paragraph>Let the probe sit in calibration solution until readings stabalize.</Paragraph>
             </WaitingStep>
 
-            <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={"Cal,low,12880"} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
+            <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={atlasState.commands.Ec.CalibrateHigh} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                 <ReadingsDisplay atlasState={atlasState} />
                 <Paragraph>Performing low point calibration.</Paragraph>
             </AtlasCalibrationCommandStep>
