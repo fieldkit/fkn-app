@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
+
+import { ProgressBar } from '../../components';
 
 export class AtlasScript extends React.Component {
     state = {
@@ -14,6 +16,13 @@ export class AtlasScript extends React.Component {
         return children[currentStepIndex];
     }
 
+    isLastStep() {
+        const { currentStepIndex } = this.state;
+        const { children } = this.props;
+
+        return currentStepIndex + 1 == children.length;
+    }
+
     onMoveNextStep() {
         const { currentStepIndex } = this.state;
 
@@ -22,25 +31,23 @@ export class AtlasScript extends React.Component {
         });
     }
 
-    isLastStep() {
-        const { currentStepIndex } = this.state;
-        const { children } = this.props;
-
-        return currentStepIndex + 1 == children.length;
-    }
-
     render() {
-        const { timerStart, deviceModuleQuery, onCancel } = this.props;
+        const { timerStart, deviceModuleQuery, onCancel, children } = this.props;
+        const { currentStepIndex } = this.state;
+
         const step = this.currentStep();
         const lastStep = this.isLastStep();
 
-        const newProps = {
+        const childProps = {
             lastStep: lastStep,
             onMoveNextStep: this.onMoveNextStep.bind(this),
             onCancel: onCancel,
         };
 
-        return React.cloneElement(step, { ...newProps });
+        return <View style={{ margin: 20 }}>
+            <ProgressBar progress={((currentStepIndex + 1) / children.length) * 100.0} />
+            {React.cloneElement(step, { ...childProps })}
+        </View>;
     }
 };
 

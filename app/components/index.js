@@ -7,4 +7,5 @@ export * from './MenuButtons';
 export * from './DeviceInfo';
 export * from './Loading';
 export * from './ProgressModal';
+export * from './ProgressBar';
 

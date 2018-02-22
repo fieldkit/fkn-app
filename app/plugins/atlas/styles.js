@@ -24,7 +24,6 @@ export default atlasStyles = {
         },
         step: {
             container: {
-                padding: 20,
             },
             children: {
                 container: {

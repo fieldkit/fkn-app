@@ -20,7 +20,7 @@ class WelcomeScreen extends React.Component {
         // This will cause tests to take forever, they'll wait until the saga to
         // look completes. A quick hack, for now.
         if (typeof __SPECS__ == 'undefined') {
-            this.props.deviceStartConnect()
+            this.props.deviceStartConnect();
         }
     }
 
