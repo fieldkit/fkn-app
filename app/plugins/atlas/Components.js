@@ -15,7 +15,7 @@ export class ScriptButtons extends React.Component {
         return <View style={atlasStyles.script.buttons.container}>
             <View style={atlasStyles.script.buttons.button}><Button title="Next" onPress={() => onMoveNextStep()} disabled={!canMoveNext} /></View>
             <View style={atlasStyles.script.buttons.button}><Button title="Cancel" onPress={() => onCancel()} /></View>
-            </View>;
+        </View>;
     }
 };
 
@@ -28,7 +28,9 @@ ScriptButtons.propTypes = {
 
 export class Paragraph extends React.Component {
     render() {
-        return <Text style={atlasStyles.script.step.instructions.text}>{this.props.children}</Text>;
+        const { style } = this.props;
+
+        return <Text style={[atlasStyles.script.step.instructions.text, style]}>{this.props.children}</Text>;
     }
 };
 
