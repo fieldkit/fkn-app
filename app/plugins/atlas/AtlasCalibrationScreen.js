@@ -113,7 +113,7 @@ class AtlasCalibrationScreen extends React.Component {
         return <AppScreen progress={progress}>
             <DeviceInfo info={deviceInfo} />
             <ScrollView>
-                <MenuButtonContainer>
+                <MenuButtonContainer style={{ marginBottom: 30 }}>
                     <MenuButton title="pH One-Point" onPress={() => this.startCalibration(SensorType.values.PH, this.phOnePointScript.bind(this))} />
                     <MenuButton title="pH Two-Point" onPress={() => this.startCalibration(SensorType.values.PH, this.phTwoPointScript.bind(this))} />
                     <MenuButton title="pH Three-Point" onPress={() => this.startCalibration(SensorType.values.PH, this.phThreePointScript.bind(this))} />

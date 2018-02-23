@@ -1,9 +1,9 @@
 'use strict';
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { View } from 'react-native'
+import { View } from 'react-native';
 
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -13,12 +13,12 @@ import styles from '../styles';
 
 export class AppScreen extends React.Component {
     render() {
-        const { background, progress } = this.props;
+        const { background, progress, style } = this.props;
         const { children } = this.props;
 
         if (background === false) {
             return (
-                <View style={styles.mainView}>
+                    <View style={[styles.mainView, style]}>
                     {children}
                     <Spinner visible={progress.depth > 0} textContent={"Busy"} textStyle={{color: '#FFF'}} />
                 </View>

@@ -7,11 +7,9 @@ import styles from '../styles';
 
 export class MenuButtonContainer extends React.Component {
     render() {
-        const { children } = this.props;
+        const { children, style } = this.props;
 
-        return (
-            <View style={styles.menuButtonContainer}>{children}</View>
-        );
+        return <View style={[styles.menuButtonContainer, style]}>{children}</View>;
     }
 }
 
@@ -19,8 +17,6 @@ export class MenuButton extends React.Component {
     render() {
         const { title, onPress } = this.props;
 
-        return (
-            <View style={styles.menuButton}><Button title={title} onPress={onPress} /></View>
-        );
+        return <View style={styles.menuButton}><Button title={title} onPress={onPress} /></View>;
     }
 }
