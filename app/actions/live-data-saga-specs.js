@@ -17,7 +17,7 @@ describe('live data saga', () => {
         tester = new SagaTester({
             initialState: {
                 deviceStatus: {
-                    address: {}
+                    connected: {}
                 }
             }
         });
