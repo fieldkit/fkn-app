@@ -53,3 +53,5 @@ fastlane/Preview.html
 fastlane/screenshots
 
 test-report.html
+
+android/app/gradle.properties

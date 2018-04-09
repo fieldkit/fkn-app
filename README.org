@@ -2,7 +2,23 @@
 #+AUTHOR:	Jacob Lewallen
 #+EMAIL:	jacob@conservify.org
 
-** Troubleshooting
-*** Error: Error watching file for changes: EMFILE
+* Commands
+** Android
 
-    This happened on iOS when doing a react-native run-ios. I ended up doing a brew install watchman to fix this issue. I did try a few other things, like upping limits using various commands but they didn't seem to help.
+   Run developer Android app (requires package manager running on developer machine)
+
+   ~react-native run-android~
+
+   Generate and run release variant. (Requires signing to be configured)
+
+   ~react-native run-android --variant=release~
+
+   Generate a signed APK. (Requires signing to be configured)
+
+   ~cd android && ./gradlew assembleRelease~
+
+** iOS
+* Troubleshooting
+** Error: Error watching file for changes: EMFILE
+
+   This happened on iOS when doing a react-native run-ios. I ended up doing a brew install watchman to fix this issue. I did try a few other things, like upping limits using various commands but they didn't seem to help.
