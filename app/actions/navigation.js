@@ -32,6 +32,12 @@ export function navigateAbout() {
     };
 }
 
+export function navigateFiles() {
+    return {
+        type: Types.NAVIGATION_FILES,
+    };
+}
+
 export function navigateDataSets() {
     return {
         type: Types.NAVIGATION_DATA_SETS,

@@ -77,6 +77,21 @@ export function saveNetworkConfiguration(newConfiguration) {
     };
 }
 
+export function queryFiles() {
+    return (dispatch, getState) => {
+        return dispatch({
+            [CALL_DEVICE_API]: {
+                types: [Types.DEVICE_FILES_START, Types.DEVICE_FILES_SUCCESS, Types.DEVICE_FILES_FAIL],
+                address: getState().deviceStatus.connected,
+                blocking: true,
+                message: {
+                    type: QueryType.values.QUERY_FILES
+                }
+            },
+        });
+    };
+}
+
 export function queryDataSets() {
     return (dispatch, getState) => {
         return dispatch({

@@ -13,6 +13,7 @@ import { AppScreen, Loading, DeviceInfo, MenuButtonContainer, MenuButton } from 
 import {
     navigateWelcome,
     navigateDataSets,
+    navigateFiles,
     navigateSensors,
     navigateConfigure,
     navigateLiveData,
@@ -52,6 +53,7 @@ class DeviceMenuScreen extends React.Component {
             <AppScreen progress={progress}>
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
+                    <MenuButton title="Files" onPress={() => this.props.navigateFiles()} />
                     <MenuButton title="Data Sets" onPress={() => this.props.navigateDataSets()} />
                     <MenuButton title="Live Data" onPress={() => this.props.navigateLiveData()} />
                     <MenuButton title="Sensors" onPress={() => this.props.navigateSensors()} />
@@ -67,6 +69,7 @@ class DeviceMenuScreen extends React.Component {
 DeviceMenuScreen.propTypes = {
     navigateWelcome: PropTypes.func.isRequired,
     navigateDataSets: PropTypes.func.isRequired,
+    navigateFiles: PropTypes.func.isRequired,
     navigateSensors: PropTypes.func.isRequired,
     navigateLiveData: PropTypes.func.isRequired,
     navigateConfigure: PropTypes.func.isRequired,
@@ -90,6 +93,7 @@ export default connect(mapStateToProps, {
     deviceStopConnect,
     queryInfo,
     navigateDataSets,
+    navigateFiles,
     navigateSensors,
     navigateLiveData,
     navigateConfigure,

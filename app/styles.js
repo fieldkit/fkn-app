@@ -98,6 +98,19 @@ export default appStyle = {
             fontSize: 20,
         }
     },
+    file: {
+        container: {
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            paddingLeft: 20,
+            paddingBottom: 10,
+        },
+        name: {
+            fontSize: 25,
+            fontWeight: "bold"
+        },
+        details: {
+        }
+    },
     dataSet: {
         container: {
             backgroundColor: 'rgba(0, 0, 0, 0)',
@@ -109,7 +122,6 @@ export default appStyle = {
             fontWeight: "bold"
         },
         details: {
-
         }
     },
     buttons: {

@@ -5,6 +5,7 @@ import DeviceMenuScreen from '../containers/DeviceMenuScreen';
 import SensorsScreen from '../containers/SensorsScreen';
 import ConfigureScreen from '../containers/ConfigureScreen';
 import NetworkScreen from '../containers/NetworkScreen';
+import FilesScreen from '../containers/FilesScreen';
 import DataSetsScreen from '../containers/DataSetsScreen';
 import ViewDataSetScreen from '../containers/ViewDataSetScreen';
 import LiveDataScreen from '../containers/LiveDataScreen';
@@ -35,6 +36,10 @@ export class ApplicationRoutesManager {
             Network: {
                 path: '/network',
                 screen: NetworkScreen
+            },
+            Files: {
+                path: '/files',
+                screen: FilesScreen
             },
             DataSets: {
                 path: '/data-sets',

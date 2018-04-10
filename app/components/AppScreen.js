@@ -18,7 +18,7 @@ export class AppScreen extends React.Component {
 
         if (background === false) {
             return (
-                    <View style={[styles.mainView, style]}>
+                <View style={[styles.mainView, style]}>
                     {children}
                     <Spinner visible={progress.depth > 0} textContent={"Busy"} textStyle={{color: '#FFF'}} />
                 </View>
