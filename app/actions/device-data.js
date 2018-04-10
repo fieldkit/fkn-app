@@ -5,6 +5,22 @@ import { CALL_DEVICE_API } from '../middleware/device-api';
 
 import { QueryType } from '../lib/protocol';
 
+export function resetDevice() {
+    return (dispatch, getState) => {
+        return dispatch({
+            [CALL_DEVICE_API]: {
+                types: [Types.DEVICE_RESET_START, Types.DEVICE_RESET_SUCCESS, Types.DEVICE_RESET_FAIL],
+                address: getState().deviceStatus.connected,
+                blocking: true,
+                noReply: true,
+                message: {
+                    type: QueryType.values.QUERY_RESET,
+                }
+            },
+        });
+    };
+}
+
 export function queryCapabilities() {
     return (dispatch, getState) => {
         return dispatch({

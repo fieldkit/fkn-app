@@ -30,7 +30,7 @@ net.Socket.prototype._debug = function() {
 };
 
 class DeviceConnection {
-    rpcImplFactory(host, port, wireQuery) {
+    rpcImplFactory(host, port, wireQuery, noReply) {
         return new Promise((resolve, reject) => {
             debug("Connecting to", host + ":" + port);
 
@@ -45,6 +45,10 @@ class DeviceConnection {
             client.on('connect', () => {
                 debug("Connected, sending query...");
                 client.write(new Buffer(wireQuery));
+
+                if (noReply) {
+                    client.end();
+                }
             });
 
             client.on('data', (responseData) => {
@@ -53,8 +57,11 @@ class DeviceConnection {
             });
 
             client.on('close', () => {
-                if (!received) {
+                if (!received && !noReply) {
                     reject(new Error("No reply"));
+                }
+                else if (noReply) {
+                    resolve({});
                 }
             });
 
@@ -104,9 +111,22 @@ class DeviceConnection {
             })
             .then(address => {
                 const encoded = WireMessageQuery.encodeDelimited(callApi.message).finish();
-                return this.rpcImplFactory(address.host, address.port, encoded);
+                return this.rpcImplFactory(address.host, address.port, encoded, callApi.noReply === true);
             })
             .then(response => {
+                if (callApi.noReply) {
+                    return {
+                        deviceApi: {
+                            error: false,
+                            pending: false,
+                            success: true,
+                            blocking: callApi.blocking,
+                            address: callApi.address,
+                        },
+                        type: callApi.types[1],
+                        response: response
+                    };
+                }
                 return this.transformResponse(callApi, response);
             }, error => {
                 console.log("Rejecting", error.message);
