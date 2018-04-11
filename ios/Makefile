@@ -1,3 +1,5 @@
+.PHONY: build archive
+
 build:
 	xcodebuild -project FieldKit.xcodeproj -scheme FieldKit -sdk iphoneos -configuration Release archive -archivePath /Users/jlewallen/fieldkit/app/ios/build/FieldKit.xcarchive
 
