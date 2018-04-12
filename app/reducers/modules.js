@@ -1,5 +1,3 @@
-'use strict';
-
 import * as ActionTypes from '../actions/types';
 
 export function moduleReplies(state = {}, action) {

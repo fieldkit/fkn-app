@@ -1,5 +1,3 @@
-'use strict';
-
 import _ from 'lodash';
 import * as ActionTypes from '../actions/types';
 import { unixNow } from '../lib/helpers';
