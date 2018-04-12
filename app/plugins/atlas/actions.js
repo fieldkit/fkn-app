@@ -5,7 +5,7 @@ import * as AppActionTypes from '../../actions/types';
 import { QueryType as AppQueryType } from '../../lib/protocol';
 
 import * as AtlasActionTypes from './types';
-import { deviceCall } from '../../actions/saga-utils';
+import { deviceCall } from '../../actions/sagas/saga-utils';
 import { CALL_DEVICE_API } from '../../middleware/device-api';
 
 import { QueryType, SensorType, atlasSensorQuery, encodeWireAtlasQuery, decodeWireAtlasReply } from './protocol';

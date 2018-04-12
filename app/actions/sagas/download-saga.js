@@ -3,10 +3,10 @@
 import { delay } from 'redux-saga'
 import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects'
 
-import * as Types from './types';
+import * as Types from '../types';
 import { deviceCall } from './saga-utils';
 
-import { QueryType } from '../lib/protocol';
+import { QueryType } from '../../lib/protocol';
 
 function areTokensEqual(t1, t2) {
     if (t1 == null && t2 == null) {

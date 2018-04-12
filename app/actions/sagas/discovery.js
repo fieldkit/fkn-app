@@ -9,11 +9,11 @@ import dgram from 'react-native-udp';
 
 import ServiceDiscovery from "react-native-service-discovery";
 import { createChannel } from './channels';
-import * as Types from './types';
+import * as Types from '../types';
 
-import { unixNow } from '../lib/helpers';
+import { unixNow } from '../../lib/helpers';
 
-import Config from '../config';
+import Config from '../../config';
 
 function createServiceDiscoveryChannel() {
     const channel = createChannel();

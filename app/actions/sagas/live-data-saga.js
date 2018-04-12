@@ -3,10 +3,11 @@
 import { delay } from 'redux-saga'
 import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects'
 
-import * as Types from './types';
-import { deviceCall } from './saga-utils';
+import * as Types from '../types';
 
-import { QueryType } from '../lib/protocol';
+import { QueryType } from '../../lib/protocol';
+
+import { deviceCall } from './saga-utils';
 
 export function* deviceLiveDataPoll(interval) {
     const state = yield select();

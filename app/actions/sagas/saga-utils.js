@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 import { put, call, select } from 'redux-saga/effects';
-import { CALL_DEVICE_API, invokeDeviceApi } from '../middleware/device-api';
+import { CALL_DEVICE_API, invokeDeviceApi } from '../../middleware/device-api';
 
 export function* deviceCall(raw) {
     if (_.isFunction(raw)) {

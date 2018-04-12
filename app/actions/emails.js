@@ -1,5 +1,3 @@
-'use strict';
-
 import RNFS from 'react-native-fs';
 import Mailer from 'react-native-mail';
 import Promise from "bluebird";

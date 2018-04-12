@@ -3,11 +3,13 @@ import 'react-native';
 import SagaTester from 'redux-saga-tester';
 import Promise from "bluebird";
 
-import * as Types from './types';
+import { useFakeDeviceConnection } from '../../middleware/device-api';
+import { QueryType, ReplyType } from '../../lib/protocol';
+
+import * as Types from '../types';
+
 import { findDeviceInfo } from './discovery';
 import { discoverDevices, pingConnectedDevice } from './sagas';
-import { useFakeDeviceConnection } from '../middleware/device-api';
-import { QueryType, ReplyType } from '../lib/protocol';
 
 describe('device connection saga', () => {
     let tester;

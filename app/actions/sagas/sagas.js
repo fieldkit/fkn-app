@@ -5,18 +5,18 @@ import { Alert } from 'react-native';
 import { delay } from 'redux-saga';
 import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects';
 
-import Config from '../config';
-import * as Types from './types';
+import Config from '../../config';
+import * as Types from './../types';
 import { deviceCall } from './saga-utils';
 
-import { QueryType } from '../lib/protocol';
-import { unixNow } from '../lib/helpers';
+import { QueryType } from '../../lib/protocol';
+import { unixNow } from '../../lib/helpers';
 
 import { serviceDiscovery } from './discovery';
 import { downloadDataSaga } from './download-saga';
 import { liveDataSaga } from './live-data-saga';
-import { navigateWelcome, navigateDeviceMenu } from './navigation';
-import { timerTick, timerDone } from './timers';
+import { navigateWelcome, navigateDeviceMenu } from '../navigation';
+import { timerTick, timerDone } from '../timers';
 
 export function* loseExpiredDevices() {
     const { devices } = yield select();

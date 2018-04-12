@@ -3,10 +3,12 @@ import 'react-native';
 import SagaTester from 'redux-saga-tester';
 import Promise from "bluebird";
 
-import * as Types from './types';
+import { useFakeDeviceConnection } from '../../middleware/device-api';
+import { QueryType, ReplyType } from '../../lib/protocol';
+
+import * as Types from '../types';
+
 import { liveDataSaga } from './live-data-saga';
-import { useFakeDeviceConnection } from '../middleware/device-api';
-import { QueryType, ReplyType } from '../lib/protocol';
 
 describe('live data saga', () => {
     let tester;

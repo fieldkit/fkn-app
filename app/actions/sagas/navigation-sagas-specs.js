@@ -5,13 +5,14 @@ import Promise from "bluebird";
 
 import { Alert } from 'react-native';
 
-import * as Types from './types';
+import { useFakeDeviceConnection } from '../../middleware/device-api';
+import { QueryType, ReplyType } from '../../lib/protocol';
+
+import * as Types from '../types';
+import { navigateConnecting, navigateDeviceMenu, navigateWelcome } from '../navigation';
+
 import { findDeviceInfo } from './discovery';
 import { connectionRelatedNavigation } from './sagas';
-import { useFakeDeviceConnection } from '../middleware/device-api';
-import { QueryType, ReplyType } from '../lib/protocol';
-
-import { navigateConnecting, navigateDeviceMenu, navigateWelcome } from './navigation';
 
 describe('device connection navigation', () => {
     let tester;

@@ -20,7 +20,6 @@ export class AppScreen extends React.Component {
             return (
                 <View style={[styles.mainView, style]}>
                     {children}
-                    <Spinner visible={progress.depth > 0} textContent={"Busy"} textStyle={{color: '#FFF'}} />
                 </View>
             );
         }
@@ -30,7 +29,6 @@ export class AppScreen extends React.Component {
                 <BackgroundView>
                     {children}
                 </BackgroundView>
-                <Spinner visible={progress.depth > 0} textContent={"Busy"} textStyle={{color: '#FFF'}} />
             </View>
         );
     }
