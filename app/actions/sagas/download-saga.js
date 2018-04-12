@@ -1,12 +1,14 @@
-'use strict'
+import _ from 'lodash';
 
 import { delay } from 'redux-saga'
 import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects'
 
-import * as Types from '../types';
-import { deviceCall } from './saga-utils';
-
 import { QueryType } from '../../lib/protocol';
+
+import * as Types from '../types';
+import { queryFiles, queryDownloadFile } from '../device-data';
+
+import { deviceCall } from './saga-utils';
 
 function areTokensEqual(t1, t2) {
     if (t1 == null && t2 == null) {
@@ -24,55 +26,19 @@ function areTokensEqual(t1, t2) {
 }
 
 export function* downloadDataSaga() {
-    yield takeLatest(Types.DOWNLOAD_DATA_SET_START, function* watcher(action) {
+    yield takeLatest(Types.DOWNLOAD_FILE_START, function* watcher(action) {
         const state = yield select();
 
-        const dataSetAction = yield call(deviceCall, {
-            types: [Types.DEVICE_DATA_SET_START, Types.DEVICE_DATA_SET_SUCCESS, Types.DEVICE_DATA_SET_FAIL],
-            address: state.deviceStatus.connected,
-            message: {
-                type: QueryType.values.QUERY_DATA_SET,
-                queryDataSet: {
-                    id: action.id
-                }
-            }
-        });
+        console.log('Address', state.deviceStatus.connected);
 
-        const totalSize = dataSetAction.response.dataSets.dataSets[0].size;
+        const fileAction = yield call(deviceCall, queryFiles());
 
-        let downloadedSize = 0;
-        let token = null;
+        const file = _(fileAction.response.files.files).filter(f => f.id == action.id).first();
 
-        while (true) {
-            const { response } = yield call(deviceCall, {
-                types: [Types.DEVICE_DOWNLOAD_DATA_SET_START, Types.DEVICE_DOWNLOAD_DATA_SET_SUCCESS, Types.DEVICE_DOWNLOAD_DATA_SET_FAIL],
-                address: state.deviceStatus.connected,
-                message: {
-                    type: QueryType.values.QUERY_DOWNLOAD_DATA_SET,
-                    downloadDataSet: {
-                        id: action.id,
-                        page: 0,
-                        token: token
-                    }
-                }
-            });
+        console.log("File", file);
 
-            const fileData = response.downloadDataSet || response.fileData;
-            if (areTokensEqual(fileData.token, token)) {
-                break;
-            }
+        const download = yield call(deviceCall, queryDownloadFile(file));
 
-            downloadedSize += fileData.data.length;
-            token = fileData.token;
-
-            yield put({
-                type: Types.DOWNLOAD_DATA_SET_PROGRESS,
-                progress: (downloadedSize / totalSize) * 100.0
-            });
-        }
-
-        yield put({
-            type: Types.DOWNLOAD_DATA_SET_DONE
-        });
+        console.log("Download", download);
     });
 }

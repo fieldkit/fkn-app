@@ -1,20 +1,53 @@
-'use strict';
-
 import _ from 'lodash';
-import { put, call, select } from 'redux-saga/effects';
+import { put, call, select, race, all } from 'redux-saga/effects';
+
 import { CALL_DEVICE_API, invokeDeviceApi } from '../../middleware/device-api';
 
-export function* deviceCall(raw) {
+import { createChannel } from './channels';
+
+function* readAndPutActions(channel) {
+    while (channel.isOpen()) {
+        const action = yield call(channel.take);
+        yield put(action);
+    }
+}
+
+export function* deviceCall(raw, existingChannel) {
+    if (_.isUndefined(raw)) {
+        throw new Error("Invalid device query.");
+    }
+
+    const getDeviceApiCall = (actions) => {
+        if (actions.length == 0) {
+            throw new Error("Error: No actions returned from dispatch.", raw);
+        }
+        else if (actions.length > 1) {
+            throw new Error("Error: Not sure how to handle two actions from dispatch.", raw, actions);
+        }
+        const call = actions[0][CALL_DEVICE_API];
+        if (_.isUndefined(call)) {
+            throw new Error("Action callback returned invalid CALL_DEVICE_API", raw);
+        }
+        return call;
+    };
+
+    const channel = existingChannel || createChannel('CALL');
+
     if (_.isFunction(raw)) {
         const state = yield select();
         const actions = [];
-        raw(action => actions.push(action), () => state);
-        if (actions.length != 1) {
-            console.log("Error: Not sure how to handle two actions from dispatch!");
-            return null;
-        }
-        const deviceRaw = actions[0][CALL_DEVICE_API];
-        return yield call(deviceCall, deviceRaw);
+
+        const dispatch = (action) => {
+            if (_.isObject(action[CALL_DEVICE_API])) {
+                actions.push(action);
+            } else {
+                channel.put(action);
+            }
+        };
+
+        raw(dispatch, () => state);
+
+        return yield call(deviceCall, getDeviceApiCall(actions), channel);
     }
 
     if (!_.isObject(raw.address)) {
@@ -30,9 +63,15 @@ export function* deviceCall(raw) {
         address: raw.address,
         message: raw.message
     });
+
     try {
-        const returned = yield call(invokeDeviceApi, raw);
+        const { returned } = yield race({
+            returned: call(invokeDeviceApi, raw),
+            actions: readAndPutActions(channel)
+        });
+
         yield put(returned);
+
         return returned;
     }
     catch (err) {
@@ -45,6 +84,9 @@ export function* deviceCall(raw) {
             console.log("Error had no Action", err);
         }
         throw err;
+    }
+    finally {
+        channel.close();
     }
 }
 

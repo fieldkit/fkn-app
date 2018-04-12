@@ -1,8 +1,7 @@
-'use strict';
-
 import Promise from "bluebird";
-import net from "net";
+import varint from 'varint';
 import protobuf from "protobufjs";
+import net from "net";
 
 import {
     WireMessageQuery,
@@ -30,7 +29,7 @@ net.Socket.prototype._debug = function() {
 };
 
 class DeviceConnection {
-    rpcImplFactory(host, port, wireQuery, noReply) {
+    rpcImplFactory(host, port, wireQuery, noReply, writer) {
         return new Promise((resolve, reject) => {
             debug("Connecting to", host + ":" + port);
 
@@ -40,7 +39,7 @@ class DeviceConnection {
                 timeout: 1000
             });
 
-            let received = false;
+            const returned = [];
 
             client.on('connect', () => {
                 debug("Connected, sending query...");
@@ -52,16 +51,26 @@ class DeviceConnection {
             });
 
             client.on('data', (responseData) => {
-                received = true;
-                resolve(responseData);
+                if (writer) {
+                    writer.write(responseData);
+                }
+                else {
+                    returned.push(responseData);
+                    resolve(responseData);
+                }
             });
 
             client.on('close', () => {
-                if (!received && !noReply) {
-                    reject(new Error("No reply"));
+                if (writer) {
+                    resolve(writer.close());
                 }
-                else if (noReply) {
-                    resolve({});
+                else {
+                    if (returned.length == 0 && !noReply) {
+                        reject(new Error("No reply"));
+                    }
+                    else if (noReply) {
+                        resolve({});
+                    }
                 }
             });
 
@@ -73,6 +82,20 @@ class DeviceConnection {
     }
 
     transformResponse(callApi, response) {
+        if (callApi.writer || callApi.noReply) {
+            return {
+                deviceApi: {
+                    error: false,
+                    pending: false,
+                    success: true,
+                    blocking: callApi.blocking,
+                    address: callApi.address,
+                },
+                type: callApi.types[1],
+                response: response
+            };
+        }
+
         const decoded = WireMessageReply.decodeDelimited(protobuf.Reader.create(response));
         if (decoded.type == ReplyType.values.REPLY_ERROR) {
             return {
@@ -111,22 +134,9 @@ class DeviceConnection {
             })
             .then(address => {
                 const encoded = WireMessageQuery.encodeDelimited(callApi.message).finish();
-                return this.rpcImplFactory(address.host, address.port, encoded, callApi.noReply === true);
+                return this.rpcImplFactory(address.host, address.port, encoded, callApi.noReply === true, callApi.writer);
             })
             .then(response => {
-                if (callApi.noReply) {
-                    return {
-                        deviceApi: {
-                            error: false,
-                            pending: false,
-                            success: true,
-                            blocking: callApi.blocking,
-                            address: callApi.address,
-                        },
-                        type: callApi.types[1],
-                        response: response
-                    };
-                }
                 return this.transformResponse(callApi, response);
             }, error => {
                 console.log("Rejecting", error.message);
@@ -183,7 +193,7 @@ export class FakeDeviceConnection {
         const pair = this.queue.shift();
 
         if (pair.error) {
-            // console.log('CALL', callApi, 'ERROR', pair.error);
+            debug('CALL', callApi, 'ERROR', pair.error);
 
             const rejecting = new Error();
             rejecting.actions = [{
@@ -197,7 +207,7 @@ export class FakeDeviceConnection {
             return Promise.reject(rejecting);
         }
 
-        // console.log('CALL', callApi, 'REPLY', pair.reply);
+        debug('CALL', callApi, 'REPLY', pair.reply);
 
         return Promise.resolve({
             deviceApi: {

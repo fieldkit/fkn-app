@@ -1,5 +1,3 @@
-'use strict';
-
 import _ from 'lodash';
 import { put, call } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
@@ -8,15 +6,16 @@ import { Platform } from 'react-native';
 import dgram from 'react-native-udp';
 
 import ServiceDiscovery from "react-native-service-discovery";
-import { createChannel } from './channels';
-import * as Types from '../types';
 
 import { unixNow } from '../../lib/helpers';
-
 import Config from '../../config';
 
+import * as Types from '../types';
+
+import { createChannel } from './channels';
+
 function createServiceDiscoveryChannel() {
-    const channel = createChannel();
+    const channel = createChannel('SD');
 
     // This is no longer being used, though may come back. I wanted to keep
     // creating this just to avoid regressions.
@@ -49,7 +48,7 @@ function* monitorServiceDiscoveryEvents(channel) {
         while (true) {
             const info = yield call(channel.take);
             yield put(info);
-            yield delay(500);
+            // yield delay(500);
         }
     } else if (Config.fixedDeviceInfo) {
         while (true) {
