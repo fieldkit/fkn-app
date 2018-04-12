@@ -1,7 +1,10 @@
 import varint from 'varint';
+import protobuf from "protobufjs";
+
+import { QueryType } from '../lib/protocol';
+import { WireMessageReply } from '../lib/protocol';
 
 import { CALL_DEVICE_API } from '../middleware/device-api';
-import { QueryType } from '../lib/protocol';
 
 import * as Types from './types';
 
@@ -38,20 +41,15 @@ class DownloadWriter {
     }
 
     write(data) {
-        let offset = 0;
-
         // TODO: Allow blocks to be split in the middle.
-        while (offset < data.length) {
-            const blockSize = varint.decode(data, offset);
+        const reader = protobuf.Reader.create(data);
+        while (reader.pos < reader.len) {
+            const decoded = WireMessageReply.decodeDelimited(reader);
+            const blockSize = decoded.fileData.data.length;
 
             this.bytesRead += blockSize;
 
-            // console.log('Download', data.length, offset, blockSize, this.bytesRead);
-
             this.progress(Types.DOWNLOAD_FILE_PROGRESS);
-
-            offset += varint.decode.bytes;
-            offset += blockSize;
         }
     }
 
@@ -64,6 +62,7 @@ class DownloadWriter {
         this.dispatch({
             type: type,
             download: {
+                done: type == Types.DOWNLOAD_FILE_DONE,
                 bytesTotal: this.file.size,
                 bytesRead: this.bytesRead,
                 progress: this.bytesRead / this.file.size,

@@ -1,6 +1,6 @@
-'use strict';
-
 import { combineReducers } from 'redux';
+
+import { pluginManager } from '../services';
 
 import * as navigationReducers from './navigation';
 import * as authReducers from './auth';
@@ -11,8 +11,8 @@ import * as liveDataReducers from './live-data';
 import * as configurationReducers from './configuration';
 import * as timersReducers from './timers';
 import * as moduleReplyReducers from './modules';
-
-import { pluginManager } from '../services';
+import * as downloadReducers from './download';
+import * as progressReducers from './progress';
 
 export default combineReducers(Object.assign(
     navigationReducers,
@@ -24,5 +24,7 @@ export default combineReducers(Object.assign(
     configurationReducers,
     timersReducers,
     moduleReplyReducers,
+    downloadReducers,
+    progressReducers,
     pluginManager.getReducers(),
 ));

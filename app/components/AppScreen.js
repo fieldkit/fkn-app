@@ -7,9 +7,37 @@ import { View } from 'react-native';
 
 import Spinner from 'react-native-loading-spinner-overlay';
 
-import { BackgroundView } from '../components/BackgroundView';
+import { BackgroundView } from './BackgroundView';
+import { ProgressBar } from './ProgressBar';
 
 import styles from '../styles';
+
+class ProgressHeader extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            dismissed: false
+        };
+    }
+
+    render() {
+        const { progress } = this.props;
+
+        if (progress.done) {
+            return null;
+        }
+
+        return (
+            <View>
+                <ProgressBar progress={progress.progress * 100} />
+            </View>
+        );
+    }
+}
+
+ProgressHeader.propTypes = {
+    progress: PropTypes.object.isRequired
+};
 
 export class AppScreen extends React.Component {
     render() {
@@ -19,6 +47,7 @@ export class AppScreen extends React.Component {
         if (background === false) {
             return (
                 <View style={[styles.mainView, style]}>
+                    <ProgressHeader progress={progress.download} />
                     {children}
                 </View>
             );
@@ -27,6 +56,7 @@ export class AppScreen extends React.Component {
         return (
             <View style={styles.mainView}>
                 <BackgroundView>
+                    <ProgressHeader progress={progress.download} />
                     {children}
                 </BackgroundView>
             </View>

@@ -54,7 +54,7 @@ class DeviceMenuScreen extends React.Component {
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
                     <MenuButton title="Files" onPress={() => this.props.navigateFiles()} />
-                    <MenuButton title="Data Sets" onPress={() => this.props.navigateDataSets()} />
+                    {false && <MenuButton title="Data Sets" onPress={() => this.props.navigateDataSets()} />}
                     <MenuButton title="Live Data" onPress={() => this.props.navigateLiveData()} />
                     <MenuButton title="Sensors" onPress={() => this.props.navigateSensors()} />
                     <MenuButton title="Configure" onPress={() => this.props.navigateConfigure()} />
