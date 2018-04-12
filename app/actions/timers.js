@@ -1,5 +1,3 @@
-'use strict';
-
 import * as ActionTypes from './types';
 
 export function timerStart(name, seconds) {

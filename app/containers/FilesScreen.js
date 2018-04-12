@@ -11,7 +11,7 @@ import { View, Text } from 'react-native';
 
 import { SmallButton, AppScreen, Loading, DeviceInfo } from '../components';
 
-import { navigateBack, queryFiles } from '../actions';
+import { navigateBack, queryFiles, startDownloadFile } from '../actions';
 
 import styles from '../styles';
 
@@ -34,17 +34,19 @@ class FilesScreen extends React.Component {
         return (
             <AppScreen progress={progress}>
                 <DeviceInfo info={deviceInfo} />
-                {files.files.map((ds, i) => this.renderFile(ds, i))}
+                {files.files.map((file, index) => this.renderFile(file, index))}
             </AppScreen>
         );
     }
 
-    renderFile(file, id) {
+    renderFile(file, index) {
+        const { startDownloadFile } = this.props;
+
         return (
-            <View key={id} style={styles.file.container}>
+            <View key={index} style={styles.file.container}>
                 <Text style={styles.file.name}>{file.name}</Text>
                 <Text style={styles.file.details}>Size: {file.size}</Text>
-                <SmallButton title="View" onPress={() => console.log()} />
+                <SmallButton title="Download" onPress={() => startDownloadFile(file.id) } />
             </View>
         );
     }
@@ -67,5 +69,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
     navigateBack,
-    queryFiles
+    queryFiles,
+    startDownloadFile
 })(FilesScreen);

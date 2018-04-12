@@ -18,6 +18,15 @@ export function queryFiles() {
     };
 }
 
+export function startDownloadFile(id) {
+    return (dispatch, getState) => {
+        return dispatch({
+            type: Types.DOWNLOAD_FILE_START,
+            id: id,
+        });
+    };
+}
+
 export function queryDataSets() {
     return (dispatch, getState) => {
         return dispatch({
