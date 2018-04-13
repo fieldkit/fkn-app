@@ -253,6 +253,14 @@ export default store => dispatch => action => {
         type: callApi.types[0]
     });
 
+    if (typeof callApi.address === 'undefined') {
+        const address = store.getState().deviceStatus.connected;
+        if (typeof address === 'undefined') {
+            throw new Error("No address for call!")
+        }
+        callApi.address = address;
+    }
+
     return invokeDeviceApi(callApi).then(good => {
         dispatch(good);
     }, bad => {

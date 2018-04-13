@@ -45,13 +45,20 @@ export function* deviceCall(raw, existingChannel) {
             }
         };
 
-        raw(dispatch, () => state);
+        yield Promise.resolve(raw(dispatch, () => state));
 
         return yield call(deviceCall, getDeviceApiCall(actions), channel);
     }
+    else if (_.isObject(raw[CALL_DEVICE_API])) {
+        raw = raw[CALL_DEVICE_API];
+    }
 
-    if (!_.isObject(raw.address)) {
-        throw new Error("Bad address given to deviceCall");
+    if (typeof raw.address === 'undefined') {
+        const state = yield select();
+        raw.address = state.deviceStatus.connected;
+        if (typeof raw.address === 'undefined') {
+            throw new Error("No device address!");
+        }
     }
 
     yield put({
@@ -60,7 +67,6 @@ export function* deviceCall(raw, existingChannel) {
             pending: true,
             blocking: raw.blocking,
         },
-        address: raw.address,
         message: raw.message
     });
 
