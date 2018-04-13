@@ -9,6 +9,7 @@ import FilesScreen from '../containers/FilesScreen';
 import DataSetsScreen from '../containers/DataSetsScreen';
 import ViewDataSetScreen from '../containers/ViewDataSetScreen';
 import LiveDataScreen from '../containers/LiveDataScreen';
+import BrowserScreen from '../containers/BrowserScreen';
 
 export class ApplicationRoutesManager {
     constructor() {
@@ -56,6 +57,10 @@ export class ApplicationRoutesManager {
             About: {
                 path: '/about',
                 screen: AboutScreen
+            },
+            Browser: {
+                path: '/browser',
+                screen: BrowserScreen
             },
         };
     }

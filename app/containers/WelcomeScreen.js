@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -7,7 +5,7 @@ import { View, Image } from 'react-native';
 
 import { AppScreen, MenuButtonContainer, MenuButton } from '../components';
 
-import { navigateConnecting, navigateAbout, deviceStartConnect, deviceStopConnect } from '../actions';
+import { navigateConnecting, navigateBrowser, navigateAbout, deviceStartConnect, deviceStopConnect } from '../actions';
 
 import styles from '../styles';
 
@@ -25,7 +23,7 @@ class WelcomeScreen extends React.Component {
     }
 
     render() {
-        const { progress, navigateConnecting, navigateAbout } = this.props;
+        const { progress, navigateConnecting, navigateBrowser, navigateAbout } = this.props;
 
         return (
             <AppScreen progress={progress}>
@@ -37,6 +35,7 @@ class WelcomeScreen extends React.Component {
                     }} />
                 <MenuButtonContainer>
                     <MenuButton title="Connect" onPress={() => navigateConnecting()} />
+                    <MenuButton title="Browser" onPress={() => navigateBrowser()} />
                     <MenuButton title="About" onPress={() => navigateAbout()} />
                 </MenuButtonContainer>
             </AppScreen>
@@ -46,6 +45,7 @@ class WelcomeScreen extends React.Component {
 
 WelcomeScreen.propTypes = {
     navigateConnecting: PropTypes.func.isRequired,
+    navigateBrowser: PropTypes.func.isRequired,
     navigateAbout: PropTypes.func.isRequired,
     deviceStartConnect: PropTypes.func.isRequired,
     progress: PropTypes.object.isRequired,
@@ -57,6 +57,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
     navigateConnecting,
+    navigateBrowser,
     navigateAbout,
     deviceStartConnect
 })(WelcomeScreen);

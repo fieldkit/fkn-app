@@ -68,6 +68,12 @@ export function navigateNetwork() {
     };
 }
 
+export function navigateBrowser() {
+    return {
+        type: Types.NAVIGATION_BROWSER,
+    };
+}
+
 export function navigateLiveData() {
     return {
         type: Types.NAVIGATION_LIVE_DATA,
