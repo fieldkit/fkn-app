@@ -22,8 +22,6 @@ function debug() {
     }
 };
 
-let pendingExecution = null;
-
 // Disable the really verbose logging from this library. With how often we're connecting this is pretty chatty.
 net.Socket.prototype._debug = function() {
 };
@@ -226,17 +224,19 @@ export function useFakeDeviceConnection() {
     return deviceConnection = new FakeDeviceConnection();
 }
 
+const pendingExecutions = { };
+
 export function invokeDeviceApi(callApi) {
-    if (pendingExecution != null) {
-        console.log("Append execution chain...");
-        return pendingExecution = pendingExecution.then(() => {
+    const key = callApi.address.key;
+    if (pendingExecutions[key] != null) {
+        console.log("Append execution chain", key);
+        return pendingExecutions[key] = pendingExecutions[key].then(() => {
             return deviceConnection.execute(callApi);
         }, (ignoredError) => {
             return deviceConnection.execute(callApi);
         });
     }
-    console.log("New execution chain...");
-    return pendingExecution = deviceConnection.execute(callApi);
+    return pendingExecutions[key] = deviceConnection.execute(callApi);
 }
 
 export default store => dispatch => action => {
