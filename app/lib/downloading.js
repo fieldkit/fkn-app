@@ -1,5 +1,6 @@
 import varint from 'varint';
 import protobuf from "protobufjs";
+import moment from 'moment';
 
 import Promise from "bluebird";
 import RNFS from 'react-native-fs';
@@ -11,23 +12,36 @@ import * as Types from '../actions/types';
 
 import { WireMessageReply } from './protocol';
 
-export function openWriter(file, dispatch) {
-    return RNFS.readDir(RNFS.DocumentDirectoryPath).then((res) => {
-        console.log('Directory', res);
-        return res;
-    }).then(() => {
-        return Promise.resolve(new DownloadWriter(file, dispatch));
+function hexEncodeArrayBuffer(arrayBuffer) { // buffer is an ArrayBuffer
+    return Array.prototype.map.call(arrayBuffer, x => ('00' + x.toString(16)).slice(-2)).join('');
+}
+
+export function openWriter(device, file, dispatch) {
+    return Promise.resolve(new DownloadWriter(device, file, dispatch)).then(writer => {
+        writer.open();
+        return writer;
     });
 }
 
 export class DownloadWriter {
-    constructor(file, dispatch) {
+    constructor(device, file, dispatch) {
+        this.device = device;
         this.file = file;
         this.dispatch = dispatch;
         this.bytesRead = 0;
         this.started = new Date();
         this.appendChain = Promise.resolve();
-        this.path = RNFS.DocumentDirectoryPath + '/' + file.name;
+
+        const time = moment(new Date()).format("YYYYMMDD_HHmmss");
+        this.directory = RNFS.DocumentDirectoryPath + "/" + hexEncodeArrayBuffer(device.deviceId) + "/" + time ;
+        this.path = this.directory + '/' + file.name;
+    }
+
+    open() {
+        return this.fileSystemOp(() => {
+            console.log("Creating", this.directory);
+            return RNFS.mkdir(this.directory);
+        });
     }
 
     write(data) {

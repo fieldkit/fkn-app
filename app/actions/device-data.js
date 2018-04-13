@@ -24,9 +24,9 @@ export function startDownloadFile(id) {
     };
 }
 
-export function queryDownloadFile(file) {
+export function queryDownloadFile(device, file) {
     return (dispatch) => {
-        return openWriter(file, dispatch).then(writer => {
+        return openWriter(device, file, dispatch).then(writer => {
             return dispatch({
                 [CALL_DEVICE_API]: {
                     types: [Types.DEVICE_DOWNLOAD_FILE_START, Types.DEVICE_DOWNLOAD_FILE_SUCCESS, Types.DEVICE_DOWNLOAD_FILE_FAIL],

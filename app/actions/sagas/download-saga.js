@@ -6,6 +6,8 @@ import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux
 import { QueryType } from '../../lib/protocol';
 
 import * as Types from '../types';
+
+import { queryCapabilities } from '../device-status';
 import { queryFiles, queryDownloadFile } from '../device-data';
 
 import { deviceCall } from './saga-utils';
@@ -29,7 +31,10 @@ export function* downloadDataSaga() {
     yield takeLatest(Types.DOWNLOAD_FILE_START, function* watcher(action) {
         const state = yield select();
 
-        console.log('Address', state.deviceStatus.connected);
+        const deviceAction = yield call(deviceCall, queryCapabilities());
+        const device = deviceAction.response.capabilities;
+
+        console.log(device);
 
         const fileAction = yield call(deviceCall, queryFiles());
 
@@ -37,7 +42,7 @@ export function* downloadDataSaga() {
 
         console.log("File", file);
 
-        const download = yield call(deviceCall, queryDownloadFile(file));
+        const download = yield call(deviceCall, queryDownloadFile(device, file));
 
         console.log("Download", download);
     });
