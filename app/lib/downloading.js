@@ -28,9 +28,10 @@ export class DownloadWriter {
         this.started = new Date();
         this.appendChain = Promise.resolve();
 
-        const time = moment(new Date()).format("YYYYMMDD_HHmmss");
-        this.directory = RNFS.DocumentDirectoryPath + "/" + hexEncodeArrayBuffer(device.deviceId) + "/" + time ;
-        this.path = this.directory + '/' + file.name;
+        const date = moment(new Date()).format("YYYYMMDD");
+        const time = moment(new Date()).format("HHmmss");
+        this.directory = RNFS.DocumentDirectoryPath + "/" + hexArrayBuffer(device.deviceId) + "/" + date;
+        this.path = this.directory + '/' + time + "_" + file.name;
     }
 
     open() {
@@ -47,6 +48,7 @@ export class DownloadWriter {
             const decoded = WireMessageReply.decodeDelimited(reader);
             if (decoded.fileData == null) {
                 console.log("Empty file-data block.");
+                console.log(decoded);
                 continue;
             }
 
