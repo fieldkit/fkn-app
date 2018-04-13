@@ -5,16 +5,12 @@ import moment from 'moment';
 import Promise from "bluebird";
 import RNFS from 'react-native-fs';
 
-import { base64ArrayBuffer } from '../lib/base64'
+import { hexArrayBuffer, base64ArrayBuffer } from '../lib/base64'
 
 // TODO: May want to pass these in. Opportunity for circular dependency.
 import * as Types from '../actions/types';
 
 import { WireMessageReply } from './protocol';
-
-function hexEncodeArrayBuffer(arrayBuffer) { // buffer is an ArrayBuffer
-    return Array.prototype.map.call(arrayBuffer, x => ('00' + x.toString(16)).slice(-2)).join('');
-}
 
 export function openWriter(device, file, dispatch) {
     return Promise.resolve(new DownloadWriter(device, file, dispatch)).then(writer => {

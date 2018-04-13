@@ -49,3 +49,7 @@ export function base64ArrayBuffer(arrayBuffer) {
 
     return base64
 }
+
+export function hexArrayBuffer(arrayBuffer) {
+    return Array.prototype.map.call(arrayBuffer, x => ('00' + x.toString(16)).slice(-2)).join('');
+}
