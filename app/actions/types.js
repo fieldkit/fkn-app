@@ -106,3 +106,5 @@ export const TIMER_START = 'TIMER_START';
 export const TIMER_TICK = 'TIMER_TICK';
 export const TIMER_CANCEL = 'TIMER_CANCEL';
 export const TIMER_DONE = 'TIMER_DONE';
+
+export const LOCAL_FILES_BROWSE = 'LOCAL_FILES_BROWSE';

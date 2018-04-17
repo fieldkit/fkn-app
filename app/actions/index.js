@@ -8,5 +8,6 @@ export * from './timers';
 export * from './modules';
 export * from './configuration';
 export * from './live-data';
+export * from './local-files';
 
 export const Types = ActionTypes;
