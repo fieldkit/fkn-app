@@ -39,6 +39,7 @@ export class AtlasScript extends React.Component {
         const lastStep = this.isLastStep();
 
         const childProps = {
+            key: currentStepIndex,
             lastStep: lastStep,
             onMoveNextStep: this.onMoveNextStep.bind(this),
             onCancel: onCancel,

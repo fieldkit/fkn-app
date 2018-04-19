@@ -10,10 +10,9 @@ import { CALL_DEVICE_API } from '../../middleware/device-api';
 
 import { QueryType, SensorType, atlasSensorQuery, encodeWireAtlasQuery, decodeWireAtlasReply } from './protocol';
 
-export function atlasCalibrationBegin(sensor) {
+export function atlasCalibrationBegin() {
     return {
         type: AtlasActionTypes.ATLAS_CALIBRATION_BEGIN,
-        sensor: sensor,
     };
 }
 
@@ -40,6 +39,8 @@ export function atlasReadSensor(sensor) {
 export function atlasSensorCommand(types, blocking, sensor, command) {
     const query = atlasSensorQuery(sensor, command);
     const encoded = encodeWireAtlasQuery(query);
+
+    console.log("Custom command size:", encoded.length);
 
     return (dispatch, getState) => {
         return dispatch({

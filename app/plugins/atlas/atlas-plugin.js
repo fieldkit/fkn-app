@@ -11,8 +11,7 @@ import { atlasSagas } from './actions';
 
 export class AtlasPlugin extends Plugin {
     appliesTo(deviceCapabilities) {
-        const atlasSensors = ['pH', 'ORP', 'DO', 'Temp'];
-        const thatWeHave = _(deviceCapabilities.sensors).map(s => s.name).intersection(atlasSensors);
+        const thatWeHave = _(deviceCapabilities.modules).map(s => s.name).intersection(['Atlas']);
         return thatWeHave.size() > 0;
     }
 

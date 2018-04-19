@@ -16,6 +16,7 @@ import { AtlasEcScript } from './EcSensor';
 import { AtlasOrpScript } from './OrpSensor';
 import { AtlasDoOnePointScript, AtlasDoTwoPointScript } from './DoSensor';
 import { AtlasTemperatureScript } from './TempSensor';
+import { ResetScript } from './ResetScript';
 
 class AtlasCalibrationScreen extends React.Component {
     static navigationOptions = {
@@ -30,8 +31,8 @@ class AtlasCalibrationScreen extends React.Component {
         this.onCancel();
     }
 
-    startCalibration(sensor, script) {
-        this.props.atlasCalibrationBegin(sensor);
+    startCalibration(script) {
+        this.props.atlasCalibrationBegin();
 
         this.setState({
             script: script
@@ -96,6 +97,12 @@ class AtlasCalibrationScreen extends React.Component {
         return <AtlasTemperatureScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
     }
 
+    resetAllToFactory() {
+        const { timerStart, timerCancel, atlasCalibrate, timer, atlasState } = this.props;
+
+        return <ResetScript timerStart={timerStart} timerCancel={timerCancel} atlasCalibrate={atlasCalibrate} timer={timer} atlasState={atlasState} onCancel={() => this.onCancel()} />;
+    }
+
     renderScript(script) {
         const { progress, deviceInfo } = this.props;
 
@@ -114,14 +121,15 @@ class AtlasCalibrationScreen extends React.Component {
             <DeviceInfo info={deviceInfo} />
             <ScrollView>
                 <MenuButtonContainer style={{ marginBottom: 30 }}>
-                    <MenuButton title="pH One-Point" onPress={() => this.startCalibration(SensorType.values.PH, this.phOnePointScript.bind(this))} />
-                    <MenuButton title="pH Two-Point" onPress={() => this.startCalibration(SensorType.values.PH, this.phTwoPointScript.bind(this))} />
-                    <MenuButton title="pH Three-Point" onPress={() => this.startCalibration(SensorType.values.PH, this.phThreePointScript.bind(this))} />
-                    <MenuButton title="Conductivity" onPress={() => this.startCalibration(SensorType.values.EC, this.ecScript.bind(this))} />
-                    <MenuButton title="ORP" onPress={() => this.startCalibration(SensorType.values.ORP, this.orpScript.bind(this))} />
-                    <MenuButton title="DO One-Point" onPress={() => this.startCalibration(SensorType.values.DO, this.doOnePointScript.bind(this))} />
-                    <MenuButton title="DO Two-Point" onPress={() => this.startCalibration(SensorType.values.DO, this.doTwoPointScript.bind(this))} />
-                    <MenuButton title="Temperature" onPress={() => this.startCalibration(SensorType.values.DO, this.temperatureScript.bind(this))} />
+                    <MenuButton title="pH One-Point" onPress={() => this.startCalibration(this.phOnePointScript.bind(this))} />
+                    <MenuButton title="pH Two-Point" onPress={() => this.startCalibration(this.phTwoPointScript.bind(this))} />
+                    <MenuButton title="pH Three-Point" onPress={() => this.startCalibration(this.phThreePointScript.bind(this))} />
+                    <MenuButton title="Conductivity" onPress={() => this.startCalibration(this.ecScript.bind(this))} />
+                    <MenuButton title="ORP" onPress={() => this.startCalibration(this.orpScript.bind(this))} />
+                    <MenuButton title="DO One-Point" onPress={() => this.startCalibration(this.doOnePointScript.bind(this))} />
+                    <MenuButton title="DO Two-Point" onPress={() => this.startCalibration(this.doTwoPointScript.bind(this))} />
+                    <MenuButton title="Temperature" onPress={() => this.startCalibration(this.temperatureScript.bind(this))} />
+                    <MenuButton title="Reset All to Factory" onPress={() => this.startCalibration(this.resetAllToFactory.bind(this))} />
                 </MenuButtonContainer>
             </ScrollView>
         </AppScreen>;

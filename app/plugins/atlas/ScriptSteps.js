@@ -91,6 +91,7 @@ WaitingStep.propTypes = {
 
 export class AtlasCalibrationCommandStep extends ScriptStep {
     componentDidMount() {
+        console.log("Mount", this.props);
         this.onRetry();
     }
 
@@ -109,6 +110,8 @@ export class AtlasCalibrationCommandStep extends ScriptStep {
     renderStep() {
         const { command, atlasState } = this.props;
         const { calibration } = atlasState;
+
+        console.log("Render", this.props);
 
         return <View>
             <Text style={atlasStyles.step.command.command}>{command}</Text>

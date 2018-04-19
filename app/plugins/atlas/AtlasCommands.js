@@ -6,14 +6,15 @@ export class AtlasCommands {
 
     getDefaultCommands(temperature, probeType) {
         const ec = this.getEcCalibration(temperature, probeType);
-        console.log(temperature, probeType, ec);
         return {
             Ph: {
+                Clear: "Cal,clear",
                 CalibrateLow: "Cal,low,4",
                 CalibrateMid: "Cal,mid,7",
                 CalibrateHigh: "Cal,high,10",
             },
             Ec: {
+                Clear: "Cal,clear",
                 CalibrateDry: "Cal,dry",
                 CalibrateLow: "Cal,low," + ec[0],
                 CalibrateHigh: "Cal,high," + ec[1],
@@ -24,13 +25,16 @@ export class AtlasCommands {
                 }
             },
             Do: {
+                Clear: "Cal,clear",
                 CalibrateDry: "Cal",
                 CalibrateWet: "Cal,0",
             },
             Orp: {
+                Clear: "Cal,clear",
                 Calibrate: "Cal,225",
             },
             Temperature: {
+                Clear: "Cal,clear",
                 Calibrate: "Cal,100",
             }
         };
@@ -39,24 +43,29 @@ export class AtlasCommands {
     getNoopCommands(temperature, probeType) {
         return {
             Ph: {
+                Clear: "Cal,clear",
                 CalibrateLow: "I",
                 CalibrateMid: "I",
                 CalibrateHigh: "I",
             },
             Ec: {
+                Clear: "Cal,clear",
                 CalibrateDry: "I",
                 CalibrateLow: "I",
                 CalibrateHigh: "I",
                 SetProbe: "I",
             },
             Do: {
+                Clear: "Cal,clear",
                 CalibrateDry: "I",
                 CalibrateWet: "I",
             },
             Orp: {
+                Clear: "Cal,clear",
                 Calibrate: "I",
             },
             Temperature: {
+                Clear: "Cal,clear",
                 Calibrate: "I",
             }
         };
