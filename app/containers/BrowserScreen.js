@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 
-import { SmallButton, AppScreen, Loading } from '../components';
+import { SmallButton, AppScreen, Loading, MenuButtonContainer, MenuButton } from '../components';
 
 import { navigateBack, browseDirectory } from '../actions';
 
@@ -67,6 +67,27 @@ class DirectoryListing extends React.Component {
     }
 }
 
+class FileMenu extends React.Component {
+    render() {
+        const { file, parent, onSelectEntry } = this.props;
+
+        return (
+            <View>
+                <DirectoryEntry entry={parent} onSelect={onSelectEntry} />
+
+                <View>
+                    <Text style={{ paddingLeft: 20, paddingRight: 20, height: 40, fontSize: 20, color: "black" }}>{file.name}</Text>
+                </View>
+
+                <MenuButtonContainer>
+                    <MenuButton title="Upoad" onPress={() => console.log("Upoad")} />
+                    <MenuButton title="Delete" onPress={() => console.log("Delete")} />
+                </MenuButtonContainer>
+            </View>
+        );
+    }
+}
+
 class BrowserScreen extends React.Component {
     static navigationOptions = {
         title: 'Browser',
@@ -88,17 +109,32 @@ class BrowserScreen extends React.Component {
     onSelectEntry(entry) {
         if (entry.directory) {
             this.props.browseDirectory(entry.relativePath);
-
-            this.setState({
-                path: entry.relativePath,
-            });
         }
+
+        this.setState({
+            path: entry.relativePath,
+        });
+    }
+
+    getFileEntry(path) {
+        const { localFiles } = this.props;
+        const listing = localFiles.listings[path];
+        if (_.isArray(listing)) {
+            return null;
+        }
+        const parentPath = getParentPath(path);
+        const parentListing = localFiles.listings[parentPath];
+        if (!_.isArray(parentListing)) {
+            return null;
+        }
+        return _.find(parentListing, (e) => e.relativePath == path);
     }
 
     render() {
         const { progress, localFiles } = this.props;
         const { path } = this.state;
 
+        const file = this.getFileEntry(path);
         const listing = localFiles.listings[path];
         const parentPath = getParentPath(path);
         const parent = parentPath == null ? null : {
@@ -107,7 +143,9 @@ class BrowserScreen extends React.Component {
             directory: true,
         };
 
-        console.log(path, parentPath, listing);
+        if (_.isObject(file)) {
+            return <FileMenu file={file} parent={parentPath} onSelectEntry={this.onSelectEntry.bind(this)} />
+        }
 
         if (!_.isArray(listing)) {
             return <Loading />;
