@@ -33,14 +33,27 @@ function getParentPath(path) {
     return parts.join("/");
 }
 
+function getParentEntry(path) {
+    const parentPath = getParentPath(path);
+    if (parentPath == null) {
+        return null;
+    }
+    const baseName = getPathName(parentPath);
+    return {
+        directory: true,
+        relativePath: parentPath,
+        name: "Back" // "Back to " + baseName
+    };
+}
+
 class DirectoryEntry extends React.Component {
     render() {
-        const { entry, onSelect } = this.props;
+        const { style, entry, onSelect } = this.props;
 
         return (
             <TouchableOpacity onPress={() => onSelect(entry) }>
-                <View>
-                    <Text style={{ height: 40, fontSize: 20, color: "black" }}>{entry.name}</Text>
+                <View style={style.container}>
+                    <Text style={style.text}>{entry.name}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -52,15 +65,17 @@ class DirectoryListing extends React.Component {
         const { path, parent, listing, onSelectEntry } = this.props;
 
         return (
-            <View>
-                <View>
-                    <Text style={{ height: 40, fontSize: 20, color: "black", fontWeight: 'bold' }}>{getPathName(path)}</Text>
+            <View style={styles.browser.listing.container}>
+                {parent && <DirectoryEntry style={styles.browser.listing.back} entry={parent} onSelect={onSelectEntry} />}
+
+                <View style={styles.browser.listing.path.container}>
+                    <Text style={styles.browser.listing.path.text}>{getPathName(path)}</Text>
                 </View>
-                {parent && <DirectoryEntry entry={parent} onSelect={onSelectEntry} />}
+
                 <FlatList
                     data={listing}
                     keyExtractor={(entry, index) => index}
-                    renderItem={({item}) => <DirectoryEntry entry={item} onSelect={onSelectEntry} />}
+                    renderItem={({item}) => <DirectoryEntry style={styles.browser.listing.entry} entry={item} onSelect={onSelectEntry} />}
                     />
             </View>
         );
@@ -72,15 +87,15 @@ class FileMenu extends React.Component {
         const { file, parent, onSelectEntry } = this.props;
 
         return (
-            <View>
-                <DirectoryEntry entry={parent} onSelect={onSelectEntry} />
+            <View style={styles.browser.file.container}>
+                {parent && <DirectoryEntry style={styles.browser.listing.back} entry={parent} onSelect={onSelectEntry} />}
 
-                <View>
-                    <Text style={{ paddingLeft: 20, paddingRight: 20, height: 40, fontSize: 20, color: "black" }}>{file.name}</Text>
+                <View style={styles.browser.file.name.container}>
+                    <Text style={styles.browser.file.name.text}>{file.name}</Text>
                 </View>
 
                 <MenuButtonContainer>
-                    <MenuButton title="Upoad" onPress={() => console.log("Upoad")} />
+                    <MenuButton title="Upload" onPress={() => console.log("Upload")} />
                     <MenuButton title="Delete" onPress={() => console.log("Delete")} />
                 </MenuButtonContainer>
             </View>
@@ -136,15 +151,10 @@ class BrowserScreen extends React.Component {
 
         const file = this.getFileEntry(path);
         const listing = localFiles.listings[path];
-        const parentPath = getParentPath(path);
-        const parent = parentPath == null ? null : {
-            name: 'UP',
-            relativePath: parentPath,
-            directory: true,
-        };
+        const parent = getParentEntry(path);
 
         if (_.isObject(file)) {
-            return <FileMenu file={file} parent={parentPath} onSelectEntry={this.onSelectEntry.bind(this)} />
+            return <FileMenu file={file} parent={parent} onSelectEntry={this.onSelectEntry.bind(this)} />
         }
 
         if (!_.isArray(listing)) {

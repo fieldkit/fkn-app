@@ -12,15 +12,25 @@ import * as Types from '../actions/types';
 
 import { WireMessageReply } from './protocol';
 
+export function resolveDataDirectoryPath() {
+    return Promise.resolve(RNFS.DocumentDirectoryPath + "/Data").then((path) => {
+        return RNFS.mkdir(path).then(() => {
+            return path;
+        });
+    });
+}
+
 export function openWriter(device, file, dispatch) {
-    return Promise.resolve(new DownloadWriter(device, file, dispatch)).then(writer => {
-        writer.open();
-        return writer;
+    return resolveDataDirectoryPath().then(dataDirectoryPath => {
+        return Promise.resolve(new DownloadWriter(dataDirectoryPath, device, file, dispatch)).then(writer => {
+            writer.open();
+            return writer;
+        });
     });
 }
 
 export class DownloadWriter {
-    constructor(device, file, dispatch) {
+    constructor(dataDirectoryPath, device, file, dispatch) {
         this.device = device;
         this.file = file;
         this.dispatch = dispatch;
@@ -30,7 +40,7 @@ export class DownloadWriter {
 
         const date = moment(new Date()).format("YYYYMMDD");
         const time = moment(new Date()).format("HHmmss");
-        this.directory = RNFS.DocumentDirectoryPath + "/" + hexArrayBuffer(device.deviceId) + "/" + date;
+        this.directory = dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId) + "/" + date;
         this.path = this.directory + '/' + time + "_" + file.name;
     }
 

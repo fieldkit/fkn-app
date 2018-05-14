@@ -33,6 +33,65 @@ export default appStyle = {
             padding: 20,
         }
     },
+    browser: {
+        listing: {
+            container: {
+            },
+            back: {
+                container: {
+                    backgroundColor: 'rgba(196, 128, 128, 64)',
+                    paddingTop: 10,
+                    paddingLeft: 20,
+                    paddingRight: 20
+                },
+                text: {
+                    height: 40,
+                    fontSize: 18,
+                    color: "black"
+                }
+            },
+            path: {
+                container: {
+                    backgroundColor: 'rgba(196, 196, 196, 64)',
+                    paddingTop: 10,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    paddingBottom: 10
+                },
+                text: {
+                    fontSize: 20,
+                    color: "black"
+                }
+            },
+            entry: {
+                container: {
+                    paddingTop: 10,
+                    paddingLeft: 20,
+                    paddingRight: 20
+                },
+                text: {
+                    height: 40,
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    color: "black"
+                }
+            }
+        },
+        file: {
+            container: {
+            },
+            name: {
+                container: {
+                    padding: 20
+                },
+                text: {
+                    height: 40,
+                    fontSize: 20,
+                    color: "black"
+                }
+            }
+        }
+    },
     deviceInfo: {
         container: {
             backgroundColor: 'rgba(196, 196, 196, 64)',
