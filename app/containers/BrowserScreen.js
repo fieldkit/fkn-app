@@ -7,44 +7,13 @@ import moment from 'moment';
 
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 
+import * as Files from '../lib/files';
+
 import { SmallButton, AppScreen, Loading, MenuButtonContainer, MenuButton } from '../components';
 
-import { navigateBack, browseDirectory } from '../actions';
+import { navigateBack, browseDirectory, uploadLocalFile, deleteLocalFile } from '../actions';
 
 import styles from '../styles';
-
-function getPathName(path) {
-    if (path == '/') {
-        return '/';
-    }
-    const parts = path.split("/");
-    return parts.pop();
-}
-
-function getParentPath(path) {
-    if (path == "/") {
-        return null;
-    }
-    const parts = path.split("/");
-    parts.pop();
-    if (parts.length <= 1) {
-        return "/";
-    }
-    return parts.join("/");
-}
-
-function getParentEntry(path) {
-    const parentPath = getParentPath(path);
-    if (parentPath == null) {
-        return null;
-    }
-    const baseName = getPathName(parentPath);
-    return {
-        directory: true,
-        relativePath: parentPath,
-        name: "Back" // "Back to " + baseName
-    };
-}
 
 class DirectoryEntry extends React.Component {
     render() {
@@ -69,7 +38,7 @@ class DirectoryListing extends React.Component {
                 {parent && <DirectoryEntry style={styles.browser.listing.back} entry={parent} onSelect={onSelectEntry} />}
 
                 <View style={styles.browser.listing.path.container}>
-                    <Text style={styles.browser.listing.path.text}>{getPathName(path)}</Text>
+                    <Text style={styles.browser.listing.path.text}>{Files.getPathName(path)}</Text>
                 </View>
 
                 <FlatList
@@ -84,7 +53,7 @@ class DirectoryListing extends React.Component {
 
 class FileMenu extends React.Component {
     render() {
-        const { file, parent, onSelectEntry } = this.props;
+        const { file, parent, onSelectEntry, onUpload, onDelete } = this.props;
 
         return (
             <View style={styles.browser.file.container}>
@@ -95,8 +64,8 @@ class FileMenu extends React.Component {
                 </View>
 
                 <MenuButtonContainer>
-                    <MenuButton title="Upload" onPress={() => console.log("Upload")} />
-                    <MenuButton title="Delete" onPress={() => console.log("Delete")} />
+                    <MenuButton title="Upload" onPress={() => onUpload(file)} />
+                    <MenuButton title="Delete" onPress={() => onDelete(file)} />
                 </MenuButtonContainer>
             </View>
         );
@@ -137,12 +106,21 @@ class BrowserScreen extends React.Component {
         if (_.isArray(listing)) {
             return null;
         }
-        const parentPath = getParentPath(path);
+        const parentPath = Files.getParentPath(path);
         const parentListing = localFiles.listings[parentPath];
         if (!_.isArray(parentListing)) {
             return null;
         }
         return _.find(parentListing, (e) => e.relativePath == path);
+    }
+
+    onUpload(entry) {
+        this.props.uploadLocalFile(entry.relativePath);
+    }
+
+    onDelete(entry) {
+        this.props.deleteLocalFile(entry.relativePath);
+        this.onSelectEntry(Files.getParentEntry(entry.relativePath));
     }
 
     render() {
@@ -151,10 +129,10 @@ class BrowserScreen extends React.Component {
 
         const file = this.getFileEntry(path);
         const listing = localFiles.listings[path];
-        const parent = getParentEntry(path);
+        const parent = Files.getParentEntry(path);
 
         if (_.isObject(file)) {
-            return <FileMenu file={file} parent={parent} onSelectEntry={this.onSelectEntry.bind(this)} />
+            return <FileMenu file={file} parent={parent} onSelectEntry={this.onSelectEntry.bind(this)} onUpload={this.onUpload.bind(this)} onDelete={this.onDelete.bind(this)} />
         }
 
         if (!_.isArray(listing)) {
@@ -183,5 +161,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
     navigateBack,
-    browseDirectory
+    browseDirectory,
+    uploadLocalFile,
+    deleteLocalFile
 })(BrowserScreen);
