@@ -9,30 +9,42 @@ import * as Files from '../lib/files';
 
 import { resolveDataDirectoryPath } from '../lib/downloading';
 
+import { navigateBrowser } from './navigation';
+
 export function browseDirectory(relativePath) {
     return (dispatch, getState) => {
         return resolveDataDirectoryPath().then((dataDirectoryPath) => {
             const path = dataDirectoryPath + relativePath;
             console.log("Reading", path);
-            return RNFS.readDir(path).then((res) => {
-                const listing = _(res).map(e => {
-                    return {
-                        name: e.name,
-                        path: e.path,
-                        relativePath: e.path.replace(dataDirectoryPath, ""),
-                        size: e.size,
-                        created: e.ctime,
-                        modified: e.mtime,
-                        directory: e.isDirectory(),
-                    };
-                }).value();
+            return RNFS.stat(path).then(info => {
+                if (info.isFile()) {
+                    return path;
+                }
 
-                dispatch({
-                    type: Types.LOCAL_FILES_BROWSE,
-                    relativePath: relativePath,
-                    path: path,
-                    listing: listing
-                })
+                return RNFS.readDir(path).then((res) => {
+                    const listing = _(res).map(e => {
+                        return {
+                            name: e.name,
+                            path: e.path,
+                            relativePath: e.path.replace(dataDirectoryPath, ""),
+                            size: e.size,
+                            created: e.ctime,
+                            modified: e.mtime,
+                            directory: e.isDirectory(),
+                        };
+                    }).value();
+
+                    dispatch({
+                        type: Types.LOCAL_FILES_BROWSE,
+                        relativePath: relativePath,
+                        path: path,
+                        listing: listing
+                    })
+
+                    return path;
+                });
+            }).then(path => {
+                dispatch(navigateBrowser(relativePath));
             });
         });
     }
@@ -50,7 +62,7 @@ export function deleteLocalFile(relativePath) {
 }
 
 export function uploadLocalFile(relativePath) {
-    const baseUri = "http://192.168.0.141:8080"; // "http://api.fkdev.org";
+    const baseUri = "http://api.fkdev.org"; // "http://192.168.0.141:8080";
     const uploadPath = "/messages/ingestion/stream";
     const mimeType = 'application/vnd.fk.data+base64';
 
@@ -59,8 +71,7 @@ export function uploadLocalFile(relativePath) {
             const path = dataDirectoryPath + relativePath;
             return RNFS.readFile(path, 'base64');
         }).then((data) => {
-            console.log(data);
-
+            // console.log(data);
             return fetch(baseUri + uploadPath, {
                 'method': 'POST',
                 'headers': {

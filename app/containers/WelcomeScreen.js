@@ -5,7 +5,7 @@ import { View, Image } from 'react-native';
 
 import { AppScreen, MenuButtonContainer, MenuButton } from '../components';
 
-import { navigateConnecting, navigateBrowser, navigateAbout, deviceStartConnect, deviceStopConnect } from '../actions';
+import { navigateConnecting, browseDirectory, navigateBrowser, navigateAbout, deviceStartConnect, deviceStopConnect } from '../actions';
 
 import styles from '../styles';
 
@@ -23,7 +23,7 @@ class WelcomeScreen extends React.Component {
     }
 
     render() {
-        const { progress, navigateConnecting, navigateBrowser, navigateAbout } = this.props;
+        const { progress, navigateConnecting, browseDirectory, navigateAbout } = this.props;
 
         return (
             <AppScreen progress={progress}>
@@ -35,7 +35,7 @@ class WelcomeScreen extends React.Component {
                     }} />
                 <MenuButtonContainer>
                     <MenuButton title="Connect" onPress={() => navigateConnecting()} />
-                    <MenuButton title="Browser" onPress={() => navigateBrowser()} />
+                    <MenuButton title="Browser" onPress={() => browseDirectory('/')} />
                     <MenuButton title="About" onPress={() => navigateAbout()} />
                 </MenuButtonContainer>
             </AppScreen>
@@ -45,7 +45,7 @@ class WelcomeScreen extends React.Component {
 
 WelcomeScreen.propTypes = {
     navigateConnecting: PropTypes.func.isRequired,
-    navigateBrowser: PropTypes.func.isRequired,
+    browseDirectory: PropTypes.func.isRequired,
     navigateAbout: PropTypes.func.isRequired,
     deviceStartConnect: PropTypes.func.isRequired,
     progress: PropTypes.object.isRequired,
@@ -57,7 +57,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
     navigateConnecting,
-    navigateBrowser,
     navigateAbout,
+    browseDirectory,
     deviceStartConnect
 })(WelcomeScreen);

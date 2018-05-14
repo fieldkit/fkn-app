@@ -68,9 +68,10 @@ export function navigateNetwork() {
     };
 }
 
-export function navigateBrowser() {
+export function navigateBrowser(path) {
     return {
         type: Types.NAVIGATION_BROWSER,
+        path: path || '/'
     };
 }
 

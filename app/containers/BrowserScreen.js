@@ -11,7 +11,7 @@ import * as Files from '../lib/files';
 
 import { SmallButton, AppScreen, Loading, MenuButtonContainer, MenuButton } from '../components';
 
-import { navigateBack, browseDirectory, uploadLocalFile, deleteLocalFile } from '../actions';
+import { navigateBack, navigateBrowser, browseDirectory, uploadLocalFile, deleteLocalFile } from '../actions';
 
 import styles from '../styles';
 
@@ -79,25 +79,10 @@ class BrowserScreen extends React.Component {
 
     constructor() {
         super();
-        this.state = {
-            path: '/'
-        };
-    }
-
-    componentWillMount() {
-        const { path } = this.state;
-
-        this.props.browseDirectory(path);
     }
 
     onSelectEntry(entry) {
-        if (entry.directory) {
-            this.props.browseDirectory(entry.relativePath);
-        }
-
-        this.setState({
-            path: entry.relativePath,
-        });
+        this.props.browseDirectory(entry.relativePath);
     }
 
     getFileEntry(path) {
@@ -124,12 +109,11 @@ class BrowserScreen extends React.Component {
     }
 
     render() {
-        const { progress, localFiles } = this.props;
-        const { path } = this.state;
+        const { path, progress, localFiles } = this.props;
 
         const file = this.getFileEntry(path);
-        const listing = localFiles.listings[path];
         const parent = Files.getParentEntry(path);
+        const listing = localFiles.listings[path];
 
         if (_.isObject(file)) {
             return <FileMenu file={file} parent={parent} onSelectEntry={this.onSelectEntry.bind(this)} onUpload={this.onUpload.bind(this)} onDelete={this.onDelete.bind(this)} />
@@ -149,18 +133,24 @@ class BrowserScreen extends React.Component {
 
 BrowserScreen.propTypes = {
     navigateBack: PropTypes.func.isRequired,
+    navigateBrowser: PropTypes.func.isRequired,
     browseDirectory: PropTypes.func.isRequired,
     progress: PropTypes.object.isRequired,
     localFiles: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({
-    progress: state.progress,
-    localFiles: state.localFiles,
-});
+const mapStateToProps = (state) => {
+    const route = state.nav.routes[state.nav.index];
+    return {
+        path: route.params ? route.params.path : "/",
+        progress: state.progress,
+        localFiles: state.localFiles,
+    };
+};
 
 export default connect(mapStateToProps, {
     navigateBack,
+    navigateBrowser,
     browseDirectory,
     uploadLocalFile,
     deleteLocalFile
