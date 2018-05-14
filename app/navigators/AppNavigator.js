@@ -5,7 +5,13 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
 import { routesManager } from './routes';
 
-export const AppNavigator = StackNavigator(routesManager.getRoutes());
+export const AppNavigator = StackNavigator(routesManager.getRoutes(), {
+    transitionConfig: () => ({
+        transitionSpec: {
+            duration: 0,
+        }
+    })
+});
 
 const AppWithNavigationState = ({ dispatch, nav }) => (
     <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
