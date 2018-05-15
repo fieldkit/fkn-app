@@ -60,6 +60,7 @@ export default appStyle = {
                 },
                 text: {
                     fontSize: 20,
+                    fontWeight: "bold",
                     color: "black"
                 }
             },
@@ -72,7 +73,6 @@ export default appStyle = {
                 text: {
                     height: 40,
                     fontSize: 18,
-                    fontWeight: "bold",
                     color: "black"
                 }
             }

@@ -71,7 +71,6 @@ export function uploadLocalFile(relativePath) {
             const path = dataDirectoryPath + relativePath;
             return RNFS.readFile(path, 'base64');
         }).then((data) => {
-            // console.log(data);
             return fetch(baseUri + uploadPath, {
                 'method': 'POST',
                 'headers': {
