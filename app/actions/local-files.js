@@ -62,21 +62,26 @@ export function deleteLocalFile(relativePath) {
 }
 
 export function uploadLocalFile(relativePath) {
-    const baseUri = "http://api.fkdev.org"; // "http://192.168.0.141:8080";
+    const baseUri = "http://api.fkdev.org";
+    // const baseUri = "http://192.168.0.141:8080";
     const uploadPath = "/messages/ingestion/stream";
     const mimeType = 'application/vnd.fk.data+base64';
 
     return (dispatch, getState) => {
         return resolveDataDirectoryPath().then((dataDirectoryPath) => {
             const path = dataDirectoryPath + relativePath;
+            console.log("Reading", path);
             return RNFS.readFile(path, 'base64');
         }).then((data) => {
+            console.log("Uploading");
             return fetch(baseUri + uploadPath, {
                 'method': 'POST',
                 'headers': {
                     'Content-Type': mimeType
                 },
                 'body': data
+            }).then((res) => {
+                console.log("Done!", res);
             });
         });
     }
