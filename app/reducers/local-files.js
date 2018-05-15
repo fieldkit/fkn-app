@@ -9,7 +9,9 @@ export function localFiles(state = initialLocalFilesState, action) {
     switch (action.type) {
     case ActionTypes.LOCAL_FILES_BROWSE: {
         nextState = _.clone(state);
-        nextState.listings[action.relativePath] = action.listing;
+        nextState.listings[action.relativePath] = _.reverse(_.sortBy(action.listing, e => {
+            return e.modified;
+        }));
         return nextState;
     }
     default:

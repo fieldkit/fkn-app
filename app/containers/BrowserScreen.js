@@ -22,7 +22,8 @@ class DirectoryEntry extends React.Component {
         return (
             <TouchableOpacity onPress={() => onSelect(entry) }>
                 <View style={style.container}>
-                    <Text style={style.text}>{entry.name}</Text>
+                    { entry.directory && <Text style={style.text}>{entry.name}</Text>}
+                    {!entry.directory && <Text style={style.text}>{entry.name} <Text style={{ fontSize: 12 }}>({entry.size})</Text></Text>}
                 </View>
             </TouchableOpacity>
         )
