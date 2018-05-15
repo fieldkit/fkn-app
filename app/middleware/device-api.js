@@ -1,16 +1,12 @@
+import _ from 'lodash';
 import Promise from "bluebird";
 import varint from 'varint';
 import protobuf from "protobufjs";
 import net from "net";
 
-import {
-    WireMessageQuery,
-    WireMessageReply,
-    QueryType,
-    ReplyType
-} from '../lib/protocol';
+import { WireMessageQuery, WireMessageReply, QueryType, ReplyType } from '../lib/protocol';
 
-import * as Types from '../actions/types';
+import * as ActionTypes from '../actions/types';
 
 export const CALL_DEVICE_API = Symbol('Call Device API');
 
@@ -149,7 +145,7 @@ class DeviceConnection {
 
                 if (error.message == 'Error: Connection refused') {
                     rejecting.actions.push({
-                        type: Types.DEVICE_CONNECTION_ERROR
+                        type: ActionTypes.DEVICE_CONNECTION_ERROR
                     });
                 }
 
@@ -267,6 +263,17 @@ export default store => dispatch => action => {
         return dispatch(action);
     }
 
+    if (typeof callApi.address === 'undefined') {
+        const address = store.getState().deviceStatus.connected;
+        if (typeof address === 'undefined') {
+            dispatch({
+                type: ActionTypes.DEVICE_CONNECTION_ERROR
+            });
+            return;
+        }
+        callApi.address = address;
+    }
+
     dispatch({
         deviceApi: {
             pending: true,
@@ -274,14 +281,6 @@ export default store => dispatch => action => {
         },
         type: callApi.types[0]
     });
-
-    if (typeof callApi.address === 'undefined') {
-        const address = store.getState().deviceStatus.connected;
-        if (typeof address === 'undefined') {
-            throw new Error("No address for call!")
-        }
-        callApi.address = address;
-    }
 
     return invokeDeviceApi(callApi).then(good => {
         dispatch(good);

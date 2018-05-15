@@ -40,6 +40,10 @@ export class DeviceInfo extends React.Component {
         if (false) {
             str += " " + Math.floor(seconds) + "S";
         }
+        str = str.trim();
+        if (str.length == 0) {
+            return "NA";
+        }
         return str.trim();
     }
 }

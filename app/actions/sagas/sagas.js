@@ -30,8 +30,6 @@ export function* loseExpiredDevices() {
                 address: entry.address
             });
             delete devices[key];
-        } else {
-            // console.log("discoverDevices: Kept", key, "after", elapsed);
         }
     }
 }
@@ -108,9 +106,11 @@ export function* queryActiveDeviceInformation() {
             });
         }
         catch (err) {
+            console.log("Error", err);
             yield put({
                 type: Types.FIND_DEVICE_LOST,
-                address: selected.address
+                address: selected.address,
+                error: err
             });
         }
     });
@@ -139,9 +139,11 @@ export function* pingConnectedDevice() {
                 });
             }
             catch (err) {
+                console.log("Error", err);
                 yield put({
                     type: Types.FIND_DEVICE_LOST,
-                    address: deviceStatus.connected
+                    address: deviceStatus.connected,
+                    error: err
                 });
             }
         }

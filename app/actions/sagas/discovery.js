@@ -48,7 +48,6 @@ function* monitorServiceDiscoveryEvents(channel) {
         while (true) {
             const info = yield call(channel.take);
             yield put(info);
-            // yield delay(500);
         }
     } else if (Config.fixedDeviceInfo) {
         while (true) {

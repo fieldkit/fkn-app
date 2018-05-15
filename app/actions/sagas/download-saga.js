@@ -29,21 +29,27 @@ function areTokensEqual(t1, t2) {
 
 export function* downloadDataSaga() {
     yield takeLatest(Types.DOWNLOAD_FILE_START, function* watcher(action) {
-        const state = yield select();
+        try {
+            const deviceAction = yield call(deviceCall, queryCapabilities());
+            const device = deviceAction.response.capabilities;
 
-        const deviceAction = yield call(deviceCall, queryCapabilities());
-        const device = deviceAction.response.capabilities;
+            console.log(device);
 
-        console.log(device);
+            const fileAction = yield call(deviceCall, queryFiles());
 
-        const fileAction = yield call(deviceCall, queryFiles());
+            const file = _(fileAction.response.files.files).filter(f => f.id == action.id).first();
 
-        const file = _(fileAction.response.files.files).filter(f => f.id == action.id).first();
+            console.log("File", file);
 
-        console.log("File", file);
+            const download = yield call(deviceCall, queryDownloadFile(device, file));
 
-        const download = yield call(deviceCall, queryDownloadFile(device, file));
-
-        console.log("Download", download);
+            console.log("Download", download);
+        }
+        catch (err) {
+            console.log("Error", err);
+            yield put({
+                type: Types.DEVICE_CONNECTION_ERROR
+            });
+        }
     });
 }

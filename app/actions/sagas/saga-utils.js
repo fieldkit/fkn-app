@@ -1,9 +1,11 @@
 import _ from 'lodash';
 import { put, call, select, race, all } from 'redux-saga/effects';
 
+import { createChannel } from './channels';
+
 import { CALL_DEVICE_API, invokeDeviceApi } from '../../middleware/device-api';
 
-import { createChannel } from './channels';
+import * as ActionTypes from '../types.js';
 
 function* readAndPutActions(channel) {
     while (channel.isOpen()) {
@@ -53,11 +55,14 @@ export function* deviceCall(raw, existingChannel) {
         raw = raw[CALL_DEVICE_API];
     }
 
-    if (typeof raw.address === 'undefined') {
+    if (raw.address === null || typeof raw.address !== 'object') {
         const state = yield select();
         raw.address = state.deviceStatus.connected;
-        if (typeof raw.address === 'undefined') {
-            throw new Error("No device address!");
+        if (raw.address === null || typeof raw.address !== 'object') {
+            yield put({
+                type: ActionTypes.DEVICE_CONNECTION_ERROR
+            });
+            throw new Error("No device connection");
         }
     }
 
