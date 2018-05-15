@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 
 import AppWithNavigationState from '../navigators/AppNavigator';
 
-class AppContainer extends Component {
+class AppContainer extends React.Component {
     constructor(props: any, context: any) {
         super(props, context);
     }
