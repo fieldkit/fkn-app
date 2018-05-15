@@ -23,10 +23,10 @@ class WelcomeScreen extends React.Component {
     }
 
     render() {
-        const { progress, navigateConnecting, browseDirectory, navigateAbout } = this.props;
+        const { navigateConnecting, browseDirectory, navigateAbout } = this.props;
 
         return (
-            <AppScreen progress={progress}>
+            <AppScreen>
                 <Image source={require('../../assets/fk-header.png')}
                     style={{
                         resizeMode: 'contain',
@@ -48,11 +48,9 @@ WelcomeScreen.propTypes = {
     browseDirectory: PropTypes.func.isRequired,
     navigateAbout: PropTypes.func.isRequired,
     deviceStartConnect: PropTypes.func.isRequired,
-    progress: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-    progress: state.progress,
 });
 
 export default connect(mapStateToProps, {

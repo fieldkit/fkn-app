@@ -40,7 +40,7 @@ class NetworkInfo extends React.Component {
     }
 
     render() {
-        const { progress, network } = this.props;
+        const { network } = this.props;
         const { editing, ssid, password } = this.state;
 
         if (editing) {
@@ -88,10 +88,10 @@ class NetworkScreen extends React.Component {
     }
 
     render() {
-        const { progress, deviceInfo, deviceConfiguration } = this.props;
+        const { deviceInfo, deviceConfiguration } = this.props;
 
         return (
-            <AppScreen progress={progress}>
+            <AppScreen>
                 <DeviceInfo info={deviceInfo} />
                 <View style={styles.networks.container}>
                     <Text style={styles.networks.heading}>Saved Networks:</Text>
@@ -108,12 +108,10 @@ NetworkScreen.propTypes = {
     queryConfiguration: PropTypes.func.isRequired,
     saveNetworkConfiguration: PropTypes.func.isRequired,
     deviceInfo: PropTypes.object.isRequired,
-    progress: PropTypes.object.isRequired,
     deviceConfiguration: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-    progress: state.progress,
     deviceInfo: state.deviceInfo,
     deviceConfiguration: state.deviceConfiguration,
 });

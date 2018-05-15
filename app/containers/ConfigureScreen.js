@@ -30,10 +30,10 @@ class ConfigureScreen extends React.Component {
     }
 
     render() {
-        const { progress, deviceInfo } = this.props;
+        const { deviceInfo } = this.props;
 
         return (
-            <AppScreen progress={progress}>
+            <AppScreen>
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
                     <MenuButton title="Network" onPress={() => this.props.navigateNetwork()} />
@@ -49,12 +49,10 @@ ConfigureScreen.propTypes = {
     navigateNetwork: PropTypes.func.isRequired,
     navigateBack: PropTypes.func.isRequired,
     deviceInfo: PropTypes.object.isRequired,
-    progress: PropTypes.object.isRequired,
     resetDevice: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-    progress: state.progress,
     deviceInfo: state.deviceInfo,
 });
 

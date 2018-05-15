@@ -45,10 +45,10 @@ class DeviceMenuScreen extends React.Component {
     }
 
     render() {
-        const { progress, deviceInfo, deviceCapabilities: caps } = this.props;
+        const { deviceInfo, deviceCapabilities: caps } = this.props;
 
         return (
-            <AppScreen progress={progress}>
+            <AppScreen>
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
                     <MenuButton title="Files" onPress={() => this.props.navigateFiles()} />
@@ -73,14 +73,12 @@ DeviceMenuScreen.propTypes = {
     navigateConfigure: PropTypes.func.isRequired,
     navigateName: PropTypes.func.isRequired,
     queryInfo: PropTypes.func.isRequired,
-    progress: PropTypes.object.isRequired,
     deviceInfo: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
     deviceSpecificRoutes: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-    progress: state.progress,
     deviceInfo: state.deviceInfo,
     deviceCapabilities: state.deviceCapabilities,
     deviceSpecificRoutes: state.deviceSpecificRoutes,

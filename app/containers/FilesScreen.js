@@ -23,14 +23,14 @@ class FilesScreen extends React.Component {
     }
 
     render() {
-        const { progress, deviceInfo, deviceCapabilities: caps, files } = this.props;
+        const { deviceInfo, deviceCapabilities: caps, files } = this.props;
 
         if (!_.isArray(files.files)) {
             return (<Loading />);
         }
 
         return (
-            <AppScreen progress={progress}>
+            <AppScreen>
                 <DeviceInfo info={deviceInfo} />
                 {files.files.map((file, index) => this.renderFile(file, index))}
             </AppScreen>
@@ -54,13 +54,11 @@ FilesScreen.propTypes = {
     navigateBack: PropTypes.func.isRequired,
     queryFiles: PropTypes.func.isRequired,
     deviceInfo: PropTypes.object.isRequired,
-    progress: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
     deviceInfo: state.deviceInfo,
-    progress: state.progress,
     deviceCapabilities: state.deviceCapabilities,
     files: state.files
 });

@@ -1,53 +1,25 @@
-'use strict';
-
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import { View } from 'react-native';
+import { View, Button } from 'react-native';
 
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import { BackgroundView } from './BackgroundView';
-import { ProgressBar } from './ProgressBar';
+
+import ProgressHeader from '../containers/ProgressHeader';
 
 import styles from '../styles';
 
-class ProgressHeader extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            dismissed: false
-        };
-    }
-
-    render() {
-        const { progress } = this.props;
-
-        if (progress.done) {
-            return null;
-        }
-
-        return (
-            <View>
-                <ProgressBar progress={progress.progress * 100} />
-            </View>
-        );
-    }
-}
-
-ProgressHeader.propTypes = {
-    progress: PropTypes.object.isRequired
-};
-
 export class AppScreen extends React.Component {
     render() {
-        const { background, progress, style } = this.props;
+        const { style, background } = this.props;
         const { children } = this.props;
 
         if (background === false) {
             return (
                 <View style={[styles.mainView, style]}>
-                    <ProgressHeader progress={progress.download} />
+                    <ProgressHeader />
                     {children}
                 </View>
             );
@@ -56,7 +28,7 @@ export class AppScreen extends React.Component {
         return (
             <View style={styles.mainView}>
                 <BackgroundView>
-                    <ProgressHeader progress={progress.download} />
+                    <ProgressHeader />
                     {children}
                 </BackgroundView>
             </View>
@@ -65,7 +37,6 @@ export class AppScreen extends React.Component {
 }
 
 AppScreen.propTypes = {
-    progress: PropTypes.object.isRequired,
     background: PropTypes.bool,
 };
 

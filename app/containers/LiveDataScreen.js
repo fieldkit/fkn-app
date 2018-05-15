@@ -34,7 +34,7 @@ class LiveDataScreen extends React.Component {
     }
 
     render() {
-        const { progress, liveData } = this.props;
+        const { liveData } = this.props;
 
         // This can't be changed, for now. Just trying out different approaches.
         if (this.state.chartPerSensor) {
@@ -49,7 +49,7 @@ class LiveDataScreen extends React.Component {
         }
 
         return (
-            <AppScreen progress={progress} background={false}>
+            <AppScreen background={false}>
                 <View style={styles.liveData.container}>
                     <View style={{ flex: 1 }}>
                         {liveData.sensors.map((s, i) => this.renderSensor(s, s.id))}
@@ -139,7 +139,6 @@ LiveDataScreen.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    progress: state.progress,
     liveData: state.liveData
 });
 

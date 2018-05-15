@@ -28,7 +28,7 @@ class ConnectingScreen extends React.Component {
     }
 
     render() {
-        const { progress, deviceStatus } = this.props;
+        const { deviceStatus } = this.props;
 
         let status = null;
 
@@ -37,7 +37,7 @@ class ConnectingScreen extends React.Component {
         }
 
         return (
-            <AppScreen progress={progress}>
+            <AppScreen>
                 <Button style={styles.connecting.cancel} title="Cancel" onPress={() => this.props.navigateWelcome()} />
                 { status != null ? <Text style={styles.connecting.status}>{status}</Text> : <View/> }
                 <View style={{marginTop: 10, flexDirection: 'column'}}>
@@ -67,12 +67,10 @@ ConnectingScreen.propTypes = {
     deviceStartConnect: PropTypes.func.isRequired,
     deviceStopConnect: PropTypes.func.isRequired,
     deviceSelect: PropTypes.func.isRequired,
-    progress: PropTypes.object.isRequired,
     deviceStatus: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-    progress: state.progress,
     deviceStatus: state.deviceStatus
 });
 

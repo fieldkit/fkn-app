@@ -109,7 +109,7 @@ class BrowserScreen extends React.Component {
     }
 
     render() {
-        const { path, progress, localFiles } = this.props;
+        const { path, localFiles } = this.props;
 
         const file = this.getFileEntry(path);
         const parent = Files.getParentEntry(path);
@@ -124,7 +124,7 @@ class BrowserScreen extends React.Component {
         }
 
         return (
-            <AppScreen progress={progress} background={false}>
+            <AppScreen background={false}>
                 <DirectoryListing parent={parent} path={path} listing={listing} onSelectEntry={this.onSelectEntry.bind(this)} />
             </AppScreen>
         );
@@ -135,7 +135,6 @@ BrowserScreen.propTypes = {
     navigateBack: PropTypes.func.isRequired,
     navigateBrowser: PropTypes.func.isRequired,
     browseDirectory: PropTypes.func.isRequired,
-    progress: PropTypes.object.isRequired,
     localFiles: PropTypes.object.isRequired
 };
 
@@ -143,7 +142,6 @@ const mapStateToProps = (state) => {
     const route = state.nav.routes[state.nav.index];
     return {
         path: route.params ? route.params.path : "/",
-        progress: state.progress,
         localFiles: state.localFiles,
     };
 };
