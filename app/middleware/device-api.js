@@ -28,7 +28,7 @@ net.Socket.prototype._debug = function() {
 
 class DeviceConnection {
     rpcImplFactory(host, port, wireQuery, noReply, writer) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject, onCancel) => {
             debug("Connecting to", host + ":" + port);
 
             const client = net.createConnection({
@@ -38,6 +38,11 @@ class DeviceConnection {
             });
 
             const returned = [];
+
+            onCancel(() => {
+                console.log("Cancel, ending connection.");
+                client.end();
+            });
 
             client.on('connect', () => {
                 debug("Connected, sending query...");
@@ -218,6 +223,13 @@ export class FakeDeviceConnection {
     }
 }
 
+Promise.config({
+    warnings: true,
+    longStackTraces: true,
+    cancellation: true,
+    monitoring: true
+});
+
 let deviceConnection = new DeviceConnection();
 
 export function useFakeDeviceConnection() {
@@ -225,6 +237,16 @@ export function useFakeDeviceConnection() {
 }
 
 const pendingExecutions = { };
+
+export function cancelPendingDeviceCalls() {
+    for (let key in pendingExecutions) {
+        if (pendingExecutions.hasOwnProperty(key)) {
+            console.log("Canceling", key);
+            pendingExecutions[key].cancel();
+            delete pendingExecutions[key];
+        }
+    }
+}
 
 export function invokeDeviceApi(callApi) {
     const key = callApi.address.key;

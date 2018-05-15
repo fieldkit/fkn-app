@@ -104,6 +104,7 @@ export class DownloadWriter {
             type: type,
             download: {
                 done: type == Types.DOWNLOAD_FILE_DONE,
+                cancelable: true,
                 bytesTotal: this.file.size,
                 bytesRead: this.bytesRead,
                 progress: this.bytesRead / this.file.size,

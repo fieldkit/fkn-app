@@ -1,4 +1,4 @@
-import { CALL_DEVICE_API } from '../middleware/device-api';
+import { CALL_DEVICE_API, cancelPendingDeviceCalls } from '../middleware/device-api';
 
 import { QueryType } from '../lib/protocol';
 import { openWriter } from '../lib/downloading';
@@ -21,6 +21,14 @@ export function startDownloadFile(id) {
     return {
         type: Types.DOWNLOAD_FILE_START,
         id: id,
+    };
+}
+
+export function cancelInProgressOperation() {
+    cancelPendingDeviceCalls();
+
+    return {
+        type: Types.OPERATION_CANCEL
     };
 }
 

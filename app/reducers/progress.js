@@ -27,13 +27,16 @@ export function progress(state = initialProgressState, action) {
 
     switch (action.type) {
     case ActionTypes.DOWNLOAD_FILE_START: {
-        return { ...nextState, ...{ download: { done: false, progress: 0 } } };
+        return { ...nextState, ...{ download: { cancelable: true, done: false, progress: 0 } } };
     }
     case ActionTypes.DOWNLOAD_FILE_PROGRESS: {
         return { ...nextState, ...{ download: action.download } };
     }
     case ActionTypes.DOWNLOAD_FILE_DONE: {
         return { ...nextState, ...{ download: action.download } };
+    }
+    case ActionTypes.OPERATION_CANCEL: {
+        return { ...nextState, ...{ download: { done: true } } };
     }
     default:
         return nextState;
