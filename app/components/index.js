@@ -9,4 +9,5 @@ export * from './Loading';
 export * from './ProgressModal';
 export * from './ProgressBar';
 export * from './ConfirmationModal';
+export * from './Browsing';
 

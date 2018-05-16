@@ -39,7 +39,7 @@ export default appStyle = {
             },
             back: {
                 container: {
-                    backgroundColor: 'rgba(196, 128, 128, 64)',
+                    backgroundColor: '#F7DC6F',
                     paddingTop: 10,
                     paddingLeft: 20,
                     paddingRight: 20

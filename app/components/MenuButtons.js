@@ -13,8 +13,8 @@ export class MenuButtonContainer extends React.Component {
 
 export class MenuButton extends React.Component {
     render() {
-        const { title, onPress } = this.props;
+        const { title, onPress, color } = this.props;
 
-        return <View style={styles.menuButton}><Button title={title} onPress={onPress} /></View>;
+        return <View style={styles.menuButton}><Button title={title} onPress={onPress} color={color} /></View>;
     }
 }
