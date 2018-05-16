@@ -118,9 +118,15 @@ export function nav(state = welcomeState, action) {
         break;
     case ActionTypes.NAVIGATION_BROWSER:
         nextState = AppNavigator.router.getStateForAction(
-            NavigationActions.navigate({
-                routeName: 'Browser',
-                params: { path: action.path }
+            NavigationActions.reset({
+                index: 1,
+                actions: [
+                    welcomeAction,
+                    NavigationActions.navigate({
+                        routeName: 'Browser',
+                        params: { path: action.path }
+                    })
+                ]
             }),
             state
         );
