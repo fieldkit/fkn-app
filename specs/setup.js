@@ -5,6 +5,10 @@ import {
 import React from 'react';
 import renderer from 'react-test-renderer';
 
+NativeModules.LRDRCTSimpleToast = {
+    SHORT: 100
+}
+
 NativeModules.RNFSManager = {
 }
 

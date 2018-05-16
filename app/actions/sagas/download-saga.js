@@ -3,9 +3,8 @@ import _ from 'lodash';
 import { delay } from 'redux-saga'
 import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects'
 
-import Toast from 'react-native-simple-toast';
-
 import { QueryType } from '../../lib/protocol';
+import { Toasts } from '../../lib/toasts';
 
 import * as Types from '../types';
 
@@ -47,7 +46,7 @@ export function* downloadDataSaga() {
 
             console.log("Download", download);
 
-            Toast.show('Download completed!');
+            Toasts.show('Download completed!');
         }
         catch (err) {
             console.log("Error", err);
