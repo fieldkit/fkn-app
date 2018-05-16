@@ -3,6 +3,8 @@ import moment from 'moment';
 import Promise from "bluebird";
 import RNFS from 'react-native-fs';
 
+import Toast from 'react-native-simple-toast';
+
 import * as Types from './types';
 
 import * as Files from '../lib/files';
@@ -82,6 +84,7 @@ export function uploadLocalFile(relativePath) {
                 'body': data
             }).then((res) => {
                 console.log("Done!", res);
+                Toast.show('Upload completed!');
             });
         });
     }

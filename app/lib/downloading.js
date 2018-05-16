@@ -12,8 +12,13 @@ import * as Types from '../actions/types';
 
 import { WireMessageReply } from './protocol';
 
+let resolvedDataDirectoryPath = null;
+
 export function resolveDataDirectoryPath() {
-    return Promise.resolve(RNFS.DocumentDirectoryPath + "/Data").then((path) => {
+    if (resolvedDataDirectoryPath !== null) {
+        return resolvedDataDirectoryPath;
+    }
+    return resolvedDataDirectoryPath = Promise.resolve(RNFS.DocumentDirectoryPath + "/Data").then((path) => {
         return RNFS.mkdir(path).then(() => {
             return path;
         });

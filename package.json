@@ -34,6 +34,7 @@
     "react-native-mail": "3.0.4",
     "react-native-progress-circle": "2.0.0",
     "react-native-service-discovery": "https://github.com/Conservify/react-native-service-discovery.git",
+    "react-native-simple-toast": "0.0.8",
     "react-native-svg": "5.4.2",
     "react-native-tcp": "https://github.com/PeelTechnologies/react-native-tcp.git",
     "react-native-udp": "^2.3.1",
