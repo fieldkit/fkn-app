@@ -37,7 +37,7 @@ export function* loseExpiredDevices() {
 export function* deviceHandshake(device) {
     try
     {
-        yield call(deviceCall, {
+        const handshakeReply = yield call(deviceCall, {
             types: [Types.DEVICE_HANDSHAKE_START, Types.DEVICE_HANDSHAKE_SUCCESS, Types.DEVICE_HANDSHAKE_FAIL],
             address: device.address,
             message: {
@@ -49,9 +49,12 @@ export function* deviceHandshake(device) {
             }
         });
 
+        const capabilities = handshakeReply.response.capabilities;
+
         yield put({
             type: Types.FIND_DEVICE_SUCCESS,
-            address: device.address
+            address: device.address,
+            capabilities: capabilities
         });
     }
     catch (e) {
@@ -184,8 +187,8 @@ export function* navigateToDeviceMenuFromConnecting() {
             yield put(navigateDeviceMenu());
         }
         else {
-            const { deviceStatus } = yield select();
-            const numberOfDevices = Object.keys(deviceStatus.addresses).length;
+            const { devices } = yield select();
+            const numberOfDevices = Object.keys(devices).length;
             if (numberOfDevices == 0) {
                 yield put(navigateWelcome());
             }

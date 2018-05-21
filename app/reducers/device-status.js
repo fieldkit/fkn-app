@@ -34,24 +34,8 @@ export function deviceStatus(state = initialDeviceStatusState, action) {
     case ActionTypes.FIND_DEVICE_START: {
         return { ...nextState, ...{ started: unixNow() } };
     }
-    case ActionTypes.FIND_DEVICE_INFO: {
-        const nextAddresses = { ...nextState.addresses };
-        nextAddresses[action.address.host] = { ...action.address, ...{ seen: unixNow() } };
-        return { ...nextState, ...{ addresses: nextAddresses } };
-    }
     case ActionTypes.FIND_DEVICE_SELECT: {
         return { ...nextState, ...{ connected: action.address } };
-    }
-    case ActionTypes.FIND_DEVICE_SUCCESS: {
-        return { ...nextState, ...{ } };
-    }
-    case ActionTypes.FIND_DEVICE_LOST: {
-        const nextAddresses = { ...nextState.addresses };
-        delete nextAddresses[action.address.host];
-        if (state.connected && state.connected.host == action.address.host) {
-            return { ...nextState, ...{ addresses: nextAddresses, connected: null } };
-        }
-        return { ...nextState, ...{ addresses: nextAddresses } };
     }
     case ActionTypes.DEVICE_PING_SUCCESS: {
         nextState.ping = {
@@ -78,20 +62,25 @@ export function devices(state = initialDevicesState, action) {
 
     if (_.isObject(action.deviceApi)) {
         if (action.deviceApi.success) {
-            let update = {};
-            update[action.deviceApi.address.key] = {
-                address: action.deviceApi.address,
-                time: unixNow(),
-            };
-            nextState = { ...state, ...update };
+            const key = state[action.deviceApi.address.key];
+            if (_.isObject(state[key])) {
+                const update = {};
+                update[action.deviceApi.address.key] = {
+                    address: action.deviceApi.address,
+                    time: unixNow(),
+                };
+                nextState = { ...state, ...update };
+            }
         }
     }
 
     switch (action.type) {
-    case ActionTypes.FIND_DEVICE_INFO: {
-        let update = {};
-        update[action.address] = {
+    case ActionTypes.FIND_DEVICE_SUCCESS: {
+        const key = action.address.key;
+        const update = {};
+        update[key] = {
             address: action.address,
+            capabilities: action.capabilities,
             time: unixNow(),
         };
         return { ...nextState, ...update };

@@ -28,11 +28,11 @@ class ConnectingScreen extends React.Component {
     }
 
     render() {
-        const { deviceStatus } = this.props;
+        const { devices } = this.props;
 
         let status = null;
 
-        if (_.size(deviceStatus.addresses) == 0) {
+        if (_.size(devices) == 0) {
             status = "Searching...";
         }
 
@@ -41,7 +41,7 @@ class ConnectingScreen extends React.Component {
                 <Button style={styles.connecting.cancel} title="Cancel" onPress={() => this.props.navigateWelcome()} />
                 { status != null ? <Text style={styles.connecting.status}>{status}</Text> : <View/> }
                 <View style={{marginTop: 10, flexDirection: 'column'}}>
-                    {_.map(deviceStatus.addresses, (device, _) => this.renderDevice(device))}
+                    {_.map(devices, (device, _) => this.renderDevice(device))}
                 </View>
             </AppScreen>
         );
@@ -49,13 +49,13 @@ class ConnectingScreen extends React.Component {
 
     renderDevice(device) {
         return (
-            <View key={device.host} style={styles.device.container}>
+            <View key={device.address.key} style={styles.device.container}>
                 <View style={{flex: 2, flexDirection: 'column'}}>
-                    <Text style={styles.device.name}>{device.host}</Text>
-                    <Text style={styles.device.details}>FieldKit Device</Text>
+                    <Text style={styles.device.name}>{device.address.host}</Text>
+                    <Text style={styles.device.details}>{device.capabilities.name}</Text>
                 </View>
                 <View style={{flex: 1, flexDirection: 'column'}}>
-                    <SmallButton title="Connect" onPress={() => this.props.deviceSelect(device)} color={Colors.secondaryButton} />
+                    <SmallButton title="Connect" onPress={() => this.props.deviceSelect(device.address)} color={Colors.secondaryButton} />
                 </View>
             </View>
         );
@@ -67,11 +67,11 @@ ConnectingScreen.propTypes = {
     deviceStartConnect: PropTypes.func.isRequired,
     deviceStopConnect: PropTypes.func.isRequired,
     deviceSelect: PropTypes.func.isRequired,
-    deviceStatus: PropTypes.object.isRequired,
+    devices: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-    deviceStatus: state.deviceStatus
+    devices: state.devices
 });
 
 export default connect(mapStateToProps, {

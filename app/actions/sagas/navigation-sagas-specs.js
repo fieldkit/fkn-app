@@ -25,9 +25,7 @@ describe('device connection navigation', () => {
             initialState: {
                 devices: { },
                 deviceStatus: {
-                    connected: null,
-                    addresses: {
-                    }
+                    connected: null
                 },
                 nav: {
                     index: 0,
@@ -56,10 +54,10 @@ describe('device connection navigation', () => {
     });
 
     it('should navigate nowhere from ConnectingScreen more than 1 found device', () => {
-        const { deviceStatus } = tester.getState();
-        deviceStatus.connected = { address: '192.168.0.100' };
-        deviceStatus.addresses = {
-            '192.168.0.100': deviceStatus.connected,
+        const state = tester.getState();
+        state.deviceStatus.connected = { address: '192.168.0.100' };
+        state.devices = {
+            '192.168.0.100': state.deviceStatus.connected,
             '192.168.0.101': { }
         }
 
