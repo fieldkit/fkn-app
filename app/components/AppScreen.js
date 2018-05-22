@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import { View, Button } from 'react-native';
 
-import Spinner from 'react-native-loading-spinner-overlay';
-
 import { BackgroundView } from './BackgroundView';
 
 import ProgressHeader from '../containers/ProgressHeader';

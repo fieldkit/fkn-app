@@ -5,6 +5,8 @@ import { View, Button } from 'react-native';
 
 import { cancelInProgressOperation } from '../actions';
 
+import Spinner from 'react-native-loading-spinner-overlay';
+
 import { ProgressBar } from '../components';
 
 import styles from '../styles';
@@ -18,7 +20,9 @@ class ProgressHeader extends React.Component {
         const { progress, cancelInProgressOperation } = this.props;
 
         if (progress.download.done) {
-            return null;
+            return (
+                <Spinner visible={progress.depth > 0} textContent={"Busy"} textStyle={{color: '#FFF'}} />
+            );
         }
 
         return (
