@@ -9,7 +9,7 @@ import { View, Text } from 'react-native';
 
 import { SmallButton, AppScreen, Loading, DeviceInfo } from '../components';
 
-import { navigateBack, queryFiles, startDownloadFile } from '../actions';
+import { navigateBack, queryFiles, startDownloadFile, deleteFile } from '../actions';
 
 import styles from '../styles';
 
@@ -38,19 +38,22 @@ class FilesScreen extends React.Component {
     }
 
     renderFile(file, index) {
-        const { startDownloadFile } = this.props;
+        const { startDownloadFile, deleteFile } = this.props;
 
         return (
             <View key={index} style={styles.file.container}>
                 <Text style={styles.file.name}>{file.name}</Text>
                 <Text style={styles.file.details}>Size: {file.size}</Text>
                 <SmallButton title="Download" onPress={() => startDownloadFile(file.id) } />
+                <SmallButton title="Delete" onPress={() => deleteFile(file.id) } />
             </View>
         );
     }
 }
 
 FilesScreen.propTypes = {
+    startDownloadFile: PropTypes.func.isRequired,
+    deleteFile: PropTypes.func.isRequired,
     navigateBack: PropTypes.func.isRequired,
     queryFiles: PropTypes.func.isRequired,
     deviceInfo: PropTypes.object.isRequired,
@@ -66,5 +69,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
     navigateBack,
     queryFiles,
-    startDownloadFile
+    startDownloadFile,
+    deleteFile
 })(FilesScreen);

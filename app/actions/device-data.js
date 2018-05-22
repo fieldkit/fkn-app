@@ -24,6 +24,21 @@ export function startDownloadFile(id) {
     };
 }
 
+export function deleteFile(id) {
+    return {
+        [CALL_DEVICE_API]: {
+            types: [Types.DEVICE_ERASE_FILE_START, Types.DEVICE_ERASE_FILE_SUCCESS, Types.DEVICE_ERASE_FILE_FAIL],
+            blocking: true,
+            message: {
+                type: QueryType.values.QUERY_ERASE_FILE,
+                eraseFile: {
+                    id: id
+                }
+            }
+        }
+    };
+}
+
 export function cancelInProgressOperation() {
     cancelPendingDeviceCalls();
 

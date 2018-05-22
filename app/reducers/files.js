@@ -13,6 +13,8 @@ export function files(state = initialFilesState, action) {
     switch (action.type) {
     case ActionTypes.DEVICE_FILES_SUCCESS:
         return action.response.files;
+    case ActionTypes.DEVICE_ERASE_FILE_SUCCESS:
+        return action.response.files;
     default:
         return nextState;
     }
