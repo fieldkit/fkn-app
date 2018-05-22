@@ -1,6 +1,8 @@
+import _ from 'lodash';
+import moment from 'moment';
+
 import varint from 'varint';
 import protobuf from "protobufjs";
-import moment from 'moment';
 
 import Promise from "bluebird";
 import RNFS from 'react-native-fs';
@@ -42,6 +44,7 @@ export class DownloadWriter {
         this.bytesRead = 0;
         this.started = new Date();
         this.appendChain = Promise.resolve();
+        this.throttledDispatch = _.throttle(dispatch, 500, { leading: true });
 
         const date = moment(new Date()).format("YYYYMMDD");
         const time = moment(new Date()).format("HHmmss");
@@ -104,8 +107,9 @@ export class DownloadWriter {
 
     progress(type) {
         const now = new Date();
+        const fn = type == Types.DOWNLOAD_FILE_DONE ? this.dispatch : this.throttledDispatch;
 
-        this.dispatch({
+        fn({
             type: type,
             download: {
                 done: type == Types.DOWNLOAD_FILE_DONE,
