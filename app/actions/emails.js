@@ -2,7 +2,7 @@ import RNFS from 'react-native-fs';
 import Mailer from 'react-native-mail';
 import Promise from "bluebird";
 
-export function emailDataSet(id) {
+export function emailData(id) {
     return (dispatch, getState) => {
         RNFS.readDir(RNFS.DocumentDirectoryPath).then((res) => {
             return Promise.all([RNFS.stat(res[0].path), res[0].path]);

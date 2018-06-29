@@ -6,8 +6,6 @@ import SensorsScreen from '../containers/SensorsScreen';
 import ConfigureScreen from '../containers/ConfigureScreen';
 import NetworkScreen from '../containers/NetworkScreen';
 import FilesScreen from '../containers/FilesScreen';
-import DataSetsScreen from '../containers/DataSetsScreen';
-import ViewDataSetScreen from '../containers/ViewDataSetScreen';
 import LiveDataScreen from '../containers/LiveDataScreen';
 import BrowserScreen from '../containers/BrowserScreen';
 
@@ -41,14 +39,6 @@ export class ApplicationRoutesManager {
             Files: {
                 path: '/files',
                 screen: FilesScreen
-            },
-            DataSets: {
-                path: '/data-sets',
-                screen: DataSetsScreen
-            },
-            DataSet: {
-                path: '/data-sets/:id',
-                screen: ViewDataSetScreen
             },
             LiveData: {
                 path: '/live-data',
