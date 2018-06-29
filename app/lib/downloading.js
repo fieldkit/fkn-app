@@ -42,9 +42,11 @@ export class DownloadWriter {
         this.file = file;
         this.dispatch = dispatch;
         this.bytesRead = 0;
+        this.bytesTotal = this.file.size;
         this.started = new Date();
         this.appendChain = Promise.resolve();
         this.throttledDispatch = _.throttle(dispatch, 500, { leading: true });
+        this.readHeader = false;
 
         const date = moment(new Date()).format("YYYYMMDD");
         const time = moment(new Date()).format("HHmmss");
@@ -59,33 +61,41 @@ export class DownloadWriter {
         });
     }
 
-    write(data) {
-        // TODO: Allow blocks to be split in the middle.
-        const reader = protobuf.Reader.create(data);
-        while (reader.pos < reader.len) {
-            const decoded = WireMessageReply.decodeDelimited(reader);
-            if (decoded.fileData == null) {
-                console.log("Empty file-data block.");
-                console.log(decoded);
-                continue;
+    append(data) {
+        const blockSize = data.length;
+        const firstBlock = this.bytesRead == 0;
+
+        this.fileSystemOp(() => {
+            const block = base64ArrayBuffer(data);
+            if (firstBlock) {
+                return RNFS.writeFile(this.path, block, "base64");
             }
+            else {
+                return RNFS.appendFile(this.path, block, "base64");
+            }
+        });
 
-            const blockSize = decoded.fileData.data.length;
-            const firstBlock = this.bytesRead == 0;
+        this.bytesRead += blockSize;
 
-            this.fileSystemOp(() => {
-                const block = base64ArrayBuffer(decoded.fileData.data);
-                if (firstBlock) {
-                    return RNFS.writeFile(this.path, block, "base64");
-                }
-                else {
-                    return RNFS.appendFile(this.path, block, "base64");
-                }
-            });
+        this.progress(Types.DOWNLOAD_FILE_PROGRESS);
+    }
 
-            this.bytesRead += blockSize;
+    write(data) {
+        // TODO: Allow header to be split in the middle.
+        if (!this.readHeader) {
+            const reader = protobuf.Reader.create(data);
+            const decoded = WireMessageReply.decodeDelimited(reader);
+            const remaining = data.slice(reader.pos);
 
-            this.progress(Types.DOWNLOAD_FILE_PROGRESS);
+            this.readHeader = true;
+            this.bytesTotal = decoded.fileData.size;
+
+            console.log('Header', data.length, decoded, reader.pos, decoded.fileData.size, remaining.length);
+
+            return this.append(remaining);
+        }
+        else {
+            return this.append(data);
         }
     }
 
@@ -114,9 +124,9 @@ export class DownloadWriter {
             download: {
                 done: type == Types.DOWNLOAD_FILE_DONE,
                 cancelable: true,
-                bytesTotal: this.file.size,
+                bytesTotal: this.bytesTotal,
                 bytesRead: this.bytesRead,
-                progress: this.bytesRead / this.file.size,
+                progress: this.bytesRead / this.bytesTotal,
                 started: this.started,
                 elapsed: now - this.started,
             }
