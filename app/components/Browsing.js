@@ -22,7 +22,7 @@ export class DirectoryEntry extends React.Component {
                     {!entry.directory && <Text style={style.text}>{entry.name} <Text style={{ fontSize: 12 }}>({entry.size})</Text></Text>}
                 </View>
             </TouchableOpacity>
-        )
+        );
     }
 }
 
@@ -94,7 +94,7 @@ export class DirectoryBrowser extends React.Component {
         const listing = localFiles.listings[path];
 
         if (_.isObject(file)) {
-            return <FileMenu file={file} parent={parent} onSelectEntry={onSelectEntry} onUpload={onUpload} onDelete={onDelete} />
+            return <FileMenu file={file} parent={parent} onSelectEntry={onSelectEntry} onUpload={onUpload} onDelete={onDelete} />;
         }
 
         if (!_.isArray(listing)) {

@@ -5,7 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 
 import { SmallButton, AppScreen, Loading, DeviceInfo } from '../components';
 
@@ -30,9 +30,11 @@ class FilesScreen extends React.Component {
         }
 
         return (
-            <AppScreen>
+            <AppScreen background={false}>
                 <DeviceInfo info={deviceInfo} />
-                {files.files.map((file, index) => this.renderFile(file, index))}
+                <ScrollView>
+                  {files.files.map((file, index) => this.renderFile(file, index))}
+                </ScrollView>
             </AppScreen>
         );
     }
@@ -44,8 +46,10 @@ class FilesScreen extends React.Component {
             <View key={index} style={styles.file.container}>
                 <Text style={styles.file.name}>{file.name}</Text>
                 <Text style={styles.file.details}>Size: {file.size}</Text>
-                <SmallButton title="Download" onPress={() => startDownloadFile(file.id) } />
-                <SmallButton title="Delete" onPress={() => deleteFile(file.id) } />
+                <View style={{ flexDirection: 'row' }}>
+                    <SmallButton title="Download" onPress={() => startDownloadFile(file.id) } />
+                    <SmallButton title="Delete" onPress={() => deleteFile(file.id) } color="#E74C3C" />
+                </View>
             </View>
         );
     }
