@@ -10,6 +10,7 @@ export const NAVIGATION_LIVE_DATA = 'NAVIGATION_LIVE_DATA';
 export const NAVIGATION_BACK = 'NAVIGATION_BACK';
 export const NAVIGATION_BROWSER = 'NAVIGATION_BROWSER';
 export const NAVIGATION_NAME_OR_PATH = 'NAVIGATION_NAME_OR_PATH';
+export const NAVIGATION_EASY_MODE_WELCOME = 'NAVIGATION_EASY_MODE_WELCOME';
 
 export function isNavigationAction(action) {
     return /NAVIGATION_(.+)/.test(action.type);

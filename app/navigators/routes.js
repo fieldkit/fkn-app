@@ -8,6 +8,7 @@ import NetworkScreen from '../containers/NetworkScreen';
 import FilesScreen from '../containers/FilesScreen';
 import LiveDataScreen from '../containers/LiveDataScreen';
 import BrowserScreen from '../containers/BrowserScreen';
+import EasyModeScreen from '../containers/EasyModeScreen';
 
 export class ApplicationRoutesManager {
     constructor() {
@@ -47,6 +48,10 @@ export class ApplicationRoutesManager {
             About: {
                 path: '/about',
                 screen: AboutScreen
+            },
+            EasyModeWelcome: {
+                path: '/easy-mode',
+                screen: EasyModeScreen
             },
             Browser: {
                 path: '/browser',

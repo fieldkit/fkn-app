@@ -69,6 +69,12 @@ export function navigateBrowser(path) {
     };
 }
 
+export function navigateEasyModeWelcome() {
+    return {
+        type: Types.NAVIGATION_EASY_MODE_WELCOME,
+    };
+}
+
 export function navigateLiveData() {
     return {
         type: Types.NAVIGATION_LIVE_DATA,

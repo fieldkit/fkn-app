@@ -5,7 +5,7 @@ import { View, Image } from 'react-native';
 
 import { AppScreen, MenuButtonContainer, MenuButton } from '../components';
 
-import { navigateConnecting, browseDirectory, navigateBrowser, navigateAbout, deviceStartConnect, deviceStopConnect } from '../actions';
+import { navigateConnecting, browseDirectory, navigateBrowser, navigateEasyModeWelcome, navigateAbout, deviceStartConnect, deviceStopConnect } from '../actions';
 
 import styles from '../styles';
 
@@ -15,15 +15,11 @@ class WelcomeScreen extends React.Component {
     };
 
     componentDidMount() {
-        // This will cause tests to take forever, they'll wait until the saga to
-        // look completes. A quick hack, for now.
-        if (typeof __SPECS__ == 'undefined') {
-            this.props.deviceStartConnect();
-        }
+        this.props.deviceStartConnect();
     }
 
     render() {
-        const { navigateConnecting, browseDirectory, navigateAbout } = this.props;
+        const { navigateConnecting, browseDirectory, navigateEasyModeWelcome, navigateAbout } = this.props;
 
         return (
             <AppScreen>
@@ -36,6 +32,7 @@ class WelcomeScreen extends React.Component {
                 <MenuButtonContainer>
                     <MenuButton title="Connect" onPress={() => navigateConnecting()} />
                     <MenuButton title="Browser" onPress={() => browseDirectory('/')} />
+                    <MenuButton title="Easy Mode" onPress={() => navigateEasyModeWelcome()} />
                     <MenuButton title="About" onPress={() => navigateAbout()} />
                 </MenuButtonContainer>
             </AppScreen>
@@ -46,6 +43,7 @@ class WelcomeScreen extends React.Component {
 WelcomeScreen.propTypes = {
     navigateConnecting: PropTypes.func.isRequired,
     browseDirectory: PropTypes.func.isRequired,
+    navigateEasyModeWelcome: PropTypes.func.isRequired,
     navigateAbout: PropTypes.func.isRequired,
     deviceStartConnect: PropTypes.func.isRequired,
 };
@@ -55,6 +53,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
     navigateConnecting,
+    navigateEasyModeWelcome,
     navigateAbout,
     browseDirectory,
     deviceStartConnect

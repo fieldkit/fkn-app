@@ -57,6 +57,22 @@ export function nav(state = welcomeState, action) {
             state
         );
         break;
+    case ActionTypes.NAVIGATION_EASY_MODE_WELCOME: {
+        nextState = AppNavigator.router.getStateForAction(
+            NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({
+                        routeName: 'EasyModeWelcome',
+                        params: {
+                        }
+                    })
+                ]
+            }),
+            state
+        );
+        break;
+    }
     case ActionTypes.NAVIGATION_CONNECTING:
         nextState = AppNavigator.router.getStateForAction(
             NavigationActions.reset({
