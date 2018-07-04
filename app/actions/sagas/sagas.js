@@ -238,6 +238,31 @@ export function* timersSaga() {
     });
 }
 
+export function* queryFilesOnFoundDevices() {
+    yield takeEvery([Types.FIND_DEVICE_SUCCESS], function* (device) {
+        yield call(deviceCall, {
+            types: [Types.DEVICE_STATUS_START, Types.DEVICE_STATUS_SUCCESS, Types.DEVICE_STATUS_FAIL],
+            address: device.address,
+            message: {
+                type: QueryType.values.QUERY_STATUS,
+                queryCapabilities: {
+                    version: 1,
+                    callerTime: unixNow()
+                }
+            }
+        });
+
+        yield call(deviceCall, {
+            types: [Types.DEVICE_FILES_START, Types.DEVICE_FILES_SUCCESS, Types.DEVICE_FILES_FAIL],
+            address: device.address,
+            blocking: false,
+            message: {
+                type: QueryType.values.QUERY_FILES
+            }
+        });
+    });
+}
+
 export function* rootSaga() {
     yield all([
         serviceDiscovery(),
@@ -247,5 +272,6 @@ export function* rootSaga() {
         downloadDataSaga(),
         liveDataSaga(),
         timersSaga(),
+        queryFilesOnFoundDevices(),
     ]);
 }

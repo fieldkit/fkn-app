@@ -5,6 +5,11 @@ import { openWriter } from '../lib/downloading';
 
 import * as Types from './types';
 
+export function copyFromDevices(devices) {
+    return (dispatch) => {
+    };
+}
+
 export function queryFiles() {
     return {
         [CALL_DEVICE_API]: {

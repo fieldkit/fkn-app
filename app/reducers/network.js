@@ -13,7 +13,7 @@ export function networkConfiguration(state = initialNetworkConfigurationState, a
 
     switch (action.type) {
     case ActionTypes.WIFI_SSID_CHANGED: {
-        return { ...nextState, ...{ network: { ssid: action.ssid } } };
+        return { ...nextState, ...{ network: { ssid: action.ssid, deviceAp: false } } };
     }
     default:
         return nextState;

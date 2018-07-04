@@ -60,6 +60,13 @@ const initialDevicesState = {};
 export function devices(state = initialDevicesState, action) {
     let nextState = state;
 
+    function mergeUpdate(key, after) {
+        const before = state[key] || {};
+        const update = {};
+        update[key] = { ...before, ...after };
+        return { ...nextState, ...update };
+    }
+
     if (_.isObject(action.deviceApi)) {
         if (action.deviceApi.success) {
             const key = state[action.deviceApi.address.key];
@@ -77,13 +84,36 @@ export function devices(state = initialDevicesState, action) {
     switch (action.type) {
     case ActionTypes.FIND_DEVICE_SUCCESS: {
         const key = action.address.key;
-        const update = {};
-        update[key] = {
+        const after = {
             address: action.address,
             capabilities: action.capabilities,
             time: unixNow(),
         };
-        return { ...nextState, ...update };
+        return mergeUpdate(key, after);
+    }
+    case ActionTypes.DEVICE_FILES_SUCCESS: {
+        const key = action.deviceApi.address.key;
+        const after = {
+            files: action.response.files.files,
+            time: unixNow(),
+        };
+        return mergeUpdate(key, after);
+    }
+    case ActionTypes.DEVICE_ERASE_FILE_SUCCESS: {
+        const key = action.deviceApi.address.key;
+        const after = {
+            files: action.response.files.files,
+            time: unixNow(),
+        };
+        return mergeUpdate(key, after);
+    }
+    case ActionTypes.DEVICE_STATUS_SUCCESS: {
+        const key = action.deviceApi.address.key;
+        const after = {
+            status: action.response.status,
+            time: unixNow(),
+        };
+        return mergeUpdate(key, after);
     }
     default:
         return nextState;
