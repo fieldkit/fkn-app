@@ -90,3 +90,5 @@ export const LOCAL_FILES_BROWSE = 'LOCAL_FILES_BROWSE';
 export const OPERATION_CANCEL = 'OPERATION_CANCEL';
 
 export const WIFI_SSID_CHANGED = 'WIFI_SSID_CHANGED';
+
+export const NOOP = 'NOOP';

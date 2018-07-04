@@ -12,47 +12,72 @@ import { resolveDataDirectoryPath } from '../lib/downloading';
 
 import { navigateBrowser } from './navigation';
 
-export function browseDirectory(relativePath) {
-    return (dispatch, getState) => {
-        return resolveDataDirectoryPath().then((dataDirectoryPath) => {
-            const path = dataDirectoryPath + relativePath;
-            console.log("Reading", path);
-            return RNFS.stat(path).then(info => {
-                if (info.isFile()) {
-                    return path;
-                }
+function getDirectory(relativePath) {
+    return resolveDataDirectoryPath().then((dataDirectoryPath) => {
+        const path = dataDirectoryPath + relativePath;
+        console.log("Reading", path);
+        return RNFS.stat(path).then(info => {
+            if (info.isFile()) {
+                return {
+                    type: Types.NOOP,
+                    path: path,
+                };
+            }
 
-                return RNFS.readDir(path).then((res) => {
-                    const listing = _(res).map(e => {
-                        return {
-                            name: e.name,
-                            path: e.path,
-                            relativePath: e.path.replace(dataDirectoryPath, ""),
-                            size: e.size,
-                            created: e.ctime,
-                            modified: e.mtime,
-                            directory: e.isDirectory(),
-                        };
-                    }).value();
+            return RNFS.readDir(path).then((res) => {
+                const listing = _(res).map(e => {
+                    return {
+                        name: e.name,
+                        path: e.path,
+                        relativePath: e.path.replace(dataDirectoryPath, ""),
+                        size: e.size,
+                        created: e.ctime,
+                        modified: e.mtime,
+                        directory: e.isDirectory(),
+                    };
+                }).value();
 
-                    dispatch({
-                        type: Types.LOCAL_FILES_BROWSE,
-                        relativePath: relativePath,
-                        path: path,
-                        listing: listing
-                    })
-
-                    return path;
-                });
-            }).then(path => {
-                dispatch(navigateBrowser(relativePath));
+                return {
+                    type: Types.LOCAL_FILES_BROWSE,
+                    relativePath: relativePath,
+                    path: path,
+                    listing: listing
+                };
             });
         });
-    }
+    });
+}
+
+function walkDirectory(relativePath, dispatch) {
+    return getDirectory(relativePath).then(action => {
+        dispatch(action);
+
+        _.each(action.listing, (entry) => {
+            if (entry.directory) {
+                walkDirectory(entry.relativePath, dispatch);
+            }
+        });
+    });
+}
+
+export function browseDirectory(relativePath) {
+    return (dispatch) => {
+        return getDirectory(relativePath).then(action => {
+            dispatch(action);
+
+            dispatch(navigateBrowser(relativePath));
+        });
+    };
+}
+
+export function findAllFiles() {
+    return (dispatch) => {
+        walkDirectory("/", dispatch);
+    };
 }
 
 export function deleteLocalFile(relativePath) {
-    return (dispatch, getState) => {
+    return (dispatch) => {
         return resolveDataDirectoryPath().then((dataDirectoryPath) => {
             const path = dataDirectoryPath + relativePath;
             return RNFS.unlink(path).then(() => {
@@ -68,7 +93,7 @@ export function uploadLocalFile(relativePath) {
     const uploadPath = "/messages/ingestion/stream";
     const mimeType = 'application/vnd.fk.data+base64';
 
-    return (dispatch, getState) => {
+    return (dispatch) => {
         return resolveDataDirectoryPath().then((dataDirectoryPath) => {
             const path = dataDirectoryPath + relativePath;
             console.log("Reading", path);
@@ -86,5 +111,5 @@ export function uploadLocalFile(relativePath) {
                 Toasts.show('Upload completed!');
             });
         });
-    }
+    };
 }
