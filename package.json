@@ -38,6 +38,7 @@
     "react-native-svg": "5.4.2",
     "react-native-tcp": "https://github.com/PeelTechnologies/react-native-tcp.git",
     "react-native-udp": "^2.3.1",
+    "react-native-wifi": "^1.0.1",
     "react-navigation": "1.0.0-beta.11",
     "react-redux": "5.0.6",
     "readable-stream": "1.0.33",
@@ -66,7 +67,7 @@
       "__SPECS__": true
     },
     "setupFiles": [
-        "./specs/setup.js"
+      "./specs/setup.js"
     ],
     "testMatch": [
       "<rootDir>/app/**/(.*)specs.js"

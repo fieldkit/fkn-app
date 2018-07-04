@@ -1,9 +1,11 @@
 import _ from 'lodash';
-import { put, call } from 'redux-saga/effects';
+import { all, put, call } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
 import { Platform } from 'react-native';
 import dgram from 'react-native-udp';
+
+import WifiManager from 'react-native-wifi';
 
 import ServiceDiscovery from "react-native-service-discovery";
 
@@ -69,6 +71,35 @@ export function findDeviceInfo(host, port) {
     };
 }
 
+export function wifiSsidChanged(ssid) {
+    return {
+        type: Types.WIFI_SSID_CHANGED,
+        ssid: ssid
+    };
+}
+
+function* monitorWifi() {
+    const channel = createChannel('Wifi');
+
+    let currentSsid = null;
+    while (true) {
+        WifiManager.getCurrentWifiSSID().then((ssid) => {
+            channel.put(ssid);
+        });
+
+        const ssid = yield call(channel.take);
+        if (currentSsid != ssid) {
+            yield put(wifiSsidChanged(ssid));
+            currentSsid = ssid;
+        }
+
+        yield delay(1000);
+    }
+}
+
 export function* serviceDiscovery() {
-    yield call(monitorServiceDiscoveryEvents, createServiceDiscoveryChannel());
+    yield all([
+        call(monitorServiceDiscoveryEvents, createServiceDiscoveryChannel()),
+        monitorWifi()
+    ]);
 }

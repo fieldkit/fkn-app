@@ -3,6 +3,7 @@ package com.fieldkit;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactlibrary.RNWifiPackage;
 import com.tradle.react.UdpSocketsModule;
 import com.horcrux.svg.SvgPackage;
 import com.chirag.RNMail.RNMail;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNWifiPackage(),
             new UdpSocketsModule(),
             new SvgPackage(),
             new RNMail(),
