@@ -7,7 +7,8 @@ import * as authReducers from './auth';
 import * as deviceStatusReducers from './device-status';
 import * as filesReducers from './files';
 import * as liveDataReducers from './live-data';
-import * as configurationReducers from './configuration';
+import * as deviceConfigurationReducers from './configuration';
+import * as networkConfigurationReducers from './network';
 import * as timersReducers from './timers';
 import * as moduleReplyReducers from './modules';
 import * as downloadReducers from './download';
@@ -20,7 +21,8 @@ export default combineReducers(Object.assign(
     deviceStatusReducers,
     filesReducers,
     liveDataReducers,
-    configurationReducers,
+    networkConfigurationReducers,
+    deviceConfigurationReducers,
     timersReducers,
     moduleReplyReducers,
     downloadReducers,
