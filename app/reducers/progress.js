@@ -4,6 +4,14 @@ import * as ActionTypes from '../actions/types';
 
 const initialProgressState = {
     depth: 0,
+    operations: [
+    ],
+    task: {
+        done: true
+    },
+    upload: {
+        done: true
+    }
     download: {
         done: true
     }
@@ -26,6 +34,24 @@ export function progress(state = initialProgressState, action) {
     }
 
     switch (action.type) {
+    case ActionTypes.TASK_START: {
+        return { ...nextState, ...{ task: { cancelable: true, done: false, progress: 0 } } };
+    }
+    case ActionTypes.TASK_PROGRESS: {
+        return { ...nextState, ...{ task: action.task } };
+    }
+    case ActionTypes.TASK_DONE: {
+        return { ...nextState, ...{ task: action.task } };
+    }
+    case ActionTypes.UPLOAD_FILE_START: {
+        return { ...nextState, ...{ upload: { cancelable: true, done: false, progress: 0 } } };
+    }
+    case ActionTypes.UPLOAD_FILE_PROGRESS: {
+        return { ...nextState, ...{ upload: action.upload } };
+    }
+    case ActionTypes.UPLOAD_FILE_DONE: {
+        return { ...nextState, ...{ upload: action.upload } };
+    }
     case ActionTypes.DOWNLOAD_FILE_START: {
         return { ...nextState, ...{ download: { cancelable: true, done: false, progress: 0 } } };
     }

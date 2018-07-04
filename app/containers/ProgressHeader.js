@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -19,16 +21,48 @@ class ProgressHeader extends React.Component {
     render() {
         const { progress, cancelInProgressOperation } = this.props;
 
-        if (progress.download.done) {
+        if (progress.operations.length > 0) {
             return (
-                <Spinner visible={progress.depth > 0} textContent={"Busy"} textStyle={{color: '#FFF'}} />
+                <View>
+                    {progress.operations.map((p, i) => this.renderBar(i, p))}
+                </View>
             );
         }
 
+        const bars = [];
+
+        if (!progress.task.done) {
+            bars.push(this.renderBar(0, progress.download));
+        }
+
+        if (!progress.download.done) {
+            bars.push(this.renderBar(1, progress.download));
+        }
+
+        if (!progress.upload.done) {
+            bars.push(this.renderBar(1, progress.upload));
+        }
+
+        if (bars.length > 0) {
+            return <View>{bars}</View>;
+        }
+
         return (
-            <View>
-                <ProgressBar progress={progress.download.progress * 100} />
-                {progress.download.cancelable && <View style={{ }}><Button title="Cancel" onPress={() => cancelInProgressOperation()} color="#F8C471" /></View>}
+            <Spinner visible={progress.depth > 0} textContent={"Busy"} textStyle={{color: '#FFF'}} />
+        );
+    }
+
+    renderCancel() {
+        return (
+            <View style={{ }}><Button title="Cancel" onPress={() => cancelInProgressOperation()} color="#F8C471" /></View>
+        );
+    }
+
+    renderBar(i, progress) {
+        return (
+            <View key={i}>
+                <ProgressBar progress={progress.progress * 100} />
+                {progress.cancelable && this.renderCancel()}
             </View>
         );
     }
