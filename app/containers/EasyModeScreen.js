@@ -16,7 +16,6 @@ class DeviceOptions extends React.Component {
         const { easyMode, copyFromDevices } = this.props;
 
         copyFromDevices(easyMode.devices);
-        console.log("Copying from device to phone.");
     }
 
     render() {
@@ -26,19 +25,19 @@ class DeviceOptions extends React.Component {
         if (numberOfDevices == 0) {
             if (!easyMode.networkConfiguration.deviceAp) {
                 return (
-                    <View style={{ padding: 10 }}><Text>No devices found. Try connecting to a FieldKit device's AP.</Text></View>
+                    <View style={{ padding: 10 }}><Text style={{ textAlign: 'center' }}>No devices found. Try connecting to a FieldKit device's AP.</Text></View>
                 );
             }
             else {
                 return (
-                    <View style={{ padding: 10 }}><Text>No devices found.</Text></View>
+                    <View style={{ padding: 10 }}><Text style={{ textAlign: 'center' }}>No devices found.</Text></View>
                 );
             }
         }
 
         return (
             <View style={{ padding: 10 }}>
-              <View><Text>Success, {numberOfDevices} device(s) found</Text></View>
+              <View><Text style={{ textAlign: 'center' }}>Success, {numberOfDevices} device(s) found</Text></View>
               <View><Button title="Device -> Phone" onPress={() => this.onSync()} /></View>
             </View>
         );
