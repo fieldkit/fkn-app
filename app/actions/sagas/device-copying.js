@@ -13,17 +13,12 @@ import { queryFiles, queryDownloadFile } from '../device-data';
 
 import { deviceCall } from './saga-utils';
 
-export function* deviceFilesCopier() {
-    function deviceFilter(device) {
-        if (false) {
-            return device.address.host == 'WINC-18-4f.socal.rr.com';
-        }
-        return true;
-    }
+import Config from '../../config';
 
+export function* deviceFilesCopier() {
     yield takeLatest(Types.COPY_DEVICE_FILES, function* watcher(action) {
         const fileIds = [1, 4];
-        const devices = _(action.devices).filter(deviceFilter).value();
+        const devices = _(action.devices).filter(Config.deviceFilter).value();
         const numberOfFiles = _(devices).map(device => {
             // Right now we just download log and data file.
             return fileIds.length;

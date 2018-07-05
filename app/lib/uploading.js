@@ -10,11 +10,12 @@ import RNFS from 'react-native-fs';
 import { Toasts } from '../lib/toasts';
 import { hexArrayBuffer, base64ArrayBuffer } from '../lib/base64';
 
+import Config from '../config';
+
 import { resolveDataDirectoryPath } from './downloading';
 
 export function uploadFile(relativePath) {
-    // const baseUri = "http://api.fkdev.org";
-    const baseUri = "http://192.168.0.141:8080";
+    const baseUri = config.baseUri;
     const uploadPath = "/messages/ingestion/stream";
     const mimeType = 'application/vnd.fk.data+base64';
 
