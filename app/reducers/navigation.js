@@ -16,7 +16,6 @@ const welcomeState = AppNavigator.router.getStateForAction(
         actions: [welcomeAction]
     })
 );
-console.log(welcomeAction, welcomeState);
 
 export function deviceSpecificRoutes(state = { home: { routes: [] } }, action) {
     let nextState = state;
