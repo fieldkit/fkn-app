@@ -10,5 +10,6 @@ export * from './configuration';
 export * from './live-data';
 export * from './local-files';
 export * from './device-copying';
+export * from './upload-queue';
 
 export const Types = ActionTypes;

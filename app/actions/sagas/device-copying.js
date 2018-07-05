@@ -14,9 +14,16 @@ import { queryFiles, queryDownloadFile } from '../device-data';
 import { deviceCall } from './saga-utils';
 
 export function* deviceFilesCopier() {
+    function deviceFilter(device) {
+        if (true) {
+            return device.address.host == 'WINC-18-4f.socal.rr.com';
+        }
+        return true;
+    }
+
     yield takeLatest(Types.COPY_DEVICE_FILES, function* watcher(action) {
         const fileIds = [1, 4];
-        const devices = action.devices;
+        const devices = _(action.devices).filter(deviceFilter).value();
         const numberOfFiles = _(devices).map(device => {
             // Right now we just download log and data file.
             return fileIds.length;
@@ -49,7 +56,7 @@ export function* deviceFilesCopier() {
                     console.log("File", file);
 
                     const { download, stop } = yield race({
-                        download: call(deviceCall, queryDownloadFile(device.capabilities, file, device.address)),
+                        download: call(deviceCall, queryDownloadFile(device.capabilities, file, 0, 100000, device.address)),
                         stop: take(Types.OPERATION_CANCEL),
                     });
 
@@ -89,6 +96,12 @@ export function* deviceFilesCopier() {
             console.log("Error", err);
             yield put({
                 type: Types.DEVICE_CONNECTION_ERROR
+            });
+            yield put({
+                type: Types.TASK_DONE,
+                task: {
+                    done: true
+                }
             });
         }
     });

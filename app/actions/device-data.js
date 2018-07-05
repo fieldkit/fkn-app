@@ -48,7 +48,7 @@ export function cancelInProgressOperation() {
     };
 }
 
-export function queryDownloadFile(device, file, address) {
+export function queryDownloadFile(device, file, offset, length, address) {
     return (dispatch) => {
         return openWriter(device, file, dispatch).then(writer => {
             return dispatch({
@@ -60,8 +60,8 @@ export function queryDownloadFile(device, file, address) {
                         type: QueryType.values.QUERY_DOWNLOAD_FILE,
                         downloadFile: {
                             id: file.id,
-                            offset: 0,
-                            length: 0,
+                            offset: offset,
+                            length: length,
                         }
                     }
                 }

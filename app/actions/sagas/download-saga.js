@@ -27,7 +27,7 @@ export function* downloadDataSaga() {
 
             console.log("File", file);
 
-            const download = yield call(deviceCall, queryDownloadFile(device, file));
+            const download = yield call(deviceCall, queryDownloadFile(device, file, 0, 0));
 
             console.log("Download", download);
 

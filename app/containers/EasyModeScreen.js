@@ -7,9 +7,36 @@ import { View, Text, Image, Button } from 'react-native';
 
 import { AppScreen } from '../components';
 
-import { deviceStartConnect, findAllFiles, copyFromDevices } from '../actions';
+import { deviceStartConnect, findAllFiles, uploadQueue, copyFromDevices } from '../actions';
 
 import styles from '../styles';
+
+class UploadQueueOptions extends React.Component {
+    onSync() {
+        const { easyMode, uploadQueue } = this.props;
+
+        uploadQueue(easyMode.queue);
+    }
+
+    render() {
+        const { easyMode, uploadQueue } = this.props;
+
+        const numberOfFiles = _.size(easyMode.queue);
+
+        if (numberOfFiles == 0) {
+            return (
+                <View style={{ padding: 10 }}><Text style={{ textAlign: 'center' }}>No pending files found.</Text></View>
+            );
+        }
+
+        return (
+            <View style={{ padding: 10 }}>
+              <View><Text style={{ textAlign: 'center' }}>There are {numberOfFiles} file(s) pending for upload.</Text></View>
+              <View><Button title="Phone -> Web" onPress={() => this.onSync()} /></View>
+            </View>
+        );
+    }
+}
 
 class DeviceOptions extends React.Component {
     onSync() {
@@ -55,7 +82,7 @@ class EasyModeScreen extends React.Component {
     }
 
     render() {
-        const { easyMode, copyFromDevices } = this.props;
+        const { easyMode, copyFromDevices, uploadQueue } = this.props;
 
         return (
             <AppScreen>
@@ -67,6 +94,7 @@ class EasyModeScreen extends React.Component {
                      }} />
 
               <DeviceOptions easyMode={easyMode} copyFromDevices={copyFromDevices} />
+              <UploadQueueOptions easyMode={easyMode} uploadQueue={uploadQueue} />
             </AppScreen>
         );
     }
@@ -76,18 +104,27 @@ class EasyModeScreen extends React.Component {
 EasyModeScreen.propTypes = {
     deviceStartConnect: PropTypes.func.isRequired,
     copyFromDevices: PropTypes.func.isRequired,
+    uploadQueue: PropTypes.func.isRequired,
     findAllFiles: PropTypes.func.isRequired
 };
+
+function getQueue(localFiles) {
+    return _(localFiles.listings).map((listing, key) => {
+        return _(listing).filter(e => !e.directory).value();
+    }).flatten().value();
+}
 
 const mapStateToProps = state => ({
     easyMode: {
         networkConfiguration: state.networkConfiguration,
         devices: state.devices,
+        queue: getQueue(state.localFiles)
     }
 });
 
 export default connect(mapStateToProps, {
     findAllFiles,
     copyFromDevices,
+    uploadQueue,
     deviceStartConnect
 })(EasyModeScreen);

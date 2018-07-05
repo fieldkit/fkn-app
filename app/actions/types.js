@@ -103,3 +103,4 @@ export const WIFI_SSID_CHANGED = 'WIFI_SSID_CHANGED';
 export const NOOP = 'NOOP';
 
 export const COPY_DEVICE_FILES = 'COPY_DEVICE_FILES';
+export const UPLOAD_QUEUE = 'UPLOAD_QUEUE';
