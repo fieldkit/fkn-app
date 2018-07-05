@@ -11,7 +11,7 @@ const initialProgressState = {
     },
     upload: {
         done: true
-    }
+    },
     download: {
         done: true
     }

@@ -16,6 +16,7 @@ import { deviceCall } from './saga-utils';
 import { serviceDiscovery } from './discovery';
 import { downloadDataSaga } from './download-saga';
 import { liveDataSaga } from './live-data-saga';
+import { deviceFilesCopier } from './device-copying';
 
 export function* loseExpiredDevices() {
     const { devices } = yield select();
@@ -273,5 +274,6 @@ export function* rootSaga() {
         liveDataSaga(),
         timersSaga(),
         queryFilesOnFoundDevices(),
+        deviceFilesCopier(),
     ]);
 }

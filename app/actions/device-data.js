@@ -5,15 +5,11 @@ import { openWriter } from '../lib/downloading';
 
 import * as Types from './types';
 
-export function copyFromDevices(devices) {
-    return (dispatch) => {
-    };
-}
-
-export function queryFiles() {
+export function queryFiles(address) {
     return {
         [CALL_DEVICE_API]: {
             types: [Types.DEVICE_FILES_START, Types.DEVICE_FILES_SUCCESS, Types.DEVICE_FILES_FAIL],
+            address: address,
             blocking: true,
             message: {
                 type: QueryType.values.QUERY_FILES
@@ -52,12 +48,13 @@ export function cancelInProgressOperation() {
     };
 }
 
-export function queryDownloadFile(device, file) {
+export function queryDownloadFile(device, file, address) {
     return (dispatch) => {
         return openWriter(device, file, dispatch).then(writer => {
             return dispatch({
                 [CALL_DEVICE_API]: {
                     types: [Types.DEVICE_DOWNLOAD_FILE_START, Types.DEVICE_DOWNLOAD_FILE_SUCCESS, Types.DEVICE_DOWNLOAD_FILE_FAIL],
+                    address: address,
                     writer: writer,
                     message: {
                         type: QueryType.values.QUERY_DOWNLOAD_FILE,

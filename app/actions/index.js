@@ -9,5 +9,6 @@ export * from './modules';
 export * from './configuration';
 export * from './live-data';
 export * from './local-files';
+export * from './device-copying';
 
 export const Types = ActionTypes;

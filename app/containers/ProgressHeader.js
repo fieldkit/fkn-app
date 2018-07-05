@@ -32,7 +32,7 @@ class ProgressHeader extends React.Component {
         const bars = [];
 
         if (!progress.task.done) {
-            bars.push(this.renderBar(0, progress.download));
+            bars.push(this.renderBar(0, progress.task));
         }
 
         if (!progress.download.done) {
@@ -40,7 +40,7 @@ class ProgressHeader extends React.Component {
         }
 
         if (!progress.upload.done) {
-            bars.push(this.renderBar(1, progress.upload));
+            bars.push(this.renderBar(2, progress.upload));
         }
 
         if (bars.length > 0) {

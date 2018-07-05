@@ -7,7 +7,7 @@ import protobuf from "protobufjs";
 import Promise from "bluebird";
 import RNFS from 'react-native-fs';
 
-import { hexArrayBuffer, base64ArrayBuffer } from '../lib/base64'
+import { hexArrayBuffer, base64ArrayBuffer } from '../lib/base64';
 
 // TODO: May want to pass these in. Opportunity for circular dependency.
 import * as Types from '../actions/types';

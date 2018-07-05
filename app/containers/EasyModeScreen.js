@@ -26,12 +26,12 @@ class DeviceOptions extends React.Component {
         if (numberOfDevices == 0) {
             if (!easyMode.networkConfiguration.deviceAp) {
                 return (
-                    <View><Text>No devices found. Try connecting to a FieldKit device's AP.</Text></View>
+                    <View style={{ padding: 10 }}><Text>No devices found. Try connecting to a FieldKit device's AP.</Text></View>
                 );
             }
             else {
                 return (
-                    <View><Text>No devices found.</Text></View>
+                    <View style={{ padding: 10 }}><Text>No devices found.</Text></View>
                 );
             }
         }
