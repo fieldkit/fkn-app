@@ -15,7 +15,7 @@ import Config from '../config';
 import { resolveDataDirectoryPath } from './downloading';
 
 export function uploadFile(relativePath) {
-    const baseUri = config.baseUri;
+    const baseUri = Config.baseUri;
     const uploadPath = "/messages/ingestion/stream";
     const mimeType = 'application/vnd.fk.data+base64';
 

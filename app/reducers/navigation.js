@@ -7,12 +7,16 @@ import * as ActionTypes from '../actions/types';
 
 import { pluginManager } from '../services';
 
-const welcomeAction = AppNavigator.router.getActionForPathAndParams('/');
+import Config from '../config';
+
+const welcomeAction = AppNavigator.router.getActionForPathAndParams(Config.welcomeRoute);
 const welcomeState = AppNavigator.router.getStateForAction(
-    AppNavigator.router.getStateForAction(welcomeAction)
+    NavigationActions.reset({
+        index: 0,
+        actions: [welcomeAction]
+    })
 );
-const connectingAction = AppNavigator.router.getActionForPathAndParams('/connecting');
-const deviceMenuAction = AppNavigator.router.getActionForPathAndParams('/device');
+console.log(welcomeAction, welcomeState);
 
 export function deviceSpecificRoutes(state = { home: { routes: [] } }, action) {
     let nextState = state;

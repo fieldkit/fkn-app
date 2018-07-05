@@ -5,6 +5,7 @@ if (typeof(__ENV__) == 'undefined') {
 const configs = {
     test: {
         baseUri: 'http://api.fkdev.org',
+        welcomeRoute: '/',
         serviceDiscoveryOnStartup: false,
         findDeviceInterval: 1000,
         findDeviceTimeout: 2 * 1000,
@@ -17,6 +18,7 @@ const configs = {
     },
     noaa: {
         baseUri: 'http://api.fkdev.org',
+        welcomeRoute: '/',
         serviceDiscoveryOnStartup: false,
         fixedDeviceInfo: {
             address: '192.168.0.136',
@@ -33,6 +35,7 @@ const configs = {
     },
     dev: {
         baseUri: 'http://api.fkdev.org',
+        welcomeRoute: '/',
         serviceDiscoveryOnStartup: true,
         findDeviceInterval: 1000,
         findDeviceTimeout: 10 * 1000,
@@ -40,7 +43,19 @@ const configs = {
         deviceExpireInterval: 21 * 1000,
         pingDeviceInterval: 10 * 1000,
         deviceFilter: (device) => {
-            // return device.address.host == 'WINC-18-4f.socal.rr.com';
+            return true;
+        }
+    },
+    easyMode: {
+        baseUri: 'http://api.fkdev.org',
+        welcomeRoute: '/easy-mode',
+        serviceDiscoveryOnStartup: true,
+        findDeviceInterval: 1000,
+        findDeviceTimeout: 10 * 1000,
+        deviceQueryInterval: 10 * 1000,
+        deviceExpireInterval: 21 * 1000,
+        pingDeviceInterval: 10 * 1000,
+        deviceFilter: (device) => {
             return true;
         }
     }
