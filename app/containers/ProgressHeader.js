@@ -3,7 +3,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { View, Button } from 'react-native';
+import { View, Text, Button } from 'react-native';
 
 import { cancelInProgressOperation } from '../actions';
 
@@ -14,12 +14,16 @@ import { ProgressBar } from '../components';
 import styles from '../styles';
 
 class ProgressHeader extends React.Component {
-    constructor() {
-        super();
+    onCancel() {
+        const { cancelInProgressOperation } = this.props;
+
+        console.log("Cancel");
+
+        cancelInProgressOperation();
     }
 
     render() {
-        const { progress, cancelInProgressOperation } = this.props;
+        const { progress } = this.props;
 
         if (progress.operations.length > 0) {
             return (
@@ -30,21 +34,30 @@ class ProgressHeader extends React.Component {
         }
 
         const bars = [];
+        let cancelable = false;
 
         if (!progress.task.done) {
             bars.push(this.renderBar(0, progress.task));
+            cancelable = cancelable || progress.task.cancelable;
         }
 
         if (!progress.download.done) {
             bars.push(this.renderBar(1, progress.download));
+            cancelable = cancelable || progress.download.cancelable;
         }
 
         if (!progress.upload.done) {
             bars.push(this.renderBar(2, progress.upload));
+            cancelable = cancelable || progress.upload.cancelable;
         }
 
         if (bars.length > 0) {
-            return <View>{bars}</View>;
+            return (
+                <View>
+                  {bars}
+                  {cancelable && this.renderCancel()}
+                </View>
+            );
         }
 
         return (
@@ -54,15 +67,15 @@ class ProgressHeader extends React.Component {
 
     renderCancel() {
         return (
-            <View style={{ }}><Button title="Cancel" onPress={() => cancelInProgressOperation()} color="#F8C471" /></View>
+            <View style={{ }}><Button title="Cancel" onPress={() => this.onCancel()} color="#F8C471" /></View>
         );
     }
 
     renderBar(i, progress) {
         return (
             <View key={i}>
+                {progress.label ? <View><Text>{progress.label}</Text></View> : <View/>}
                 <ProgressBar progress={progress.progress * 100} />
-                {progress.cancelable && this.renderCancel()}
             </View>
         );
     }

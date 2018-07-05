@@ -31,17 +31,33 @@ export function* uploadQueue() {
 
             for (let i = 0; i < queue.length; ++i) {
                 const file = queue[i];
-                yield call(uploadFile, file.relativePath);
-                filesUploaded++;
 
                 yield put({
                     type: Types.TASK_PROGRESS,
                     task: {
+                        label: file.name,
                         progress: filesUploaded / numberOfFiles,
                         cancelable: true,
                         done: false
                     }
                 });
+
+                const { upload, stop } = yield race({
+                    upload: call(uploadFile, file.relativePath),
+                    stop: take(Types.OPERATION_CANCEL),
+                });
+
+                if (_.isObject(stop)) {
+                    yield put({
+                        type: Types.TASK_DONE,
+                        task: {
+                            done: true
+                        }
+                    });
+                    return;
+                }
+
+                filesUploaded++;
             }
 
             yield put({

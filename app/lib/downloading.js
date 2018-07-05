@@ -45,7 +45,7 @@ export class DownloadWriter {
         this.bytesTotal = this.file.size;
         this.started = new Date();
         this.appendChain = Promise.resolve();
-        this.throttledDispatch = _.throttle(dispatch, 500, { leading: true });
+        this.throttledDispatch = _.throttle(dispatch, 1000, { leading: true });
         this.readHeader = false;
 
         const date = moment(new Date()).format("YYYYMMDD");

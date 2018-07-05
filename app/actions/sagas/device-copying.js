@@ -15,7 +15,7 @@ import { deviceCall } from './saga-utils';
 
 export function* deviceFilesCopier() {
     function deviceFilter(device) {
-        if (true) {
+        if (false) {
             return device.address.host == 'WINC-18-4f.socal.rr.com';
         }
         return true;
@@ -77,6 +77,7 @@ export function* deviceFilesCopier() {
                     yield put({
                         type: Types.TASK_PROGRESS,
                         task: {
+                            label: device.address.host,
                             progress: filesDownloaded / numberOfFiles,
                             cancelable: true,
                             done: false
