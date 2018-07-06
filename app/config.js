@@ -1,5 +1,5 @@
 if (typeof(__ENV__) == 'undefined') {
-    __ENV__ = 'dev';
+    __ENV__ = process.env['FIELDKIT_ENV'] || 'dev';
 }
 
 const configs = {
@@ -34,6 +34,19 @@ const configs = {
         }
     },
     dev: {
+        baseUri: 'http://api.fkdev.org',
+        welcomeRoute: '/',
+        serviceDiscoveryOnStartup: true,
+        findDeviceInterval: 1000,
+        findDeviceTimeout: 10 * 1000,
+        deviceQueryInterval: 10 * 1000,
+        deviceExpireInterval: 21 * 1000,
+        pingDeviceInterval: 10 * 1000,
+        deviceFilter: (device) => {
+            return true;
+        }
+    },
+    release: {
         baseUri: 'http://api.fkdev.org',
         welcomeRoute: '/',
         serviceDiscoveryOnStartup: true,
