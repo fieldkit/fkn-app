@@ -12,7 +12,7 @@ import * as Types from '../types';
 import { navigateConnecting, navigateDeviceMenu, navigateWelcome } from '../navigation';
 
 import { findDeviceInfo } from './discovery';
-import { connectionRelatedNavigation } from './sagas';
+import { connectionRelatedNavigation } from './navigation-sagas';
 
 describe('device connection navigation', () => {
     let tester;

@@ -1,286 +1,90 @@
-import Promise from "bluebird";
-import { Alert } from 'react-native';
 import { delay } from 'redux-saga';
 import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects';
 
-import { QueryType } from '../../lib/protocol';
-import { unixNow } from '../../lib/helpers';
-import Config from '../../config';
-
 import * as Types from './../types';
-import { navigateWelcome, navigateDeviceMenu } from '../navigation';
-import { timerTick, timerDone } from '../timers';
-
-import { deviceCall } from './saga-utils';
 
 import { serviceDiscovery } from './discovery';
+import { discoverDevices } from './handshaking';
 import { downloadDataSaga } from './download-saga';
-import { liveDataSaga } from './live-data-saga';
 import { deviceFilesCopier } from './device-copying';
 import { uploadQueue } from './upload-queue';
+import { connectionRelatedNavigation } from './navigation-sagas';
+import { selectedDeviceSagas } from './selected-device-sagas';
+import { timersSaga } from './timers';
 
-export function* loseExpiredDevices() {
-    const { devices } = yield select();
-
-    for (let key in devices) {
-        const entry = devices[key];
-        const elapsed = (unixNow() - entry.time) * 1000;
-        if (elapsed >= Config.deviceExpireInterval) {
-            console.log("discoverDevices: Lost", key, "after", elapsed, entry);
-            yield put({
-                type: Types.FIND_DEVICE_LOST,
-                address: entry.address
-            });
-            delete devices[key];
-        }
-    }
-}
-
-export function* deviceHandshake(device) {
-    try
-    {
-        const handshakeReply = yield call(deviceCall, {
-            types: [Types.DEVICE_HANDSHAKE_START, Types.DEVICE_HANDSHAKE_SUCCESS, Types.DEVICE_HANDSHAKE_FAIL],
-            address: device.address,
-            message: {
-                type: QueryType.values.QUERY_CAPABILITIES,
-                queryCapabilities: {
-                    version: 1,
-                    callerTime: unixNow()
-                }
-            }
-        });
-
-        const capabilities = handshakeReply.response.capabilities;
-
-        yield put({
-            type: Types.FIND_DEVICE_SUCCESS,
-            address: device.address,
-            capabilities: capabilities
-        });
-    }
-    catch (e) {
-        yield put({
-            type: Types.FIND_DEVICE_LOST,
-            address: device.address
-        });
-    }
-}
-
-export function* discoverDevices() {
+export function* suspendDuringLongRunningTasks(idleFunctions) {
     while (true) {
-        const { discovered, to } = yield race({
-            discovered: take(Types.FIND_DEVICE_INFO),
-            to: delay(Config.findDeviceInterval)
+        const idleTasks = idleFunctions.map(f => f());
+        const { idle, taskStart, downloadStart } = yield race({
+            idle: all(idleTasks),
+            taskStart: take(Types.TASK_START),
+            downloadStart: take(Types.DOWNLOAD_FILE_START),
         });
 
-        const { devices } = yield select();
-
-        if (discovered && discovered.address.valid) {
-            const key = discovered.address.key;
-            const entry = devices[key] || { time: 0 };
-            const elapsed = (unixNow() - entry.time) * 1000;
-            if (elapsed >= Config.deviceQueryInterval) {
-                yield deviceHandshake(discovered);
-            } else {
-                // console.log("discoverDevices:", key, "queried recently", elapsed);
-            }
+        if (taskStart) {
+            console.log("Suspending during long running task.");
+            yield take([ Types.TASK_DONE, Types.TASK_CANCEL ]);
+            console.log("Done, resuming!");
         }
 
-        yield loseExpiredDevices();
+        if (downloadStart) {
+            console.log("Suspending during download.");
+            yield take([ Types.DOWNLOAD_FILE_DONE, Types.DOWNLOAD_FILE_CANCEL ]);
+            console.log("Done, resuming!");
+        }
     }
 }
 
-export function* queryActiveDeviceInformation() {
-    yield takeLatest([Types.FIND_DEVICE_SELECT], function* (selected) {
-        console.log('queryActiveDeviceInformation', selected);
-
-        try {
-            yield put(navigateDeviceMenu());
-
-            yield call(deviceCall, {
-                types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
-                address: selected.address,
-                message: {
-                    type: QueryType.values.QUERY_CAPABILITIES,
-                    queryCapabilities: {
-                        version: 1,
-                        callerTime: unixNow()
-                    }
-                }
-            });
-        }
-        catch (err) {
-            console.log("Error", err);
-            yield put({
-                type: Types.FIND_DEVICE_LOST,
-                address: selected.address,
-                error: err
-            });
-        }
-    });
-}
-
-export function* pingConnectedDevice() {
-    yield takeLatest([Types.FIND_DEVICE_SELECT, Types.DEVICE_PING_SUCCESS], function* (selected, ping) {
-        console.log('pingConnectedDevice', selected);
-
-        yield delay(Config.pingDeviceInterval);
-
-        const { deviceStatus } = yield select();
-
-        if (deviceStatus.connected && !deviceStatus.api.pending) {
-            try {
-                yield call(deviceCall, {
-                    types: [Types.DEVICE_PING_START, Types.DEVICE_PING_SUCCESS, Types.DEVICE_PING_FAIL],
-                    address: deviceStatus.connected,
-                    message: {
-                        type: QueryType.values.QUERY_STATUS,
-                        queryCapabilities: {
-                            version: 1,
-                            callerTime: unixNow()
-                        }
-                    }
-                });
-            }
-            catch (err) {
-                console.log("Error", err);
-                yield put({
-                    type: Types.FIND_DEVICE_LOST,
-                    address: deviceStatus.connected,
-                    error: err
-                });
-            }
-        }
-    });
-}
-
-export function alert(message, title) {
-    return new Promise((resolve) => {
-        console.log("Showing alert", title);
-        Alert.alert(
-            title,
-            message,
-            [
-                { text: 'OK', onPress: () => resolve() },
-            ],
-            { cancelable: false }
-        );
-    });
-}
-
-export function* deviceConnection() {
-    yield takeLatest([Types.FIND_DEVICE_START], function* () {
-        yield all([
-            pingConnectedDevice(),
-            queryActiveDeviceInformation()
-        ]);
-    });
-}
-
-export function* navigateToDeviceMenuFromConnecting() {
-    yield takeLatest([Types.NAVIGATION_CONNECTING], function* (nav) {
-        const { device, to } = yield race({
-            device: take(Types.FIND_DEVICE_SELECT),
-            to: delay(Config.findDeviceTimeout)
+export function* longRunningTask() {
+    while (true) {
+        yield delay(5000);
+        yield put({
+            type: Types.TASK_START,
         });
-
-        if (device && device.type == Types.FIND_DEVICE_SELECT) {
-            yield put(navigateDeviceMenu());
-        }
-        else {
-            const { devices } = yield select();
-            const numberOfDevices = Object.keys(devices).length;
-            if (numberOfDevices == 0) {
-                yield put(navigateWelcome());
-            }
-        }
-    });
-}
-
-export function* navigateHomeOnConnectionLost() {
-    yield takeLatest(Types.FIND_DEVICE_LOST, function* (lostDevice) {
-        const { deviceStatus, nav } = yield select();
-        const route = nav.routes[nav.index];
-
-        if (deviceStatus.connected && deviceStatus.connected.key === lostDevice.address.key) {
-            if (route.params && route.params.connectionRequired === true) {
-                yield put(navigateWelcome());
-                yield call(alert, "Device disconnected.", "Alert");
-            }
-        }
-    });
-}
-
-export function* connectionRelatedNavigation() {
-    return yield all([
-        navigateToDeviceMenuFromConnecting(),
-        navigateHomeOnConnectionLost()
-    ]);
-}
-
-export function* timersSaga() {
-    yield takeEvery(Types.TIMER_START, function* (start) {
-        const started = unixNow();
-        while (true) {
-            const elapsed = unixNow() - started;
-            if (elapsed >= start.seconds) {
-                yield put(timerDone(start.name, start.seconds));
-                break;
-            }
-            yield put(timerTick(start.name, start.seconds, start.seconds - elapsed));
-            const { cancel, to } = yield race({
-                cancel: take(Types.TIMER_CANCEL),
-                to: delay(800)
-            });
-            if (cancel && cancel.name === start.name) {
-                break;
-            }
-        }
-    });
-}
-
-export function* queryFilesOnFoundDevices() {
-    yield takeEvery([Types.FIND_DEVICE_SUCCESS], function* (device) {
-        try {
-            yield call(deviceCall, {
-                types: [Types.DEVICE_STATUS_START, Types.DEVICE_STATUS_SUCCESS, Types.DEVICE_STATUS_FAIL],
-                address: device.address,
-                message: {
-                    type: QueryType.values.QUERY_STATUS,
-                    queryCapabilities: {
-                        version: 1,
-                        callerTime: unixNow()
-                    }
-                }
-            });
-
-            yield call(deviceCall, {
-                types: [Types.DEVICE_FILES_START, Types.DEVICE_FILES_SUCCESS, Types.DEVICE_FILES_FAIL],
-                address: device.address,
-                blocking: false,
-                message: {
-                    type: QueryType.values.QUERY_FILES
+        for (let i = 0; i < 10; ++i) {
+            yield delay(1000);
+            yield put({
+                type: Types.TASK_PROGRESS,
+                task: {
+                    progress: i / 10.0,
+                    done: false
                 }
             });
         }
-        catch (e) {
-            console.log(e);
-        }
-    });
+        yield put({
+            type: Types.TASK_DONE,
+            task: {
+                done: true
+            }
+        });
+    }
+}
+
+export function* lowPriority() {
+    while (true) {
+        console.log("Low Priority");
+        yield delay(1000);
+    }
 }
 
 export function* rootSaga() {
     yield all([
-        serviceDiscovery(),
-        discoverDevices(),
-        deviceConnection(),
-        connectionRelatedNavigation(),
-        downloadDataSaga(),
-        liveDataSaga(),
         timersSaga(),
-        queryFilesOnFoundDevices(),
+
+        // Discover devices, listening for UDP messages.
+        serviceDiscovery(),
+
+        // Device stuff.
+        selectedDeviceSagas(),
+        downloadDataSaga(),
+        connectionRelatedNavigation(),
+
+        // EasyMode stuff.
         deviceFilesCopier(),
         uploadQueue(),
+
+        suspendDuringLongRunningTasks([ lowPriority, discoverDevices ]),
+        // This is for testing
+        // longRunningTask(),
     ]);
 }

@@ -9,7 +9,8 @@ import { QueryType, ReplyType } from '../../lib/protocol';
 import * as Types from '../types';
 
 import { findDeviceInfo } from './discovery';
-import { discoverDevices, pingConnectedDevice } from './sagas';
+import { discoverDevices } from './handshaking';
+import { pingConnectedDevice } from './selected-device-sagas';
 
 describe('device connection saga', () => {
     let tester;
