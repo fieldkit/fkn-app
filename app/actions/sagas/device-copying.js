@@ -17,11 +17,17 @@ import Config from '../../config';
 
 export function* deviceFilesCopier() {
     yield takeLatest(Types.COPY_DEVICE_FILES, function* watcher(action) {
-        const fileIds = [1, 4];
+        // Right now we just download log and data file.
+        const downloadsPerDevice = [ {
+            fileId: 1,
+            maximum: 1000000
+        }, {
+            fileId: 4,
+            maximum: 0
+        }];
         const devices = _(action.devices).filter(Config.deviceFilter).value();
         const numberOfFiles = _(devices).map(device => {
-            // Right now we just download log and data file.
-            return fileIds.length;
+            return downloadsPerDevice.length;
         }).sum();
 
         try {
@@ -44,18 +50,27 @@ export function* deviceFilesCopier() {
 
                 console.log("Files", filesAction);
 
-                for (let i = 0; i < fileIds.length; ++i) {
-                    const fileId = fileIds[i];
-                    const file = _(filesAction.response.files.files).filter(f => f.id == fileId).first();
+                for (let i = 0; i < downloadsPerDevice.length; ++i) {
+                    const download = downloadsPerDevice[i];
+                    const file = _(filesAction.response.files.files).filter(f => f.id == download.fileId).first();
 
-                    console.log("File", file);
+                    console.log("File", download, file);
 
-                    const { download, stop } = yield race({
-                        download: call(deviceCall, queryDownloadFile(device.capabilities, file, 0, 100000, device.address)),
+                    let offset = 0;
+                    let length = 0;
+
+                    if (download.maximum > 0 && file.size > download.maximum) {
+                        length = download.maximum;
+                        offset = file.size - length;
+                        console.log("Limit download: ", { length, offset });
+                    }
+
+                    const { downloaded, stop } = yield race({
+                        downloaded: call(deviceCall, queryDownloadFile(device.capabilities, file, offset, length, device.address)),
                         stop: take(Types.OPERATION_CANCEL),
                     });
 
-                    console.log(download, stop);
+                    console.log(downloaded, stop);
 
                     if (_.isObject(stop)) {
                         yield put({
