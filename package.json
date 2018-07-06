@@ -37,7 +37,7 @@
     "react-native-simple-toast": "0.0.8",
     "react-native-svg": "5.4.2",
     "react-native-tcp": "https://github.com/PeelTechnologies/react-native-tcp.git",
-    "react-native-udp": "^2.3.1",
+    "react-native-udp": "https://github.com/Conservify/react-native-udp.git",
     "react-native-wifi": "^1.0.1",
     "react-navigation": "1.0.0-beta.11",
     "react-redux": "5.0.6",
