@@ -65,7 +65,6 @@ export function browseDirectory(relativePath) {
     return (dispatch) => {
         return getDirectory(relativePath).then(action => {
             dispatch(action);
-
             dispatch(navigateBrowser(relativePath));
         });
     };
@@ -81,6 +80,7 @@ export function deleteLocalFile(relativePath) {
     return (dispatch) => {
         return resolveDataDirectoryPath().then((dataDirectoryPath) => {
             const path = dataDirectoryPath + relativePath;
+            console.log("Deleting", path);
             return RNFS.unlink(path).then(() => {
                 return browseDirectory(Files.getParentPath(path));
             });

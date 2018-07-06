@@ -10,7 +10,7 @@ import { uploadFile } from '../../lib/uploading';
 import * as Types from '../types';
 
 import { queryCapabilities } from '../device-status';
-import { queryFiles, queryDownloadFile } from '../device-data';
+import { deleteLocalFile } from '../local-files';
 
 import { deviceCall } from './saga-utils';
 
@@ -55,6 +55,9 @@ export function* uploadQueue() {
                         }
                     });
                     return;
+                }
+                else {
+                    yield call(deleteLocalFile(file.relativePath));
                 }
 
                 filesUploaded++;
