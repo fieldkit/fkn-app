@@ -59,7 +59,7 @@ describe('device connection navigation', () => {
         state.devices = {
             '192.168.0.100': state.deviceStatus.connected,
             '192.168.0.101': { }
-        }
+        };
 
         tester.dispatch({
             type: Types.NAVIGATION_CONNECTING
@@ -98,7 +98,7 @@ describe('device connection navigation', () => {
         jest.mock('Alert', () => {
             return {
                 alert: jest.fn()
-            }
+            };
         });
 
         tester.dispatch({
@@ -107,7 +107,7 @@ describe('device connection navigation', () => {
         });
 
         expect(Alert.alert).toHaveBeenCalled();
-        Alert.alert.mock.calls[0][2][0].onPress()
+        Alert.alert.mock.calls[0][2][0].onPress();
 
         await tester.waitFor(Types.NAVIGATION_WELCOME);
     });
