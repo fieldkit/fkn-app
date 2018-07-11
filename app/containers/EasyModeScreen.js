@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Text, Image, Button } from 'react-native';
 
+import * as Files from '../lib/files';
 import { AppScreen } from '../components';
 
 import { deviceStartConnect, findAllFiles, uploadQueue, copyFromDevices } from '../actions';
@@ -108,8 +109,11 @@ EasyModeScreen.propTypes = {
     findAllFiles: PropTypes.func.isRequired
 };
 
-function getQueue(localFiles) {
+function getUploadQueue(localFiles) {
     return _(localFiles.listings).map((listing, key) => {
+        if (Files.getPathName(key) == 'archive') {
+            return [];
+        }
         return _(listing).filter(e => !e.directory).value();
     }).flatten().value();
 }
@@ -118,7 +122,7 @@ const mapStateToProps = state => ({
     easyMode: {
         networkConfiguration: state.networkConfiguration,
         devices: state.devices,
-        queue: getQueue(state.localFiles)
+        queue: getUploadQueue(state.localFiles)
     }
 });
 

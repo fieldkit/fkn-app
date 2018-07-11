@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
-import { delay } from 'redux-saga'
-import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects'
+import { delay } from 'redux-saga';
+import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects';
 
 import { QueryType } from '../../lib/protocol';
 import { Toasts } from '../../lib/toasts';
@@ -10,7 +10,7 @@ import { uploadFile } from '../../lib/uploading';
 import * as Types from '../types';
 
 import { queryCapabilities } from '../device-status';
-import { deleteLocalFile } from '../local-files';
+import { archiveLocalFile } from '../local-files';
 
 import { deviceCall } from './saga-utils';
 
@@ -57,7 +57,7 @@ export function* uploadQueue() {
                     return;
                 }
                 else {
-                    yield call(deleteLocalFile(file.relativePath));
+                    yield call(archiveLocalFile(file.relativePath));
                 }
 
                 filesUploaded++;

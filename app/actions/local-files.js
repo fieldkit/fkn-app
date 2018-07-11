@@ -76,6 +76,23 @@ export function findAllFiles() {
     };
 }
 
+export function archiveLocalFile(relativePath) {
+    return (dispatch) => {
+        return resolveDataDirectoryPath().then((dataDirectoryPath) => {
+            const oldPath = dataDirectoryPath + relativePath;
+            const archivePath = Files.getParentPath(oldPath) + "/archive/";
+            const newPath = archivePath + Files.getPathName(relativePath);
+            return RNFS.mkdir(archivePath).then(() => {
+                console.log("Archiving", relativePath, "from", oldPath, "to", newPath);
+                return RNFS.moveFile(oldPath, newPath).then(() => {
+                    console.log("Done");
+                    return browseDirectory(Files.getParentPath(oldPath));
+                });
+            });
+        });
+    };
+}
+
 export function deleteLocalFile(relativePath) {
     return (dispatch) => {
         return resolveDataDirectoryPath().then((dataDirectoryPath) => {
