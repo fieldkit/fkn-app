@@ -77,7 +77,7 @@ export function* deviceHandshake(device) {
             });
         }
     }
-    catch (e) {
+    catch (err) {
         console.log("Error", err);
         if (false) {
             yield put({
