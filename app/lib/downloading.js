@@ -128,19 +128,13 @@ export class DownloadWriter {
         if (!this.readHeader) {
             const reader = protobuf.Reader.create(data);
             const header = WireMessageReply.decodeDelimited(reader);
-            const start = reader.pos;
-            const metadata = DataRecord.decodeDelimited(reader);
             const remaining = data.slice(reader.pos);
-            const rawHeader = data.slice(start, reader.pos);
 
             this.readHeader = true;
             this.bytesTotal = header.fileData.size;
 
             console.log('Header', header);
-            console.log('Metadata', metadata, rawHeader.length);
             console.log("Data", reader.pos, data.length, remaining.length);
-
-            this.appendToFile(rawHeader, this.headersPath);
 
             return this.append(remaining);
         }
