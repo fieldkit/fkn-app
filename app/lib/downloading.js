@@ -32,9 +32,9 @@ export function resolveDataDirectoryPath() {
     return createDataDirectoryPath();
 }
 
-export function openWriter(device, file, offset, length, dispatch) {
+export function openWriter(device, file, settings, dispatch) {
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
-        return Promise.resolve(new DownloadWriter(dataDirectoryPath, device, file, offset, length, dispatch)).then(writer => {
+        return Promise.resolve(new DownloadWriter(dataDirectoryPath, device, file, settings, dispatch)).then(writer => {
             return writer.open().then(() => {
                 console.log("Opened");
                 return writer;
@@ -44,7 +44,7 @@ export function openWriter(device, file, offset, length, dispatch) {
 }
 
 export class DownloadWriter {
-    constructor(dataDirectoryPath, device, file, offset, length, dispatch) {
+    constructor(dataDirectoryPath, device, file, settings, dispatch) {
         this.device = device;
         this.file = file;
         this.dispatch = dispatch;
@@ -53,53 +53,66 @@ export class DownloadWriter {
         this.appendChain = Promise.resolve();
         this.throttledDispatch = _.throttle(dispatch, 1000, { leading: true });
         this.readHeader = false;
-        this.downloadOffset = offset;
-        this.downloadLength = length;
+        this.settings = settings;
         this.bytesTotal = this.file.size;
 
-        const date = moment(new Date()).format("YYYYMMDD");
-        this.directory = dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId) + "/" + date;
+        const now = moment(new Date());
+        const date = now.format("YYYYMMDD");
+        const time = now.format("HHmmss");
 
         function lpadZeros(value, padding) {
             var zeroes = new Array(padding + 1).join("0");
             return (zeroes + value).slice(-padding);
         }
-        const oldTimePrefix = moment(new Date()).format("HHmmss");
         const prefix = lpadZeros(file.version, 6);
 
-        this.path = this.directory + '/' + prefix + "_" + file.name;
+        this.directory = dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId) + "/" + date;
         this.headersPath = this.directory + '/' + prefix + "_headers_" + file.name;
+        this.resumePath = this.directory + '/' + prefix + "_" + file.name;
+        this.stampedPath = this.directory + '/' + prefix + "_" + time + "_" + file.name;
+    }
+
+    selectFileNameAndSettings(resumeFile) {
+        if (!this.settings.resume) {
+            return Promise.resolve(this.path = this.stampedPath);
+        }
+
+        if (resumeFile != null) {
+            console.log("Existing", resumeFile.size);
+
+            // If local file is bigger than the expected downloade, we should choose a new file name.
+            let expectedDownloadSize = this.settings.length;
+            if (expectedDownloadSize == 0) {
+                expectedDownloadSize = this.file.size - this.settings.offset;
+            }
+            if (resumeFile.size > expectedDownloadSize) {
+                return RNFS.moveFile(this.resumePath, this.stampedPath).then(() => {
+                    return Promise.resolve(this.path = this.resumePath);
+                });
+            }
+
+            // If local file is smaller, adjust offset.
+            if (resumeFile.size <= expectedDownloadSize) {
+                this.settings.offset += resumeFile.size;
+                console.log("Resuming download", this.settings.offset);
+            }
+        }
+
+        return Promise.resolve(this.path = this.resumePath);
     }
 
     open() {
         return this.fileSystemOp(() => {
-            console.log("Opening", this.directory);
+            console.log("Opening", this.directory, this.file.name);
             return RNFS.mkdir(this.directory).then(() => {
-                return RNFS.exists(this.path);
+                return RNFS.exists(this.resumePath);
             }).then(e => {
                 if (e) {
-                    return RNFS.stat(this.path).then(fileStat => {
-                        console.log("Existing", fileStat.size);
-
-                        // If local file is bigger than the expected downloade, we should choose a new file name.
-                        let expectedDownloadSize = this.downloadLength;
-                        if (expectedDownloadSize == 0) {
-                            expectedDownloadSize = this.file.size - this.downloadOffset;
-                        }
-                        if (fileStat.size > expectedDownloadSize) {
-                            return Promise.reject(new Error());
-                        }
-
-                        // If local file is smaller, adjust offset.
-                        if (fileStat.size <= expectedDownloadSize) {
-                            this.downloadOffset += fileStat.size;
-                            console.log("Resuming download", this.downloadOffset);
-                        }
-
-                        return fileStat;
+                    return RNFS.stat(this.resumePath).then(resumeFile => {
+                        return this.selectFileNameAndSettings(resumeFile);
                     });
                 }
-                return { };
+                return this.selectFileNameAndSettings(null);
             });
         });
     }

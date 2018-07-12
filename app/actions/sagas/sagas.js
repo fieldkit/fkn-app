@@ -83,7 +83,7 @@ export function* rootSaga() {
         deviceFilesCopier(),
         uploadQueue(),
 
-        suspendDuringLongRunningTasks([ lowPriority, discoverDevices ]),
+        suspendDuringLongRunningTasks([ discoverDevices ]),
         // This is for testing
         // longRunningTask(),
     ]);

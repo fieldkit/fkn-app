@@ -21,10 +21,12 @@ export function* deviceFilesCopier() {
         // Right now we just download log and data file.
         const downloadsPerDevice = [ {
             fileId: 4,
-            maximum: 0
+            maximum: 0,
+            resume: true
         }, {
             fileId: 1,
-            maximum: 1000000
+            maximum: 1000000,
+            resume: false
         }];
         const devices = _(action.devices).filter(Config.deviceFilter).value();
         const numberOfFiles = _(devices).map(device => {
@@ -66,8 +68,14 @@ export function* deviceFilesCopier() {
                         console.log("Limit download: ", { length, offset });
                     }
 
+                    const settings = {
+                        offset: offset,
+                        length: length,
+                        resume: download.resume
+                    };
+
                     const { downloaded, stop } = yield race({
-                        downloaded: call(deviceCall, queryDownloadFile(device.capabilities, file, offset, length, device.address)),
+                        downloaded: call(deviceCall, queryDownloadFile(device.capabilities, file, settings, device.address)),
                         stop: take(Types.OPERATION_CANCEL),
                     });
 

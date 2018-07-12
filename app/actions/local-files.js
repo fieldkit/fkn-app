@@ -75,6 +75,10 @@ export function browseDirectory(relativePath) {
 
 export function deleteAllLocalFiles() {
     return (dispatch) => {
+        dispatch({
+            type: Types.LOCAL_FILES_DELETING_ALL
+        });
+
         return resolveDataDirectoryPath().then(dataDirectoryPath => {
             console.log("Deleting");
             return RNFS.unlink(dataDirectoryPath).then(() => {
@@ -83,12 +87,18 @@ export function deleteAllLocalFiles() {
                     return walkDirectory("/", dispatch, () => Promise.resolve(true));
                 });
             });
+        }).then(() => {
+            return findAllFiles()(dispatch);
         });
     };
 }
 
 export function archiveAllLocalFiles() {
     return (dispatch) => {
+        dispatch({
+            type: Types.LOCAL_FILES_ARCHIVING_ALL
+        });
+
         return walkDirectory("/", dispatch, listing => {
             return Promise.all(_.map(listing, (entry) => {
                 if (entry.directory) {
@@ -104,6 +114,10 @@ export function archiveAllLocalFiles() {
 
 export function findAllFiles() {
     return (dispatch) => {
+        dispatch({
+            type: Types.LOCAL_FILES_FINDING_ALL
+        });
+
         return walkDirectory("/", dispatch, () => Promise.resolve(true));
     };
 }
