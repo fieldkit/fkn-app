@@ -48,6 +48,20 @@ export function cancelInProgressOperation() {
     };
 }
 
+export function queryDeviceMetadata(address) {
+    return (dispatch) => {
+        return dispatch({
+            [CALL_DEVICE_API]: {
+                types: [Types.DEVICE_METADATA_START, Types.DEVICE_METADATA_SUCCESS, Types.DEVICE_METADATA_FAIL],
+                address: address,
+                message: {
+                    type: QueryType.values.QUERY_METADATA
+                }
+            }
+        });
+    };
+}
+
 export function queryDownloadFile(device, file, settings, address) {
     return (dispatch) => {
         return openWriter(device, file, settings, dispatch).then(writer => {

@@ -9,8 +9,10 @@ import { Toasts } from '../../lib/toasts';
 import * as Types from '../types';
 
 import { queryCapabilities } from '../device-status';
-import { queryFiles, queryDownloadFile } from '../device-data';
+import { queryDeviceMetadata, queryFiles, queryDownloadFile } from '../device-data';
 import { findAllFiles } from '../local-files';
+
+import { writeDeviceMetadata } from '../../lib/downloading';
 
 import { deviceCall } from './saga-utils';
 
@@ -48,6 +50,12 @@ export function* deviceFilesCopier() {
                 const device = devices[key];
 
                 console.log("Device", device);
+
+                const metadataAction = yield call(deviceCall, queryDeviceMetadata(device.address));
+
+                console.log("Metadata", metadataAction);
+
+                yield call(writeDeviceMetadata, device.capabilities, metadataAction.response.fileData.data);
 
                 const filesAction = yield call(deviceCall, queryFiles(device.address));
 

@@ -43,101 +43,132 @@ export function openWriter(device, file, settings, dispatch) {
     });
 }
 
+function lpadZeros(value, padding) {
+    var zeroes = new Array(padding + 1).join("0");
+    return (zeroes + value).slice(-padding);
+}
+
+function fileStatIfExists(path) {
+    return RNFS.exists(path).then(e => {
+        if (e) {
+            return RNFS.stat(path).then(info => {
+                return info;
+            });
+        }
+        return null;
+    });
+}
+
+export class LocalFileStructure {
+    constructor(dataDirectoryPath, device) {
+    }
+}
+
+export function writeDeviceMetadata(device, metadata) {
+    return resolveDataDirectoryPath().then(dataDirectoryPath => {
+        const directory = dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId);
+        const path = directory + "/" + "metadata.fkpb";
+
+        console.log("Writing metadata");
+
+        return RNFS.touch(path, new Date()).then(() => {
+            const block = base64ArrayBuffer(metadata);
+            return RNFS.appendFile(path, block, "base64");
+        });
+    });
+}
+
 export class DownloadWriter {
     constructor(dataDirectoryPath, device, file, settings, dispatch) {
         this.device = device;
         this.file = file;
+        this.settings = settings;
         this.dispatch = dispatch;
-        this.bytesRead = 0;
+
+        this.readHeader = false;
         this.started = new Date();
         this.appendChain = Promise.resolve();
         this.throttledDispatch = _.throttle(dispatch, 1000, { leading: true });
-        this.readHeader = false;
-        this.settings = settings;
+
+        this.bytesRead = 0;
         this.bytesTotal = this.file.size;
 
         const now = moment(new Date());
-        const date = now.format("YYYYMMDD");
-        const time = now.format("HHmmss");
-
-        function lpadZeros(value, padding) {
-            var zeroes = new Array(padding + 1).join("0");
-            return (zeroes + value).slice(-padding);
-        }
-        const prefix = lpadZeros(file.version, 6);
-
-        this.directory = dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId) + "/" + date;
-        this.headersPath = this.directory + '/' + prefix + "_headers_" + file.name;
-        this.resumePath = this.directory + '/' + prefix + "_" + file.name;
-        this.stampedPath = this.directory + '/' + prefix + "_" + time + "_" + file.name;
+        this.date = now.format("YYYYMMDD");
+        this.time = now.format("HHmmss");
+        this.versionPrefix = lpadZeros(file.version, 6);
+        this.directory = dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId);
+        this.headersPath = this.directory + '/' + this.versionPrefix + "_headers_" + this.file.name;
+        this.resumePath = this.directory + '/' + this.versionPrefix + "_" + this.file.name;
+        this.stampedPath = this.directory + '/' + this.versionPrefix + "_" + this.time + "_" + this.file.name;
     }
 
-    selectFileNameAndSettings(resumeFile) {
+    selectFileNameAndSettings(existing) {
+        // If we're not resuming, just return timestamped path for now.
         if (!this.settings.resume) {
-            return Promise.resolve(this.path = this.stampedPath);
+            return Promise.resolve(this.stampedPath);
         }
 
-        if (resumeFile != null) {
-            console.log("Existing", resumeFile.size);
-
-            // If local file is bigger than the expected downloade, we should choose a new file name.
-            let expectedDownloadSize = this.settings.length;
-            if (expectedDownloadSize == 0) {
-                expectedDownloadSize = this.file.size - this.settings.offset;
-            }
-            if (resumeFile.size > expectedDownloadSize) {
-                return RNFS.moveFile(this.resumePath, this.stampedPath).then(() => {
-                    return Promise.resolve(this.path = this.resumePath);
-                });
-            }
-
-            // If local file is smaller, adjust offset.
-            if (resumeFile.size <= expectedDownloadSize) {
-                this.settings.offset += resumeFile.size;
-                console.log("Resuming download", this.settings.offset);
-            }
+        // If no existing file, just go ahead.
+        if (existing == null) {
+            return Promise.resolve(this.resumePath);
         }
 
-        return Promise.resolve(this.path = this.resumePath);
+        console.log("Existing", this.settings.offset);
+
+        // Calculate the size of the file we're expecting to get. Either the
+        // given limited length or the size of the file after the offset.
+        let expectedDownloadSize = this.settings.length;
+        if (expectedDownloadSize == 0) {
+            expectedDownloadSize = this.file.size - this.settings.offset;
+        }
+
+        // If local file is bigger than the expected download for some reason, timestamp old file.
+        if (existing.size > expectedDownloadSize) {
+            console.log("Renaming", this.resumePath, this.stampedPath);
+            return RNFS.moveFile(this.resumePath, this.stampedPath).then(() => {
+                return Promise.resolve(this.resumePath);
+            });
+        }
+        // If local file is smaller, adjust offset to resume.
+        else {
+            this.settings.offset += existing.size;
+        }
+
+        return Promise.resolve(this.resumePath);
     }
 
     open() {
         return this.fileSystemOp(() => {
-            console.log("Opening", this.directory, this.file.name);
             return RNFS.mkdir(this.directory).then(() => {
-                return RNFS.exists(this.resumePath);
-            }).then(e => {
-                if (e) {
-                    return RNFS.stat(this.resumePath).then(resumeFile => {
-                        return this.selectFileNameAndSettings(resumeFile);
-                    });
-                }
-                return this.selectFileNameAndSettings(null);
+                return fileStatIfExists(this.resumePath).then(resumeFile => {
+                    return this.selectFileNameAndSettings(resumeFile);
+                });
+            }).then(path => {
+                console.log("Path", path);
+                return this.path = path;
+            }).then(() => {
+                // We touch all the files here so we can just use append all the time down below.
+                return Promise.all([ this.path, this.headersPath ].map(p => {
+                    return RNFS.touch(p, new Date());
+                }));
             });
         });
     }
 
     appendToFile(data, path) {
-        const blockSize = data.length;
-        const firstBlock = this.bytesRead == 0;
-
         this.fileSystemOp(() => {
             const block = base64ArrayBuffer(data);
-            if (firstBlock) {
-                return RNFS.writeFile(path, block, "base64");
-            }
-            else {
-                return RNFS.appendFile(path, block, "base64");
-            }
+            return RNFS.appendFile(path, block, "base64");
         });
-
-        this.bytesRead += blockSize;
-
-        this.progress(Types.DOWNLOAD_FILE_PROGRESS);
     }
 
     append(data) {
-        return this.appendToFile(data, this.path);
+        this.appendToFile(data, this.path);
+
+        const blockSize = data.length;
+        this.bytesRead += blockSize;
+        this.progress(Types.DOWNLOAD_FILE_PROGRESS);
     }
 
     write(data) {
@@ -146,12 +177,14 @@ export class DownloadWriter {
             const reader = protobuf.Reader.create(data);
             const header = WireMessageReply.decodeDelimited(reader);
             const remaining = data.slice(reader.pos);
+            const headerData = data.slice(0, reader.pos);
 
             this.readHeader = true;
             this.bytesTotal = header.fileData.size;
 
-            console.log('Header', header);
-            console.log("Data", reader.pos, data.length, remaining.length);
+            console.log('Header', header, headerData.length);
+
+            this.appendToFile(headerData, this.headersPath);
 
             return this.append(remaining);
         }
@@ -162,12 +195,6 @@ export class DownloadWriter {
 
     close() {
         this.progress(Types.DOWNLOAD_FILE_DONE);
-
-        this.fileSystemOp(() => {
-            return RNFS.readDir(RNFS.DocumentDirectoryPath).then((res) => {
-                console.log('Directory', res);
-            });
-        });
 
         return {};
     }
