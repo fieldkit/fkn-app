@@ -17,15 +17,19 @@ import { DataRecord } from './protocol';
 
 let resolvedDataDirectoryPath = null;
 
-export function resolveDataDirectoryPath() {
-    if (resolvedDataDirectoryPath !== null) {
-        return resolvedDataDirectoryPath;
-    }
+export function createDataDirectoryPath() {
     return resolvedDataDirectoryPath = Promise.resolve(RNFS.DocumentDirectoryPath + "/Data").then((path) => {
         return RNFS.mkdir(path).then(() => {
             return path;
         });
     });
+}
+
+export function resolveDataDirectoryPath() {
+    if (resolvedDataDirectoryPath !== null) {
+        return resolvedDataDirectoryPath;
+    }
+    return createDataDirectoryPath();
 }
 
 export function openWriter(device, file, offset, length, dispatch) {

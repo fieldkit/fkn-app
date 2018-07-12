@@ -8,7 +8,7 @@ import { View, Text, Image, Button } from 'react-native';
 import * as Files from '../lib/files';
 import { AppScreen } from '../components';
 
-import { deviceStartConnect, findAllFiles, uploadQueue, copyFromDevices } from '../actions';
+import { deviceStartConnect, findAllFiles, uploadQueue, copyFromDevices, deleteAllLocalFiles, archiveAllLocalFiles } from '../actions';
 
 import styles from '../styles';
 
@@ -92,7 +92,7 @@ class EasyModeScreen extends React.Component {
     }
 
     render() {
-        const { easyMode, copyFromDevices, uploadQueue } = this.props;
+        const { easyMode, copyFromDevices, uploadQueue, deleteAllLocalFiles, archiveAllLocalFiles } = this.props;
 
         return (
             <AppScreen>
@@ -105,6 +105,11 @@ class EasyModeScreen extends React.Component {
 
               <DeviceOptions easyMode={easyMode} copyFromDevices={copyFromDevices} />
               <UploadQueueOptions easyMode={easyMode} uploadQueue={uploadQueue} />
+
+              <View>
+                <View style={{ padding: 10 }}><Button title="Delete All" onPress={() => deleteAllLocalFiles()} /></View>
+                <View style={{ padding: 10 }}><Button title="Archive All" onPress={() => archiveAllLocalFiles()} /></View>
+              </View>
             </AppScreen>
         );
     }
@@ -115,7 +120,9 @@ EasyModeScreen.propTypes = {
     deviceStartConnect: PropTypes.func.isRequired,
     copyFromDevices: PropTypes.func.isRequired,
     uploadQueue: PropTypes.func.isRequired,
-    findAllFiles: PropTypes.func.isRequired
+    findAllFiles: PropTypes.func.isRequired,
+    deleteAllLocalFiles: PropTypes.func.isRequired,
+    archiveAllLocalFiles: PropTypes.func.isRequired
 };
 
 function getUploadQueue(localFiles) {
@@ -140,5 +147,7 @@ export default connect(mapStateToProps, {
     findAllFiles,
     copyFromDevices,
     uploadQueue,
-    deviceStartConnect
+    deviceStartConnect,
+    deleteAllLocalFiles,
+    archiveAllLocalFiles
 })(EasyModeScreen);

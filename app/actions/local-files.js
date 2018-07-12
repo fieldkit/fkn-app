@@ -8,7 +8,7 @@ import * as Types from './types';
 import * as Files from '../lib/files';
 import { Toasts } from '../lib/toasts';
 
-import { resolveDataDirectoryPath } from '../lib/downloading';
+import { resolveDataDirectoryPath, createDataDirectoryPath } from '../lib/downloading';
 import { uploadFile } from '../lib/uploading';
 
 import { navigateBrowser } from './navigation';
@@ -49,14 +49,17 @@ function getDirectory(relativePath) {
     });
 }
 
-function walkDirectory(relativePath, dispatch) {
+function walkDirectory(relativePath, dispatch, callback) {
     return getDirectory(relativePath).then(action => {
-        dispatch(action);
+        return callback(action.listing).then(() => {
+            dispatch(action);
 
-        _.each(action.listing, (entry) => {
-            if (entry.directory) {
-                walkDirectory(entry.relativePath, dispatch);
-            }
+            return Promise.all(_.map(action.listing, (entry) => {
+                if (entry.directory) {
+                    return walkDirectory(entry.relativePath, dispatch, callback);
+                }
+                return Promise.resolve(false);
+            }));
         });
     });
 }
@@ -70,9 +73,38 @@ export function browseDirectory(relativePath) {
     };
 }
 
+export function deleteAllLocalFiles() {
+    return (dispatch) => {
+        return resolveDataDirectoryPath().then(dataDirectoryPath => {
+            console.log("Deleting");
+            return RNFS.unlink(dataDirectoryPath).then(() => {
+                console.log("Refreshing");
+                return createDataDirectoryPath().then(() => {
+                    return walkDirectory("/", dispatch, () => Promise.resolve(true));
+                });
+            });
+        });
+    };
+}
+
+export function archiveAllLocalFiles() {
+    return (dispatch) => {
+        return walkDirectory("/", dispatch, listing => {
+            return Promise.all(_.map(listing, (entry) => {
+                if (entry.directory) {
+                    return Promise.resolve(false);
+                }
+                return archiveLocalFile(entry.relativePath)(dispatch);
+            }));
+        }).then(() => {
+            return findAllFiles()(dispatch);
+        });
+    };
+}
+
 export function findAllFiles() {
     return (dispatch) => {
-        walkDirectory("/", dispatch);
+        return walkDirectory("/", dispatch, () => Promise.resolve(true));
     };
 }
 
