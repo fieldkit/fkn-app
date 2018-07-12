@@ -19,10 +19,6 @@ class ConnectingScreen extends React.Component {
         title: 'Connecting...',
     };
 
-    componentWillUpdate(nextProps, nextState) {
-        const { device } = nextProps;
-    }
-
     componentDidMount() {
         this.props.deviceStartConnect();
     }

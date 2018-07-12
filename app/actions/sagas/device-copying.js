@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
-import { delay } from 'redux-saga'
-import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects'
+import { delay } from 'redux-saga';
+import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects';
 
 import { QueryType } from '../../lib/protocol';
 import { Toasts } from '../../lib/toasts';
@@ -10,6 +10,7 @@ import * as Types from '../types';
 
 import { queryCapabilities } from '../device-status';
 import { queryFiles, queryDownloadFile } from '../device-data';
+import { findAllFiles } from '../local-files';
 
 import { deviceCall } from './saga-utils';
 
@@ -19,11 +20,11 @@ export function* deviceFilesCopier() {
     yield takeLatest(Types.COPY_DEVICE_FILES, function* watcher(action) {
         // Right now we just download log and data file.
         const downloadsPerDevice = [ {
-            fileId: 1,
-            maximum: 1000000
-        }, {
             fileId: 4,
             maximum: 0
+        }, {
+            fileId: 1,
+            maximum: 1000000
         }];
         const devices = _(action.devices).filter(Config.deviceFilter).value();
         const numberOfFiles = _(devices).map(device => {

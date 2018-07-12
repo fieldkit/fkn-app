@@ -50,7 +50,7 @@ export function cancelInProgressOperation() {
 
 export function queryDownloadFile(device, file, offset, length, address) {
     return (dispatch) => {
-        return openWriter(device, file, dispatch).then(writer => {
+        return openWriter(device, file, offset, length, dispatch).then(writer => {
             return dispatch({
                 [CALL_DEVICE_API]: {
                     types: [Types.DEVICE_DOWNLOAD_FILE_START, Types.DEVICE_DOWNLOAD_FILE_SUCCESS, Types.DEVICE_DOWNLOAD_FILE_FAIL],
@@ -60,13 +60,13 @@ export function queryDownloadFile(device, file, offset, length, address) {
                         type: QueryType.values.QUERY_DOWNLOAD_FILE,
                         downloadFile: {
                             id: file.id,
-                            offset: offset,
-                            length: length,
+                            offset: writer.downloadOffset,
+                            length: writer.downloadLength,
                         }
                     }
                 }
             });
         });
-    }
+    };
 }
 

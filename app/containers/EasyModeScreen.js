@@ -82,6 +82,15 @@ class EasyModeScreen extends React.Component {
         this.props.deviceStartConnect();
     }
 
+    componentWillUpdate(nextProps, nextState) {
+        const { easyMode: easyModeBefore } = this.props;
+        const { easyMode: easyModeAfter } = nextProps;
+
+        if (!easyModeAfter.busy && easyModeBefore.busy != easyModeAfter.busy) {
+            this.props.findAllFiles();
+        }
+    }
+
     render() {
         const { easyMode, copyFromDevices, uploadQueue } = this.props;
 
@@ -120,6 +129,7 @@ function getUploadQueue(localFiles) {
 
 const mapStateToProps = state => ({
     easyMode: {
+        busy: !state.progress.task.done,
         networkConfiguration: state.networkConfiguration,
         devices: state.devices,
         queue: getUploadQueue(state.localFiles)
