@@ -30,7 +30,7 @@ describe('synchronizing', () => {
             });
         });
 
-        describe.only('with no local files', () => {
+        describe('with no local files', () => {
             beforeEach(() => {
                 const device = [
                     { id: 1, version: 1, size: 8100000, name: "startup.log" },
@@ -311,6 +311,20 @@ describe('synchronizing', () => {
             });
         });
 
+        describe('with empty local files', () => {
+            beforeEach(() => {
+                const local = [
+                    { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 0 },
+                ];
+
+                this.plan = generateUploadPlan(makeLocal(local));
+            });
+
+            it('should generate empty plan', () => {
+                expect(this.plan.plan.length).toBe(0);
+            });
+        });
+
         describe('with local data file', () => {
             beforeEach(() => {
                 const local = [
@@ -331,8 +345,8 @@ describe('synchronizing', () => {
             it('should archive the file at the end', () => {
                 expect(this.plan.plan[1]).toEqual({
                     archive: {
-                        file: "",
-                        touch: ""
+                        file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                        touch: "/0004a30b001cc468/4_000001_offset_31000_data.fk"
                     }
                 });
             });

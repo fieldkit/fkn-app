@@ -74,16 +74,15 @@ function lpadZeros(value, padding) {
     return (zeroes + value).slice(-padding);
 }
 
+function makeFilename(directory, id, version, offset, name) {
+    return directory + "/" + id + "_" + lpadZeros(version, 6) + "_offset_" + offset + "_" + name;
+}
+
 class DownloadPlanGenerator {
     constructor(config, local, remote) {
         this.config = config;
-        this.local = local;
         this.remote = remote;
-        this.infos = _(this.local).map(entry => getFileInformation(entry)).value();
-    }
-
-    makeFilename(directory, id, version, offset, name) {
-        return directory + "/" + id + "_" + lpadZeros(version, 6) + "_offset_" + offset + "_" + name;
+        this.infos = _(local).map(entry => getFileInformation(entry)).value();
     }
 
     generateChunks(size, chunked) {
@@ -110,7 +109,7 @@ class DownloadPlanGenerator {
                         const { chunk } = row;
                         return {
                             download: {
-                                file: this.makeFilename(directory, config.fileId, remoteFile.version, chunk.offset, remoteFile.name),
+                                file: makeFilename(directory, config.fileId, remoteFile.version, chunk.offset, remoteFile.name),
                                 id: config.fileId,
                                 offset: chunk.offset + row.localSize,
                                 length: chunk.length - row.localSize
@@ -151,7 +150,7 @@ class DownloadPlanGenerator {
                             },
                             {
                                 download: {
-                                    file: this.makeFilename(directory, config.fileId, remoteFile.version, existingLocalFile.offset, remoteFile.name),
+                                    file: makeFilename(directory, config.fileId, remoteFile.version, existingLocalFile.offset, remoteFile.name),
                                     id: config.fileId,
                                     offset: 0 + existingLocalFile.offset,
                                     length: 0
@@ -166,7 +165,7 @@ class DownloadPlanGenerator {
 
                     return {
                         download: {
-                            file: this.makeFilename(directory, config.fileId, remoteFile.version, existingLocalFile.offset, remoteFile.name),
+                            file: makeFilename(directory, config.fileId, remoteFile.version, existingLocalFile.offset, remoteFile.name),
                             id: config.fileId,
                             offset: sizeOfExisting + existingLocalFile.offset,
                             length: 0
@@ -181,32 +180,70 @@ class DownloadPlanGenerator {
 
 }
 
+const Configuration = [ {
+    fileId: 4,
+    chunked: 0,
+    offset: 0,
+    length: 0,
+}, {
+    fileId: 1,
+    chunked: 1000000,
+    offset: 0,
+    length: 0,
+}];
+
 export function generateDownloadPlan(local, remote) {
     if (!_.isArray(local) || !_.isObject(remote)) {
         return { plan: [] };
     }
 
-    const planConfiguration = [ {
-        fileId: 4,
-        chunked: 0,
-        offset: 0,
-        length: 0,
-    }, {
-        fileId: 1,
-        chunked: 1000000,
-        offset: 0,
-        length: 0,
-    }];
-
-    const generator = new DownloadPlanGenerator(planConfiguration, local, remote);
+    const generator = new DownloadPlanGenerator(Configuration, local, remote);
 
     return {
         plan: generator.generate()
     };
 }
 
+class UploadPlanGenerator {
+    constructor(config, local) {
+        this.config = config;
+        this.infos = _(local).map(entry => getFileInformation(entry)).value();
+    }
+
+    generate() {
+        const nonEmpty = _(this.infos).filter(f => f.entry.size > 0).value();
+
+        return _(nonEmpty)
+            .map(file => {
+                const directory = "/" + file.deviceId;
+
+                return [
+                    {
+                        upload: {
+                            file: file.entry.relativePath
+                        }
+                    },
+                    {
+                        archive: {
+                            file: file.entry.relativePath,
+                            touch: makeFilename(directory, file.fileId, file.version, file.entry.size, file.name),
+                        }
+                    }
+                ];
+            })
+            .flatten()
+            .value();
+    }
+}
+
 export function generateUploadPlan(local) {
+    if (!_.isArray(local)) {
+        return { plan: [] };
+    }
+
+    const generator = new UploadPlanGenerator(Configuration, local);
+
     return {
-        plan: []
+        plan: generator.generate()
     };
 }
