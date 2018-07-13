@@ -220,7 +220,14 @@ class UploadPlanGenerator {
                 return [
                     {
                         upload: {
-                            file: file.entry.relativePath
+                            metadata: "",
+                            file: file.entry.relativePath,
+                            headers: {
+                                deviceId: file.deviceId,
+                                fileOffset: file.offset,
+                                fileVersion: file.version,
+                                fileName: file.name
+                            }
                         }
                     },
                     {

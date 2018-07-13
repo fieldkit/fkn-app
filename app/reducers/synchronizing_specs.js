@@ -337,7 +337,14 @@ describe('synchronizing', () => {
             it('should upload the file', () => {
                 expect(this.plan.plan[0]).toEqual({
                     upload: {
-                        file: "/0004a30b001cc468/4_000001_offset_0_data.fk"
+                        metadata: "",
+                        file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                        headers: {
+                            deviceId: "0004a30b001cc468",
+                            fileOffset: 0,
+                            fileVersion: 1,
+                            fileName: "data.fk"
+                        }
                     }
                 });
             });
@@ -349,6 +356,50 @@ describe('synchronizing', () => {
                         touch: "/0004a30b001cc468/4_000001_offset_31000_data.fk"
                     }
                 });
+            });
+        });
+
+        describe('with local chunked file', () => {
+            beforeEach(() => {
+                const local = [
+                    { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 15000 },
+                    { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 200000 },
+                ];
+
+                this.plan = generateUploadPlan(makeLocal(local));
+            });
+
+            it('should upload the file', () => {
+                expect(this.plan.plan[0]).toEqual({
+                    upload: {
+                        metadata: "",
+                        file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                        headers: {
+                            deviceId: "0004a30b001cc468",
+                            fileOffset: 0,
+                            fileVersion: 1,
+                            fileName: "data.fk"
+                        }
+                    }
+                });
+            });
+
+            it('should archive the file at the end', () => {
+                expect(this.plan.plan[1]).toEqual({
+                    archive: {
+                        file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                        touch: "/0004a30b001cc468/4_000001_offset_15000_data.fk"
+                    }
+                });
+            });
+
+            it('should upload chunked file', () => {
+            });
+
+            it('should record upload of data file', () => {
+            });
+
+            it('should record upload of chunked file', () => {
             });
         });
     });
