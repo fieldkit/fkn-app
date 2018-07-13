@@ -14,6 +14,7 @@ import * as moduleReplyReducers from './modules';
 import * as downloadReducers from './download';
 import * as progressReducers from './progress';
 import * as localFilesReducers from './local-files';
+import * as fileComparisonsReducers from './file-comparisons';
 import * as easyModeReducers from './easy-mode';
 
 export default combineReducers(Object.assign(
@@ -29,6 +30,7 @@ export default combineReducers(Object.assign(
     downloadReducers,
     progressReducers,
     localFilesReducers,
+    fileComparisonsReducers,
     easyModeReducers,
     pluginManager.getReducers(),
 ));

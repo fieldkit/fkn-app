@@ -23,12 +23,14 @@ export function* deviceFilesCopier() {
         // Right now we just download log and data file.
         const downloadsPerDevice = [ {
             fileId: 4,
-            maximum: 0,
-            resume: true
+            chunked: 0,
+            offset: 0,
+            length: 0,
         }, {
             fileId: 1,
-            maximum: 1000000,
-            resume: false
+            chunked: 100000,
+            offset: 0,
+            length: 0,
         }];
         const devices = _(action.devices).filter(Config.deviceFilter).value();
         const numberOfFiles = _(devices).map(device => {
@@ -52,42 +54,20 @@ export function* deviceFilesCopier() {
                 console.log("Device", device);
 
                 const metadataAction = yield call(deviceCall, queryDeviceMetadata(device.address));
-
-                console.log("Metadata", metadataAction);
+                const filesAction = yield call(deviceCall, queryFiles(device.address));
 
                 yield call(writeDeviceMetadata, device.capabilities, metadataAction.response.fileData.data);
 
-                const filesAction = yield call(deviceCall, queryFiles(device.address));
-
-                console.log("Files", filesAction);
-
                 for (let i = 0; i < downloadsPerDevice.length; ++i) {
-                    const download = downloadsPerDevice[i];
-                    const file = _(filesAction.response.files.files).filter(f => f.id == download.fileId).first();
+                    const settings = downloadsPerDevice[i];
+                    const file = _(filesAction.response.files.files).filter(f => f.id == settings.fileId).first();
 
-                    console.log("File", download, file);
-
-                    let offset = 0;
-                    let length = 0;
-
-                    if (download.maximum > 0 && file.size > download.maximum) {
-                        length = download.maximum;
-                        offset = file.size - length;
-                        console.log("Limit download: ", { length, offset });
-                    }
-
-                    const settings = {
-                        offset: offset,
-                        length: length,
-                        resume: download.resume
-                    };
+                    console.log("File", settings, file);
 
                     const { downloaded, stop } = yield race({
                         downloaded: call(deviceCall, queryDownloadFile(device.capabilities, file, settings, device.address)),
                         stop: take(Types.OPERATION_CANCEL),
                     });
-
-                    console.log(downloaded, stop);
 
                     if (_.isObject(stop)) {
                         yield put({

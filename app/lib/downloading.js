@@ -36,7 +36,6 @@ export function openWriter(device, file, settings, dispatch) {
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
         return Promise.resolve(new DownloadWriter(dataDirectoryPath, device, file, settings, dispatch)).then(writer => {
             return writer.open().then(() => {
-                console.log("Opened");
                 return writer;
             });
         });
@@ -67,13 +66,16 @@ export class LocalFileStructure {
 export function writeDeviceMetadata(device, metadata) {
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
         const directory = dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId);
-        const path = directory + "/" + "metadata.fkpb";
 
-        console.log("Writing metadata");
+        return RNFS.mkdir(directory).then(() => {
+            const path = directory + "/" + "metadata.fkpb";
 
-        return RNFS.touch(path, new Date()).then(() => {
-            const block = base64ArrayBuffer(metadata);
-            return RNFS.appendFile(path, block, "base64");
+            console.log("Writing metadata");
+
+            return RNFS.touch(path, new Date()).then(() => {
+                const block = base64ArrayBuffer(metadata);
+                return RNFS.appendFile(path, block, "base64");
+            });
         });
     });
 }
@@ -94,27 +96,26 @@ export class DownloadWriter {
         this.bytesTotal = this.file.size;
 
         const now = moment(new Date());
-        this.date = now.format("YYYYMMDD");
-        this.time = now.format("HHmmss");
+        this.timestamp = now.format("YYYYMMDD_HHmmss");
         this.versionPrefix = lpadZeros(file.version, 6);
         this.directory = dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId);
-        this.headersPath = this.directory + '/' + this.versionPrefix + "_headers_" + this.file.name;
-        this.resumePath = this.directory + '/' + this.versionPrefix + "_" + this.file.name;
-        this.stampedPath = this.directory + '/' + this.versionPrefix + "_" + this.time + "_" + this.file.name;
+
+        const directoryAndPrefix = this.directory + '/' + this.file.id + "_" + this.versionPrefix;
+        this.headersPath = directoryAndPrefix + "_headers_" + this.file.name;
+        this.offsetPath = directoryAndPrefix + "_offset_" + this.settings.offset + "_" + this.file.name;
+        this.stampedPath = directoryAndPrefix + "_" + this.timestamp + "_" + this.file.name;
     }
 
     selectFileNameAndSettings(existing) {
         // If we're not resuming, just return timestamped path for now.
-        if (!this.settings.resume) {
-            return Promise.resolve(this.stampedPath);
+        if (this.settings.chunked > 0) {
+            return Promise.resolve(this.offsetPath);
         }
 
         // If no existing file, just go ahead.
         if (existing == null) {
-            return Promise.resolve(this.resumePath);
+            return Promise.resolve(this.offsetPath);
         }
-
-        console.log("Existing", this.settings.offset);
 
         // Calculate the size of the file we're expecting to get. Either the
         // given limited length or the size of the file after the offset.
@@ -125,24 +126,26 @@ export class DownloadWriter {
 
         // If local file is bigger than the expected download for some reason, timestamp old file.
         if (existing.size > expectedDownloadSize) {
-            console.log("Renaming", this.resumePath, this.stampedPath);
-            return RNFS.moveFile(this.resumePath, this.stampedPath).then(() => {
-                return Promise.resolve(this.resumePath);
+            console.log("Renaming", this.offsetPath, this.stampedPath);
+
+            return RNFS.moveFile(this.offsetPath, this.stampedPath).then(() => {
+                return Promise.resolve(this.offsetPath);
             });
         }
         // If local file is smaller, adjust offset to resume.
         else {
             this.settings.offset += existing.size;
+            console.log("Resuming", this.settings.offset);
         }
 
-        return Promise.resolve(this.resumePath);
+        return Promise.resolve(this.offsetPath);
     }
 
     open() {
         return this.fileSystemOp(() => {
             return RNFS.mkdir(this.directory).then(() => {
-                return fileStatIfExists(this.resumePath).then(resumeFile => {
-                    return this.selectFileNameAndSettings(resumeFile);
+                return fileStatIfExists(this.offsetPath).then(existing => {
+                    return this.selectFileNameAndSettings(existing);
                 });
             }).then(path => {
                 console.log("Path", path);
