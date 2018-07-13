@@ -152,7 +152,7 @@ class DownloadPlanGenerator {
                     return _.flatten(test);
                 }
                 else {
-                    const existingLocalFile = _(localFiles).filter(i => i.offset === 0).first() || { entry: { size: 0 } };
+                    const existingLocalFile = _(localFiles).orderBy(lf => lf.offset).reverse().first() || { entry: { size: 0 }, offset: 0 };
                     const sizeOfExisting = existingLocalFile.entry.size;
 
                     if (sizeOfExisting > remoteFile.size) {
@@ -164,9 +164,9 @@ class DownloadPlanGenerator {
                             },
                             {
                                 download: {
-                                    file: this.makeFilename(config.fileId, remoteFile.version, 0, remoteFile.name),
+                                    file: this.makeFilename(config.fileId, remoteFile.version, existingLocalFile.offset, remoteFile.name),
                                     id: config.fileId,
-                                    offset: 0,
+                                    offset: 0 + existingLocalFile.offset,
                                     length: 0
                                 }
                             }
@@ -179,9 +179,9 @@ class DownloadPlanGenerator {
 
                     return {
                         download: {
-                            file: this.makeFilename(config.fileId, remoteFile.version, 0, remoteFile.name),
+                            file: this.makeFilename(config.fileId, remoteFile.version, existingLocalFile.offset, remoteFile.name),
                             id: config.fileId,
-                            offset: sizeOfExisting,
+                            offset: sizeOfExisting + existingLocalFile.offset,
                             length: 0
                         }
                     };
