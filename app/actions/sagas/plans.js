@@ -5,18 +5,42 @@ import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux
 
 import { QueryType } from '../../lib/protocol';
 import { Toasts } from '../../lib/toasts';
-import { uploadFile } from '../../lib/uploading';
 
 import * as Types from '../types';
 
 import { queryCapabilities } from '../device-status';
+import { queryFiles, queryDeviceMetadata, queryDownloadFile } from '../device-data';
 import { archiveLocalFile } from '../local-files';
 
-import { deviceCall } from './saga-utils';
+import { uploadFile } from '../../lib/uploading';
+import { writeDeviceMetadata } from '../../lib/downloading';
+
+import { Dispatcher, deviceCall } from './saga-utils';
+
+class Devices {
+    constructor() {
+        this.cache = {};
+    }
+
+    *getInformation(address) {
+        if (!_.isObject(this.cache[address.key])) {
+            const capabilitiesAction = yield call(deviceCall, queryCapabilities(address));
+            const metadataAction = yield call(deviceCall, queryDeviceMetadata(address));
+
+            this.cache[address.key] = {
+                capabilities: capabilitiesAction.response.capabilities,
+                metadata: metadataAction.response.fileData.data
+            };
+        }
+        return this.cache[address.key];
+    }
+};
 
 export function* executePlans() {
     yield takeLatest(Types.PLAN_EXECUTE, function* watcher(action) {
         try {
+            const devices = new Devices();
+
             yield put({
                 type: Types.TASK_START,
                 task: {
@@ -25,45 +49,120 @@ export function* executePlans() {
                 }
             });
 
-            /*
-            const queue = action.queue;
-            const numberOfFiles = _.size(queue);
-            let filesUploaded = 0;
+            const { plan } = action;
+            const totalSteps = plan.length;
+            let stepsCompleted = 0;
 
-            for (let i = 0; i < queue.length; ++i) {
-                const file = queue[i];
-
+            for (const step of plan) {
                 yield put({
                     type: Types.TASK_PROGRESS,
                     task: {
-                        label: file.name,
-                        progress: filesUploaded / numberOfFiles,
+                        label: "",
+                        progress: stepsCompleted / totalSteps,
                         cancelable: true,
                         done: false
                     }
                 });
 
-                const { upload, stop } = yield race({
-                    upload: call(uploadFile, file.relativePath),
-                    stop: take(Types.OPERATION_CANCEL),
-                });
+                const key = _.first(Object.keys(step));
+                const details = step[key];
 
-                if (_.isObject(stop)) {
-                    yield put({
-                        type: Types.TASK_DONE,
-                        task: {
-                            done: true
+                console.log("Step", key, step, details);
+
+                switch (key) {
+                case "download": {
+                    const info = yield devices.getInformation(details.address);
+
+                    yield call(writeDeviceMetadata, info.capabilities, info.metadata);
+
+                    console.log(info);
+                    const file = {
+                        id: details.id,
+                        size: details.length,
+                        version: details.version
+                    };
+                    const settings = {
+                        offset: details.offset,
+                        length: details.length,
+                        paths: {
+                            file: details.file,
+                            headers: details.headers
                         }
+                    };
+
+                    const { downloaded, stop } = yield race({
+                        downloaded: call(deviceCall, queryDownloadFile(info.capabilities, file, settings, details.address)),
+                        stop: take(Types.OPERATION_CANCEL),
                     });
-                    return;
+
+                    if (_.isObject(stop)) {
+                        yield put({
+                            type: Types.TASK_DONE,
+                            task: {
+                                done: true
+                            }
+                        });
+                        return;
+                    }
+
+                    break;
                 }
-                else {
-                    yield call(archiveLocalFile(file.relativePath));
+                case "archive": {
+                    /*
+                    yield call(archiveLocalFile(details.file));
+
+                    yield call(touchLocalFile(details.touch));
+                    */
+
+                    break;
+                }
+                case "upload": {
+                    const dispatcher = new Dispatcher();
+                    const started = new Date();
+
+                    function progress(info) {
+                        const bytesTotal = info.totalBytesExpectedToSend;
+                        const bytesRead = info.totalBytesSent;
+                        const now = new Date();
+
+                        dispatcher.dispatch({
+                            type: Types.DOWNLOAD_FILE_PROGRESS,
+                            download: {
+                                done: bytesTotal == bytesRead,
+                                cancelable: false,
+                                bytesTotal: bytesTotal,
+                                bytesRead: bytesRead,
+                                progress: bytesRead / bytesTotal,
+                                started: started,
+                                elapsed: now - started
+                            }
+                        });
+                    }
+
+                    const { upload, stop } = yield race({
+                        upload: call(uploadFile, details.file, details.headers, progress),
+                        stop: take(Types.OPERATION_CANCEL),
+                        actions: dispatcher.pump()
+                    });
+
+                    if (_.isObject(stop)) {
+                        yield put({
+                            type: Types.TASK_DONE,
+                            task: {
+                                done: true
+                            }
+                        });
+                        return;
+                    }
+                    else {
+                    }
+
+                    break;
+                }
                 }
 
-                filesUploaded++;
+                stepsCompleted++;
             }
-            */
 
             yield put({
                 type: Types.TASK_DONE,

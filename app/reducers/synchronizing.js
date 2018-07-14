@@ -78,10 +78,15 @@ function makeFilename(directory, id, version, offset, name) {
     return directory + "/" + id + "_" + lpadZeros(version, 6) + "_offset_" + offset + "_" + name;
 }
 
+function makeHeadersFilename(directory, id, version, name) {
+    return directory + "/" + id + "_" + lpadZeros(version, 6) + "_headers_" + name;
+}
+
 class DownloadPlanGenerator {
-    constructor(config, deviceId, local, remote) {
+    constructor(config, local, remote) {
         this.config = config;
-        this.deviceId = deviceId;
+        this.deviceId = remote.deviceId;
+        this.address = remote.address;
         this.infos = _(local.files).map(entry => getFileInformation(entry)).value();
         this.remote = remote;
     }
@@ -100,6 +105,10 @@ class DownloadPlanGenerator {
         return _(this.config)
             .map(config => {
                 const remote = _(this.remote.files).filter(i => i.id === config.fileId).first();
+                if (remote == null) {
+                    return null;
+                }
+
                 const locals = _(this.infos).filter(i => !i.headers).filter(i => i.fileId === config.fileId).filter(i => i.version === remote.version).value();
 
                 return {
@@ -108,6 +117,9 @@ class DownloadPlanGenerator {
                     remote: remote,
                     locals: locals,
                 };
+            })
+            .filter(row => {
+                return _.isObject(row);
             })
             .filter(row => {
                 return row.config.condition(row.remote, this.remote.files);
@@ -122,7 +134,9 @@ class DownloadPlanGenerator {
                         const { chunk } = row;
                         return {
                             download: {
+                                address: this.address,
                                 file: makeFilename(directory, config.fileId, remote.version, chunk.offset, remote.name),
+                                headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
                                 id: config.fileId,
                                 offset: chunk.offset + row.localSize,
                                 length: chunk.length - row.localSize
@@ -166,7 +180,9 @@ class DownloadPlanGenerator {
 
                     return {
                         download: {
+                            address: this.address,
                             file: makeFilename(directory, config.fileId, remote.version, offset, remote.name),
+                            headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
                             id: config.fileId,
                             offset: offset,
                             length: config.tail
@@ -186,7 +202,9 @@ class DownloadPlanGenerator {
                             },
                             {
                                 download: {
+                                    address: this.address,
                                     file: makeFilename(directory, config.fileId, remote.version, existingLocalFile.offset, remote.name),
+                                    headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
                                     id: config.fileId,
                                     offset: 0 + existingLocalFile.offset,
                                     length: 0
@@ -201,7 +219,9 @@ class DownloadPlanGenerator {
 
                     return {
                         download: {
+                            address: this.address,
                             file: makeFilename(directory, config.fileId, remote.version, existingLocalFile.offset, remote.name),
+                            headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
                             id: config.fileId,
                             offset: sizeOfExisting + existingLocalFile.offset,
                             length: 0
@@ -223,22 +243,26 @@ class UploadPlanGenerator {
     }
 
     generate() {
+        const metadata = _(this.infos).filter(f => f.metadata).first();
         const nonEmpty = _(this.infos).filter(f => f.entry.size > 0).value();
+        const dataFiles = _(nonEmpty).filter(f => _.isNumber(f.offset)).value();
 
-        return _(nonEmpty)
+        return _(dataFiles)
             .map(file => {
                 const directory = "/" + file.deviceId;
 
                 return [
                     {
                         upload: {
-                            metadata: "",
+                            metadata: metadata ? metadata.entry.relativePath : null,
                             file: file.entry.relativePath,
                             headers: {
                                 deviceId: file.deviceId,
+                                fileId: file.fileId,
                                 fileOffset: file.offset,
                                 fileVersion: file.version,
-                                fileName: file.name
+                                fileName: file.name,
+                                uploadName: file.entry.name
                             }
                         }
                     },
@@ -255,12 +279,12 @@ class UploadPlanGenerator {
     }
 }
 
-export function generateDownloadPlan(config, deviceId, local, remote) {
+export function generateDownloadPlan(config, local, remote) {
     if (!_.isObject(local) || !_.isObject(remote)) {
         return { plan: [] };
     }
 
-    const generator = new DownloadPlanGenerator(config, deviceId, local, remote);
+    const generator = new DownloadPlanGenerator(config, local, remote);
 
     return {
         plan: generator.generate()

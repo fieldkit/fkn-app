@@ -15,11 +15,14 @@ import * as Types from '../actions/types';
 import { WireMessageReply } from './protocol';
 import { DataRecord } from './protocol';
 
+import * as Files from './files';
+
 let resolvedDataDirectoryPath = null;
 
 export function createDataDirectoryPath() {
     return resolvedDataDirectoryPath = Promise.resolve(RNFS.DocumentDirectoryPath + "/Data").then((path) => {
         return RNFS.mkdir(path).then(() => {
+            console.log("Created", path);
             return path;
         });
     });
@@ -86,6 +89,7 @@ export class DownloadWriter {
         this.file = file;
         this.settings = settings;
         this.dispatch = dispatch;
+        this.dataDirectoryPath = dataDirectoryPath;
 
         this.readHeader = false;
         this.started = new Date();
@@ -94,62 +98,16 @@ export class DownloadWriter {
 
         this.bytesRead = 0;
         this.bytesTotal = this.file.size;
-
-        const now = moment(new Date());
-        this.timestamp = now.format("YYYYMMDD_HHmmss");
-        this.versionPrefix = lpadZeros(file.version, 6);
-        this.directory = dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId);
-
-        const directoryAndPrefix = this.directory + '/' + this.file.id + "_" + this.versionPrefix;
-        this.headersPath = directoryAndPrefix + "_headers_" + this.file.name;
-        this.offsetPath = directoryAndPrefix + "_offset_" + this.settings.offset + "_" + this.file.name;
-        this.stampedPath = directoryAndPrefix + "_" + this.timestamp + "_" + this.file.name;
-    }
-
-    selectFileNameAndSettings(existing) {
-        // If we're not resuming, just return timestamped path for now.
-        if (this.settings.chunked > 0) {
-            return Promise.resolve(this.offsetPath);
-        }
-
-        // If no existing file, just go ahead.
-        if (existing == null) {
-            return Promise.resolve(this.offsetPath);
-        }
-
-        // Calculate the size of the file we're expecting to get. Either the
-        // given limited length or the size of the file after the offset.
-        let expectedDownloadSize = this.settings.length;
-        if (expectedDownloadSize == 0) {
-            expectedDownloadSize = this.file.size - this.settings.offset;
-        }
-
-        // If local file is bigger than the expected download for some reason, timestamp old file.
-        if (existing.size > expectedDownloadSize) {
-            console.log("Renaming", this.offsetPath, this.stampedPath);
-
-            return RNFS.moveFile(this.offsetPath, this.stampedPath).then(() => {
-                return Promise.resolve(this.offsetPath);
-            });
-        }
-        // If local file is smaller, adjust offset to resume.
-        else {
-            this.settings.offset += existing.size;
-            console.log("Resuming", this.settings.offset);
-        }
-
-        return Promise.resolve(this.offsetPath);
     }
 
     open() {
         return this.fileSystemOp(() => {
-            return RNFS.mkdir(this.directory).then(() => {
-                return fileStatIfExists(this.offsetPath).then(existing => {
-                    return this.selectFileNameAndSettings(existing);
-                });
-            }).then(path => {
-                console.log("Path", path);
-                return this.path = path;
+            return Promise.resolve(true).then(() => {
+                this.headersPath = this.dataDirectoryPath + "/" + this.settings.paths.headers;
+                this.path = this.dataDirectoryPath + "/" + this.settings.paths.file;
+                this.directory = Files.getParentPath(this.path);
+                console.log("Making", this.directory);
+                return RNFS.mkdir(this.directory);
             }).then(() => {
                 // We touch all the files here so we can just use append all the time down below.
                 return Promise.all([ this.path, this.headersPath ].map(p => {

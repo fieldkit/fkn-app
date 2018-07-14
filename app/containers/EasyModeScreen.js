@@ -8,21 +8,23 @@ import { View, Text, Image, Button } from 'react-native';
 import * as Files from '../lib/files';
 import { AppScreen } from '../components';
 
-import { deviceStartConnect, findAllFiles, uploadQueue, copyFromDevices, deleteAllLocalFiles, archiveAllLocalFiles } from '../actions';
+import { deviceStartConnect, findAllFiles, executePlan, deleteAllLocalFiles, archiveAllLocalFiles } from '../actions';
 
 import styles from '../styles';
 
 class UploadQueueOptions extends React.Component {
     onSync() {
-        const { easyMode, uploadQueue } = this.props;
+        const { easyMode, executePlan } = this.props;
+        const { uploads } = easyMode.plans;
 
-        uploadQueue(easyMode.queue);
+        executePlan(uploads);
     }
 
     render() {
-        const { easyMode, uploadQueue } = this.props;
+        const { easyMode } = this.props;
+        const { uploads } = easyMode.plans;
 
-        const numberOfFiles = _.size(easyMode.queue);
+        const numberOfFiles = _.size(uploads);
 
         if (numberOfFiles == 0) {
             return (
@@ -41,16 +43,18 @@ class UploadQueueOptions extends React.Component {
 
 class DeviceOptions extends React.Component {
     onSync() {
-        const { easyMode, copyFromDevices } = this.props;
+        const { easyMode, executePlan } = this.props;
+        const { downloads } = easyMode.plans;
 
-        copyFromDevices(easyMode.devices);
+        executePlan(downloads);
     }
 
     render() {
         const { easyMode } = this.props;
+        const { downloads } = easyMode.plans;
 
         const numberOfDevices = _.size(easyMode.devices);
-        if (numberOfDevices == 0) {
+        if (numberOfDevices == 0 || !_.isArray(downloads) || downloads.length == 0) {
             if (!easyMode.networkConfiguration.deviceAp) {
                 return (
                     <View style={{ padding: 10 }}><Text style={{ textAlign: 'center' }}>No devices found. Try connecting to a FieldKit device's AP.</Text></View>
@@ -92,7 +96,7 @@ class EasyModeScreen extends React.Component {
     }
 
     render() {
-        const { easyMode, copyFromDevices, uploadQueue, deleteAllLocalFiles, archiveAllLocalFiles } = this.props;
+        const { easyMode, executePlan, deleteAllLocalFiles, archiveAllLocalFiles, plan } = this.props;
 
         return (
             <AppScreen>
@@ -103,8 +107,8 @@ class EasyModeScreen extends React.Component {
                          height: 200,
                      }} />
 
-              <DeviceOptions easyMode={easyMode} copyFromDevices={copyFromDevices} />
-              <UploadQueueOptions easyMode={easyMode} uploadQueue={uploadQueue} />
+              <DeviceOptions easyMode={easyMode} executePlan={executePlan} />
+              <UploadQueueOptions easyMode={easyMode} executePlan={executePlan} />
 
               <View>
                 <View style={{ padding: 10 }}><Button title="Delete All" onPress={() => deleteAllLocalFiles()} /></View>
@@ -118,35 +122,24 @@ class EasyModeScreen extends React.Component {
 
 EasyModeScreen.propTypes = {
     deviceStartConnect: PropTypes.func.isRequired,
-    copyFromDevices: PropTypes.func.isRequired,
-    uploadQueue: PropTypes.func.isRequired,
+    executePlan:  PropTypes.func.isRequired,
     findAllFiles: PropTypes.func.isRequired,
     deleteAllLocalFiles: PropTypes.func.isRequired,
     archiveAllLocalFiles: PropTypes.func.isRequired
 };
-
-function getUploadQueue(localFiles) {
-    return _(localFiles.listings).map((listing, key) => {
-        if (Files.getPathName(key) == 'archive') {
-            return [];
-        }
-        return _(listing).filter(e => !e.directory).value();
-    }).flatten().value();
-}
 
 const mapStateToProps = state => ({
     easyMode: {
         busy: !state.progress.task.done,
         networkConfiguration: state.networkConfiguration,
         devices: state.devices,
-        queue: getUploadQueue(state.localFiles)
+        plans: state.planning.plans
     }
 });
 
 export default connect(mapStateToProps, {
     findAllFiles,
-    copyFromDevices,
-    uploadQueue,
+    executePlan,
     deviceStartConnect,
     deleteAllLocalFiles,
     archiveAllLocalFiles

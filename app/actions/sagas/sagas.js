@@ -6,8 +6,6 @@ import * as Types from './../types';
 import { serviceDiscovery } from './discovery';
 import { discoverDevices } from './handshaking';
 import { downloadDataSaga } from './download-saga';
-import { deviceFilesCopier } from './device-copying';
-import { uploadQueue } from './upload-queue';
 import { connectionRelatedNavigation } from './navigation-sagas';
 import { selectedDeviceSagas } from './selected-device-sagas';
 import { executePlans } from './plans';
@@ -81,8 +79,6 @@ export function* rootSaga() {
         connectionRelatedNavigation(),
 
         // EasyMode stuff.
-        deviceFilesCopier(),
-        uploadQueue(),
         executePlans(),
 
         suspendDuringLongRunningTasks([ discoverDevices ]),

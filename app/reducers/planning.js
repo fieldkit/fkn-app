@@ -15,11 +15,6 @@ function tryParseDeviceIdPath(path) {
     return match[1];
 }
 
-const initialFileComparisonsState = {
-    map: {},
-    devices: {}
-};
-
 const Configuration = [ {
     fileId: 4,
     chunked: 0,
@@ -60,21 +55,17 @@ function mergeUpdate(state, deviceId, after) {
     newState.devices[deviceId] = deviceState;
 
     deviceState.plans = {
-        download: generateDownloadPlan(Configuration, deviceId, deviceState.local, deviceState.remote),
+        download: generateDownloadPlan(Configuration, deviceState.local, deviceState.remote),
         upload: generateUploadPlan(Configuration, deviceState.local)
     };
 
     const downloads = _(newState.devices)
-          .map((value, key ) => {
-              return value.plans.download.plan;
-          })
+          .map((value, key ) => value.plans.download.plan)
           .flatten()
           .value();
 
     const uploads = _(newState.devices)
-          .map((value, key ) => {
-              return value.plans.upload.plan;
-          })
+          .map((value, key ) => value.plans.upload.plan)
           .flatten()
           .value();
 
@@ -106,6 +97,8 @@ function mergeRemoteFiles(state, action) {
     }
     return mergeUpdate(state, deviceId, {
         remote: {
+            deviceId: deviceId,
+            address: action.deviceApi.address,
             files: action.response.files.files
         }
     });
@@ -123,7 +116,16 @@ function emptyAllLocalFiles(state) {
     return nextState;
 }
 
-export function fileComparisons(state = initialFileComparisonsState, action) {
+const initialPlanningState = {
+    map: {},
+    devices: {},
+    plans: {
+        download: [],
+        upload: []
+    }
+};
+
+export function planning(state = initialPlanningState, action) {
     let nextState = state;
 
     switch (action.type) {

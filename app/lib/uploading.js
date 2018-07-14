@@ -1,39 +1,55 @@
 import _ from 'lodash';
-import moment from 'moment';
-
-import varint from 'varint';
-import protobuf from "protobufjs";
 
 import Promise from "bluebird";
 import RNFS from 'react-native-fs';
 
-import { Toasts } from '../lib/toasts';
-import { hexArrayBuffer, base64ArrayBuffer } from '../lib/base64';
-
 import Config from '../config';
 
 import { resolveDataDirectoryPath } from './downloading';
+import * as Files from './files';
 
-export function uploadFile(relativePath) {
+function makeHeaders(headers) {
+    return _(headers).map((value, key) => {
+        return [ "Fk-" + _.upperFirst(key), String(value) ];
+    }).fromPairs().value();
+}
+
+export function uploadFile(relativePath, userHeaders, progressCallback) {
     const baseUri = Config.baseUri;
     const uploadPath = "/messages/ingestion/stream";
-    const mimeType = 'application/vnd.fk.data+base64';
+    const mimeType = 'application/vnd.fk.data+binary';
 
     return resolveDataDirectoryPath().then((dataDirectoryPath) => {
         const path = dataDirectoryPath + relativePath;
-        console.log("Reading", path);
-        return RNFS.readFile(path, 'base64');
-    }).then((data) => {
-        console.log("Uploading");
-        return fetch(baseUri + uploadPath, {
-            'method': 'POST',
-            'headers': {
-                'Content-Type': mimeType
+        const headers = makeHeaders(userHeaders);
+
+        const files = [{
+            name: Files.getPathName(path),
+            filename: Files.getPathName(path),
+            filepath: path,
+            filetype: mimeType
+        }];
+
+        return RNFS.uploadFiles({
+            toUrl: baseUri + uploadPath,
+            files: files,
+            method: 'POST',
+            headers: headers,
+            begin: (response) => {
+                console.log("Begin", response);
             },
-            'body': data
-        }).then((res) => {
-            console.log("Done!", res);
-            Toasts.show('Upload completed!');
+            progress: (response) => {
+                progressCallback(response);
+            }
+        }).promise.then((response) => {
+            console.log("Done", response.statusCode, response.body);
+            if (response.statusCode != 200) {
+                return Promise.reject(new Error(response.body));
+            }
+            return response.body;
+        }).catch((err) => {
+            console.log("Failed", err);
+            return Promise.reject(err);
         });
     });
 }

@@ -16,8 +16,8 @@ import { navigateBrowser } from './navigation';
 function getDirectory(relativePath) {
     return resolveDataDirectoryPath().then((dataDirectoryPath) => {
         const path = dataDirectoryPath + relativePath;
-        console.log("Reading", path);
-        return RNFS.stat(path).then(info => {
+        const actual = path.replace(/\/$/, "");
+        return RNFS.stat(actual).then(info => {
             if (info.isFile()) {
                 return {
                     type: Types.NOOP,
@@ -25,7 +25,7 @@ function getDirectory(relativePath) {
                 };
             }
 
-            return RNFS.readDir(path).then((res) => {
+            return RNFS.readDir(actual).then((res) => {
                 const listing = _(res).map(e => {
                     return {
                         name: e.name,
@@ -151,8 +151,8 @@ export function deleteLocalFile(relativePath) {
     };
 }
 
-export function uploadLocalFile(relativePath) {
+export function uploadLocalFile(relativePath, headers) {
     return (dispatch) => {
-        return uploadFile(relativePath);
+        return uploadFile(relativePath, headers);
     };
 }

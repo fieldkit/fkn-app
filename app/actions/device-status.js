@@ -31,10 +31,11 @@ export function deviceStopConnect() {
     };
 }
 
-export function queryCapabilities() {
+export function queryCapabilities(address) {
     return {
         [CALL_DEVICE_API]: {
             types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
+            address: address,
             blocking: true,
             message: {
                 type: QueryType.values.QUERY_CAPABILITIES,

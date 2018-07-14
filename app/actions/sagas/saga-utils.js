@@ -7,6 +7,30 @@ import { CALL_DEVICE_API, invokeDeviceApi } from '../../middleware/device-api';
 
 import * as ActionTypes from '../types.js';
 
+export class Dispatcher {
+    constructor() {
+        this.channel = createChannel('Dispatcher');
+    }
+
+    dispatch(action) {
+        this.channel.put(action);
+    }
+
+    disapatcher() {
+        return (action) => {
+            this.dispatch(action);
+        };
+    };
+
+    *pump() {
+        while (this.channel.isOpen()) {
+            const action = yield call(this.channel.take);
+            yield put(action);
+        }
+    }
+
+}
+
 function* readAndPutActions(channel) {
     while (channel.isOpen()) {
         const action = yield call(channel.take);
