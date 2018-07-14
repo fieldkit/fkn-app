@@ -1,300 +1,499 @@
+import _ from 'lodash';
+
 import { generateDownloadPlan, generateUploadPlan } from './synchronizing';
 
 describe('synchronizing', () => {
-    function makeLocal(files) {
-        return files;
-    }
+    const DeviceId = '0004a30b001cc468';
 
     function makeDevice(files) {
         return {
-            deviceId: '0004a30b001cc468',
             files: files
         };
     }
 
+    function makeLocal(files) {
+        return {
+            files: files
+        };
+    }
+
+    const SimpleConfiguration = [ {
+        fileId: 4,
+        chunked: 0,
+        offset: 0,
+        length: 0,
+    }];
+
     describe('download planning', () => {
-        describe('with empty remote files', () => {
-            beforeEach(() => {
-                const device = [
-                    { id: 1, version: 1, size: 0, name: "startup.log" },
-                    { id: 2, version: 1, size: 0, name: "now.log" },
-                    { id: 3, version: 1, size: 0, name: "emergency.log" },
-                    { id: 4, version: 1, size: 0, name: "data.fk" },
-                ];
+        describe('chunked configuration', () => {
+            const ChunkedConfiguration = [ {
+                fileId: 4,
+                chunked: 0,
+                offset: 0,
+                length: 0,
+                condition: (file, others) => true
+            }, {
+                fileId: 1,
+                chunked: 1000000,
+                offset: 0,
+                length: 0,
+                condition: (file, others) => true
+            }];
 
-                this.plan = generateDownloadPlan([], makeDevice(device));
+            describe('with empty remote files', () => {
+                beforeEach(() => {
+                    const device = [
+                        { id: 1, version: 1, size: 0, name: "startup.log" },
+                        { id: 2, version: 1, size: 0, name: "now.log" },
+                        { id: 3, version: 1, size: 0, name: "emergency.log" },
+                        { id: 4, version: 1, size: 0, name: "data.fk" },
+                    ];
+
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, DeviceId, makeLocal([]), makeDevice(device));
+                });
+
+                it('should generate empty plan', () => {
+                    expect(this.plan.plan.length).toBe(0);
+                });
             });
 
-            it('should generate empty plan', () => {
-                expect(this.plan.plan.length).toBe(0);
+            describe('with no local files', () => {
+                beforeEach(() => {
+                    const device = [
+                        { id: 1, version: 1, size: 8100000, name: "startup.log" },
+                        { id: 2, version: 1, size: 0, name: "now.log" },
+                        { id: 3, version: 1, size: 0, name: "emergency.log" },
+                        { id: 4, version: 1, size: 15000, name: "data.fk" },
+                    ];
+
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, DeviceId, makeLocal([]), makeDevice(device));
+                });
+
+                it("should download entire data file", () => {
+                    expect(this.plan.plan[0]).toEqual({
+                        download: {
+                            id: 4,
+                            file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            offset: 0,
+                            length: 0
+                        }
+                    });
+                });
+
+                it("should download last chunk of log", () => {
+                    expect(this.plan.plan[1]).toEqual({
+                        download: {
+                            id: 1,
+                            file: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            offset: 8000000,
+                            length: 100000
+                        }
+                    });
+                });
+            });
+
+            describe('with local data file that has a non-zero offset', () => {
+                beforeEach(() => {
+                    const local = [
+                        { name: "4_000001_offset_15000_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_15000_data.fk", size: 0 },
+                        { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 100000 },
+                    ];
+
+                    const device = [
+                        { id: 1, version: 1, size: 8100000, name: "startup.log" },
+                        { id: 2, version: 1, size: 0, name: "now.log" },
+                        { id: 3, version: 1, size: 0, name: "emergency.log" },
+                        { id: 4, version: 1, size: 30000, name: "data.fk" },
+                    ];
+
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, DeviceId, makeLocal(local), makeDevice(device));
+                });
+
+                it("should resume data file", () => {
+                    expect(this.plan.plan[0]).toEqual({
+                        download: {
+                            id: 4,
+                            file: "/0004a30b001cc468/4_000001_offset_15000_data.fk",
+                            offset: 15000,
+                            length: 0
+                        }
+                    });
+                });
+
+                it("should download last chunk of log", () => {
+                    expect(this.plan.plan[1]).toEqual({
+                        download: {
+                            id: 1,
+                            file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
+                            offset: 7000000,
+                            length: 1000000
+                        }
+                    });
+                });
+            });
+
+            describe('with local files of an older version', () => {
+                beforeEach(() => {
+                    const local = [
+                        { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 15000 },
+                        { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 100000 },
+                    ];
+
+                    const device = [
+                        { id: 1, version: 2, size: 8100000, name: "startup.log" },
+                        { id: 2, version: 2, size: 0, name: "now.log" },
+                        { id: 3, version: 2, size: 0, name: "emergency.log" },
+                        { id: 4, version: 2, size: 15000, name: "data.fk" },
+                    ];
+
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, DeviceId, makeLocal(local), makeDevice(device));
+                });
+
+                it("should download entire data file", () => {
+                    expect(this.plan.plan[0]).toEqual({
+                        download: {
+                            id: 4,
+                            file: "/0004a30b001cc468/4_000002_offset_0_data.fk",
+                            offset: 0,
+                            length: 0
+                        }
+                    });
+                });
+
+                it("should download last chunk of log", () => {
+                    expect(this.plan.plan[1]).toEqual({
+                        download: {
+                            id: 1,
+                            file: "/0004a30b001cc468/1_000002_offset_8000000_startup.log",
+                            offset: 8000000,
+                            length: 100000
+                        }
+                    });
+                });
+            });
+
+            describe('with local files from a good previous download and a larger last chunk ', () => {
+                beforeEach(() => {
+                    const local = [
+                        { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 15000 },
+                        { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 100000 },
+                    ];
+
+                    const device = [
+                        { id: 1, version: 1, size: 8200000, name: "startup.log" },
+                        { id: 2, version: 1, size: 0, name: "now.log" },
+                        { id: 3, version: 1, size: 0, name: "emergency.log" },
+                        { id: 4, version: 1, size: 30000, name: "data.fk" },
+                    ];
+
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, DeviceId, makeLocal(local), makeDevice(device));
+                });
+
+                it("should resume data file", () => {
+                    expect(this.plan.plan[0]).toEqual({
+                        download: {
+                            id: 4,
+                            file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            offset: 15000,
+                            length: 0
+                        }
+                    });
+                });
+
+                it("should resume last chunk of log", () => {
+                    expect(this.plan.plan[1]).toEqual({
+                        download: {
+                            id: 1,
+                            file: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            offset: 8100000,
+                            length: 100000
+                        }
+                    });
+                });
+
+                it("should download next to last chunk of log", () => {
+                    expect(this.plan.plan[2]).toEqual({
+                        download: {
+                            id: 1,
+                            file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
+                            offset: 7000000,
+                            length: 1000000
+                        }
+                    });
+                });
+            });
+
+            describe('with local files from a good previous download and a complete last chunk ', () => {
+                beforeEach(() => {
+                    const local = [
+                        { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 15000 },
+                        { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 200000 },
+                    ];
+
+                    const device = [
+                        { id: 1, version: 1, size: 8200000, name: "startup.log" },
+                        { id: 2, version: 1, size: 0, name: "now.log" },
+                        { id: 3, version: 1, size: 0, name: "emergency.log" },
+                        { id: 4, version: 1, size: 30000, name: "data.fk" },
+                    ];
+
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, DeviceId, makeLocal(local), makeDevice(device));
+                });
+
+                it("should resume data file", () => {
+                    expect(this.plan.plan[0]).toEqual({
+                        download: {
+                            id: 4,
+                            file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            offset: 15000,
+                            length: 0
+                        }
+                    });
+                });
+
+                it("should download next to last chunk of log", () => {
+                    expect(this.plan.plan[1]).toEqual({
+                        download: {
+                            id: 1,
+                            file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
+                            offset: 7000000,
+                            length: 1000000
+                        }
+                    });
+                });
+            });
+
+            describe('with completed next to last chunk', () => {
+                beforeEach(() => {
+                    const local = [
+                        { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 30000 },
+                        { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 200000 },
+                        { name: "1_000001_offset_7000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_7000000_startup.log", size: 1000000 },
+                    ];
+
+                    const device = [
+                        { id: 1, version: 1, size: 8200000, name: "startup.log" },
+                        { id: 4, version: 1, size: 30000, name: "data.fk" },
+                    ];
+
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, DeviceId, makeLocal(local), makeDevice(device));
+                });
+
+                it('should download the chunk before', () => {
+                    expect(this.plan.plan[0]).toEqual({
+                        download: {
+                            id: 1,
+                            file: "/0004a30b001cc468/1_000001_offset_6000000_startup.log",
+                            offset: 6000000,
+                            length: 1000000
+                        }
+                    });
+                });
+            });
+
+            describe('with local file larger than device file', () => {
+                beforeEach(() => {
+                    const local = [
+                        { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 31000 },
+                        { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 200000 },
+                    ];
+
+                    const device = [
+                        { id: 1, version: 1, size: 8200000, name: "startup.log" },
+                        { id: 4, version: 1, size: 30000, name: "data.fk" },
+                    ];
+
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, DeviceId, makeLocal(local), makeDevice(device));
+                });
+
+                it('should archive backup local file', () => {
+                    expect(this.plan.plan[0]).toEqual({
+                        backup: {
+                            file: "/0004a30b001cc468/4_000001_offset_0_data.fk"
+                        }
+                    });
+                });
+
+                it('should download entire data file', () => {
+                    expect(this.plan.plan[1]).toEqual({
+                        download: {
+                            id: 4,
+                            file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            offset: 0,
+                            length: 0
+                        }
+                    });
+                });
             });
         });
 
-        describe('with no local files', () => {
-            beforeEach(() => {
-                const device = [
-                    { id: 1, version: 1, size: 8100000, name: "startup.log" },
-                    { id: 2, version: 1, size: 0, name: "now.log" },
-                    { id: 3, version: 1, size: 0, name: "emergency.log" },
-                    { id: 4, version: 1, size: 15000, name: "data.fk" },
-                ];
+        describe('tail configuration', () => {
+            const TailConfiguration = [ {
+                fileId: 1,
+                tail: 1000000,
+                offset: 0,
+                length: 0,
+                condition: (file, others) => true
+            }];
 
-                this.plan = generateDownloadPlan(makeLocal([]), makeDevice(device));
-            });
+            describe('with no local files', () => {
+                beforeEach(() => {
+                    const local = [
+                        { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 31000 },
+                    ];
 
-            it("should download entire data file", () => {
-                expect(this.plan.plan[0]).toEqual({
-                    download: {
-                        id: 4,
-                        file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                        offset: 0,
-                        length: 0
-                    }
+                    const device = [
+                        { id: 1, version: 1, size: 8200000, name: "logs-a.fklog" },
+                        { id: 4, version: 1, size: 30000, name: "data.fk" },
+                    ];
+
+                    this.plan = generateDownloadPlan(TailConfiguration, DeviceId, makeLocal(local), makeDevice(device));
+                });
+
+                it('should download tail of the file', () => {
+                    expect(this.plan.plan[0]).toEqual({
+                        download: {
+                            id: 1,
+                            file: "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
+                            offset: 7200000,
+                            length: 1000000
+                        }
+                    });
                 });
             });
 
-            it("should download last chunk of log", () => {
-                expect(this.plan.plan[1]).toEqual({
-                    download: {
-                        id: 1,
-                        file: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
-                        offset: 8000000,
-                        length: 100000
-                    }
+            describe('with existing local file of same offset and expected length', () => {
+                beforeEach(() => {
+                    const local = [
+                        { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 31000 },
+                        { name: "1_000001_offset_7200000_logs-a.fklog", relativePath: "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog", size: 1000000 },
+                    ];
+
+                    const device = [
+                        { id: 1, version: 1, size: 8200000, name: "logs-a.fklog" },
+                        { id: 4, version: 1, size: 30000, name: "data.fk" },
+                    ];
+
+                    this.plan = generateDownloadPlan(TailConfiguration, DeviceId, makeLocal(local), makeDevice(device));
                 });
-            });
-        });
 
-        describe('with local data file that has a non-zero offset', () => {
-            beforeEach(() => {
-                const local = [
-                    { name: "4_000001_offset_15000_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_15000_data.fk", size: 0 },
-                    { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 100000 },
-                ];
-
-                const device = [
-                    { id: 1, version: 1, size: 8100000, name: "startup.log" },
-                    { id: 2, version: 1, size: 0, name: "now.log" },
-                    { id: 3, version: 1, size: 0, name: "emergency.log" },
-                    { id: 4, version: 1, size: 30000, name: "data.fk" },
-                ];
-
-                this.plan = generateDownloadPlan(makeLocal(local), makeDevice(device));
-            });
-
-            it("should resume data file", () => {
-                expect(this.plan.plan[0]).toEqual({
-                    download: {
-                        id: 4,
-                        file: "/0004a30b001cc468/4_000001_offset_15000_data.fk",
-                        offset: 15000,
-                        length: 0
-                    }
+                it('should download nothing', () => {
+                    expect(this.plan.plan.length).toEqual(0);
                 });
             });
 
-            it("should download last chunk of log", () => {
-                expect(this.plan.plan[1]).toEqual({
-                    download: {
-                        id: 1,
-                        file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
-                        offset: 7000000,
-                        length: 1000000
-                    }
+            describe('with existing local file of another offset', () => {
+                beforeEach(() => {
+                    const local = [
+                        { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 31000 },
+                        { name: "1_000001_offset_5000000_logs-a.fklog", relativePath: "/0004a30b001cc468/1_000001_offset_5000000_logs-a.fklog", size: 1000000 },
+                    ];
+
+                    const device = [
+                        { id: 1, version: 1, size: 8200000, name: "logs-a.fklog" },
+                        { id: 4, version: 1, size: 30000, name: "data.fk" },
+                    ];
+
+                    this.plan = generateDownloadPlan(TailConfiguration, DeviceId, makeLocal(local), makeDevice(device));
                 });
-            });
-        });
 
-        describe('with local files of an older version', () => {
-            beforeEach(() => {
-                const local = [
-                    { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 15000 },
-                    { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 100000 },
-                ];
-
-                const device = [
-                    { id: 1, version: 2, size: 8100000, name: "startup.log" },
-                    { id: 2, version: 2, size: 0, name: "now.log" },
-                    { id: 3, version: 2, size: 0, name: "emergency.log" },
-                    { id: 4, version: 2, size: 15000, name: "data.fk" },
-                ];
-
-                this.plan = generateDownloadPlan(makeLocal(local), makeDevice(device));
-            });
-
-            it("should download entire data file", () => {
-                expect(this.plan.plan[0]).toEqual({
-                    download: {
-                        id: 4,
-                        file: "/0004a30b001cc468/4_000002_offset_0_data.fk",
-                        offset: 0,
-                        length: 0
-                    }
+                it('should download tail of the file', () => {
+                    expect(this.plan.plan[0]).toEqual({
+                        download: {
+                            id: 1,
+                            file: "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
+                            offset: 7200000,
+                            length: 1000000
+                        }
+                    });
                 });
             });
 
-            it("should download last chunk of log", () => {
-                expect(this.plan.plan[1]).toEqual({
-                    download: {
-                        id: 1,
-                        file: "/0004a30b001cc468/1_000002_offset_8000000_startup.log",
-                        offset: 8000000,
-                        length: 100000
+            describe('conditional tail configuration', () => {
+                const TailConfiguration = [ {
+                    fileId: 1,
+                    tail: 1000000,
+                    offset: 0,
+                    length: 0,
+                    condition: (file, others) => {
+                        return _(others).filter(f => f.id == 2 && f.size == 0 || f.size > file.size).some();
                     }
+                }, {
+                    fileId: 2,
+                    tail: 1000000,
+                    offset: 0,
+                    length: 0,
+                    condition: (file, others) => {
+                        return _(others).filter(f => f.id == 1 && f.size == 0 || f.size > file.size).some();
+                    }
+                }];
+
+                describe('with both empty', () => {
+                    beforeEach(() => {
+                        const local = [
+                        ];
+
+                        const device = [
+                            { id: 1, version: 1, size: 0, name: "logs-a.fklog" },
+                            { id: 2, version: 1, size: 0, name: "logs-b.fklog" },
+                        ];
+
+                        this.plan = generateDownloadPlan(TailConfiguration, DeviceId, makeLocal(local), makeDevice(device));
+                    });
+
+                    it('should download nothing', () => {
+                        expect(this.plan.plan.length).toEqual(0);
+                    });
                 });
-            });
-        });
 
-        describe('with local files from a good previous download and a larger last chunk ', () => {
-            beforeEach(() => {
-                const local = [
-                    { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 15000 },
-                    { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 100000 },
-                ];
+                describe('with one empty and another with data', () => {
+                    beforeEach(() => {
+                        const local = [
+                        ];
 
-                const device = [
-                    { id: 1, version: 1, size: 8200000, name: "startup.log" },
-                    { id: 2, version: 1, size: 0, name: "now.log" },
-                    { id: 3, version: 1, size: 0, name: "emergency.log" },
-                    { id: 4, version: 1, size: 30000, name: "data.fk" },
-                ];
+                        const device = [
+                            { id: 1, version: 1, size:       0, name: "logs-a.fklog" },
+                            { id: 2, version: 1, size: 5000000, name: "logs-b.fklog" },
+                        ];
 
-                this.plan = generateDownloadPlan(makeLocal(local), makeDevice(device));
-            });
+                        this.plan = generateDownloadPlan(TailConfiguration, DeviceId, makeLocal(local), makeDevice(device));
+                    });
 
-            it("should resume data file", () => {
-                expect(this.plan.plan[0]).toEqual({
-                    download: {
-                        id: 4,
-                        file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                        offset: 15000,
-                        length: 0
-                    }
+                    it('should download tail of non-empty file', () => {
+                        expect(this.plan.plan[0]).toEqual({
+                            download: {
+                                id: 2,
+                                file: "/0004a30b001cc468/2_000001_offset_4000000_logs-b.fklog",
+                                offset: 4000000,
+                                length: 1000000
+                            }
+                        });
+                    });
                 });
-            });
 
-            it("should resume last chunk of log", () => {
-                expect(this.plan.plan[1]).toEqual({
-                    download: {
-                        id: 1,
-                        file: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
-                        offset: 8100000,
-                        length: 100000
-                    }
-                });
-            });
+                describe('with one full and another with data', () => {
+                    beforeEach(() => {
+                        const local = [
+                        ];
 
-            it("should download next to last chunk of log", () => {
-                expect(this.plan.plan[2]).toEqual({
-                    download: {
-                        id: 1,
-                        file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
-                        offset: 7000000,
-                        length: 1000000
-                    }
-                });
-            });
-        });
+                        const device = [
+                            { id: 1, version: 1, size: 2000000, name: "logs-a.fklog" },
+                            { id: 2, version: 1, size: 5000000, name: "logs-b.fklog" },
+                        ];
 
-        describe('with local files from a good previous download and a complete last chunk ', () => {
-            beforeEach(() => {
-                const local = [
-                    { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 15000 },
-                    { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 200000 },
-                ];
+                        this.plan = generateDownloadPlan(TailConfiguration, DeviceId, makeLocal(local), makeDevice(device));
+                    });
 
-                const device = [
-                    { id: 1, version: 1, size: 8200000, name: "startup.log" },
-                    { id: 2, version: 1, size: 0, name: "now.log" },
-                    { id: 3, version: 1, size: 0, name: "emergency.log" },
-                    { id: 4, version: 1, size: 30000, name: "data.fk" },
-                ];
-
-                this.plan = generateDownloadPlan(makeLocal(local), makeDevice(device));
-            });
-
-            it("should resume data file", () => {
-                expect(this.plan.plan[0]).toEqual({
-                    download: {
-                        id: 4,
-                        file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                        offset: 15000,
-                        length: 0
-                    }
-                });
-            });
-
-            it("should download next to last chunk of log", () => {
-                expect(this.plan.plan[1]).toEqual({
-                    download: {
-                        id: 1,
-                        file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
-                        offset: 7000000,
-                        length: 1000000
-                    }
-                });
-            });
-        });
-
-        describe('with completed next to last chunk', () => {
-            beforeEach(() => {
-                const local = [
-                    { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 30000 },
-                    { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 200000 },
-                    { name: "1_000001_offset_7000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_7000000_startup.log", size: 1000000 },
-                ];
-
-                const device = [
-                    { id: 1, version: 1, size: 8200000, name: "startup.log" },
-                    { id: 4, version: 1, size: 30000, name: "data.fk" },
-                ];
-
-                this.plan = generateDownloadPlan(makeLocal(local), makeDevice(device));
-            });
-
-            it('should download the chunk before', () => {
-                expect(this.plan.plan[0]).toEqual({
-                    download: {
-                        id: 1,
-                        file: "/0004a30b001cc468/1_000001_offset_6000000_startup.log",
-                        offset: 6000000,
-                        length: 1000000
-                    }
-                });
-            });
-        });
-
-        describe('with local file larger than device file', () => {
-            beforeEach(() => {
-                const local = [
-                    { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 31000 },
-                    { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 200000 },
-                ];
-
-                const device = [
-                    { id: 1, version: 1, size: 8200000, name: "startup.log" },
-                    { id: 4, version: 1, size: 30000, name: "data.fk" },
-                ];
-
-                this.plan = generateDownloadPlan(makeLocal(local), makeDevice(device));
-            });
-
-            it('should archive backup local file', () => {
-                expect(this.plan.plan[0]).toEqual({
-                    backup: {
-                        file: "/0004a30b001cc468/4_000001_offset_0_data.fk"
-                    }
-                });
-            });
-
-            it('should download entire data file', () => {
-                expect(this.plan.plan[1]).toEqual({
-                    download: {
-                        id: 4,
-                        file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                        offset: 0,
-                        length: 0
-                    }
+                    it('should download tail of smaller file', () => {
+                        expect(this.plan.plan[0]).toEqual({
+                            download: {
+                                id: 1,
+                                file: "/0004a30b001cc468/1_000001_offset_1000000_logs-a.fklog",
+                                offset: 1000000,
+                                length: 1000000
+                            }
+                        });
+                    });
                 });
             });
         });
@@ -303,7 +502,7 @@ describe('synchronizing', () => {
     describe('uploading planning', () => {
         describe('with no local files', () => {
             beforeEach(() => {
-                this.plan = generateUploadPlan(makeLocal([]));
+                this.plan = generateUploadPlan(SimpleConfiguration, makeLocal([]));
             });
 
             it('should generate empty plan', () => {
@@ -317,7 +516,7 @@ describe('synchronizing', () => {
                     { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 0 },
                 ];
 
-                this.plan = generateUploadPlan(makeLocal(local));
+                this.plan = generateUploadPlan(SimpleConfiguration, makeLocal(local));
             });
 
             it('should generate empty plan', () => {
@@ -331,7 +530,7 @@ describe('synchronizing', () => {
                     { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 31000 },
                 ];
 
-                this.plan = generateUploadPlan(makeLocal(local));
+                this.plan = generateUploadPlan(SimpleConfiguration, makeLocal(local));
             });
 
             it('should upload the file', () => {
@@ -359,47 +558,63 @@ describe('synchronizing', () => {
             });
         });
 
-        describe('with local chunked file', () => {
-            beforeEach(() => {
-                const local = [
-                    { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 15000 },
-                    { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 200000 },
-                ];
+        describe('chunked configuration', () => {
+            const ChunkedConfiguration = [ {
+                fileId: 4,
+                chunked: 0,
+                offset: 0,
+                length: 0,
+                condition: (file, others) => true
+            }, {
+                fileId: 1,
+                chunked: 1000000,
+                offset: 0,
+                length: 0,
+                condition: (file, others) => true
+            }];
 
-                this.plan = generateUploadPlan(makeLocal(local));
-            });
+            describe('with local chunked file', () => {
+                beforeEach(() => {
+                    const local = [
+                        { name: "4_000001_offset_0_data.fk", relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk", size: 15000 },
+                        { name: "1_000001_offset_8000000_startup.log", relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log", size: 200000 },
+                    ];
 
-            it('should upload the file', () => {
-                expect(this.plan.plan[0]).toEqual({
-                    upload: {
-                        metadata: "",
-                        file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                        headers: {
-                            deviceId: "0004a30b001cc468",
-                            fileOffset: 0,
-                            fileVersion: 1,
-                            fileName: "data.fk"
+                    this.plan = generateUploadPlan(ChunkedConfiguration, makeLocal(local));
+                });
+
+                it('should upload the file', () => {
+                    expect(this.plan.plan[0]).toEqual({
+                        upload: {
+                            metadata: "",
+                            file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            headers: {
+                                deviceId: "0004a30b001cc468",
+                                fileOffset: 0,
+                                fileVersion: 1,
+                                fileName: "data.fk"
+                            }
                         }
-                    }
+                    });
                 });
-            });
 
-            it('should archive the file at the end', () => {
-                expect(this.plan.plan[1]).toEqual({
-                    archive: {
-                        file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                        touch: "/0004a30b001cc468/4_000001_offset_15000_data.fk"
-                    }
+                it('should archive the file at the end', () => {
+                    expect(this.plan.plan[1]).toEqual({
+                        archive: {
+                            file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            touch: "/0004a30b001cc468/4_000001_offset_15000_data.fk"
+                        }
+                    });
                 });
-            });
 
-            it('should upload chunked file', () => {
-            });
+                it('should upload chunked file', () => {
+                });
 
-            it('should record upload of data file', () => {
-            });
+                it('should record upload of data file', () => {
+                });
 
-            it('should record upload of chunked file', () => {
+                it('should record upload of chunked file', () => {
+                });
             });
         });
     });

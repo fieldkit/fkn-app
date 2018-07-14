@@ -20,26 +20,9 @@ import Config from '../../config';
 
 export function* deviceFilesCopier() {
     yield takeLatest(Types.COPY_DEVICE_FILES, function* watcher(action) {
-        // Right now we just download log and data file.
-        const downloadsPerDevice = [ {
-            fileId: 4,
-            chunked: 0,
-            offset: 0,
-            length: 0,
-        }, {
-            fileId: 1,
-            chunked: 100000,
-            offset: 0,
-            length: 0,
-        }];
         const devices = _(action.devices).filter(Config.deviceFilter).value();
-        const numberOfFiles = _(devices).map(device => {
-            return downloadsPerDevice.length;
-        }).sum();
 
         try {
-            let filesDownloaded = 0;
-
             yield put({
                 type: Types.TASK_START,
                 task: {
@@ -58,6 +41,7 @@ export function* deviceFilesCopier() {
 
                 yield call(writeDeviceMetadata, device.capabilities, metadataAction.response.fileData.data);
 
+                /*
                 for (let i = 0; i < downloadsPerDevice.length; ++i) {
                     const settings = downloadsPerDevice[i];
                     const file = _(filesAction.response.files.files).filter(f => f.id == settings.fileId).first();
@@ -91,6 +75,7 @@ export function* deviceFilesCopier() {
                         }
                     });
                 }
+                */
             }
 
             yield put({

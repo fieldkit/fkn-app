@@ -10,6 +10,7 @@ import { deviceFilesCopier } from './device-copying';
 import { uploadQueue } from './upload-queue';
 import { connectionRelatedNavigation } from './navigation-sagas';
 import { selectedDeviceSagas } from './selected-device-sagas';
+import { executePlans } from './plans';
 import { timersSaga } from './timers';
 
 export function* suspendDuringLongRunningTasks(idleFunctions) {
@@ -82,6 +83,7 @@ export function* rootSaga() {
         // EasyMode stuff.
         deviceFilesCopier(),
         uploadQueue(),
+        executePlans(),
 
         suspendDuringLongRunningTasks([ discoverDevices ]),
         // This is for testing

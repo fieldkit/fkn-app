@@ -113,3 +113,5 @@ export const NOOP = 'NOOP';
 
 export const COPY_DEVICE_FILES = 'COPY_DEVICE_FILES';
 export const UPLOAD_QUEUE = 'UPLOAD_QUEUE';
+
+export const PLAN_EXECUTE = 'PLAN_EXECUTE';

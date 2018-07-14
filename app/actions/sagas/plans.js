@@ -14,8 +14,8 @@ import { archiveLocalFile } from '../local-files';
 
 import { deviceCall } from './saga-utils';
 
-export function* uploadQueue() {
-    yield takeLatest(Types.UPLOAD_QUEUE, function* watcher(action) {
+export function* executePlans() {
+    yield takeLatest(Types.PLAN_EXECUTE, function* watcher(action) {
         try {
             yield put({
                 type: Types.TASK_START,
