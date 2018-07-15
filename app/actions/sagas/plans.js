@@ -10,7 +10,7 @@ import * as Types from '../types';
 
 import { queryCapabilities } from '../device-status';
 import { queryFiles, queryDeviceMetadata, queryDownloadFile } from '../device-data';
-import { archiveLocalFile } from '../local-files';
+import { archiveLocalFile, touchLocalFile } from '../local-files';
 
 import { uploadFile } from '../../lib/uploading';
 import { writeDeviceMetadata } from '../../lib/downloading';
@@ -108,11 +108,11 @@ export function* executePlans() {
                     break;
                 }
                 case "archive": {
-                    /*
                     yield call(archiveLocalFile(details.file));
 
-                    yield call(touchLocalFile(details.touch));
-                    */
+                    if (_.isString(details.touch)) {
+                        yield call(touchLocalFile(details.touch));
+                    }
 
                     break;
                 }

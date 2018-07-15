@@ -122,6 +122,20 @@ export function findAllFiles() {
     };
 }
 
+export function touchLocalFile(relativePath) {
+    return (dispatch) => {
+        return resolveDataDirectoryPath().then((dataDirectoryPath) => {
+            const directory = Files.getParentPath(relativePath);
+            return RNFS.mkdir(dataDirectoryPath + "/" + directory).then(() => {
+                console.log("Touching", relativePath);
+                return RNFS.touch(dataDirectoryPath + "/" + relativePath, new Date()).then(() => {
+                    return browseDirectory(directory);
+                });
+            });
+        });
+    };
+}
+
 export function archiveLocalFile(relativePath) {
     return (dispatch) => {
         return resolveDataDirectoryPath().then((dataDirectoryPath) => {

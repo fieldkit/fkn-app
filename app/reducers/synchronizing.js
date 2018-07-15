@@ -87,7 +87,7 @@ class DownloadPlanGenerator {
         this.config = config;
         this.deviceId = remote.deviceId;
         this.address = remote.address;
-        this.infos = _(local.files).map(entry => getFileInformation(entry)).value();
+        this.infos = _(local.files).filter(entry => !entry.directory).map(entry => getFileInformation(entry)).filter(info => _.isObject(info)).value();
         this.remote = remote;
     }
 
@@ -102,7 +102,7 @@ class DownloadPlanGenerator {
     }
 
     generate() {
-        return _(this.config)
+        const plan = _(this.config)
             .map(config => {
                 const remote = _(this.remote.files).filter(i => i.id === config.fileId).first();
                 if (remote == null) {
@@ -232,14 +232,17 @@ class DownloadPlanGenerator {
             .flatten()
             .compact()
             .value();
-    }
 
+        return {
+            plan: plan
+        };
+    }
 }
 
 class UploadPlanGenerator {
     constructor(config, local) {
         this.config = config;
-        this.infos = _(local.files).map(entry => getFileInformation(entry)).value();
+        this.infos = _(local.files).filter(entry => !entry.directory).map(entry => getFileInformation(entry)).filter(info => _.isObject(info)).value();
     }
 
     generate() {
@@ -247,7 +250,7 @@ class UploadPlanGenerator {
         const nonEmpty = _(this.infos).filter(f => f.entry.size > 0).value();
         const dataFiles = _(nonEmpty).filter(f => _.isNumber(f.offset)).value();
 
-        return _(dataFiles)
+        const plan = _(dataFiles)
             .map(file => {
                 const directory = "/" + file.deviceId;
 
@@ -275,7 +278,12 @@ class UploadPlanGenerator {
                 ];
             })
             .flatten()
-            .value();
+              .value();
+
+        return {
+            numberOfFiles: dataFiles.length,
+            plan: plan
+        };
     }
 }
 
@@ -285,10 +293,7 @@ export function generateDownloadPlan(config, local, remote) {
     }
 
     const generator = new DownloadPlanGenerator(config, local, remote);
-
-    return {
-        plan: generator.generate()
-    };
+    return generator.generate();
 }
 
 export function generateUploadPlan(config, local) {
@@ -297,8 +302,5 @@ export function generateUploadPlan(config, local) {
     }
 
     const generator = new UploadPlanGenerator(config, local);
-
-    return {
-        plan: generator.generate()
-    };
+    return generator.generate();
 }
