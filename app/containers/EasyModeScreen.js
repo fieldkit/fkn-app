@@ -17,14 +17,14 @@ class UploadQueueOptions extends React.Component {
         const { easyMode, executePlan } = this.props;
         const { uploads } = easyMode.plans;
 
-        executePlan(uploads);
+        executePlan(_(uploads).map(r => r.plan).flatten().value());
     }
 
     render() {
         const { easyMode } = this.props;
         const { uploads } = easyMode.plans;
 
-        const numberOfFiles = _.size(uploads);
+        const numberOfFiles = _(uploads).map(r => r.numberOfFiles).sum();
 
         if (numberOfFiles == 0) {
             return (
@@ -46,7 +46,7 @@ class DeviceOptions extends React.Component {
         const { easyMode, executePlan } = this.props;
         const { downloads } = easyMode.plans;
 
-        executePlan(downloads);
+        executePlan(_(downloads).map(r => r.plan).flatten().value());
     }
 
     render() {

@@ -558,6 +558,7 @@ describe('synchronizing', () => {
             });
 
             it('should generate empty plan', () => {
+                expect(this.plan.numberOfFiles).toBe(0);
                 expect(this.plan.plan.length).toBe(0);
             });
         });
@@ -573,6 +574,7 @@ describe('synchronizing', () => {
             });
 
             it('should have 2 steps', () => {
+                expect(this.plan.numberOfFiles).toBe(1);
                 expect(this.plan.plan.length).toBe(2);
             });
 

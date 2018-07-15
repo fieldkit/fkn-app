@@ -15,6 +15,10 @@ function tryParseDeviceIdPath(path) {
     return match[1];
 }
 
+function isArchivePath(path) {
+    return path.match(/archive/);
+}
+
 const Configuration = [ {
     fileId: 4,
     chunked: 0,
@@ -60,13 +64,11 @@ function mergeUpdate(state, deviceId, after) {
     };
 
     const downloads = _(newState.devices)
-          .map((value, key ) => value.plans.download.plan)
-          .flatten()
+          .map((value, key ) => value.plans.download)
           .value();
 
     const uploads = _(newState.devices)
-          .map((value, key ) => value.plans.upload.plan)
-          .flatten()
+          .map((value, key ) => value.plans.upload)
           .value();
 
     newState.plans = {
@@ -80,6 +82,9 @@ function mergeUpdate(state, deviceId, after) {
 function mergeLocalFiles(state, action) {
     const deviceId = tryParseDeviceIdPath(action.relativePath);
     if (deviceId === null) {
+        return state;
+    }
+    if (isArchivePath(action.relativePath)) {
         return state;
     }
     return mergeUpdate(state, deviceId, {
