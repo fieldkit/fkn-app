@@ -18,6 +18,7 @@ class BrowserScreen extends React.Component {
     }
 
     onSelectEntry(entry) {
+        console.log(entry);
         this.props.browseDirectory(entry.relativePath);
     }
 

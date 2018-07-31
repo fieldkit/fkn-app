@@ -10,6 +10,7 @@ import * as Types from '../types';
 
 import { queryCapabilities } from '../device-status';
 import { queryFiles, queryDownloadFile } from '../device-data';
+import { getDownloadSettings } from '../../reducers/synchronizing';
 
 import { deviceCall } from './saga-utils';
 
@@ -19,7 +20,7 @@ export function* downloadDataSaga() {
             const deviceAction = yield call(deviceCall, queryCapabilities());
             const device = deviceAction.response.capabilities;
 
-            console.log(device);
+            console.log("Device", device);
 
             const fileAction = yield call(deviceCall, queryFiles());
 
@@ -27,7 +28,11 @@ export function* downloadDataSaga() {
 
             console.log("File", file);
 
-            const download = yield call(deviceCall, queryDownloadFile(device, file, 0, 0));
+            const settings = yield getDownloadSettings(device, file);
+
+            console.log("Settings", settings);
+
+            const download = yield call(deviceCall, queryDownloadFile(device, file, settings));
 
             console.log("Download", download);
 

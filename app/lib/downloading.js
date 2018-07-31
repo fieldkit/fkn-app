@@ -103,6 +103,7 @@ export class DownloadWriter {
     open() {
         return this.fileSystemOp(() => {
             return Promise.resolve(true).then(() => {
+                console.log('settings', this.settings);
                 this.headersPath = this.dataDirectoryPath + "/" + this.settings.paths.headers;
                 this.path = this.dataDirectoryPath + "/" + this.settings.paths.file;
                 this.directory = Files.getParentPath(this.path);

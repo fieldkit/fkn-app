@@ -147,6 +147,7 @@ export default appStyle = {
             backgroundColor: 'rgba(0, 0, 0, 0)',
             flexDirection: 'row',
             paddingLeft: 20,
+            paddingRight: 20,
             paddingBottom: 10,
         },
         name: {

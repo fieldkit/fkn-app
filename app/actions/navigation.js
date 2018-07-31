@@ -1,88 +1,59 @@
 import * as Types from './types';
+import { NavigationActions } from 'react-navigation';
 
 export function navigateWelcome() {
-    return {
-        type: Types.NAVIGATION_WELCOME,
-    };
+    return NavigationActions.navigate({ routeName: 'Welcome' });
 }
 
 export function navigateConnecting() {
-    return {
-        type: Types.NAVIGATION_CONNECTING,
-    };
+    return NavigationActions.navigate({ routeName: 'Connecting' });
 }
 
 export function navigateDeviceMenu() {
-    return {
-        type: Types.NAVIGATION_DEVICE_MENU,
-    };
+    return NavigationActions.navigate({ routeName: 'DeviceMenu' });
 }
 
 export function navigateSensors() {
-    return {
-        type: Types.NAVIGATION_SENSORS,
-    };
+    return NavigationActions.navigate({ routeName: 'Sensors' });
 }
 
 export function navigateAbout() {
-    return {
-        type: Types.NAVIGATION_ABOUT,
-    };
+    return NavigationActions.navigate({ routeName: 'About' });
 }
 
 export function navigateFiles() {
-    return {
-        type: Types.NAVIGATION_FILES,
-    };
+    return NavigationActions.navigate({ routeName: 'Files' });
 }
 
 export function navigateConfigure() {
-    return {
-        type: Types.NAVIGATION_CONFIGURE,
-    };
+    return NavigationActions.navigate({ routeName: 'Configure' });
 }
 
 export function navigatePath(path) {
-    return {
-        type: Types.NAVIGATION_NAME_OR_PATH,
-        name: path,
-    };
+    return NavigationActions.navigate({ routeName: 'Files' });
 }
 
 export function navigateName(name) {
-    return {
-        type: Types.NAVIGATION_NAME_OR_PATH,
-        name: name,
-    };
+    return NavigationActions.navigate({ routeName: name });
 }
 
 export function navigateNetwork() {
-    return {
-        type: Types.NAVIGATION_NETWORK,
-    };
+    return NavigationActions.navigate({ routeName: 'Network' });
 }
 
 export function navigateBrowser(path) {
-    return {
-        type: Types.NAVIGATION_BROWSER,
-        path: path || '/'
-    };
+    console.log(path);
+    return NavigationActions.navigate({ routeName: 'Browser', params: { path: path }});
 }
 
 export function navigateEasyModeWelcome() {
-    return {
-        type: Types.NAVIGATION_EASY_MODE_WELCOME,
-    };
+    return NavigationActions.navigate({ routeName: 'EasyModeWelcome' });
 }
 
 export function navigateLiveData() {
-    return {
-        type: Types.NAVIGATION_LIVE_DATA,
-    };
+    return NavigationActions.navigate({ routeName: 'LiveData' });
 }
 
 export function navigateBack() {
-    return {
-        type: Types.NAVIGATION_BACK,
-    };
+    return NavigationActions.back();
 }

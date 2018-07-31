@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { hexArrayBuffer } from '../lib/base64';
 
 function getFileInformation(entry) {
     const types = [
@@ -80,6 +81,19 @@ function makeFilename(directory, id, version, offset, name) {
 
 function makeHeadersFilename(directory, id, version, name) {
     return directory + "/" + id + "_" + lpadZeros(version, 6) + "_headers_" + name;
+}
+
+export function getDownloadSettings(device, file) {
+    const directory = "/" + hexArrayBuffer(device.deviceId);
+    const settings = {
+        offset: 0,
+        length: 0,
+        paths: {
+            file: makeFilename(directory, file.id, file.version, 0, file.name),
+            headers: makeHeadersFilename(directory, file.id, file.version, file.name)
+        }
+    };
+    return Promise.resolve(settings);
 }
 
 class DownloadPlanGenerator {

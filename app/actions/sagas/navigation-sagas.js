@@ -23,6 +23,7 @@ export function alert(message, title) {
 }
 
 export function* navigateToDeviceMenuFromConnecting() {
+    /*
     yield takeLatest([Types.NAVIGATION_CONNECTING], function* (nav) {
         const { device, to } = yield race({
             device: take(Types.FIND_DEVICE_SELECT),
@@ -40,6 +41,7 @@ export function* navigateToDeviceMenuFromConnecting() {
             }
         }
     });
+    */
 }
 
 export function* navigateHomeOnConnectionLost() {
