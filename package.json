@@ -36,7 +36,7 @@
     "react-native-service-discovery": "https://github.com/Conservify/react-native-service-discovery.git",
     "react-native-simple-toast": "0.0.8",
     "react-native-svg": "5.4.2",
-    "react-native-tcp": "https://github.com/PeelTechnologies/react-native-tcp.git",
+    "react-native-tcp": "https://github.com/Conservify/react-native-tcp.git",
     "react-native-udp": "https://github.com/Conservify/react-native-udp.git",
     "react-native-wifi": "^1.0.1",
     "react-navigation": "1.0.0-beta.11",
