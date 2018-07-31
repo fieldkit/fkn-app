@@ -78,13 +78,7 @@ export function* deviceHandshake(device) {
         }
     }
     catch (err) {
-        console.log("Error", err);
-        if (false) {
-            yield put({
-                type: Types.FIND_DEVICE_LOST,
-                address: device.address
-            });
-        }
+        console.log("Handshake Error:", err.message);
     }
 }
 

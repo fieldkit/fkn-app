@@ -75,7 +75,12 @@ class DeviceConnection {
 
             client.on('error', (error) => {
                 debug("Error", error.message);
-                reject(new Error(error));
+                if (error instanceof Error) {
+                    reject(error);
+                }
+                else {
+                    reject(new Error(error));
+                }
             });
         });
     }
@@ -138,12 +143,18 @@ class DeviceConnection {
             .then(response => {
                 return this.transformResponse(callApi, response);
             }, error => {
-                console.log("Rejecting", error.message);
+                // console.log("Rejecting", error.message);
 
                 const rejecting = new Error(error.message);
                 rejecting.actions = [];
 
-                if (error.message == 'Error: Connection refused') {
+                if (error.message == 'Timeout') {
+                    rejecting.actions.push({
+                        type: ActionTypes.DEVICE_CONNECTION_ERROR
+                    });
+                }
+
+                if (error.message == 'Connection refused') {
                     rejecting.actions.push({
                         type: ActionTypes.DEVICE_CONNECTION_ERROR
                     });

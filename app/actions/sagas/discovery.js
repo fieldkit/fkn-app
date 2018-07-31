@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { all, put, call } from 'redux-saga/effects';
+import { takeLatest, all, put, call } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
 import { Platform } from 'react-native';
@@ -97,9 +97,26 @@ function* monitorWifi() {
     }
 }
 
+function isFkSsidName(ssid) {
+    return /^FK-(.+)/.test(ssid);
+}
+
+function *fakeDiscoveryOnFkAps() {
+    yield takeLatest(Types.WIFI_SSID_CHANGED, function* watcher(action) {
+        if (isFkSsidName(action.ssid)) {
+            while (true) {
+                yield put(findDeviceInfo('192.168.2.1', 54321));
+                yield delay(1000);
+            }
+            console.log(action);
+        }
+    });
+}
+
 export function* serviceDiscovery() {
     yield all([
         call(monitorServiceDiscoveryEvents, createServiceDiscoveryChannel()),
-        monitorWifi()
+        monitorWifi(),
+        fakeDiscoveryOnFkAps()
     ]);
 }
