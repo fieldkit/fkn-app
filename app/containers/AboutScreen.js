@@ -28,8 +28,11 @@ class AboutScreen extends React.Component {
                 <MenuButtonContainer>
                     <MenuButton title="Welcome" onPress={() => navigateWelcome()} />
                     <View>
+                      <Text style={{ fontWeight: 'bold' }}>Commit:</Text>
                       <Text>{Config.build.gitCommit || 'NA'}</Text>
+                      <Text style={{ fontWeight: 'bold' }}>Tag:</Text>
                       <Text>{Config.build.buildTag || 'NA'}</Text>
+                      <Text style={{ fontWeight: 'bold' }}>Time:</Text>
                       <Text>{Config.build.buildTime || 'NA'}</Text>
                     </View>
                 </MenuButtonContainer>
