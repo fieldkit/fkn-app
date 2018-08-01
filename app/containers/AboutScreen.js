@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import Config from '../config';
+
 import { View, Text, Image } from 'react-native';
 
 import { AppScreen, MenuButtonContainer, MenuButton } from '../components';
@@ -25,6 +27,11 @@ class AboutScreen extends React.Component {
                     }} />
                 <MenuButtonContainer>
                     <MenuButton title="Welcome" onPress={() => navigateWelcome()} />
+                    <View>
+                      <Text>{Config.build.gitCommit || 'NA'}</Text>
+                      <Text>{Config.build.buildTag || 'NA'}</Text>
+                      <Text>{Config.build.buildTime || 'NA'}</Text>
+                    </View>
                 </MenuButtonContainer>
             </AppScreen>
         );
