@@ -3,7 +3,7 @@ if (typeof(__ENV__) == 'undefined') {
 }
 
 const build = {
-    gitCommit: process.env['GIT_COMMENT'],
+    gitCommit: process.env['GIT_COMMIT'],
     gitBranch: process.env['GIT_BRANCH'],
     buildJobName: process.env['JOB_NAME'],
     buildJobBaseName: process.env['JOB_BASE_NAME'],
