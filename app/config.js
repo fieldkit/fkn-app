@@ -2,8 +2,19 @@ if (typeof(__ENV__) == 'undefined') {
     __ENV__ = process.env['FIELDKIT_ENV'] || 'dev';
 }
 
+const build = {
+    gitCommit: process.env['GIT_COMMENT'],
+    gitBranch: process.env['GIT_BRANCH'],
+    buildJobName: process.env['JOB_NAME'],
+    buildJobBaseName: process.env['JOB_BASE_NAME'],
+    buildTime: process.env['BUILD_TIMESTAMP'],
+    buildTag: process.env['BUILD_TAG'],
+    buildNumber: process.env['BUILD_NUMBER']
+};
+
 const configs = {
     test: {
+        build: build,
         baseUri: 'http://api.fkdev.org',
         welcomeRoute: '/',
         serviceDiscoveryOnStartup: false,
@@ -18,6 +29,7 @@ const configs = {
         }
     },
     noaa: {
+        build: build,
         baseUri: 'http://api.fkdev.org',
         welcomeRoute: '/',
         serviceDiscoveryOnStartup: false,
@@ -36,6 +48,7 @@ const configs = {
         }
     },
     dev: {
+        build: build,
         baseUri: 'http://api.fkdev.org',
         welcomeRoute: '/',
         serviceDiscoveryOnStartup: true,
@@ -50,6 +63,7 @@ const configs = {
         }
     },
     release: {
+        build: build,
         baseUri: 'http://api.fkdev.org',
         welcomeRoute: '/',
         serviceDiscoveryOnStartup: true,
@@ -64,6 +78,7 @@ const configs = {
         }
     },
     easyMode: {
+        build: build,
         baseUri: 'http://api.fkdev.org',
         welcomeRoute: '/easy-mode',
         serviceDiscoveryOnStartup: true,

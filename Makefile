@@ -1,6 +1,5 @@
 default: test
 
-
 test:
 	npm test
 

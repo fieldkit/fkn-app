@@ -9,7 +9,7 @@ import { resolveDataDirectoryPath } from './downloading';
 import * as Files from './files';
 
 function makeHeaders(headers) {
-    return _(headers).map((value, key) => {
+    return _({ ...headers, ...Config.build }).map((value, key) => {
         return [ "Fk-" + _.upperFirst(key), String(value) ];
     }).fromPairs().value();
 }
