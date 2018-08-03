@@ -1,0 +1,24 @@
+timestamps {
+    node () {
+        stage ('git') {
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/fieldkit/app.git']]])
+        }
+
+        stage ('build') {
+            sh """
+# rm -rf node_modules
+
+npm install
+
+export ANDROID_HOME=/var/jenkins_home/workspace/android-sdk/android-sdk
+export FIELDKIT_ENV=release
+
+cd android && ./gradlew assembleRelease
+"""
+	      }
+
+        stage ('archive') {
+            archiveArtifacts artifacts: 'android/app/build/outputs/apk/*.apk'
+        }
+    }
+}
