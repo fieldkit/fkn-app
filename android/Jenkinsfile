@@ -8,7 +8,7 @@ timestamps {
 
         stage ("configuration") {
             withCredentials([file(credentialsId: 'app-android-signing-data', variable: 'APP_ANDROID_SIGNING_DATA')]) {
-                sh "cp -f $APP_ANDROID_SIGNING_DATA android/app/secrets.zip && (cd android/app && unzip secrets.zip)"
+                sh "cp -f $APP_ANDROID_SIGNING_DATA android/app/secrets.zip && (cd android/app && unzip -o secrets.zip)"
             }
         }
 
