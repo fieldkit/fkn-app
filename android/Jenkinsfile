@@ -1,7 +1,15 @@
+@Library('conservify') _
+
 timestamps {
     node () {
         stage ('git') {
-            checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/fieldkit/app.git']]])
+            checkout scm
+        }
+
+        stage ("configuration") {
+            withCredentials([file(credentialsId: 'app-android-signing-data', variable: 'APP_ANDROID_SIGNING_DATA')]) {
+                sh "cp -f $APP_ANDROID_SIGNING_DATA android/app/secrets.zip && (cd android/app && unzip secrets.zip)"
+            }
         }
 
         stage ('build') {
