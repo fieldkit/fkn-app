@@ -1,14 +1,16 @@
 import _ from 'lodash';
 
-import React from 'react'
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { View, Button, Text, TextInput } from 'react-native'
+import { View, Button, Text, TextInput } from 'react-native';
 
 import { AppScreen, SmallButton, Loading, DeviceInfo } from '../components';
 
 import { navigateNetwork, navigateBack, queryConfiguration, saveNetworkConfiguration } from '../actions';
+
+import { selectedDevice } from '../reducers/selectors';
 
 import styles, { Colors } from '../styles';
 
@@ -67,7 +69,7 @@ class NetworkInfo extends React.Component {
                     <SmallButton title="Edit" onPress={() => this.onEdit(network)} color={Colors.secondaryButton} />
                 </View>
             </View>
-        )
+        );
     }
 };
 
@@ -111,10 +113,7 @@ NetworkScreen.propTypes = {
     deviceConfiguration: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-    deviceInfo: state.deviceInfo,
-    deviceConfiguration: state.deviceConfiguration,
-});
+const mapStateToProps = state => selectedDevice(state);
 
 export default connect(mapStateToProps, {
     navigateBack,

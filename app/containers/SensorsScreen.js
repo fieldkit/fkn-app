@@ -8,6 +8,8 @@ import { AppScreen, DeviceInfo } from '../components';
 
 import { navigateBack } from '../actions';
 
+import { selectedDevice } from '../reducers/selectors';
+
 import styles from '../styles';
 
 class SensorInfo extends React.Component {
@@ -53,10 +55,7 @@ SensorsScreen.propTypes = {
     deviceCapabilities: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-    deviceInfo: state.deviceInfo,
-    deviceCapabilities: state.deviceCapabilities,
-});
+const mapStateToProps = state => selectedDevice(state);
 
 export default connect(mapStateToProps, {
     navigateBack

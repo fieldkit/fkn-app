@@ -4,11 +4,6 @@ import { unixNow } from '../lib/helpers';
 
 const initialDeviceStatusState = {
     started: 0,
-    addresses: {
-    },
-    address: {
-        valid: false
-    },
     api: {
         pending: false
     },
@@ -53,6 +48,16 @@ export function deviceStatus(state = initialDeviceStatusState, action) {
     default:
         return nextState;
     }
+}
+
+export function selectedDevice(state = { }, action) {
+    switch (action.type) {
+    case ActionTypes.FIND_DEVICE_SELECT: {
+        return { connected: action.address };
+    }
+    }
+
+    return state;
 }
 
 const initialDevicesState = {};
@@ -115,46 +120,29 @@ export function devices(state = initialDevicesState, action) {
         };
         return mergeUpdate(key, after);
     }
-    default:
-        return nextState;
-    }
-}
-
-const initialDeviceCapabilitiesState = {};
-
-export function deviceCapabilities(state = initialDeviceCapabilitiesState, action) {
-    let nextState = state;
-
-    switch (action.type) {
-    case ActionTypes.DEVICE_CAPABILITIES_SUCCESS:
-        return action.response.capabilities;
-    default:
-        return nextState;
-    }
-}
-
-const initialDeviceInfoState = {
-    status: {
-        batteryPercentage: 0,
-        uptime: 0
-    }
-};
-
-export function deviceInfo(state = initialDeviceInfoState, action) {
-    let nextState = state;
-
-    switch (action.type) {
-    case ActionTypes.FIND_DEVICE_SELECT: {
-        return { ...nextState, ...{ address: action.address.host } };
-    }
-    case ActionTypes.DEVICE_STATUS_SUCCESS: {
-        return { ...nextState, ...{ status: action.response.status } };
-    }
-    case ActionTypes.DEVICE_PING_SUCCESS: {
-        return { ...nextState, ...{ status: action.response.status } };
-    }
     case ActionTypes.DEVICE_CAPABILITIES_SUCCESS: {
-        return { ...nextState, ...{ name: action.response.capabilities.name, caps: action.response.capabilities } };
+        const key = action.deviceApi.address.key;
+        const after = {
+            capabilities: action.response.capabilities,
+            time: unixNow(),
+        };
+        return mergeUpdate(key, after);
+    }
+    case ActionTypes.DEVICE_NETWORK_CONFIGURATION_SUCCESS: {
+        const key = action.deviceApi.address.key;
+        const after = {
+            networkSettings: action.response.networkSettings,
+            time: unixNow(),
+        };
+        return mergeUpdate(key, after);
+    }
+    case ActionTypes.DEVICE_SAVE_NETWORK_CONFIGURATION_SUCCESS: {
+        const key = action.deviceApi.address.key;
+        const after = {
+            networkSettings: action.response.networkSettings,
+            time: unixNow(),
+        };
+        return mergeUpdate(key, after);
     }
     default:
         return nextState;

@@ -6,6 +6,8 @@ import { AppScreen, DeviceInfo, MenuButtonContainer, MenuButton, ConfirmationMod
 
 import { navigateNetwork, navigateBack, resetDevice } from '../actions';
 
+import { selectedDevice } from '../reducers/selectors';
+
 import styles from '../styles';
 
 class ConfigureScreen extends React.Component {
@@ -23,7 +25,8 @@ class ConfigureScreen extends React.Component {
     onReset(confirming) {
         this.setState({
             confirming: confirming
-        })
+        });
+
         if (!confirming) {
             this.props.resetDevice();
         }
@@ -52,9 +55,7 @@ ConfigureScreen.propTypes = {
     resetDevice: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-    deviceInfo: state.deviceInfo,
-});
+const mapStateToProps = state => selectedDevice(state);
 
 export default connect(mapStateToProps, {
     navigateNetwork,

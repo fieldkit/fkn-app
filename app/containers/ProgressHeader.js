@@ -60,9 +60,11 @@ class ProgressHeader extends React.Component {
             );
         }
 
-        return (
-            <Spinner visible={progress.depth > 0} textContent={"Busy"} textStyle={{color: '#FFF'}} />
-        );
+        if (progress.depth > 0) {
+            return <Spinner visible={true} textContent={"Busy"} textStyle={{color: '#FFF'}} />;
+        }
+
+        return <View/>;
     }
 
     renderCancel() {

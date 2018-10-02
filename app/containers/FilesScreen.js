@@ -11,6 +11,8 @@ import { SmallButton, AppScreen, Loading, DeviceInfo } from '../components';
 
 import { navigateBack, queryFiles, startDownloadFile, deleteFile } from '../actions';
 
+import { selectedDevice } from '../reducers/selectors';
+
 import styles from '../styles';
 
 class FilesScreen extends React.Component {
@@ -64,11 +66,7 @@ FilesScreen.propTypes = {
     deviceCapabilities: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-    deviceInfo: state.deviceInfo,
-    deviceCapabilities: state.deviceCapabilities,
-    files: state.files
-});
+const mapStateToProps = state => selectedDevice(state);
 
 export default connect(mapStateToProps, {
     navigateBack,

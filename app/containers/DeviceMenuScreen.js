@@ -20,6 +20,8 @@ import {
     deviceStopConnect
 } from '../actions';
 
+import { selectedDevice } from '../reducers/selectors';
+
 import styles from '../styles';
 
 class DeviceMenuScreen extends React.Component {
@@ -75,11 +77,7 @@ DeviceMenuScreen.propTypes = {
     deviceSpecificRoutes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-    deviceInfo: state.deviceInfo,
-    deviceCapabilities: state.deviceCapabilities,
-    deviceSpecificRoutes: state.deviceSpecificRoutes,
-});
+const mapStateToProps = state => selectedDevice(state);
 
 export default connect(mapStateToProps, {
     deviceStartConnect,
