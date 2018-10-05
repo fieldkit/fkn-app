@@ -7,6 +7,8 @@ import { AppScreen, DeviceInfo, MenuButtonContainer, MenuButton } from '../../co
 
 import { navigateBack, timerStart, timerCancel } from '../../actions';
 
+import { selectedDevice } from '../../reducers/selectors';
+
 import { atlasCalibrationBegin, atlasCalibrationEnd, atlasCalibrationTemperatureSet, atlasReadSensor, atlasSensorCommand, atlasSetProbeType, atlasCalibrate } from './actions';
 
 import { SensorType } from './protocol';
@@ -154,7 +156,7 @@ AtlasCalibrationScreen.propTypes = {
 
 const mapStateToProps = state => ({
     progress: state.progress,
-    deviceInfo: state.deviceInfo,
+    deviceInfo: selectedDevice(state).deviceInfo,
     timer: state.timers.Atlas || { done: false },
     atlasState: state.atlasState,
 });
