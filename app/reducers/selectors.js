@@ -1,16 +1,35 @@
 import _ from 'lodash';
 
+const emptySelectedDevice = {
+    deviceInfo: {
+    },
+    deviceCapabilities: {
+    },
+    deviceSpecificRoutes: {
+        home: {
+            routes: []
+        }
+    },
+    deviceConfiguration: {
+        network: { networks: [] },
+    },
+    files: {
+        files: {
+            files: []
+        }
+    }
+};
+
 export function selectedDevice(state) {
     if (!state.selectedDevice) {
-        return {};
+        console.log("No selected device");
+        return emptySelectedDevice;
     }
 
     const device = state.devices[state.selectedDevice.connected.key];
-
-    // console.log('Device', device);
-
     if (!_.isObject(device) || !_.isObject(device.status)) {
-        return {};
+        console.log("No device");
+        return emptySelectedDevice;
     }
 
     const info = {
@@ -32,8 +51,6 @@ export function selectedDevice(state) {
             files: device.files
         }
     };
-
-    // console.log('Selected', info);
 
     return info;
 }
