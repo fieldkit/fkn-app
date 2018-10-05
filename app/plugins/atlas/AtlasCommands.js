@@ -1,6 +1,6 @@
 export class AtlasCommands {
     getCommands(temperature, probeType) {
-        if (true) {
+        if (false) {
             return this.getNoopCommands(temperature, probeType);
         }
         return this.getDefaultCommands(temperature, probeType);
