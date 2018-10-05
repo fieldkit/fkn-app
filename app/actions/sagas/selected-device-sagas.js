@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Promise from "bluebird";
 import { Alert } from 'react-native';
 import { delay } from 'redux-saga';
@@ -47,34 +48,56 @@ export function* queryActiveDeviceInformation() {
 }
 
 export function* pingConnectedDevice() {
-    yield takeLatest([Types.FIND_DEVICE_SELECT, Types.DEVICE_PING_SUCCESS], function* (selected, ping) {
+    yield takeLatest([Types.FIND_DEVICE_SELECT], function* (selected) {
         console.log('pingConnectedDevice', selected);
 
-        yield delay(Config.pingDeviceInterval);
+        while (true) {
+            const started = unixNow();
 
-        const { deviceStatus } = yield select();
+            console.log("Tick", started);
 
-        if (deviceStatus.connected && !deviceStatus.api.pending) {
-            try {
-                yield call(deviceCall, {
-                    types: [Types.DEVICE_PING_START, Types.DEVICE_PING_SUCCESS, Types.DEVICE_PING_FAIL],
-                    address: deviceStatus.connected,
-                    message: {
-                        type: QueryType.values.QUERY_STATUS,
-                        queryCapabilities: {
-                            version: 1,
-                            callerTime: unixNow()
-                        }
-                    }
-                });
+            yield delay(1000);
+
+            console.log("Tock", unixNow(), unixNow() - started);
+
+            const { selectedDevice, devices } = yield select();
+
+            if (!_.isObject(selectedDevice.connected)) {
+                console.log("Not connected.");
+                return;
             }
-            catch (err) {
-                console.log("Error", err);
-                yield put({
-                    type: Types.FIND_DEVICE_LOST,
-                    address: deviceStatus.connected,
-                    error: err
-                });
+
+            const device = devices[selectedDevice.connected.key];
+
+            if (!_.isObject(device)) {
+                console.log("No device");
+                return;
+            }
+
+            const elapsed = (unixNow() - device.time) * 1000;
+
+            console.log(elapsed, Config.pingDeviceInterval);
+
+            if (elapsed > Config.pingDeviceInterval) {
+                try {
+                    yield call(deviceCall, {
+                        types: [Types.DEVICE_PING_START, Types.DEVICE_PING_SUCCESS, Types.DEVICE_PING_FAIL],
+                        address: selectedDevice.connected,
+                        message: {
+                            type: QueryType.values.QUERY_STATUS,
+                            queryCapabilities: {
+                                version: 1,
+                                callerTime: unixNow()
+                            }
+                        }
+                    });
+                }
+                catch (err) {
+                    console.log("Error", err);
+                }
+            }
+            else {
+                console.log("Skipped ping");
             }
         }
     });
@@ -82,10 +105,15 @@ export function* pingConnectedDevice() {
 
 export function* selectedDeviceSagas() {
     yield takeLatest([Types.FIND_DEVICE_START], function* () {
-        yield all([
-            pingConnectedDevice(),
-            queryActiveDeviceInformation(),
-            liveDataSaga()
-        ]);
+        try {
+            yield all([
+                pingConnectedDevice(),
+                queryActiveDeviceInformation(),
+                liveDataSaga()
+            ]);
+        }
+        catch (err) {
+            console.log("Error", err);
+        }
     });
 }

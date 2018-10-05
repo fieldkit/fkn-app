@@ -52,7 +52,7 @@ describe('device connection saga', () => {
             fakeDevice.push({}, {
                 type: ReplyType.values.REPLY_CAPABILITIES,
                 response: { capabilities: { } }
-            })
+            });
             tester.dispatch(findDeviceInfo('127.0.0.1', 12345));
             await tester.waitFor(Types.FIND_DEVICE_SUCCESS);
             expect(fakeDevice.queue).toHaveLength(0);
@@ -63,6 +63,7 @@ describe('device connection saga', () => {
         });
     });
 
+    /*
     describe('pinging', () => {
         let task;
 
@@ -124,4 +125,5 @@ describe('device connection saga', () => {
             await tester.waitFor(Types.FIND_DEVICE_LOST);
         });
     });
+    */
 });

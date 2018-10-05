@@ -39,12 +39,13 @@ export function deviceStatus(state = initialDeviceStatusState, action) {
         };
         return nextState;
     }
-    case ActionTypes.DEVICE_PING_FAIL:
+    case ActionTypes.DEVICE_PING_FAIL: {
         nextState.ping = {
             time: unixNow(),
             success: false
         };
         return nextState;
+    }
     default:
         return nextState;
     }
@@ -54,6 +55,9 @@ export function selectedDevice(state = { }, action) {
     switch (action.type) {
     case ActionTypes.FIND_DEVICE_SELECT: {
         return { connected: action.address };
+    }
+    case ActionTypes.FIND_DEVICE_LOST: {
+        return { connected: null };
     }
     }
 
@@ -66,9 +70,10 @@ export function devices(state = initialDevicesState, action) {
     let nextState = state;
 
     function mergeUpdate(key, after) {
-        const before = state[key] || {};
+        const before = state[key] || { time: 0 };
         const update = {};
         update[key] = { ...before, ...after };
+        // console.log(action.type, unixNow(), before.time, after.time, after.time - before.time, unixNow() - after.time);
         return { ...nextState, ...update };
     }
 
@@ -92,6 +97,14 @@ export function devices(state = initialDevicesState, action) {
         const after = {
             address: action.address,
             capabilities: action.capabilities,
+            time: unixNow(),
+        };
+        return mergeUpdate(key, after);
+    }
+    case ActionTypes.DEVICE_PING_SUCCESS: {
+        const key = action.deviceApi.address.key;
+        const after = {
+            address: action.deviceApi.address,
             time: unixNow(),
         };
         return mergeUpdate(key, after);
