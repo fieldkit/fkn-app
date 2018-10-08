@@ -19,7 +19,7 @@ timestamps {
 
         stage ('build') {
             sh """
-# rm -rf node_modules
+rm -rf node_modules/*/.git
 
 npm install
 
