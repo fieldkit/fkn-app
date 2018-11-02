@@ -148,13 +148,13 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-wifi')
-    compile project(':react-native-udp')
-    compile project(':react-native-svg')
-    compile project(':react-native-mail')
-    compile project(':react-native-fs')
-    compile project(':react-native-tcp')
-    compile project(':react-native-service-discovery')
+    implementation project(':react-native-wifi')
+    implementation project(':react-native-udp')
+    implementation project(':react-native-svg')
+    implementation project(':react-native-mail')
+    implementation project(':react-native-fs')
+    implementation project(':react-native-tcp')
+    implementation project(':react-native-service-discovery')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
