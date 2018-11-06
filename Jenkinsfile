@@ -2,19 +2,31 @@
 
 conservifyProperties()
 
+properties([
+    disableConcurrentBuilds(),
+])
+
 timestamps {
     node () {
-        stage ('git') {
-            checkout scm
-        }
+        try {
+            stage ('git') {
+                checkout scm
+            }
 
-        stage ('build') {
-            sh """
-npm --version
-node --version
-npm install
-npm test
-"""
-	      }
+            stage ('build') {
+                sh """
+  npm --version
+  node --version
+  npm install
+  npm test
+  """
+            }
+
+            notifySuccess()
+        }
+        catch (Exception e) {
+            notifyFailure()
+            throw e;
+        }
     }
 }

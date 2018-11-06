@@ -8,18 +8,19 @@ properties([
 
 timestamps {
     node () {
-        stage ('git') {
-            checkout scm
-        }
-
-        stage ("configuration") {
-            withCredentials([file(credentialsId: 'app-android-signing-data', variable: 'APP_ANDROID_SIGNING_DATA')]) {
-                sh "cp -f $APP_ANDROID_SIGNING_DATA android/app/secrets.zip && (cd android/app && unzip -o secrets.zip)"
+        try {
+            stage ('git') {
+                checkout scm
             }
-        }
 
-        stage ('build') {
-            sh """
+            stage ("configuration") {
+                withCredentials([file(credentialsId: 'app-android-signing-data', variable: 'APP_ANDROID_SIGNING_DATA')]) {
+                    sh "cp -f $APP_ANDROID_SIGNING_DATA android/app/secrets.zip && (cd android/app && unzip -o secrets.zip)"
+                }
+            }
+
+            stage ('build') {
+                sh """
 rm -rf node_modules/*/.git
 
 npm install
@@ -31,10 +32,17 @@ rm -rf android/app/build/outputs/apk/release/*.apk
 
 cd android && ./gradlew assembleRelease
 """
-	      }
+            }
 
-        stage ('archive') {
-            archiveArtifacts artifacts: 'android/app/build/outputs/apk/release/*.apk'
+            stage ('archive') {
+                archiveArtifacts artifacts: 'android/app/build/outputs/apk/release/*.apk'
+            }
+
+            notifySuccess()
+        }
+        catch (Exception e) {
+            notifyFailure()
+            throw e;
         }
     }
 }
