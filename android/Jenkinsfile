@@ -27,12 +27,14 @@ npm install
 export ANDROID_HOME=/var/jenkins_home/workspace/android-sdk/android-sdk
 export FIELDKIT_ENV=release
 
+rm -rf android/app/build/outputs/apk/release/*.apk
+
 cd android && ./gradlew assembleRelease
 """
 	      }
 
         stage ('archive') {
-            archiveArtifacts artifacts: 'android/app/build/outputs/apk/*.apk'
+            archiveArtifacts artifacts: 'android/app/build/outputs/apk/release/*.apk'
         }
     }
 }
