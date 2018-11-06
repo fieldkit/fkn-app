@@ -5,7 +5,7 @@ const colors = {
 
 export const Colors = colors;
 
-export default appStyle = {
+export default {
     mainView: {
         flex: 1,
         flexDirection: 'column',

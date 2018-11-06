@@ -21,6 +21,7 @@ NativeModules.ServiceDiscovery = {
 
 NativeModules.WifiManager = {
     getCurrentWifiSSID: () => {
-        return Promise.resolve('Specs');
+        return new Promise(() => {
+        });
     }
 };

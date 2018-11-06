@@ -1,8 +1,8 @@
 const CHANNEL_CLOSED = Symbol('Channel Closed');
 
 export function createChannel(name) {
-    const messageQueue = []
-    const resolveQueue = []
+    const messageQueue = [];
+    const resolveQueue = [];
 
     let open = true;
 
@@ -37,6 +37,6 @@ export function createChannel(name) {
         put,
         close,
         isOpen
-    }
+    };
 }
 

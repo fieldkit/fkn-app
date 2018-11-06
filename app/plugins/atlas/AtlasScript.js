@@ -5,8 +5,11 @@ import { View, Text } from 'react-native';
 import { ProgressBar } from '../../components';
 
 export class AtlasScript extends React.Component {
-    state = {
-        currentStepIndex: 0,
+    constructor() {
+        super();
+        this.state = {
+            currentStepIndex: 0,
+        };
     }
 
     currentStep() {
@@ -55,3 +58,4 @@ export class AtlasScript extends React.Component {
 AtlasScript.propTypes = {
     onCancel: PropTypes.func.isRequired,
 };
+

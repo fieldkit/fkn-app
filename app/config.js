@@ -94,4 +94,4 @@ const configs = {
     }
 };
 
-export default Config = configs[__ENV__];
+export default configs[__ENV__];

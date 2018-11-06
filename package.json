@@ -22,10 +22,10 @@
     "fk-app-protocol": "https://github.com/fieldkit/app-protocol.git",
     "fk-atlas-protocol": "https://github.com/fieldkit/atlas-protocol.git",
     "fk-data-protocol": "https://github.com/fieldkit/data-protocol.git",
-    "lodash": "4.17.4",
-    "moment": "2.18.1",
+    "lodash": "^4.17.11",
+    "moment": "^2.22.2",
     "process": "0.11.10",
-    "protobufjs": "6.8.0",
+    "protobufjs": "^6.8.8",
     "react": "^16.6.0-alpha.8af6728",
     "react-native": "^0.57.4",
     "react-native-animated-bar": "^0.2.0",
@@ -55,14 +55,18 @@
     "babel-jest": "20.0.3",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "babel-preset-react-native": "2.0.0",
-    "jest": "20.0.4",
+    "jest": "^23.6.0",
     "jest-html-reporter": "0.5.1",
-    "react-test-renderer": "16.0.0-alpha.12",
+    "metro-react-native-babel-preset": "^0.49.0",
+    "react-test-renderer": "16.6.0-alpha.8af6728",
     "redux-saga-tester": "1.0.373",
     "rn-nodeify": "7.0.1"
   },
   "jest": {
     "preset": "react-native",
+    "transform": {
+      "^.+\\.(js)$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    },
     "globals": {
       "__ENV__": "test",
       "__SPECS__": true

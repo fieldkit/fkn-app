@@ -1,4 +1,4 @@
-export default atlasStyles = {
+export default {
     readings: {
         text: {
             textAlign: "center",
