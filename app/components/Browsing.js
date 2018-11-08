@@ -26,6 +26,12 @@ export class DirectoryEntry extends React.Component {
     }
 }
 
+DirectoryEntry.propTypes = {
+    style: PropTypes.object.isRequired,
+    entry: PropTypes.object.isRequired,
+    onSelect: PropTypes.func.isRequired,
+};
+
 export class DirectoryListing extends React.Component {
     render() {
         const { path, parent, listing, onSelectEntry } = this.props;
@@ -40,7 +46,7 @@ export class DirectoryListing extends React.Component {
 
                 <FlatList
                     data={listing}
-                    keyExtractor={(entry, index) => index}
+                    keyExtractor={(entry, index) => index.toString()}
                     renderItem={({item}) => <DirectoryEntry style={styles.browser.listing.entry} entry={item} onSelect={onSelectEntry} />}
                     />
             </View>
@@ -48,9 +54,16 @@ export class DirectoryListing extends React.Component {
     }
 }
 
+DirectoryListing.propTypes = {
+    path: PropTypes.string.isRequired,
+    parent: PropTypes.object,
+    listing: PropTypes.array.isRequired,
+    onSelectEntry: PropTypes.func.isRequired,
+};
+
 export class FileMenu extends React.Component {
     render() {
-        const { file, parent, onSelectEntry, onUpload, onDelete } = this.props;
+        const { file, parent, onSelectEntry, onOpen, onUpload, onDelete } = this.props;
 
         const parentEntry = Files.getParentEntry(file.relativePath);
 
@@ -63,6 +76,7 @@ export class FileMenu extends React.Component {
                 </View>
 
                 <MenuButtonContainer>
+                    <MenuButton title="Open" onPress={() => onOpen(file, parentEntry)} />
                     <MenuButton title="Upload" onPress={() => onUpload(file, parentEntry)} />
                     <MenuButton title="Delete" onPress={() => onDelete(file, parentEntry)} color="#E74C3C" />
                 </MenuButtonContainer>
@@ -70,6 +84,15 @@ export class FileMenu extends React.Component {
         );
     }
 }
+
+FileMenu.propTypes = {
+    file: PropTypes.object.isRequired,
+    parent: PropTypes.object.isRequired,
+    onSelectEntry: PropTypes.func.isRequired,
+    onOpen: PropTypes.func.isRequired,
+    onUpload: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+};
 
 export class DirectoryBrowser extends React.Component {
     getFileEntry(path) {
@@ -87,14 +110,14 @@ export class DirectoryBrowser extends React.Component {
     }
 
     render() {
-        const { path, localFiles, onSelectEntry, onUpload, onDelete } = this.props;
+        const { path, localFiles, onSelectEntry, onOpen, onUpload, onDelete } = this.props;
 
         const file = this.getFileEntry(path);
         const parent = Files.getParentEntry(path);
         const listing = localFiles.listings[path];
 
         if (_.isObject(file)) {
-            return <FileMenu file={file} parent={parent} onSelectEntry={onSelectEntry} onUpload={onUpload} onDelete={onDelete} />;
+            return <FileMenu file={file} parent={parent} onSelectEntry={onSelectEntry} onOpen={onOpen} onUpload={onUpload} onDelete={onDelete} onOpen={onOpen} />;
         }
 
         if (!_.isArray(listing)) {
@@ -108,3 +131,12 @@ export class DirectoryBrowser extends React.Component {
         );
     }
 }
+
+DirectoryBrowser.propTypes = {
+    path: PropTypes.string.isRequired,
+    localFiles: PropTypes.object.isRequired,
+    onSelectEntry: PropTypes.func.isRequired,
+    onOpen: PropTypes.func.isRequired,
+    onUpload: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+};

@@ -9,7 +9,7 @@ import { cancelInProgressOperation } from '../actions';
 
 import Spinner from 'react-native-loading-spinner-overlay';
 
-import { ProgressBar } from '../components';
+import { ProgressBar } from '../components/ProgressBar';
 
 import styles from '../styles';
 

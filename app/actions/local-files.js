@@ -11,7 +11,7 @@ import { Toasts } from '../lib/toasts';
 import { resolveDataDirectoryPath, createDataDirectoryPath } from '../lib/downloading';
 import { uploadFile } from '../lib/uploading';
 
-import { navigateBrowser } from './navigation';
+import { navigateBrowser, navigateOpenFile } from './navigation';
 
 function getDirectory(relativePath) {
     return resolveDataDirectoryPath().then((dataDirectoryPath) => {
@@ -163,6 +163,10 @@ export function deleteLocalFile(relativePath) {
             });
         });
     };
+}
+
+export function openLocalFile(relativePath) {
+    return navigateOpenFile(relativePath);
 }
 
 export function uploadLocalFile(relativePath, headers) {

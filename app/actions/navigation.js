@@ -42,8 +42,11 @@ export function navigateNetwork() {
 }
 
 export function navigateBrowser(path) {
-    console.log(path);
     return NavigationActions.navigate({ routeName: 'Browser', params: { path: path }});
+}
+
+export function navigateOpenFile(path) {
+    return NavigationActions.navigate({ routeName: 'DataTable', params: { path: path }});
 }
 
 export function navigateEasyModeWelcome() {

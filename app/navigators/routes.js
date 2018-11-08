@@ -9,6 +9,7 @@ import FilesScreen from '../containers/FilesScreen';
 import LiveDataScreen from '../containers/LiveDataScreen';
 import BrowserScreen from '../containers/BrowserScreen';
 import EasyModeScreen from '../containers/EasyModeScreen';
+import DataTableScreen from '../containers/DataTableScreen';
 
 export class ApplicationRoutesManager {
     constructor() {
@@ -56,6 +57,10 @@ export class ApplicationRoutesManager {
             Browser: {
                 path: '/browser',
                 screen: BrowserScreen
+            },
+            DataTable: {
+                path: '/data-table',
+                screen: DataTableScreen
             },
         };
     }

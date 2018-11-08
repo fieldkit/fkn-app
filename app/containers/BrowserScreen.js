@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { AppScreen, DirectoryBrowser } from '../components';
 
-import { navigateBack, navigateBrowser, browseDirectory, uploadLocalFile, deleteLocalFile } from '../actions';
+import { navigateBack, navigateBrowser, browseDirectory, openLocalFile, uploadLocalFile, deleteLocalFile } from '../actions';
 
 class BrowserScreen extends React.Component {
     static navigationOptions = {
@@ -18,8 +18,11 @@ class BrowserScreen extends React.Component {
     }
 
     onSelectEntry(entry) {
-        console.log(entry);
         this.props.browseDirectory(entry.relativePath);
+    }
+
+    onOpen(entry, parentEntry) {
+        this.props.openLocalFile(entry.relativePath);
     }
 
     onUpload(entry, parentEntry) {
@@ -36,17 +39,20 @@ class BrowserScreen extends React.Component {
 
         return (
             <AppScreen background={false}>
-                <DirectoryBrowser path={path} localFiles={localFiles} onSelectEntry={this.onSelectEntry.bind(this)} onUpload={this.onUpload.bind(this)} onDelete={this.onDelete.bind(this)} />
+                <DirectoryBrowser path={path} localFiles={localFiles} onSelectEntry={this.onSelectEntry.bind(this)} onUpload={this.onUpload.bind(this)} onDelete={this.onDelete.bind(this)} onOpen={this.onOpen.bind(this)} />
             </AppScreen>
         );
     }
 }
 
 BrowserScreen.propTypes = {
+    path: PropTypes.string.isRequired,
     navigateBack: PropTypes.func.isRequired,
     navigateBrowser: PropTypes.func.isRequired,
     browseDirectory: PropTypes.func.isRequired,
-    localFiles: PropTypes.object.isRequired
+    uploadLocalFile: PropTypes.func.isRequired,
+    openLocalFile: PropTypes.func.isRequired,
+    deleteLocalFile: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -61,6 +67,7 @@ export default connect(mapStateToProps, {
     navigateBack,
     navigateBrowser,
     browseDirectory,
+    openLocalFile,
     uploadLocalFile,
     deleteLocalFile
 })(BrowserScreen);
