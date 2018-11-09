@@ -53,14 +53,14 @@ const initialDeviceState = {
 };
 
 function mergeUpdate(state, deviceId, after) {
-    const before = state.devices[deviceId] || _.cloneDeep(initialDeviceState);
     const newState = _.cloneDeep(state);
-    const deviceState = _.merge(before, after);
-    newState.devices[deviceId] = deviceState;
+    const deviceBefore = newState.devices[deviceId] || _.cloneDeep(initialDeviceState);
+    const deviceAfter = _.assign(deviceBefore, after);
+    newState.devices[deviceId] = deviceAfter;
 
-    deviceState.plans = {
-        download: generateDownloadPlan(Configuration, deviceState.local, deviceState.remote),
-        upload: generateUploadPlan(Configuration, deviceState.local)
+    deviceAfter.plans = {
+        download: generateDownloadPlan(Configuration, deviceAfter.local, deviceAfter.remote),
+        upload: generateUploadPlan(Configuration, deviceAfter.local)
     };
 
     const downloads = _(newState.devices)

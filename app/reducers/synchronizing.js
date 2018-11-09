@@ -292,7 +292,7 @@ class UploadPlanGenerator {
                 ];
             })
             .flatten()
-              .value();
+            .value();
 
         return {
             numberOfFiles: dataFiles.length,
