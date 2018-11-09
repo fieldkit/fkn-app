@@ -46,12 +46,23 @@ export function deviceSpecificRoutes(state = { home: { routes: [] } }, action) {
 export function nav(state = welcomeState, action) {
     let nextState = AppNavigator.router.getStateForAction(action, state);
 
-    if (action.params && action.params.replace) {
-        // In order to replace the previous route
-        // we'll remove the item at index - 1 and then decrement the index.
-        const { index } = nextState;
-        nextState.routes.splice(index - 1, 1);
-        nextState.index--;
+    if (action.params) {
+        if (action.params.replace) {
+            // In order to replace the previous route we'll remove the item at
+            // index - 1 and then decrement the index.
+            const { index } = nextState;
+            nextState.routes.splice(index - 1, 1);
+            nextState.index--;
+        }
+        else if (action.params.replaceSame) {
+            const { index } = nextState;
+            const current = nextState.routes[index];
+            const previous = nextState.routes[index - 1];
+            if (previous.routeName == current.routeName) {
+                nextState.routes.splice(index - 1, 1);
+                nextState.index--;
+            }
+        }
     }
 
     // Simply return the original `state` if `nextState` is null or undefined.

@@ -42,7 +42,7 @@ export function navigateNetwork() {
 }
 
 export function navigateBrowser(path) {
-    return NavigationActions.navigate({ routeName: 'Browser', params: { path: path }});
+    return NavigationActions.navigate({ routeName: 'Browser', params: { path: path, replaceSame: true }});
 }
 
 export function navigateOpenFile(path) {
