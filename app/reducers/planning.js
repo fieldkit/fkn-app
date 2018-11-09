@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as ActionTypes from '../actions/types';
 
-import { hexArrayBuffer, base64ArrayBuffer } from '../lib/base64';
+import { hexArrayBuffer, arrayBufferToBase64 } from '../lib/base64';
 
 import { generateDownloadPlan, generateUploadPlan } from './synchronizing';
 

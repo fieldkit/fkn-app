@@ -7,13 +7,12 @@ import protobuf from "protobufjs";
 import Promise from "bluebird";
 import RNFS from 'react-native-fs';
 
-import { hexArrayBuffer, base64ArrayBuffer } from '../lib/base64';
+import { hexArrayBuffer, arrayBufferToBase64 } from '../lib/base64';
 
 // TODO: May want to pass these in. Opportunity for circular dependency.
 import * as Types from '../actions/types';
 
 import { WireMessageReply } from './protocol';
-import { DataRecord } from './protocol';
 
 import * as Files from './files';
 
@@ -76,7 +75,7 @@ export function writeDeviceMetadata(device, metadata) {
             console.log("Writing metadata");
 
             return RNFS.touch(path, new Date()).then(() => {
-                const block = base64ArrayBuffer(metadata);
+                const block = arrayBufferToBase64(metadata);
                 return RNFS.appendFile(path, block, "base64");
             });
         });
@@ -120,7 +119,7 @@ export class DownloadWriter {
 
     appendToFile(data, path) {
         this.fileSystemOp(() => {
-            const block = base64ArrayBuffer(data);
+            const block = arrayBufferToBase64(data);
             return RNFS.appendFile(path, block, "base64");
         });
     }
