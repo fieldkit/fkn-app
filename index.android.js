@@ -1,7 +1,7 @@
 import 'es6-symbol/implement';
 
 import React from 'react';
-import { AppRegistry } from 'react-native';
+import { YellowBox, AppRegistry } from 'react-native';
 import { Provider } from 'react-redux';
 
 import * as Services from './app/services';
@@ -22,6 +22,6 @@ const App = () => (
 export default App;
 export const Sagas = sagas;
 
-console.ignoredYellowBox = ['Remote debugger'];
+YellowBox.ignoreWarnings(['Remote debugger', 'Require cycle']);
 
 AppRegistry.registerComponent('FieldKit', () => App);
