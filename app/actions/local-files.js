@@ -10,6 +10,7 @@ import { Toasts } from '../lib/toasts';
 
 import { resolveDataDirectoryPath, createDataDirectoryPath } from '../lib/downloading';
 import { uploadFile } from '../lib/uploading';
+import { readAllDataRecords } from '../lib/data-files';
 
 import { navigateBrowser, navigateOpenFile } from './navigation';
 
@@ -166,7 +167,20 @@ export function deleteLocalFile(relativePath) {
 }
 
 export function openLocalFile(relativePath) {
-    return navigateOpenFile(relativePath);
+    return (dispatch) => {
+        dispatch(navigateOpenFile(relativePath));
+
+        return resolveDataDirectoryPath().then((dataDirectoryPath) => {
+            return RNFS.readFile(dataDirectoryPath + relativePath, 'base64').then((data) => {
+                const records = readAllDataRecords(data);
+                dispatch({
+                    type: Types.LOCAL_FILES_RECORDS,
+                    relativePath: relativePath,
+                    records: records
+                });
+            });
+        });
+    };
 }
 
 export function uploadLocalFile(relativePath, headers) {

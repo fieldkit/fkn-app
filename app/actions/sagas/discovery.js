@@ -39,7 +39,6 @@ function createServiceDiscoveryChannel() {
         socket.bind(port);
         socket.on('message', (data, remoteInfo) => {
             if (remoteInfo.address == '192.168.0.115') {
-                console.log(remoteInfo);
                 channel.put(findDeviceInfo(remoteInfo.address, remoteInfo.port));
             }
             else {

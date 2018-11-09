@@ -275,4 +275,29 @@ export default {
             },
         },
     },
+    dataTable: {
+        container: {
+            padding: 5,
+        },
+        header: {
+        },
+        row: {
+            log: {
+                flexDirection: 'row',
+                fontSize: 10
+            },
+            reading: {
+                flexDirection: 'row',
+                fontSize: 10
+            },
+            status: {
+                flexDirection: 'row',
+                fontSize: 10
+            },
+            metadata: {
+                flexDirection: 'row',
+                fontSize: 10
+            }
+        }
+    }
 };

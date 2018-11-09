@@ -13,10 +13,6 @@ class BrowserScreen extends React.Component {
         title: 'Browser',
     };
 
-    constructor() {
-        super();
-    }
-
     onSelectEntry(entry) {
         this.props.browseDirectory(entry.relativePath);
     }

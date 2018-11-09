@@ -63,7 +63,7 @@ class LiveDataScreen extends React.Component {
     }
 
     renderSensorHeader(sensor, id) {
-        const dotStyle = Object.assign({ backgroundColor: this.sensorColor(id) }, styles.liveData.legend.dotStyle)
+        const dotStyle = Object.assign({ backgroundColor: this.sensorColor(id) }, styles.liveData.legend.dotStyle);
         const rounded = Math.round(sensor.value * 1000) / 1000;
         return (
             <View key={id} style={styles.liveData.legend.container}>
@@ -82,7 +82,7 @@ class LiveDataScreen extends React.Component {
     renderSensorChart(item) {
         const sensor = item.item;
         const id = item.index;
-        const dotStyle = Object.assign({ backgroundColor: this.sensorColor(id) }, styles.liveData.legend.dotStyle)
+        const dotStyle = Object.assign({ backgroundColor: this.sensorColor(id) }, styles.liveData.legend.dotStyle);
 
         let chart = (<Loading />);
         if (sensor.data.length > 1) {

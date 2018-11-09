@@ -1,7 +1,10 @@
 import _ from 'lodash';
 import * as ActionTypes from '../actions/types';
 
-const initialLocalFilesState = { listings: {} };
+const initialLocalFilesState = {
+    listings: {},
+    records: {}
+};
 
 export function localFiles(state = initialLocalFilesState, action) {
     let nextState = state;
@@ -21,6 +24,11 @@ export function localFiles(state = initialLocalFilesState, action) {
         nextState.listings[action.relativePath] = _.reverse(_.sortBy(action.listing, e => {
             return e.modified;
         }));
+        return nextState;
+    }
+    case ActionTypes.LOCAL_FILES_RECORDS: {
+        nextState = _.cloneDeep(state);
+        nextState.records[action.relativePath] = { records: action.records };
         return nextState;
     }
     default:
