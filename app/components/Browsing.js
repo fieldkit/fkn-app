@@ -54,11 +54,11 @@ export class DirectoryListing extends React.Component {
 
         return (
             <View style={styles.browser.listing.container}>
-                {parent && <DirectoryEntry style={styles.browser.listing.back} entry={parent} onSelect={onSelectEntry} />}
-
                 <View style={styles.browser.listing.path.container}>
                     <Text style={styles.browser.listing.path.text}>{Files.getPathName(path)}</Text>
                 </View>
+
+                {parent && <DirectoryEntry style={styles.browser.listing.back} entry={parent} onSelect={onSelectEntry} />}
 
                 <FlatList
                     style={{ marginBottom: 100 }}

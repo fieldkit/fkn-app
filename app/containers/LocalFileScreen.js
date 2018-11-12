@@ -8,7 +8,7 @@ import * as Files from '../lib/files';
 
 import { AppScreen, Loading, FileMenu } from '../components';
 
-import { openLocalFile, uploadLocalFile, deleteLocalFile } from '../actions';
+import { browseDirectory, openLocalFile, uploadLocalFile, deleteLocalFile } from '../actions';
 
 class LocalFileScreen extends React.Component {
     static navigationOptions = {
@@ -25,7 +25,7 @@ class LocalFileScreen extends React.Component {
 
     onDelete(entry, parentEntry) {
         this.props.deleteLocalFile(entry.relativePath);
-        this.onSelectEntry(parentEntry);
+        this.props.browseDirectory(parentEntry.relativePath);
     }
 
     render() {
@@ -47,6 +47,7 @@ class LocalFileScreen extends React.Component {
 
 LocalFileScreen.propTypes = {
     path: PropTypes.string.isRequired,
+    browseDirectory: PropTypes.func.isRequired,
     uploadLocalFile: PropTypes.func.isRequired,
     openLocalFile: PropTypes.func.isRequired,
     deleteLocalFile: PropTypes.func.isRequired,
@@ -61,6 +62,7 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
+    browseDirectory,
     openLocalFile,
     uploadLocalFile,
     deleteLocalFile
