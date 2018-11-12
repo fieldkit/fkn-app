@@ -29,6 +29,6 @@ export function getParentEntry(path) {
     return {
         directory: true,
         relativePath: parentPath,
-        name: "Back"
+        name: "Up"
     };
 }

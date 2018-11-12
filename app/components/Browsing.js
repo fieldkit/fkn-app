@@ -63,14 +63,12 @@ DirectoryListing.propTypes = {
 
 export class FileMenu extends React.Component {
     render() {
-        const { file, parent, onSelectEntry, onOpen, onUpload, onDelete } = this.props;
+        const { file, onOpen, onUpload, onDelete } = this.props;
 
         const parentEntry = Files.getParentEntry(file.relativePath);
 
         return (
             <View style={styles.browser.file.container}>
-                {parent && <DirectoryEntry style={styles.browser.listing.back} entry={parent} onSelect={onSelectEntry} />}
-
                 <View style={styles.browser.file.name.container}>
                     <Text style={styles.browser.file.name.text}>{file.name}</Text>
                 </View>
@@ -87,38 +85,17 @@ export class FileMenu extends React.Component {
 
 FileMenu.propTypes = {
     file: PropTypes.object.isRequired,
-    parent: PropTypes.object.isRequired,
-    onSelectEntry: PropTypes.func.isRequired,
     onOpen: PropTypes.func.isRequired,
     onUpload: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
 };
 
 export class DirectoryBrowser extends React.Component {
-    getFileEntry(path) {
-        const { localFiles } = this.props;
-        const listing = localFiles.listings[path];
-        if (_.isArray(listing)) {
-            return null;
-        }
-        const parentPath = Files.getParentPath(path);
-        const parentListing = localFiles.listings[parentPath];
-        if (!_.isArray(parentListing)) {
-            return null;
-        }
-        return _.find(parentListing, (e) => e.relativePath == path);
-    }
-
     render() {
-        const { path, localFiles, onSelectEntry, onOpen, onUpload, onDelete } = this.props;
+        const { path, localFiles, onSelectEntry } = this.props;
 
-        const file = this.getFileEntry(path);
         const parent = Files.getParentEntry(path);
         const listing = localFiles.listings[path];
-
-        if (_.isObject(file)) {
-            return <FileMenu file={file} parent={parent} onSelectEntry={onSelectEntry} onOpen={onOpen} onUpload={onUpload} onDelete={onDelete} onOpen={onOpen} />;
-        }
 
         if (!_.isArray(listing)) {
             return <Loading />;
@@ -136,7 +113,4 @@ DirectoryBrowser.propTypes = {
     path: PropTypes.string.isRequired,
     localFiles: PropTypes.object.isRequired,
     onSelectEntry: PropTypes.func.isRequired,
-    onOpen: PropTypes.func.isRequired,
-    onUpload: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
 };

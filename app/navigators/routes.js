@@ -8,6 +8,7 @@ import NetworkScreen from '../containers/NetworkScreen';
 import FilesScreen from '../containers/FilesScreen';
 import LiveDataScreen from '../containers/LiveDataScreen';
 import BrowserScreen from '../containers/BrowserScreen';
+import LocalFileScreen from '../containers/LocalFileScreen';
 import EasyModeScreen from '../containers/EasyModeScreen';
 import DataTableScreen from '../containers/DataTableScreen';
 
@@ -57,6 +58,10 @@ export class ApplicationRoutesManager {
             Browser: {
                 path: '/browser',
                 screen: BrowserScreen
+            },
+            LocalFile: {
+                path: '/local-file',
+                screen: LocalFileScreen
             },
             DataTable: {
                 path: '/data-table',

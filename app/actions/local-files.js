@@ -12,7 +12,7 @@ import { resolveDataDirectoryPath, createDataDirectoryPath } from '../lib/downlo
 import { uploadFile } from '../lib/uploading';
 import { readAllDataRecords } from '../lib/data-files';
 
-import { navigateBrowser, navigateOpenFile } from './navigation';
+import { navigateBrowser, navigateLocalFile, navigateOpenFile } from './navigation';
 
 function getDirectory(relativePath) {
     return resolveDataDirectoryPath().then((dataDirectoryPath) => {
@@ -70,6 +70,14 @@ export function browseDirectory(relativePath) {
         return getDirectory(relativePath).then(action => {
             dispatch(action);
             dispatch(navigateBrowser(relativePath));
+        });
+    };
+}
+
+export function browseFile(relativePath) {
+    return (dispatch) => {
+        return getDirectory(relativePath).then(action => {
+            dispatch(navigateLocalFile(relativePath));
         });
     };
 }

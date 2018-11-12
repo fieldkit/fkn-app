@@ -45,6 +45,10 @@ export function navigateBrowser(path) {
     return NavigationActions.navigate({ routeName: 'Browser', params: { path: path, replaceSame: true }});
 }
 
+export function navigateLocalFile(path) {
+    return NavigationActions.navigate({ routeName: 'LocalFile', params: { path: path }});
+}
+
 export function navigateOpenFile(path) {
     return NavigationActions.navigate({ routeName: 'DataTable', params: { path: path }});
 }
