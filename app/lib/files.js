@@ -32,3 +32,16 @@ export function getParentEntry(path) {
         name: "Up"
     };
 }
+
+export function getFileEntry(localFiles, path) {
+    const listing = localFiles.listings[path];
+    if (_.isArray(listing)) {
+        return null;
+    }
+    const parentPath = getParentPath(path);
+    const parentListing = localFiles.listings[parentPath];
+    if (!_.isArray(parentListing)) {
+        return null;
+    }
+    return _.find(parentListing, (e) => e.relativePath == path);
+}

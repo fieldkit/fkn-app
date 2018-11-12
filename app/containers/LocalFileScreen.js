@@ -15,20 +15,6 @@ class LocalFileScreen extends React.Component {
         title: 'File',
     };
 
-    getFileEntry(path) {
-        const { localFiles } = this.props;
-        const listing = localFiles.listings[path];
-        if (_.isArray(listing)) {
-            return null;
-        }
-        const parentPath = Files.getParentPath(path);
-        const parentListing = localFiles.listings[parentPath];
-        if (!_.isArray(parentListing)) {
-            return null;
-        }
-        return _.find(parentListing, (e) => e.relativePath == path);
-    }
-
     onOpen(entry, parentEntry) {
         this.props.openLocalFile(entry.relativePath);
     }
@@ -44,9 +30,9 @@ class LocalFileScreen extends React.Component {
 
     render() {
         const { onOpen, onUpload, onDelete } = this.props;
-        const { path } = this.props;
+        const { localFiles, path } = this.props;
 
-        const file = this.getFileEntry(path);
+        const file = Files.getFileEntry(localFiles, path);
         if (!_.isObject(file)) {
             return <Loading />;
         }
