@@ -71,7 +71,6 @@ export default {
                     paddingRight: 20
                 },
                 text: {
-                    height: 40,
                     fontSize: 18,
                     color: "black"
                 }
@@ -88,6 +87,22 @@ export default {
                     height: 40,
                     fontSize: 20,
                     color: "black"
+                }
+            },
+            size: {
+                container: {
+                    padding: 20
+                },
+                text: {
+                    fontSize: 16,
+                }
+            },
+            modified: {
+                container: {
+                    padding: 20
+                },
+                text: {
+                    fontSize: 16,
                 }
             }
         }

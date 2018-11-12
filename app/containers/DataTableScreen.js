@@ -5,7 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { View, Text, FlatList, ScrollView } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 
 import { SmallButton, AppScreen, Loading } from '../components';
 

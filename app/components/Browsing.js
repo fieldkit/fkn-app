@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 
 import * as Files from '../lib/files';
 
@@ -16,13 +16,29 @@ export class DirectoryEntry extends React.Component {
         const { style, entry, onSelect } = this.props;
 
         return (
-            <TouchableOpacity onPress={() => onSelect(entry) }>
+            <TouchableOpacity onPress={() => onSelect(entry)}>
                 <View style={style.container}>
-                    { entry.directory && <Text style={style.text}>{entry.name}</Text>}
-                    {!entry.directory && <Text style={style.text}>{entry.name} <Text style={{ fontSize: 12 }}>({entry.size})</Text></Text>}
+                { entry.directory && this.renderDirectory(entry)}
+                {!entry.directory && this.renderFile(entry)}
                 </View>
             </TouchableOpacity>
         );
+    }
+
+    renderFile(entry) {
+        const { style } = this.props;
+
+        return (
+            <View>
+              <Text style={style.text}>{entry.name} <Text style={{ fontSize: 12 }}>({entry.size})</Text></Text>
+              <Text style={style.modified}>{entry.modifiedPretty}</Text>
+            </View>
+        );
+    }
+
+    renderDirectory(entry) {
+        const { style } = this.props;
+        return <Text style={style.text}>{entry.name}</Text>;
     }
 }
 
@@ -44,7 +60,8 @@ export class DirectoryListing extends React.Component {
                     <Text style={styles.browser.listing.path.text}>{Files.getPathName(path)}</Text>
                 </View>
 
-                <FlatList
+              <FlatList
+                style={{ marginBottom: 100 }}
                     data={listing}
                     keyExtractor={(entry, index) => index.toString()}
                     renderItem={({item}) => <DirectoryEntry style={styles.browser.listing.entry} entry={item} onSelect={onSelectEntry} />}
@@ -71,6 +88,8 @@ export class FileMenu extends React.Component {
             <View style={styles.browser.file.container}>
                 <View style={styles.browser.file.name.container}>
                     <Text style={styles.browser.file.name.text}>{file.name}</Text>
+                    <Text style={styles.browser.file.size.text}>Size: {file.size} bytes.</Text>
+                    <Text style={styles.browser.file.modified.text}>Modified: {file.modifiedPretty}</Text>
                 </View>
 
                 <MenuButtonContainer>
@@ -102,9 +121,7 @@ export class DirectoryBrowser extends React.Component {
         }
 
         return (
-            <AppScreen background={false}>
-                <DirectoryListing parent={parent} path={path} listing={listing} onSelectEntry={onSelectEntry} />
-            </AppScreen>
+            <DirectoryListing parent={parent} path={path} listing={listing} onSelectEntry={onSelectEntry} />
         );
     }
 }

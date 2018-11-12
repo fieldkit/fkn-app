@@ -5,14 +5,36 @@ import RNFS from 'react-native-fs';
 
 import * as Types from './types';
 
-import * as Files from '../lib/files';
 import { Toasts } from '../lib/toasts';
+import * as Files from '../lib/files';
 
 import { resolveDataDirectoryPath, createDataDirectoryPath } from '../lib/downloading';
 import { uploadFile } from '../lib/uploading';
 import { readAllDataRecords } from '../lib/data-files';
 
 import { navigateBrowser, navigateLocalFile, navigateOpenFile } from './navigation';
+
+function toDisplayModel(entry) {
+    if (entry.directory) {
+        return entry;
+    }
+
+    const info = Files.getFileInformation(entry);
+    if (!_.isObject(info)) {
+        return entry;
+    }
+
+    return {
+        name: info.name,
+        path: entry.path,
+        relativePath: entry.relativePath,
+        size: entry.size,
+        created: entry.created,
+        modified: entry.modified,
+        modifiedPretty: entry.modifiedPretty,
+        directory: entry.directory,
+    };
+}
 
 function getDirectory(relativePath) {
     return resolveDataDirectoryPath().then((dataDirectoryPath) => {
@@ -26,18 +48,24 @@ function getDirectory(relativePath) {
                 };
             }
 
+
+            function toEntry(e) {
+                const modifiedPretty = moment(e.mtime).format("MMM D YYYY h:MM:ss");
+
+                return {
+                    name: e.name,
+                    path: e.path,
+                    relativePath: e.path.replace(dataDirectoryPath, ""),
+                    size: e.size,
+                    created: e.ctime,
+                    modified: e.mtime,
+                    modifiedPretty: modifiedPretty,
+                    directory: e.isDirectory(),
+                };
+            }
+
             return RNFS.readDir(actual).then((res) => {
-                const listing = _(res).map(e => {
-                    return {
-                        name: e.name,
-                        path: e.path,
-                        relativePath: e.path.replace(dataDirectoryPath, ""),
-                        size: e.size,
-                        created: e.ctime,
-                        modified: e.mtime,
-                        directory: e.isDirectory(),
-                    };
-                }).value();
+                const listing = _(res).map(toEntry).map(toDisplayModel).value();
 
                 return {
                     type: Types.LOCAL_FILES_BROWSE,

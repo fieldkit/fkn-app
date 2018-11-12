@@ -45,3 +45,72 @@ export function getFileEntry(localFiles, path) {
     }
     return _.find(parentListing, (e) => e.relativePath == path);
 }
+
+export function getFileInformation(entry) {
+    const types = [
+        {
+            re: /\/([a-z0-9]{16})\/(\d+)_(\d+)_offset_(\d+)_(.+)/i,
+            handler: (match) => {
+                return {
+                    deviceId: match[1],
+                    fileId: Number(match[2]),
+                    version: Number(match[3]),
+                    offset: Number(match[4]),
+                    name: match[5],
+                    metadata: false,
+                    headers: false
+                };
+            }
+        },
+        {
+            re: /\/([a-z0-9]{16})\/(\d+)_(\d+)_headers_(.+)/i,
+            handler: (match) => {
+                return {
+                    deviceId: match[1],
+                    fileId: Number(match[2]),
+                    version: Number(match[3]),
+                    name: match[4],
+                    metadata: false,
+                    headers: true
+                };
+            }
+        },
+        {
+            re: /\/([a-z0-9]{16})\/(\d+)_(\d+)_(.+)/i,
+            handler: (match) => {
+                return {
+                    deviceId: match[1],
+                    fileId: Number(match[2]),
+                    version: Number(match[3]),
+                    name: match[4],
+                    metadata: false,
+                    headers: false
+                };
+            }
+        },
+        {
+            re: /\/([a-z0-9]{16})\/metadata.fkpb/i,
+            handler: (match) => {
+                return {
+                    deviceId: match[1],
+                    metadata: true,
+                    headers: false
+                };
+            }
+        }
+    ];
+
+    return _(types)
+        .map(type => {
+            return {
+                type: type,
+                match: entry.relativePath.match(type.re)
+            };
+        })
+        .filter(row => row.match != null)
+        .map(row => {
+            const info = row.type.handler(row.match);
+            return { ...{ entry: entry }, ...info };
+        })
+        .first();
+}
