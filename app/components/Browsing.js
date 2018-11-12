@@ -7,7 +7,7 @@ import { View, Text, ScrollView, FlatList, TouchableOpacity } from 'react-native
 
 import * as Files from '../lib/files';
 
-import { SmallButton, AppScreen, Loading, MenuButtonContainer, MenuButton } from '../components';
+import { Loading, MenuButtonContainer, MenuButton } from '../components';
 
 import styles from '../styles';
 
@@ -60,8 +60,8 @@ export class DirectoryListing extends React.Component {
                     <Text style={styles.browser.listing.path.text}>{Files.getPathName(path)}</Text>
                 </View>
 
-              <FlatList
-                style={{ marginBottom: 100 }}
+                <FlatList
+                    style={{ marginBottom: 100 }}
                     data={listing}
                     keyExtractor={(entry, index) => index.toString()}
                     renderItem={({item}) => <DirectoryEntry style={styles.browser.listing.entry} entry={item} onSelect={onSelectEntry} />}
@@ -76,37 +76,6 @@ DirectoryListing.propTypes = {
     parent: PropTypes.object,
     listing: PropTypes.array.isRequired,
     onSelectEntry: PropTypes.func.isRequired,
-};
-
-export class FileMenu extends React.Component {
-    render() {
-        const { file, onOpen, onUpload, onDelete } = this.props;
-
-        const parentEntry = Files.getParentEntry(file.relativePath);
-
-        return (
-            <View style={styles.browser.file.container}>
-                <View style={styles.browser.file.name.container}>
-                    <Text style={styles.browser.file.name.text}>{file.name}</Text>
-                    <Text style={styles.browser.file.size.text}>Size: {file.size} bytes.</Text>
-                    <Text style={styles.browser.file.modified.text}>Modified: {file.modifiedPretty}</Text>
-                </View>
-
-                <MenuButtonContainer>
-                    <MenuButton title="Open" onPress={() => onOpen(file, parentEntry)} />
-                    <MenuButton title="Upload" onPress={() => onUpload(file, parentEntry)} />
-                    <MenuButton title="Delete" onPress={() => onDelete(file, parentEntry)} color="#E74C3C" />
-                </MenuButtonContainer>
-            </View>
-        );
-    }
-}
-
-FileMenu.propTypes = {
-    file: PropTypes.object.isRequired,
-    onOpen: PropTypes.func.isRequired,
-    onUpload: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
 };
 
 export class DirectoryBrowser extends React.Component {

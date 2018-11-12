@@ -10,4 +10,5 @@ export * from './ProgressModal';
 export * from './ProgressBar';
 export * from './ConfirmationModal';
 export * from './Browsing';
+export * from './FileMenu';
 
