@@ -21,9 +21,7 @@ export function localFiles(state = initialLocalFilesState, action) {
     }
     case ActionTypes.LOCAL_FILES_BROWSE: {
         nextState = _.cloneDeep(state);
-        nextState.listings[action.relativePath] = _.reverse(_.sortBy(action.listing, e => {
-            return e.modified;
-        }));
+        nextState.listings[action.relativePath] = action.listing;
         return nextState;
     }
     case ActionTypes.LOCAL_FILES_RECORDS: {

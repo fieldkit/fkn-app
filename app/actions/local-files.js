@@ -50,7 +50,7 @@ function getDirectory(relativePath) {
 
 
             function toEntry(e) {
-                const modifiedPretty = moment(e.mtime).format("MMM D YYYY h:MM:ss");
+                const modifiedPretty = moment(e.mtime).format("MMM D YYYY h:mm:ss");
 
                 return {
                     name: e.name,
@@ -65,7 +65,7 @@ function getDirectory(relativePath) {
             }
 
             return RNFS.readDir(actual).then((res) => {
-                const listing = _(res).map(toEntry).map(toDisplayModel).value();
+                const listing = _(res).map(toEntry).map(toDisplayModel).sortBy(o => o.modified).reverse().value();
 
                 return {
                     type: Types.LOCAL_FILES_BROWSE,
