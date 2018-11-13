@@ -28,7 +28,6 @@ NativeModules.WifiManager = {
 
 NativeModules.RNDeviceInfo = {
     getBatteryLevel: () => {
-        return new Promise(() => {
-        });
+        return Promise.resolve(0.5);
     }
 };
