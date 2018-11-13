@@ -29,6 +29,7 @@
     "react": "^16.6.0-alpha.8af6728",
     "react-native": "^0.57.4",
     "react-native-animated-bar": "^0.2.0",
+    "react-native-device-info": "^0.24.3",
     "react-native-fs": "https://github.com/Conservify/react-native-fs.git",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-mail": "3.0.4",

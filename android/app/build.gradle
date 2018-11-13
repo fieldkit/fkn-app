@@ -148,6 +148,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-device-info')
     implementation project(':react-native-wifi')
     implementation project(':react-native-udp')
     implementation project(':react-native-svg')
