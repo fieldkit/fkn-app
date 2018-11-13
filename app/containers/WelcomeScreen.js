@@ -5,7 +5,7 @@ import { View, Image } from 'react-native';
 
 import { AppScreen, MenuButtonContainer, MenuButton } from '../components';
 
-import { navigateConnecting, browseDirectory, navigateBrowser, navigateEasyModeWelcome, navigateAbout, deviceStartConnect, deviceStopConnect } from '../actions';
+import { initialize, navigateConnecting, browseDirectory, navigateBrowser, navigateEasyModeWelcome, navigateAbout, deviceStartConnect, deviceStopConnect } from '../actions';
 
 import styles from '../styles';
 
@@ -15,6 +15,7 @@ class WelcomeScreen extends React.Component {
     };
 
     componentDidMount() {
+        this.props.initialize();
         this.props.deviceStartConnect();
     }
 
@@ -41,6 +42,7 @@ class WelcomeScreen extends React.Component {
 }
 
 WelcomeScreen.propTypes = {
+    initialize: PropTypes.func.isRequired,
     navigateConnecting: PropTypes.func.isRequired,
     browseDirectory: PropTypes.func.isRequired,
     navigateEasyModeWelcome: PropTypes.func.isRequired,
@@ -52,6 +54,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
+    initialize,
     navigateConnecting,
     navigateEasyModeWelcome,
     navigateAbout,

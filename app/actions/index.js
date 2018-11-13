@@ -12,3 +12,16 @@ export * from './local-files';
 export * from './plans';
 
 export const Types = ActionTypes;
+
+import { getDeviceInformation } from '../lib/device-information';
+
+export function initialize() {
+    return (dispatch) => {
+        return getDeviceInformation().then(info => {
+            dispatch({
+                type: Types.HOST_INFORMATION,
+                info: info
+            });
+        });
+    };
+}
