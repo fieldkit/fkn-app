@@ -22,6 +22,7 @@ const App = () => (
 export default App;
 export const Sagas = sagas;
 
+console.ignoredYellowBox = ['Remote debugger'];
 YellowBox.ignoreWarnings(['Remote debugger', 'Require cycle']);
 
 AppRegistry.registerComponent('FieldKit', () => App);

@@ -3,14 +3,13 @@ package com.fieldkit;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.reactlibrary.RNWifiPackage;
-import com.tradle.react.UdpSocketsModule;
 import com.horcrux.svg.SvgPackage;
+import com.reactlibrary.RNWifiPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.chirag.RNMail.RNMail;
-import com.rnfs.RNFSPackage;
+import com.tradle.react.UdpSocketsModule;
 import com.peel.react.TcpSocketsModule;
-import org.conservify.react.ServiceDiscoveryModule;
+import com.rnfs.RNFSPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -31,15 +30,19 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNDeviceInfo(),
-            new RNWifiPackage(),
-            new UdpSocketsModule(),
             new SvgPackage(),
+            new RNWifiPackage(),
+            new RNDeviceInfo(),
             new RNMail(),
-            new RNFSPackage(),
+            new UdpSocketsModule(),
             new TcpSocketsModule(),
-            new ServiceDiscoveryModule()
+            new RNFSPackage()
       );
+    }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
     }
   };
 
@@ -47,13 +50,6 @@ public class MainApplication extends Application implements ReactApplication {
   public ReactNativeHost getReactNativeHost() {
     return mReactNativeHost;
   }
-
-  /*
-  @Override
-  protected String getJSMainModuleName() {
-    return "index";
-  }
-  */
 
   @Override
   public void onCreate() {

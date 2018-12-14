@@ -38,7 +38,7 @@ function createServiceDiscoveryChannel() {
         const socket = dgram.createSocket("udp4");
         socket.bind(port);
         socket.on('message', (data, remoteInfo) => {
-            if (remoteInfo.address == '192.168.0.115') {
+            if (true || remoteInfo.address == '192.168.0.115') {
                 channel.put(findDeviceInfo(remoteInfo.address, remoteInfo.port));
             }
             else {

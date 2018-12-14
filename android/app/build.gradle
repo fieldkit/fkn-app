@@ -73,7 +73,7 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: "index.android.js"
+    entryFile: "index.js"
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -107,16 +107,6 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
-    signingConfigs {
-        release {
-            if (project.hasProperty('FK_APP_RELEASE_STORE_FILE')) {
-                storeFile file(FK_APP_RELEASE_STORE_FILE)
-                storePassword FK_APP_RELEASE_STORE_PASSWORD
-                keyAlias FK_APP_RELEASE_KEY_ALIAS
-                keyPassword FK_APP_RELEASE_KEY_PASSWORD
-            }
-        }
-    }
     splits {
         abi {
             reset()
@@ -129,7 +119,6 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
@@ -148,14 +137,13 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-svg')
+    compile project(':react-native-wifi')
     compile project(':react-native-device-info')
-    implementation project(':react-native-wifi')
-    implementation project(':react-native-udp')
-    implementation project(':react-native-svg')
-    implementation project(':react-native-mail')
-    implementation project(':react-native-fs')
-    implementation project(':react-native-tcp')
-    implementation project(':react-native-service-discovery')
+    compile project(':react-native-mail')
+    compile project(':react-native-udp')
+    compile project(':react-native-tcp')
+    compile project(':react-native-fs')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
