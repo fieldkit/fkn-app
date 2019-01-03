@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Image } from 'react-native';
+import RNLanguages from 'react-native-languages';
+import i18n from '../internationalization/i18n';
 
 import { AppScreen, MenuButtonContainer, MenuButton } from '../components';
 
@@ -9,7 +11,10 @@ import { initialize, navigateConnecting, browseDirectory, navigateBrowser, navig
 
 import styles from '../styles';
 
+
 class WelcomeScreen extends React.Component {
+
+
     static navigationOptions = {
         title: 'Welcome',
     };
@@ -19,8 +24,25 @@ class WelcomeScreen extends React.Component {
         this.props.deviceStartConnect();
     }
 
+    componentWillMount() {
+  RNLanguages.addEventListener('change', this._onLanguagesChange);
+}
+
+componentWillUnmount() {
+  RNLanguages.removeEventListener('change', this._onLanguagesChange);
+}
+
+_onLanguagesChange = ({ language }) => {
+  i18n.locale = language;
+};
+
     render() {
+
         const { navigateConnecting, browseDirectory, navigateEasyModeWelcome, navigateAbout } = this.props;
+        console.log('language', RNLanguages.language);
+        console.log('languages', RNLanguages.languages);
+        console.log("what is happening", i18n.locale);
+        console.log('trying to see how this updates');
 
         return (
             <AppScreen>
@@ -31,10 +53,10 @@ class WelcomeScreen extends React.Component {
                         height: 200,
                     }} />
                 <MenuButtonContainer>
-                    <MenuButton title="Connect" onPress={() => navigateConnecting()} />
-                    <MenuButton title="Browser" onPress={() => browseDirectory('/')} />
-                    <MenuButton title="Easy Mode" onPress={() => navigateEasyModeWelcome()} />
-                    <MenuButton title="About" onPress={() => navigateAbout()} />
+                    <MenuButton title={i18n.t('connect')} onPress={() => navigateConnecting()} />
+                    <MenuButton title={i18n.t('browser')} onPress={() => browseDirectory('/')} />
+                    <MenuButton title={i18n.t('mode')} onPress={() => navigateEasyModeWelcome()} />
+                    <MenuButton title={i18n.t('about')} onPress={() => navigateAbout()} />
                 </MenuButtonContainer>
             </AppScreen>
         );
