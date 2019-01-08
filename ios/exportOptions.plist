@@ -2,10 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
-	<key>method</key>
-	<string>ad-hoc</string>
-	<key>teamID</key>
-	<string>5X96U27N9J</string>
+    <key>method</key>
+    <string>ad-hoc</string>
+    <key>provisioningProfiles</key>
+    <dict>
+      <key>org.reactjs.native.example.FieldKit</key>
+      <string>Conservify Ad Hoc</string>
+    </dict>
+    <key>teamID</key>
+    <string>5X96U27N9J</string>
   </dict>
 </plist>
 
