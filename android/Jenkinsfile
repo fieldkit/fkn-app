@@ -1,8 +1,6 @@
 @Library('conservify') _
 
-conservifyProperties()
-
-properties([
+conservifyProperties([
     disableConcurrentBuilds(),
 ])
 
