@@ -7,7 +7,7 @@ properties([
 ])
 
 timestamps {
-    node () {
+    node ("osx") {
         try {
             stage ('git') {
                 checkout scm
