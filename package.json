@@ -17,11 +17,13 @@
     "stream": "stream-browserify"
   },
   "dependencies": {
+    "@babel/runtime": "^7.2.0",
     "bluebird": "3.5.0",
     "es6-symbol": "3.1.1",
     "fk-app-protocol": "https://github.com/fieldkit/app-protocol.git",
     "fk-atlas-protocol": "https://github.com/fieldkit/atlas-protocol.git",
     "fk-data-protocol": "https://github.com/fieldkit/data-protocol.git",
+    "i18n-js": "^3.0.11",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "process": "0.11.10",
@@ -31,6 +33,8 @@
     "react-native-animated-bar": "^0.2.0",
     "react-native-device-info": "^0.24.3",
     "react-native-fs": "https://github.com/Conservify/react-native-fs.git",
+    "react-native-i18n": "^2.0.15",
+    "react-native-languages": "^3.0.1",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-mail": "3.0.7",
     "react-native-progress-circle": "2.0.0",
