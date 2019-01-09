@@ -1,6 +1,34 @@
 {
-  "connect": "Connect",
-  "browser": "Browser",
-  "mode": "Easy Mode",
-  "about": "About"
+    "global": {
+    },
+    "welcome": {
+        "connect": "Connect",
+        "browser": "Browser",
+        "mode": "Easy Mode",
+        "about": "About"
+    },
+    "about": {
+    },
+    "connecting": {
+    },
+    "deviceMenu": {
+    },
+    "sensors": {
+    },
+    "configure": {
+    },
+    "network": {
+    },
+    "files": {
+    },
+    "liveData": {
+    },
+    "browser": {
+    },
+    "localFile": {
+    },
+    "easyMode": {
+    },
+    "dataTable": {
+    }
 }
