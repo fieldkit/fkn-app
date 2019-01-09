@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Image } from 'react-native';
 import RNLanguages from 'react-native-languages';
-import i18n from '../internationalization/i18n';
 
 import { AppScreen, MenuButtonContainer, MenuButton } from '../components';
 
@@ -11,10 +10,9 @@ import { initialize, navigateConnecting, browseDirectory, navigateBrowser, navig
 
 import styles from '../styles';
 
+import i18n from '../internationalization/i18n';
 
 class WelcomeScreen extends React.Component {
-
-
     static navigationOptions = {
         title: 'Welcome',
     };
@@ -25,24 +23,20 @@ class WelcomeScreen extends React.Component {
     }
 
     componentWillMount() {
-  RNLanguages.addEventListener('change', this._onLanguagesChange);
-}
+        RNLanguages.addEventListener('change', this._onLanguagesChange);
+    }
 
-componentWillUnmount() {
-  RNLanguages.removeEventListener('change', this._onLanguagesChange);
-}
+    componentWillUnmount() {
+      RNLanguages.removeEventListener('change', this._onLanguagesChange);
+    }
 
-_onLanguagesChange = ({ language }) => {
-  i18n.locale = language;
-};
+    _onLanguagesChange = ({ language }) => {
+      i18n.locale = language;
+    };
 
     render() {
 
         const { navigateConnecting, browseDirectory, navigateEasyModeWelcome, navigateAbout } = this.props;
-        console.log('language', RNLanguages.language);
-        console.log('languages', RNLanguages.languages);
-        console.log("what is happening", i18n.locale);
-        console.log('trying to see how this updates');
 
         return (
             <AppScreen>
