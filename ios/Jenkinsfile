@@ -15,7 +15,8 @@ timestamps {
             }
 
             stage ('build') {
-              sh """
+                withCredentials([file(credentialsId: 'app-ios-keychain-password', variable: 'APP_IOS_KEYCHAIN_PASSWORD')]) {
+                    sh """
 export PATH=$PATH:$HOME/tools/node/bin
 
 pwd
@@ -23,19 +24,19 @@ pwd
 ls -alh ../
 
 if [ ! -d ../app-protocol ]; then
-	git clone https://github.com/fieldkit/app-protocol.git ../app-protocol
+  git clone https://github.com/fieldkit/app-protocol.git ../app-protocol
 else
-	(cd ../app-protocol && git pull)
+  (cd ../app-protocol && git pull)
 fi
 if [ ! -d ../data-protocol ]; then
-	git clone https://github.com/fieldkit/data-protocol.git ../data-protocol
+  git clone https://github.com/fieldkit/data-protocol.git ../data-protocol
 else
-	(cd ../data-protocol && git pull)
+  (cd ../data-protocol && git pull)
 fi
 if [ ! -d ../atlas ]; then
-	git clone https://github.com/fieldkit/atlas.git ../atlas
+  git clone https://github.com/fieldkit/atlas.git ../atlas
 else
-	(cd ../atlas && git pull)
+  (cd ../atlas && git pull)
 fi
 
 rm -rf node_modules/*/.git
@@ -46,7 +47,7 @@ security list-keychains
 
 security lock-keychain login.keychain
 
-security unlock-keychain -p "asdfasdf" login.keychain
+security unlock-keychain -p "$APP_IOS_KEYCHAIN_PASSWORD" login.keychain
 
 security show-keychain-info login.keychain
 
@@ -58,6 +59,7 @@ xcodebuild -exportArchive -archivePath $PWD/build/FieldKit.xcarchive -exportOpti
 
 cd ..
 """
+                }
             }
 
             stage ('archive') {
