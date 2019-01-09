@@ -15,7 +15,7 @@ timestamps {
             }
 
             stage ('build') {
-                withCredentials([file(credentialsId: 'app-ios-keychain-password', variable: 'APP_IOS_KEYCHAIN_PASSWORD')]) {
+                withCredentials([string(credentialsId: 'app-ios-keychain-password', variable: 'APP_IOS_KEYCHAIN_PASSWORD')]) {
                     sh """
 export PATH=$PATH:$HOME/tools/node/bin
 
