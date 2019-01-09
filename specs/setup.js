@@ -5,6 +5,11 @@ import { NativeModules } from 'react-native';
 import React from 'react';
 import renderer from 'react-test-renderer';
 
+NativeModules.RNLanguages = {
+    language: null,
+    languages: null,
+};
+
 NativeModules.LRDRCTSimpleToast = {
     SHORT: 100
 };
