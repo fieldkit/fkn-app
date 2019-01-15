@@ -3,6 +3,9 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import RNLanguages from 'react-native-languages';
+
+import i18n from '../internationalization/i18n';
 
 import { View, Text, Button } from 'react-native';
 
@@ -34,7 +37,7 @@ class ConnectingScreen extends React.Component {
 
         return (
             <AppScreen>
-                <Button style={styles.connecting.cancel} title="Cancel" onPress={() => this.props.navigateWelcome()} />
+                <Button style={styles.connecting.cancel} title={i18n.t('connecting.cancel')} onPress={() => this.props.navigateWelcome()} />
                 { status != null ? <Text style={styles.connecting.status}>{status}</Text> : <View/> }
                 <View style={{marginTop: 10, flexDirection: 'column'}}>
                     {_.map(devices, (device, _) => this.renderDevice(device))}

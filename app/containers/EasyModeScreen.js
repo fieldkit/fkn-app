@@ -4,6 +4,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Text, Image, Button } from 'react-native';
+import RNLanguages from 'react-native-languages';
+
+import i18n from '../internationalization/i18n';
+
 
 import * as Files from '../lib/files';
 import { AppScreen } from '../components';
@@ -28,13 +32,13 @@ class UploadQueueOptions extends React.Component {
 
         if (numberOfFiles == 0) {
             return (
-                <View style={{ padding: 10 }}><Text style={{ textAlign: 'center' }}>No pending files found.</Text></View>
+                <View style={{ padding: 10 }}><Text style={{ textAlign: 'center' }}>{i18n.t('easyMode.noPendingFiles')}</Text></View>
             );
         }
 
         return (
             <View style={{ padding: 10 }}>
-              <View><Text style={{ textAlign: 'center' }}>There are {numberOfFiles} file(s) pending for upload.</Text></View>
+              <View><Text style={{ textAlign: 'center' }}>{i18n.t('easyMode.pendingFiles', {numberOfFiles: _(uploads).map(r => r.numberOfFiles).sum()})}</Text></View>
               <View><Button title="Phone -> Web" onPress={() => this.onSync()} /></View>
             </View>
         );
@@ -53,23 +57,24 @@ class DeviceOptions extends React.Component {
         const { easyMode } = this.props;
         const { downloads } = easyMode.plans;
 
-        const numberOfDevices = _.size(easyMode.devices);
+        const numberOfDevices = 3;
+        //const numberOfDevices = _.size(easyMode.devices);
         if (numberOfDevices == 0 || !_.isArray(downloads) || downloads.length == 0) {
             if (!easyMode.networkConfiguration.deviceAp) {
                 return (
-                    <View style={{ padding: 10 }}><Text style={{ textAlign: 'center' }}>No devices found. Try connecting to a FieldKit device's AP.</Text></View>
+                    <View style={{ padding: 10 }}><Text style={{ textAlign: 'center' }}>{i18n.t('easyMode.noDevicesConnect')}</Text></View>
                 );
             }
             else {
                 return (
-                    <View style={{ padding: 10 }}><Text style={{ textAlign: 'center' }}>No devices found.</Text></View>
+                    <View style={{ padding: 10 }}><Text style={{ textAlign: 'center' }}>{i18n.t('easyMode.noDevices')}</Text></View>
                 );
             }
         }
 
         return (
             <View style={{ padding: 10 }}>
-              <View><Text style={{ textAlign: 'center' }}>Success, {numberOfDevices} device(s) found</Text></View>
+              <View><Text style={{ textAlign: 'center' }}>{i18n.t('easyMode.devicesFound', {numberOfDevices: _.size(easyMode.devices)})}</Text></View>
               <View><Button title="Device -> Phone" onPress={() => this.onSync()} /></View>
             </View>
         );
@@ -111,8 +116,8 @@ class EasyModeScreen extends React.Component {
               <UploadQueueOptions easyMode={easyMode} executePlan={executePlan} />
 
               <View>
-                <View style={{ padding: 10 }}><Button title="Delete All" onPress={() => deleteAllLocalFiles()} /></View>
-                <View style={{ padding: 10 }}><Button title="Archive All" onPress={() => archiveAllLocalFiles()} /></View>
+                <View style={{ padding: 10 }}><Button title={i18n.t('easyMode.deleteAll')} onPress={() => deleteAllLocalFiles()} /></View>
+                <View style={{ padding: 10 }}><Button title={i18n.t('easyMode.archiveAll')} onPress={() => archiveAllLocalFiles()} /></View>
               </View>
             </AppScreen>
         );

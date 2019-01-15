@@ -1,4 +1,7 @@
 import _ from 'lodash';
+import RNLanguages from 'react-native-languages';
+
+import i18n from '../internationalization/i18n';
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -52,10 +55,10 @@ class DeviceMenuScreen extends React.Component {
             <AppScreen>
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
-                    <MenuButton title="Files" onPress={() => this.props.navigateFiles()} />
-                    <MenuButton title="Live Data" onPress={() => this.props.navigateLiveData()} />
-                    <MenuButton title="Sensors" onPress={() => this.props.navigateSensors()} />
-                    <MenuButton title="Configure" onPress={() => this.props.navigateConfigure()} />
+                    <MenuButton title={i18n.t('deviceMenu.files')} onPress={() => this.props.navigateFiles()} />
+                    <MenuButton title={i18n.t('deviceMenu.liveData')} onPress={() => this.props.navigateLiveData()} />
+                    <MenuButton title={i18n.t('deviceMenu.sensors')} onPress={() => this.props.navigateSensors()} />
+                    <MenuButton title={i18n.t('deviceMenu.home')} onPress={() => this.props.navigateConfigure()} />
                     {this.renderDeviceSpecific()}
                     <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
                 </MenuButtonContainer>

@@ -4,6 +4,9 @@ import moment from 'moment';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import RNLanguages from 'react-native-languages';
+
+import i18n from '../internationalization/i18n';
 
 import { View, Text, ScrollView } from 'react-native';
 
@@ -49,8 +52,8 @@ class FilesScreen extends React.Component {
                 <Text style={styles.file.name}>{file.name}</Text>
                 <Text style={styles.file.details}>Size: {file.size}</Text>
                 <View style={{ flexDirection: 'row' }}>
-                    <SmallButton title="Download" onPress={() => startDownloadFile(file.id) } />
-                    <SmallButton title="Delete" onPress={() => deleteFile(file.id) } color="#E74C3C" />
+                    <SmallButton title={i18n.t('files.download')} onPress={() => startDownloadFile(file.id) } />
+                    <SmallButton title={i18n.t('files.delete')} onPress={() => deleteFile(file.id) } color="#E74C3C" />
                 </View>
             </View>
         );

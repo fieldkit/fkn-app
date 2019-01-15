@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import RNLanguages from 'react-native-languages';
+
+import i18n from '../internationalization/i18n';
 
 import Config from '../config';
 
@@ -26,13 +29,13 @@ class AboutScreen extends React.Component {
                         height: 200,
                     }} />
                 <MenuButtonContainer>
-                    <MenuButton title="Welcome" onPress={() => navigateWelcome()} />
+                    <MenuButton title={i18n.t('about.welcome')} onPress={() => navigateWelcome()} />
                     <View>
-                      <Text style={{ fontWeight: 'bold' }}>Commit:</Text>
+                      <Text style={{ fontWeight: 'bold' }}>{i18n.t('about.commit')}</Text>
                       <Text>{Config.build.gitCommit || 'NA'}</Text>
-                      <Text style={{ fontWeight: 'bold' }}>Tag:</Text>
+                      <Text style={{ fontWeight: 'bold' }}>{i18n.t('about.tag')}</Text>
                       <Text>{Config.build.buildTag || 'NA'}</Text>
-                      <Text style={{ fontWeight: 'bold' }}>Time:</Text>
+                      <Text style={{ fontWeight: 'bold' }}>{i18n.t('about.time')}</Text>
                       <Text>{Config.build.buildTime || 'NA'}</Text>
                     </View>
                 </MenuButtonContainer>

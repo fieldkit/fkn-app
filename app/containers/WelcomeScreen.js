@@ -13,7 +13,7 @@ import { initialize, navigateConnecting, browseDirectory, navigateBrowser, navig
 import styles from '../styles';
 
 class WelcomeScreen extends React.Component {
-    static navigationOptions = {
+    static navigationOptions= {
         title: 'Welcome',
     };
 

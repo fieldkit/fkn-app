@@ -1,6 +1,58 @@
 {
-  "connect": "Connect",
-  "browser": "Navigateu",
-  "mode": "Mode",
-  "about": "A propos de"
+    "global": {
+    },
+    "welcome": {
+        "title": "Bienvenue",
+        "connect": "Connect",
+        "browser": "Navigateu",
+        "mode": "Mode",
+        "about": "A propos de"
+    },
+    "about": {
+        "welcome": "Bienvenue",
+        "commit": "Commettre:",
+        "tag": "Etiquette:",
+        "time": "Temps:"
+    },
+    "connecting": {
+        "searching": "Recherche...",
+        "cancel": "Annuler"
+    },
+    "deviceMenu": {
+        "files": "Fichiers",
+        "liveData": "Live Data",
+        "sensors": "Capteurs",
+        "configure": "Configure",
+        "home": "Maison",
+    },
+    "sensors": {
+    },
+    "configure": {
+    },
+    "network": {
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "edit": "Edit"
+    },
+    "files": {
+        "download": "Télécharger",
+        "delete": "Delete"
+    },
+    "liveData": {
+    },
+    "browser": {
+    },
+    "localFile": {
+    },
+    "easyMode": {
+        "noPendingFiles": "Aucun fichier en attente trouvé.",
+        "pendingFiles": "Il y a %{numberOfFiles} en attente de téléchargement.",
+        "noDevicesConnect": "Aucun périphérique trouvé. Essayez de vous connecter au point d’accès d’un périphérique FieldKit.",
+        "noDevices": "Aucun périphérique trouvé.",
+        "devicesFound": "Succès, périphérique(s) trouvé(s) {numberOfDevices}",
+        "deleteAll": "Supprimer Tout",
+        "archiveAll": "Archiver Tout"
+    },
+    "dataTable": {
+    }
 }

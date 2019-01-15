@@ -3,6 +3,9 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import RNLanguages from 'react-native-languages';
+
+import i18n from '../internationalization/i18n';
 
 import { View, Button, Text, TextInput } from 'react-native';
 
@@ -53,8 +56,8 @@ class NetworkInfo extends React.Component {
                         <TextInput style={styles.networks.network.editing.password} value={password} onChangeText={(text) => this.setState({ password: text })} />
                     </View>
                     <View style={{flexDirection: 'row'}}>
-                        <SmallButton title="Save" onPress={() => this.onSave()} color={Colors.secondaryButton} />
-                        <SmallButton title="Cancel" onPress={() => this.onCancel()} color={Colors.secondaryButton} />
+                        <SmallButton title={i18n.t('network.save')} onPress={() => this.onSave()} color={Colors.secondaryButton} />
+                        <SmallButton title={i18n.t('network.cancel')} onPress={() => this.onCancel()} color={Colors.secondaryButton} />
                     </View>
                 </View>
             );
@@ -66,7 +69,7 @@ class NetworkInfo extends React.Component {
                     <Text style={styles.networks.network.viewing.ssid}>{network.ssid}</Text>
                 </View>
                 <View style={{flex: 1, flexDirection: 'column'}}>
-                    <SmallButton title="Edit" onPress={() => this.onEdit(network)} color={Colors.secondaryButton} />
+                    <SmallButton title={i18n.t('network.edit')} onPress={() => this.onEdit(network)} color={Colors.secondaryButton} />
                 </View>
             </View>
         );

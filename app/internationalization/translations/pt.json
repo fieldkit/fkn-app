@@ -1,6 +1,58 @@
 {
-  "connect": "Conectar",
-  "browser": "Navegador",
-  "mode": "Modo Fácil",
-  "about": "Sobre"
+    "global": {
+    },
+    "welcome": {
+        "title": "Bem Vinda",
+        "connect": "Conectar",
+        "browser": "Navegador",
+        "mode": "Modo Fácil",
+        "about": "Sobre"
+    },
+    "about": {
+        "welcome": "Bem Vinda",
+        "commit": "Cometer:",
+        "tag": "Tag:",
+        "time": "Tempo:"
+    },
+    "connecting": {
+        "searching": "Procurando...",
+        "cancel": "Cancelar"
+    },
+    "deviceMenu": {
+        "files": "Arquivos",
+        "liveData": "Live Data",
+        "sensors": "Sensores",
+        "configure": "Configure",
+        "home": "Home",
+    },
+    "sensors": {
+    },
+    "configure": {
+    },
+    "network": {
+        "save": "Salvar",
+        "cancel": "Cancelar",
+        "edit": "Editar"
+    },
+    "files": {
+        "download": "Download",
+        "delete": "Excluir"
+    },
+    "liveData": {
+    },
+    "browser": {
+    },
+    "localFile": {
+    },
+    "easyMode": {
+        "noPendingFiles": "Nenhum arquivo pendente encontrado.",
+        "pendingFiles": "Existem %{numberOfFiles} arquivos pendentes para upload.",
+        "noDevicesConnect": "Nenhum dispositivo encontrado. Tente conectar-se ao AP de um dispositivo FieldKit.",
+        "noDevices": "Nenhum dispositivo encontrado.",
+        "devicesFound": "Sucesso, %{numberOfDevices} dispositivo(s) encontrado(s)",
+        "deleteAll": "Delete Tudo",
+        "archiveAll": "Arquivar Tudo"
+    },
+    "dataTable": {
+    }
 }
