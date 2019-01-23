@@ -23,11 +23,13 @@
         "liveData": "Live Data",
         "sensors": "Sensores",
         "configure": "Configure",
-        "home": "Home",
+        "home": "Home"
     },
     "sensors": {
     },
     "configure": {
+        "network": "Rede",
+        "reset": "Reset"
     },
     "network": {
         "save": "Salvar",

@@ -6,6 +6,7 @@ import RNLanguages from 'react-native-languages';
 
 import i18n from '../internationalization/i18n';
 
+
 import { AppScreen, MenuButtonContainer, MenuButton } from '../components';
 
 import { initialize, navigateConnecting, browseDirectory, navigateBrowser, navigateEasyModeWelcome, navigateAbout, deviceStartConnect, deviceStopConnect } from '../actions';
@@ -13,9 +14,14 @@ import { initialize, navigateConnecting, browseDirectory, navigateBrowser, navig
 import styles from '../styles';
 
 class WelcomeScreen extends React.Component {
-    static navigationOptions= {
-        title: 'Welcome',
+    static navigationOptions = ({navigation}) => {
+        return {
+            title: navigation.setParam({i18n.t('welcome.title')}),
+        };
     };
+    // static navigationOptions = {
+    //     title: 'Welcome',
+    // };
 
     componentDidMount() {
         this.props.initialize();
