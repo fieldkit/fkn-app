@@ -18,9 +18,13 @@ import { unixNow } from '../lib/helpers';
 import styles, { Colors } from '../styles';
 
 class ConnectingScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Connecting...',
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('connecting.title') };
     };
+
+    // static navigationOptions = {
+    //     title: 'Connecting...',
+    // };
 
     componentDidMount() {
         this.props.deviceStartConnect();
@@ -32,7 +36,7 @@ class ConnectingScreen extends React.Component {
         let status = null;
 
         if (_.size(devices) == 0) {
-            status = "Searching...";
+            status = i18n.t('connecting.searching');
         }
 
         return (

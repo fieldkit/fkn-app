@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import RNLanguages from 'react-native-languages';
+import i18n from '../internationalization/i18n';
+
 import { View, Text, FlatList, ScrollView, Dimensions } from 'react-native';
 import { VictoryLine, VictoryChart, VictoryTheme, VictoryLegend, VictoryCursorContainer, VictoryContainer, VictoryAxis } from "victory-native";
 import Svg from 'react-native-svg';
@@ -13,8 +16,8 @@ import { navigateBack, startLiveDataPoll, stopLiveDataPoll } from '../actions';
 import styles from '../styles';
 
 class LiveDataScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Live Data',
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('liveData.title') };
     };
 
     state = {

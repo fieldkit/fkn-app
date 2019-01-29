@@ -4,8 +4,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Text, Image, Button } from 'react-native';
-import RNLanguages from 'react-native-languages';
 
+import RNLanguages from 'react-native-languages';
 import i18n from '../internationalization/i18n';
 
 
@@ -82,8 +82,8 @@ class DeviceOptions extends React.Component {
 }
 
 class EasyModeScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Welcome',
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('easyMode.title') };
     };
 
     componentDidMount() {

@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import RNLanguages from 'react-native-languages';
 
+import RNLanguages from 'react-native-languages';
 import i18n from '../internationalization/i18n';
 
 import React from 'react';
@@ -28,8 +28,8 @@ import { selectedDevice } from '../reducers/selectors';
 import styles from '../styles';
 
 class DeviceMenuScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Device Menu',
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('welcome.title') };
     };
 
     componentDidMount() {

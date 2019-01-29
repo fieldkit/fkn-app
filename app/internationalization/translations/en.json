@@ -9,16 +9,19 @@
         "about": "About"
     },
     "about": {
+        "title": "About",
         "welcome": "Welcome",
         "commit": "Commit:",
         "tag": "Tag:",
         "time": "Time:"
     },
     "connecting": {
+        "title": "Connecting...",
         "searching": "Searching...",
         "cancel": "Cancel"
     },
     "deviceMenu": {
+        "title": "Device Menu",
         "files": "Files",
         "liveData": "Live Data",
         "sensors": "Sensors",
@@ -26,8 +29,10 @@
         "home": "Home"
     },
     "sensors": {
+        "title": "Sensors"
     },
     "configure": {
+        "title": "Configure",
         "network": "Network",
         "reset": "Reset"
     },
@@ -41,12 +46,16 @@
         "delete": "Delete"
     },
     "liveData": {
+        "title": "Live Data"
     },
     "browser": {
+        "title": "Browser"
     },
     "localFile": {
+        "title": "File"
     },
     "easyMode": {
+        "title": "Welcome",
         "noPendingFiles": "No pending files found.",
         "pendingFiles": "There are %{numberOfFiles} file(s) pending for upload.",
         "noDevicesConnect": "No devices found. Try connecting to a FieldKit device's AP.",
@@ -56,5 +65,6 @@
         "archiveAll": "Archive All"
     },
     "dataTable": {
+        "title": "Data Table"
     }
 }

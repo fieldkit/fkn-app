@@ -14,9 +14,12 @@ import { AppScreen, MenuButtonContainer, MenuButton } from '../components';
 import { navigateWelcome } from '../actions';
 
 class AboutScreen extends React.Component {
-    static navigationOptions = {
-        title: 'About',
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('about.title') };
     };
+    // static navigationOptions = {
+    //     title: 'About',
+    // };
 
     render() {
         const { navigateWelcome } = this.props;

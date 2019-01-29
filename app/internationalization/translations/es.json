@@ -9,16 +9,19 @@
         "about": "Sobre"
     },
     "about": {
+        "title": "Acerca de",
         "welcome": "Bienvenido",
         "commit": "Cometer:",
         "tag": "Etiqueta:",
         "time": "Hora:"
     },
     "connecting": {
+        "title": "Conectando...",
         "searching": "Buscando...",
         "cancel": "Cancelar"
     },
     "deviceMenu": {
+        "title": "Menú del dispositivo",
         "files": "Archivos",
         "liveData": "Live Data",
         "sensors": "Sensores",
@@ -26,6 +29,7 @@
         "home": "Hogar"
     },
     "sensors": {
+        "title": "Sensores"
     },
     "configure": {
         "network": "Red",
@@ -41,12 +45,16 @@
         "delete": "Eliminar"
     },
     "liveData": {
+        "title": "Datos en tiempo real"
     },
     "browser": {
+        "title": "Navegador"
     },
     "localFile": {
+        "title": "File"
     },
     "easyMode": {
+        "title": "Bienvenido",
         "noPendingFiles":"No se encontraron archivos pendientes.",
         "pendingFiles": "Hay %{numberOfFiles} archivos pendientes de carga",
         "noDevicesConnect": "No se encontraron dispositivos. Intenta conectarte al AP de un dispositivo FieldKit.",
@@ -56,5 +64,6 @@
         "archiveAll": "Archive All"
     },
     "dataTable": {
+        "title": "Tabla de datos"
     }
 }

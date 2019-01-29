@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import RNLanguages from 'react-native-languages';
+import i18n from '../internationalization/i18n';
+
 import { View, ScrollView, Text } from 'react-native';
 
 import { AppScreen, DeviceInfo } from '../components';
@@ -31,9 +34,12 @@ class SensorInfo extends React.Component {
 }
 
 class SensorsScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Sensors',
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('sensors.title') };
     };
+    // static navigationOptions = {
+    //     title: 'Sensors',
+    // };
 
     render() {
         const { deviceInfo, deviceCapabilities } = this.props;

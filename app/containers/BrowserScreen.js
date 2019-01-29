@@ -4,14 +4,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import RNLanguages from 'react-native-languages';
+import i18n from '../internationalization/i18n';
+
 import { AppScreen, DirectoryBrowser } from '../components';
 
 import { navigateBrowser, browseDirectory, browseFile } from '../actions';
 
 class BrowserScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Browser',
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('browser.title') };
     };
+    // static navigationOptions = {
+    //     title: 'Browser',
+    // };
 
     onSelectEntry(entry) {
         if (entry.directory) {

@@ -14,9 +14,13 @@ import { selectedDevice } from '../reducers/selectors';
 import styles from '../styles';
 
 class ConfigureScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Configure',
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('configure.title') };
     };
+
+    // static navigationOptions = {
+    //     title: 'Configure',
+    // };
 
     constructor() {
         super();
