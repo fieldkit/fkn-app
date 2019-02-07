@@ -60,3 +60,5 @@ android/app/gradle.properties
 *.jsbundle
 
 secrets.js
+
+.meghanada/
