@@ -11,6 +11,7 @@ timestamps {
 
             stage ('build') {
                 sh """
+  make
   npm --version
   node --version
   npm install
