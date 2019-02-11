@@ -19,8 +19,6 @@ timestamps {
                     sh """
 export PATH=$PATH:$HOME/tools/node/bin
 
-pwd
-
 ls -alh ../
 
 if [ ! -d ../app-protocol ]; then
@@ -40,6 +38,8 @@ else
 fi
 
 rm -rf node_modules/*/.git
+
+make
 
 npm install
 
