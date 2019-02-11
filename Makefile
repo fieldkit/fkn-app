@@ -1,4 +1,7 @@
-default: test
+default: app/secrets.js test
+
+app/secrets.js: app/secrets.js.template
+	cp app/secrets.js.template app/secrets.js
 
 test:
 	npm test
