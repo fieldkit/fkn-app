@@ -11,6 +11,7 @@ import BrowserScreen from '../containers/BrowserScreen';
 import LocalFileScreen from '../containers/LocalFileScreen';
 import EasyModeScreen from '../containers/EasyModeScreen';
 import DataTableScreen from '../containers/DataTableScreen';
+import MapScreen from '../containers/MapScreen';
 
 export class ApplicationRoutesManager {
     constructor() {
@@ -66,6 +67,10 @@ export class ApplicationRoutesManager {
             DataTable: {
                 path: '/data-table',
                 screen: DataTableScreen
+            },
+            Map: {
+                path: '/map',
+                screen: MapScreen
             },
         };
     }

@@ -5,6 +5,10 @@ export function navigateWelcome() {
     return NavigationActions.navigate({ routeName: 'Welcome' });
 }
 
+export function navigateMap() {
+    return NavigationActions.navigate({ routeName: 'Map' });
+}
+
 export function navigateConnecting() {
     return NavigationActions.navigate({ routeName: 'Connecting' });
 }

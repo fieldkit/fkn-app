@@ -6,6 +6,7 @@
         "connect": "Connect",
         "browser": "Browser",
         "mode": "Easy Mode",
+        "map": "Map",
         "about": "About"
     },
     "about": {
