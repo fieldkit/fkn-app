@@ -109,3 +109,4 @@ export const PLAN_EXECUTE = "PLAN_EXECUTE";
 export const HOST_INFORMATION = "HOST_INFORMATION";
 
 export const PHONE_LOC = "PHONE_LOC";
+export const SENSOR_LOC = "SENSOR_LOC";

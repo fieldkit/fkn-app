@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { createStore } from "redux";
 import { connect, Provider } from "react-redux";
+import _ from "lodash";
 
 import Config from "../config";
 
@@ -13,7 +14,7 @@ import {
   navigateBack,
   navigateMap,
   navigateWelcome,
-  userLocation
+  location
 } from "../actions";
 
 import { StyleSheet } from "react-native";
@@ -51,21 +52,22 @@ class MapScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.props.userLocation();
+    this.props.location();
   }
 
-  renderAnnotations(coordinateArray) {
-    console.log(coordinateArray);
+  renderAnnotations(coordinate, i) {
+    console.log(coordinate);
+    console.log(i);
     return (
       <Mapbox.PointAnnotation
-        key="pointAnnotation"
-        id="pointAnnotation"
-        coordinate={coordinateArray}
+        key={i}
+        id={"pointAnnotation-" + i}
+        coordinate={coordinate}
       >
         <View style={styles.annotationContainer}>
           <View style={styles.annotationFill} />
         </View>
-        <Mapbox.Callout title="User Location" />
+        <Mapbox.Callout title="locqation" />
       </Mapbox.PointAnnotation>
     );
   }
@@ -75,13 +77,12 @@ class MapScreen extends React.Component {
       navigateBack,
       navigateMap,
       navigateWelcome,
-      giveUserLocation
+      giveLocation
     } = this.props;
 
-    let coordinateArray = [giveUserLocation.lat, giveUserLocation.long];
-
-    if (giveUserLocation.lat !== undefined) {
-      let coordinateArray = [giveUserLocation.long, giveUserLocation.lat];
+    if (giveLocation.phone !== undefined) {
+      console.log(giveLocation);
+      let coordinateArray = [giveLocation.phone.long, giveLocation.phone.lat];
       return (
         <View style={styles.container}>
           <Mapbox.MapView
@@ -90,7 +91,9 @@ class MapScreen extends React.Component {
             centerCoordinate={coordinateArray}
             style={styles.container}
           >
-            {this.renderAnnotations(coordinateArray)}
+            {giveLocation.sensors.map((coordinate, index) => {
+              return this.renderAnnotations(coordinate, index);
+            })}
           </Mapbox.MapView>
         </View>
       );
@@ -110,14 +113,14 @@ MapScreen.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  giveUserLocation: state.giveUserLocation
+  giveLocation: state.giveLocation
 });
 
 export default connect(
   mapStateToProps,
   {
     navigateMap,
-    userLocation,
+    location,
     navigateBack,
     navigateWelcome
   }

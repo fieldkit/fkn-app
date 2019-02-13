@@ -10,7 +10,7 @@ export * from "./configuration";
 export * from "./live-data";
 export * from "./local-files";
 export * from "./plans";
-export * from "./user-location";
+export * from "./location";
 
 export const Types = ActionTypes;
 

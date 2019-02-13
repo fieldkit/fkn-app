@@ -14,7 +14,7 @@ import * as progressReducers from "./progress";
 import * as localFilesReducers from "./local-files";
 import * as planningReducers from "./planning";
 import * as easyModeReducers from "./easy-mode";
-import * as userLocationReducers from "./user-location";
+import * as locationReducers from "./location";
 
 export default combineReducers(
   Object.assign(
@@ -30,7 +30,7 @@ export default combineReducers(
     localFilesReducers,
     planningReducers,
     easyModeReducers,
-    userLocationReducers,
+    locationReducers,
     pluginManager.getReducers()
   )
 );
