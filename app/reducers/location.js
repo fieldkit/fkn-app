@@ -7,7 +7,7 @@ export function giveLocation(state = {}, action) {
     case ActionTypes.PHONE_LOC: {
       return {
         phone: action,
-        sensors: [[-118, 34], [-119, 36], [-120, 37]]
+        sensors: [[-119, 36], [-120, 37], [-118, 34]]
       };
     }
   }

@@ -58,6 +58,7 @@ class MapScreen extends React.Component {
   renderAnnotations(coordinate, i) {
     console.log(coordinate);
     console.log(i);
+    let myString = coordinate.toString();
     return (
       <Mapbox.PointAnnotation
         key={i}
@@ -67,7 +68,7 @@ class MapScreen extends React.Component {
         <View style={styles.annotationContainer}>
           <View style={styles.annotationFill} />
         </View>
-        <Mapbox.Callout title="locqation" />
+        <Mapbox.Callout title={myString} />
       </Mapbox.PointAnnotation>
     );
   }
@@ -94,6 +95,7 @@ class MapScreen extends React.Component {
             {giveLocation.sensors.map((coordinate, index) => {
               return this.renderAnnotations(coordinate, index);
             })}
+            {this.renderAnnotations(coordinateArray, 3)}
           </Mapbox.MapView>
         </View>
       );

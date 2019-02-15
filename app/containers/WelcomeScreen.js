@@ -26,9 +26,6 @@ class WelcomeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return { title: i18n.t("welcome.title") };
   };
-  // static navigationOptions = {
-  //     title: 'Welcome',
-  // };
 
   componentDidMount() {
     this.props.initialize();
