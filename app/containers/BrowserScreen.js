@@ -15,9 +15,7 @@ class BrowserScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
         return { title: i18n.t('browser.title') };
     };
-    // static navigationOptions = {
-    //     title: 'Browser',
-    // };
+
 
     onSelectEntry(entry) {
         if (entry.directory) {

@@ -4,6 +4,9 @@ import { createStore } from "redux";
 import { connect, Provider } from "react-redux";
 import _ from "lodash";
 
+import RNLanguages from 'react-native-languages';
+import i18n from '../internationalization/i18n';
+
 import Config from "../config";
 
 import { View, Text, Image } from "react-native";
@@ -47,9 +50,9 @@ const styles = StyleSheet.create({
 Mapbox.setAccessToken(MAPBOX_ACCESS_TOKEN);
 
 class MapScreen extends React.Component {
-  static navigationOptions = {
-    title: "Map"
-  };
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('mapScreen.title') };
+    };
 
   componentDidMount() {
     this.props.location();

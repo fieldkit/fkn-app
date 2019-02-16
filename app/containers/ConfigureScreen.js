@@ -18,10 +18,6 @@ class ConfigureScreen extends React.Component {
         return { title: i18n.t('configure.title') };
     };
 
-    // static navigationOptions = {
-    //     title: 'Configure',
-    // };
-
     constructor() {
         super();
         this.state = {

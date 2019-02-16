@@ -77,9 +77,10 @@ class NetworkInfo extends React.Component {
 };
 
 class NetworkScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Network',
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('network.title') };
     };
+
 
     componentWillMount() {
         this.props.queryConfiguration();

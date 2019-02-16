@@ -29,7 +29,7 @@ import styles from '../styles';
 
 class DeviceMenuScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
-        return { title: i18n.t('welcome.title') };
+        return { title: i18n.t('deviceMenu.title') };
     };
 
     componentDidMount() {

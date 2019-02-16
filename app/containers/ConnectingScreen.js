@@ -22,10 +22,6 @@ class ConnectingScreen extends React.Component {
         return { title: i18n.t('connecting.title') };
     };
 
-    // static navigationOptions = {
-    //     title: 'Connecting...',
-    // };
-
     componentDidMount() {
         this.props.deviceStartConnect();
     }

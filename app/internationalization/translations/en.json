@@ -43,6 +43,7 @@
         "edit": "Edit"
     },
     "files": {
+        "title": "Files",
         "download": "Download",
         "delete": "Delete"
     },
@@ -67,5 +68,8 @@
     },
     "dataTable": {
         "title": "Data Table"
+    },
+    "mapScreen": {
+        "title": "Map"
     }
 }

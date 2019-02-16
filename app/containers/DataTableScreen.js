@@ -145,9 +145,6 @@ class DataTableScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
         return { title: i18n.t('dataTable.title') };
     };
-    // static navigationOptions = {
-    //     title: 'Data Table',
-    // };
 
     render() {
         const { records } = this.props;

@@ -36,11 +36,13 @@
         "reset": "Reset"
     },
     "network": {
+        "title": "Red",
         "save": "Guardar",
         "cancel": "Cancelar",
         "edit": "Editar"
     },
     "files": {
+        "title": "Archivos",
         "download": "Descargar",
         "delete": "Eliminar"
     },
@@ -65,5 +67,8 @@
     },
     "dataTable": {
         "title": "Tabla de datos"
+    },
+    "mapScreen": {
+        "title": "Mapa"
     }
 }

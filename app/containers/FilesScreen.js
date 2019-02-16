@@ -19,6 +19,9 @@ import { selectedDevice } from '../reducers/selectors';
 import styles from '../styles';
 
 class FilesScreen extends React.Component {
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('files.title') };
+    };
     static navigationOptions = {
         title: 'Files',
     };

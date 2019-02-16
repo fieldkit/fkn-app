@@ -17,9 +17,6 @@ class LocalFileScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
         return { title: i18n.t('localFile.title') };
     };
-    // static navigationOptions = {
-    //     title: 'File',
-    // };
 
     onOpen(entry, parentEntry) {
         this.props.openLocalFile(entry.relativePath);

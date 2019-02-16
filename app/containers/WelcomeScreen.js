@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { View, Image } from "react-native";
+import { View, Image, ScrollView } from "react-native";
 
 import RNLanguages from "react-native-languages";
 import i18n from "../internationalization/i18n";
@@ -42,6 +42,7 @@ class WelcomeScreen extends React.Component {
     } = this.props;
 
     return (
+    <ScrollView>
       <AppScreen>
         <Image
           source={require("../../assets/fk-header.png")}
@@ -52,28 +53,14 @@ class WelcomeScreen extends React.Component {
           }}
         />
         <MenuButtonContainer>
-          <MenuButton
-            title={i18n.t("welcome.connect")}
-            onPress={() => navigateConnecting()}
-          />
-          <MenuButton
-            title={i18n.t("welcome.browser")}
-            onPress={() => browseDirectory("/")}
-          />
-          <MenuButton
-            title={i18n.t("welcome.mode")}
-            onPress={() => navigateEasyModeWelcome()}
-          />
-          <MenuButton
-            title={i18n.t("welcome.map")}
-            onPress={() => navigateMap()}
-          />
-          <MenuButton
-            title={i18n.t("welcome.about")}
-            onPress={() => navigateAbout()}
-          />
+          <MenuButton title={i18n.t("welcome.connect")} onPress={() => navigateConnecting()}/>
+          <MenuButton title={i18n.t("welcome.browser")} onPress={() => browseDirectory("/")} />
+          <MenuButton title={i18n.t("welcome.mode")} onPress={() => navigateEasyModeWelcome()}/>
+          <MenuButton title={i18n.t("welcome.map")} onPress={() => navigateMap()}/>
+          <MenuButton title={i18n.t("welcome.about")} onPress={() => navigateAbout()}/>
         </MenuButtonContainer>
       </AppScreen>
+      </ScrollView>
     );
   }
 }
