@@ -1,5 +1,5 @@
-import { delay } from 'redux-saga'
-import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects'
+import { delay } from 'redux-saga';
+import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects';
 
 import * as Types from '../types';
 
@@ -39,7 +39,7 @@ export function* liveDataSaga() {
 
             const { stop } = yield race({
                 stop: take(Types.LIVE_DATA_POLL_STOP),
-                delay: delay(1000),
+                delay: delay(5000),
             });
 
             if (stop) {

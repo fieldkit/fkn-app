@@ -62,11 +62,11 @@ class LiveDataScreen extends React.Component {
         );
     }
 
-    renderSensorHeader(sensor, id) {
+    renderSensorHeader(sensor, id, key) {
         const dotStyle = Object.assign({ backgroundColor: this.sensorColor(id) }, styles.liveData.legend.dotStyle);
         const rounded = Math.round(sensor.value * 1000) / 1000;
         return (
-            <View key={id} style={styles.liveData.legend.container}>
+            <View key={key} style={styles.liveData.legend.container}>
                 <View style={dotStyle} />
                 <Text style={styles.liveData.legend.sensor.name}>{sensor.name}: </Text>
                 <Text style={styles.liveData.legend.sensor.value}>{ sensor.value ? (rounded + " " + sensor.unitOfMeasure) : "Collecting..."}</Text>
@@ -82,10 +82,11 @@ class LiveDataScreen extends React.Component {
     renderSensorChart(item) {
         const sensor = item.item;
         const id = item.index;
+        const key = "sensor-" + id;
         const dotStyle = Object.assign({ backgroundColor: this.sensorColor(id) }, styles.liveData.legend.dotStyle);
 
-        let chart = (<Loading />);
-        if (sensor.data.length > 1) {
+        let chart = (<View />);
+        if (false && sensor.data.length > 1) {
             const { width: windowWidth } = Dimensions.get('window');
             const chartWidth = windowWidth;
             const chartHeight = 250;
@@ -108,11 +109,11 @@ class LiveDataScreen extends React.Component {
         }
 
         return (
-            <View key={id}>
-                {this.renderSensorHeader(sensor, id)}
+            <View key={key}>
+                {this.renderSensorHeader(sensor, id, key)}
                 {chart}
             </View>
-        )
+        );
     }
 
     renderChartWithAllSensors() {
@@ -124,7 +125,7 @@ class LiveDataScreen extends React.Component {
                 {liveData.sensors.filter(s => s.data.length > 1).map((sensor, id) => {
                     return (
                         <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id + 1] } }} />
-                    )
+                    );
                 })}
             </VictoryChart>
         );
