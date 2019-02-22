@@ -39,9 +39,9 @@ fi
 
 rm -rf node_modules/*/.git
 
-make
-
 npm install
+
+make
 
 security list-keychains
 
