@@ -1,42 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<WelcomeScreen/> render() renders the component 1`] = `
-<AppScreen>
-  <Component
-    source={
-      Object {
-        "testUri": "../../../assets/fk-header.png",
+<ScrollView>
+  <AppScreen>
+    <Component
+      source={
+        Object {
+          "testUri": "../../../assets/fk-header.png",
+        }
       }
-    }
-    style={
-      Object {
-        "height": 200,
-        "resizeMode": "contain",
-        "width": "100%",
+      style={
+        Object {
+          "height": 200,
+          "resizeMode": "contain",
+          "width": "100%",
+        }
       }
-    }
-  />
-  <MenuButtonContainer>
-    <MenuButton
-      onPress={[Function]}
-      title="Conectar"
     />
-    <MenuButton
-      onPress={[Function]}
-      title="Navegador"
-    />
-    <MenuButton
-      onPress={[Function]}
-      title="Modo Fácil"
-    />
-    <MenuButton
-      onPress={[Function]}
-      title="Map"
-    />
-    <MenuButton
-      onPress={[Function]}
-      title="Sobre"
-    />
-  </MenuButtonContainer>
-</AppScreen>
+    <MenuButtonContainer>
+      <MenuButton
+        onPress={[Function]}
+        title="Conectar"
+      />
+      <MenuButton
+        onPress={[Function]}
+        title="Navegador"
+      />
+      <MenuButton
+        onPress={[Function]}
+        title="Modo Fácil"
+      />
+      <MenuButton
+        onPress={[Function]}
+        title="Map"
+      />
+      <MenuButton
+        onPress={[Function]}
+        title="Sobre"
+      />
+    </MenuButtonContainer>
+  </AppScreen>
+</ScrollView>
 `;

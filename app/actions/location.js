@@ -2,7 +2,7 @@ import * as Types from "./types";
 
 export function location() {
   return dispatch => {
-    navigator.geolocation.getCurrentPosition(position => {
+    global.navigator.geolocation.getCurrentPosition(position => {
       dispatch({
         type: Types.PHONE_LOC,
         lat: position.coords.latitude,
