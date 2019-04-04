@@ -1,6 +1,74 @@
 {
-  "connect": "Conectar",
-  "browser": "Navegador",
-  "mode": "Modo Fácil",
-  "about": "Sobre"
+    "global": {
+    },
+    "welcome": {
+        "title": "Bienvenido",
+        "connect": "Conectar",
+        "browser": "Navegador",
+        "mode": "Modo Fácil",
+        "about": "Sobre"
+    },
+    "about": {
+        "title": "Acerca de",
+        "welcome": "Bienvenido",
+        "commit": "Cometer:",
+        "tag": "Etiqueta:",
+        "time": "Hora:"
+    },
+    "connecting": {
+        "title": "Conectando...",
+        "searching": "Buscando...",
+        "cancel": "Cancelar"
+    },
+    "deviceMenu": {
+        "title": "Menú del dispositivo",
+        "files": "Archivos",
+        "liveData": "Live Data",
+        "sensors": "Sensores",
+        "configure": "Configurar",
+        "home": "Hogar"
+    },
+    "sensors": {
+        "title": "Sensores"
+    },
+    "configure": {
+        "network": "Red",
+        "reset": "Reset"
+    },
+    "network": {
+        "title": "Red",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "edit": "Editar"
+    },
+    "files": {
+        "title": "Archivos",
+        "download": "Descargar",
+        "delete": "Eliminar"
+    },
+    "liveData": {
+        "title": "Datos en tiempo real"
+    },
+    "browser": {
+        "title": "Navegador"
+    },
+    "localFile": {
+        "title": "File"
+    },
+    "easyMode": {
+        "title": "Bienvenido",
+        "noPendingFiles":"No se encontraron archivos pendientes.",
+        "pendingFiles": "Hay %{numberOfFiles} archivos pendientes de carga",
+        "noDevicesConnect": "No se encontraron dispositivos. Intenta conectarte al AP de un dispositivo FieldKit.",
+        "noDevices": "No se encontraron dispositivos.",
+        "devicesFound": "Success, %{numberOfDevices} dispositivo(s) encontrado(s)",
+        "deleteAll": "Delete All",
+        "archiveAll": "Archive All"
+    },
+    "dataTable": {
+        "title": "Tabla de datos"
+    },
+    "mapScreen": {
+        "title": "Mapa"
+    }
 }

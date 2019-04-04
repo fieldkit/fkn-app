@@ -5,6 +5,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import RNLanguages from 'react-native-languages';
+import i18n from '../internationalization/i18n';
+
 import { View, Text, FlatList } from 'react-native';
 
 import { SmallButton, AppScreen, Loading } from '../components';
@@ -139,8 +142,8 @@ DataRecordListing.propTypes = {
 };
 
 class DataTableScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Data Table',
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('dataTable.title') };
     };
 
     render() {

@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import RNLanguages from 'react-native-languages';
+
+import i18n from '../internationalization/i18n';
 
 import { AppScreen, DeviceInfo, MenuButtonContainer, MenuButton, ConfirmationModal } from '../components';
 
@@ -11,8 +14,8 @@ import { selectedDevice } from '../reducers/selectors';
 import styles from '../styles';
 
 class ConfigureScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Configure',
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('configure.title') };
     };
 
     constructor() {
@@ -39,8 +42,8 @@ class ConfigureScreen extends React.Component {
             <AppScreen>
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
-                    <MenuButton title="Network" onPress={() => this.props.navigateNetwork()} />
-                    <MenuButton title="Reset" onPress={() => this.onReset(true)} />
+                    <MenuButton title={i18n.js('configure.network')} onPress={() => this.props.navigateNetwork()} />
+                    <MenuButton title={i18n,js('configure.reset')} onPress={() => this.onReset(true)} />
                 </MenuButtonContainer>
                 <ConfirmationModal visible={this.state.confirming} onYes={() => this.onReset(false)} onNo={() => this.setState({ confirming: false })} />
             </AppScreen>

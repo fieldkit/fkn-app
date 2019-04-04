@@ -4,6 +4,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import RNLanguages from 'react-native-languages';
+import i18n from '../internationalization/i18n';
+
 import * as Files from '../lib/files';
 
 import { AppScreen, Loading, FileMenu } from '../components';
@@ -11,8 +14,8 @@ import { AppScreen, Loading, FileMenu } from '../components';
 import { browseDirectory, openLocalFile, uploadLocalFile, deleteLocalFile } from '../actions';
 
 class LocalFileScreen extends React.Component {
-    static navigationOptions = {
-        title: 'File',
+    static navigationOptions = ({navigation}) => {
+        return { title: i18n.t('localFile.title') };
     };
 
     onOpen(entry, parentEntry) {

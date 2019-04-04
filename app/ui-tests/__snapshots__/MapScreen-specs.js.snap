@@ -1,0 +1,235 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MapScreen/> render() renders the component 1`] = `
+<View
+  style={
+    Object {
+      "display": "flex",
+      "flex": 1,
+    }
+  }
+>
+  <MapView
+    animated={false}
+    attributionEnabled={true}
+    centerCoordinate={
+      Array [
+        -118.2663902,
+        34.0314141,
+      ]
+    }
+    heading={0}
+    localizeLabels={false}
+    logoEnabled={true}
+    pitch={0}
+    pitchEnabled={true}
+    regionDidChangeDebounceTime={500}
+    regionWillChangeDebounceTime={10}
+    rotateEnabled={true}
+    scrollEnabled={true}
+    style={
+      Object {
+        "display": "flex",
+        "flex": 1,
+      }
+    }
+    styleURL="mapbox://styles/mapbox/satellite-v9"
+    surfaceView={false}
+    userTrackingMode="None"
+    zoomLevel={15}
+  >
+    <PointAnnotation
+      anchor={
+        Object {
+          "x": 0.5,
+          "y": 0.5,
+        }
+      }
+      coordinate={
+        Array [
+          -119,
+          36,
+        ]
+      }
+      id="pointAnnotation-0"
+      key="0"
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "white",
+            "borderRadius": 15,
+            "height": 30,
+            "justifyContent": "center",
+            "width": 30,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "orange",
+              "borderRadius": 15,
+              "height": 30,
+              "transform": Array [
+                Object {
+                  "scale": 0.6,
+                },
+              ],
+              "width": 30,
+            }
+          }
+        />
+      </View>
+      <Callout
+        title="-119,36"
+      />
+    </PointAnnotation>
+    <PointAnnotation
+      anchor={
+        Object {
+          "x": 0.5,
+          "y": 0.5,
+        }
+      }
+      coordinate={
+        Array [
+          -120,
+          37,
+        ]
+      }
+      id="pointAnnotation-1"
+      key="1"
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "white",
+            "borderRadius": 15,
+            "height": 30,
+            "justifyContent": "center",
+            "width": 30,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "orange",
+              "borderRadius": 15,
+              "height": 30,
+              "transform": Array [
+                Object {
+                  "scale": 0.6,
+                },
+              ],
+              "width": 30,
+            }
+          }
+        />
+      </View>
+      <Callout
+        title="-120,37"
+      />
+    </PointAnnotation>
+    <PointAnnotation
+      anchor={
+        Object {
+          "x": 0.5,
+          "y": 0.5,
+        }
+      }
+      coordinate={
+        Array [
+          -118,
+          34,
+        ]
+      }
+      id="pointAnnotation-2"
+      key="2"
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "white",
+            "borderRadius": 15,
+            "height": 30,
+            "justifyContent": "center",
+            "width": 30,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "orange",
+              "borderRadius": 15,
+              "height": 30,
+              "transform": Array [
+                Object {
+                  "scale": 0.6,
+                },
+              ],
+              "width": 30,
+            }
+          }
+        />
+      </View>
+      <Callout
+        title="-118,34"
+      />
+    </PointAnnotation>
+    <PointAnnotation
+      anchor={
+        Object {
+          "x": 0.5,
+          "y": 0.5,
+        }
+      }
+      coordinate={
+        Array [
+          -118.2663902,
+          34.0314141,
+        ]
+      }
+      id="pointAnnotation-3"
+      key="3"
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "white",
+            "borderRadius": 15,
+            "height": 30,
+            "justifyContent": "center",
+            "width": 30,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "orange",
+              "borderRadius": 15,
+              "height": 30,
+              "transform": Array [
+                Object {
+                  "scale": 0.6,
+                },
+              ],
+              "width": 30,
+            }
+          }
+        />
+      </View>
+      <Callout
+        title="-118.2663902,34.0314141"
+      />
+    </PointAnnotation>
+  </MapView>
+</View>
+`;
