@@ -1,18 +1,18 @@
-import 'react-native';
+import "react-native";
 
-import SagaTester from 'redux-saga-tester';
+import SagaTester from "redux-saga-tester";
 import Promise from "bluebird";
 
-import { useFakeDeviceConnection } from '../../middleware/device-api';
-import { QueryType, ReplyType } from '../../lib/protocol';
+import { useFakeDeviceConnection } from "../../middleware/device-api";
+import { QueryType, ReplyType } from "../../lib/protocol";
 
-import * as Types from '../types';
+import * as Types from "../types";
 
-import { findDeviceInfo } from './discovery';
-import { discoverDevices } from './handshaking';
-import { pingConnectedDevice } from './selected-device-sagas';
+import { findDeviceInfo } from "./discovery";
+import { discoverDevices } from "./handshaking";
+import { pingConnectedDevice } from "./selected-device-sagas";
 
-describe('device connection saga', () => {
+describe("device connection saga", () => {
     let tester;
     let fakeDevice;
 
@@ -20,9 +20,9 @@ describe('device connection saga', () => {
         fakeDevice = useFakeDeviceConnection();
         tester = new SagaTester({
             initialState: {
-                devices: { },
+                devices: {},
                 deviceStatus: {
-                    addresses: { },
+                    addresses: {},
                     connected: null,
                     api: {
                         pending: false
@@ -32,28 +32,31 @@ describe('device connection saga', () => {
         });
     });
 
-    describe('discovery', () => {
+    describe("discovery", () => {
         let task;
 
         beforeEach(() => {
             task = tester.start(discoverDevices);
         });
 
-        it.skip('should timeout and fail after timeout interval', async () => {
+        it.skip("should timeout and fail after timeout interval", async () => {
             await tester.waitFor(Types.FIND_DEVICE_FAIL);
         });
 
-        it.skip('should timeout and fail when discovery returns invalid addresses', async () => {
-            tester.dispatch(findDeviceInfo('127.0.0.1', 0));
+        it.skip("should timeout and fail when discovery returns invalid addresses", async () => {
+            tester.dispatch(findDeviceInfo("127.0.0.1", 0));
             await tester.waitFor(Types.FIND_DEVICE_FAIL);
         });
 
-        it('should query the device for capabilities and return success', async () => {
-            fakeDevice.push({}, {
-                type: ReplyType.values.REPLY_CAPABILITIES,
-                response: { capabilities: { } }
-            });
-            tester.dispatch(findDeviceInfo('127.0.0.1', 12345));
+        it("should query the device for capabilities and return success", async () => {
+            fakeDevice.push(
+                {},
+                {
+                    type: ReplyType.values.REPLY_CAPABILITIES,
+                    response: { capabilities: {} }
+                }
+            );
+            tester.dispatch(findDeviceInfo("127.0.0.1", 12345));
             await tester.waitFor(Types.FIND_DEVICE_SUCCESS);
             expect(fakeDevice.queue).toHaveLength(0);
         });

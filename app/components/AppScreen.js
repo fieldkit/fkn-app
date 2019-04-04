@@ -13,42 +13,42 @@ import ProgressHeader from "../containers/ProgressHeader";
 import styles from "../styles";
 
 export class AppScreen extends React.Component {
-  componentWillMount() {
-    RNLanguages.addEventListener("change", this.onLanguageChange);
-  }
-
-  componentWillUnmount() {
-    RNLanguages.removeEventListener("change", this.onLanguageChange);
-  }
-
-  onLanguageChange(language) {
-    i18n.locale = language;
-  }
-
-  render() {
-    const { style, background } = this.props;
-    const { children } = this.props;
-
-    if (background === false) {
-      return (
-        <View style={[styles.mainView, style]}>
-          <ProgressHeader />
-          {children}
-        </View>
-      );
+    componentWillMount() {
+        RNLanguages.addEventListener("change", this.onLanguageChange);
     }
 
-    return (
-      <View style={styles.mainView}>
-        <BackgroundView>
-          <ProgressHeader />
-          {children}
-        </BackgroundView>
-      </View>
-    );
-  }
+    componentWillUnmount() {
+        RNLanguages.removeEventListener("change", this.onLanguageChange);
+    }
+
+    onLanguageChange(language) {
+        i18n.locale = language;
+    }
+
+    render() {
+        const { style, background } = this.props;
+        const { children } = this.props;
+
+        if (background === false) {
+            return (
+                <View style={[styles.mainView, style]}>
+                    <ProgressHeader />
+                    {children}
+                </View>
+            );
+        }
+
+        return (
+            <View style={styles.mainView}>
+                <BackgroundView>
+                    <ProgressHeader />
+                    {children}
+                </BackgroundView>
+            </View>
+        );
+    }
 }
 
 AppScreen.propTypes = {
-  background: PropTypes.bool
+    background: PropTypes.bool
 };

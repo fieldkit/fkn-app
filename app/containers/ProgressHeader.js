@@ -1,17 +1,17 @@
-import _ from 'lodash';
+import _ from "lodash";
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { View, Text, Button } from 'react-native';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { View, Text, Button } from "react-native";
 
-import { cancelInProgressOperation } from '../actions';
+import { cancelInProgressOperation } from "../actions";
 
-import Spinner from 'react-native-loading-spinner-overlay';
+import Spinner from "react-native-loading-spinner-overlay";
 
-import { ProgressBar } from '../components/ProgressBar';
+import { ProgressBar } from "../components/ProgressBar";
 
-import styles from '../styles';
+import styles from "../styles";
 
 class ProgressHeader extends React.Component {
     onCancel() {
@@ -54,8 +54,8 @@ class ProgressHeader extends React.Component {
         if (bars.length > 0) {
             return (
                 <View>
-                  {bars}
-                  {cancelable && this.renderCancel()}
+                    {bars}
+                    {cancelable && this.renderCancel()}
                 </View>
             );
         }
@@ -64,19 +64,31 @@ class ProgressHeader extends React.Component {
             // return <Spinner visible={true} textContent={"Busy"} textStyle={{color: '#FFF'}} />;
         }
 
-        return <View/>;
+        return <View />;
     }
 
     renderCancel() {
         return (
-            <View style={{ }}><Button title="Cancel" onPress={() => this.onCancel()} color="#F8C471" /></View>
+            <View style={{}}>
+                <Button
+                    title="Cancel"
+                    onPress={() => this.onCancel()}
+                    color="#F8C471"
+                />
+            </View>
         );
     }
 
     renderBar(i, progress) {
         return (
             <View key={i}>
-                {progress.label ? <View><Text>{progress.label}</Text></View> : <View/>}
+                {progress.label ? (
+                    <View>
+                        <Text>{progress.label}</Text>
+                    </View>
+                ) : (
+                    <View />
+                )}
                 <ProgressBar progress={progress.progress * 100} />
             </View>
         );
@@ -85,13 +97,16 @@ class ProgressHeader extends React.Component {
 
 ProgressHeader.propTypes = {
     progress: PropTypes.object.isRequired,
-    cancelInProgressOperation: PropTypes.func.isRequired,
+    cancelInProgressOperation: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-    progress: state.progress,
+    progress: state.progress
 });
 
-export default connect(mapStateToProps, {
-    cancelInProgressOperation
-})(ProgressHeader);
+export default connect(
+    mapStateToProps,
+    {
+        cancelInProgressOperation
+    }
+)(ProgressHeader);

@@ -1,6 +1,5 @@
 {
-    "global": {
-    },
+    "global": {},
     "welcome": {
         "title": "Bienvenido",
         "connect": "Conectar",
@@ -57,7 +56,7 @@
     },
     "easyMode": {
         "title": "Bienvenido",
-        "noPendingFiles":"No se encontraron archivos pendientes.",
+        "noPendingFiles": "No se encontraron archivos pendientes.",
         "pendingFiles": "Hay %{numberOfFiles} archivos pendientes de carga",
         "noDevicesConnect": "No se encontraron dispositivos. Intenta conectarte al AP de un dispositivo FieldKit.",
         "noDevices": "No se encontraron dispositivos.",

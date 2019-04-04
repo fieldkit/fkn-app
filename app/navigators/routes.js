@@ -1,77 +1,77 @@
-import WelcomeScreen from '../containers/WelcomeScreen';
-import AboutScreen from '../containers/AboutScreen';
-import ConnectingScreen from '../containers/ConnectingScreen';
-import DeviceMenuScreen from '../containers/DeviceMenuScreen';
-import SensorsScreen from '../containers/SensorsScreen';
-import ConfigureScreen from '../containers/ConfigureScreen';
-import NetworkScreen from '../containers/NetworkScreen';
-import FilesScreen from '../containers/FilesScreen';
-import LiveDataScreen from '../containers/LiveDataScreen';
-import BrowserScreen from '../containers/BrowserScreen';
-import LocalFileScreen from '../containers/LocalFileScreen';
-import EasyModeScreen from '../containers/EasyModeScreen';
-import DataTableScreen from '../containers/DataTableScreen';
-import MapScreen from '../containers/MapScreen';
+import WelcomeScreen from "../containers/WelcomeScreen";
+import AboutScreen from "../containers/AboutScreen";
+import ConnectingScreen from "../containers/ConnectingScreen";
+import DeviceMenuScreen from "../containers/DeviceMenuScreen";
+import SensorsScreen from "../containers/SensorsScreen";
+import ConfigureScreen from "../containers/ConfigureScreen";
+import NetworkScreen from "../containers/NetworkScreen";
+import FilesScreen from "../containers/FilesScreen";
+import LiveDataScreen from "../containers/LiveDataScreen";
+import BrowserScreen from "../containers/BrowserScreen";
+import LocalFileScreen from "../containers/LocalFileScreen";
+import EasyModeScreen from "../containers/EasyModeScreen";
+import DataTableScreen from "../containers/DataTableScreen";
+import MapScreen from "../containers/MapScreen";
 
 export class ApplicationRoutesManager {
     constructor() {
         this.routes = {
             Welcome: {
-                path: '/',
+                path: "/",
                 screen: WelcomeScreen
             },
             Connecting: {
-                path: '/connecting',
+                path: "/connecting",
                 screen: ConnectingScreen
             },
             DeviceMenu: {
-                path: '/device',
+                path: "/device",
                 screen: DeviceMenuScreen
             },
             Sensors: {
-                path: '/sensors',
+                path: "/sensors",
                 screen: SensorsScreen
             },
             Configure: {
-                path: '/configure',
+                path: "/configure",
                 screen: ConfigureScreen
             },
             Network: {
-                path: '/network',
+                path: "/network",
                 screen: NetworkScreen
             },
             Files: {
-                path: '/files',
+                path: "/files",
                 screen: FilesScreen
             },
             LiveData: {
-                path: '/live-data',
+                path: "/live-data",
                 screen: LiveDataScreen
             },
             About: {
-                path: '/about',
+                path: "/about",
                 screen: AboutScreen
             },
             EasyModeWelcome: {
-                path: '/easy-mode',
+                path: "/easy-mode",
                 screen: EasyModeScreen
             },
             Browser: {
-                path: '/browser',
+                path: "/browser",
                 screen: BrowserScreen
             },
             LocalFile: {
-                path: '/local-file',
+                path: "/local-file",
                 screen: LocalFileScreen
             },
             DataTable: {
-                path: '/data-table',
+                path: "/data-table",
                 screen: DataTableScreen
             },
             Map: {
-                path: '/map',
+                path: "/map",
                 screen: MapScreen
-            },
+            }
         };
     }
 

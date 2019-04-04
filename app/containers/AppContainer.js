@@ -1,7 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 
-import AppWithNavigationState from '../navigators/AppNavigator';
+import AppWithNavigationState from "../navigators/AppNavigator";
 
 class AppContainer extends React.Component {
     constructor() {
@@ -9,10 +9,8 @@ class AppContainer extends React.Component {
     }
 
     render() {
-        return (
-            <AppWithNavigationState />
-        );
+        return <AppWithNavigationState />;
     }
-};
+}
 
 export default AppContainer;

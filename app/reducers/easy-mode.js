@@ -1,6 +1,6 @@
-import _ from 'lodash';
-import * as ActionTypes from '../actions/types';
-import { unixNow } from '../lib/helpers';
+import _ from "lodash";
+import * as ActionTypes from "../actions/types";
+import { unixNow } from "../lib/helpers";
 
 const initialEasyModeState = {
     devices: [],
@@ -13,7 +13,7 @@ export function easyMode(state = initialEasyModeState, action) {
     let nextState = state;
 
     switch (action.type) {
-    default:
-        return nextState;
+        default:
+            return nextState;
     }
 }

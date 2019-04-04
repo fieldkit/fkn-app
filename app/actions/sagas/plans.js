@@ -1,21 +1,34 @@
-import _ from 'lodash';
+import _ from "lodash";
 
-import { delay } from 'redux-saga';
-import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects';
+import { delay } from "redux-saga";
+import {
+    put,
+    take,
+    takeLatest,
+    takeEvery,
+    select,
+    all,
+    race,
+    call
+} from "redux-saga/effects";
 
-import { QueryType } from '../../lib/protocol';
-import { Toasts } from '../../lib/toasts';
+import { QueryType } from "../../lib/protocol";
+import { Toasts } from "../../lib/toasts";
 
-import * as Types from '../types';
+import * as Types from "../types";
 
-import { queryCapabilities } from '../device-status';
-import { queryFiles, queryDeviceMetadata, queryDownloadFile } from '../device-data';
-import { archiveLocalFile, touchLocalFile } from '../local-files';
+import { queryCapabilities } from "../device-status";
+import {
+    queryFiles,
+    queryDeviceMetadata,
+    queryDownloadFile
+} from "../device-data";
+import { archiveLocalFile, touchLocalFile } from "../local-files";
 
-import { uploadFile } from '../../lib/uploading';
-import { writeDeviceMetadata } from '../../lib/downloading';
+import { uploadFile } from "../../lib/uploading";
+import { writeDeviceMetadata } from "../../lib/downloading";
 
-import { Dispatcher, deviceCall } from './saga-utils';
+import { Dispatcher, deviceCall } from "./saga-utils";
 
 class Devices {
     constructor() {
@@ -24,8 +37,14 @@ class Devices {
 
     *getInformation(address) {
         if (!_.isObject(this.cache[address.key])) {
-            const capabilitiesAction = yield call(deviceCall, queryCapabilities(address));
-            const metadataAction = yield call(deviceCall, queryDeviceMetadata(address));
+            const capabilitiesAction = yield call(
+                deviceCall,
+                queryCapabilities(address)
+            );
+            const metadataAction = yield call(
+                deviceCall,
+                queryDeviceMetadata(address)
+            );
 
             this.cache[address.key] = {
                 capabilities: capabilitiesAction.response.capabilities,
@@ -34,7 +53,7 @@ class Devices {
         }
         return this.cache[address.key];
     }
-};
+}
 
 export function* executePlans() {
     yield takeLatest(Types.PLAN_EXECUTE, function* watcher(action) {
@@ -70,95 +89,113 @@ export function* executePlans() {
                 console.log("Step", key, step, details);
 
                 switch (key) {
-                case "download": {
-                    const info = yield devices.getInformation(details.address);
+                    case "download": {
+                        const info = yield devices.getInformation(
+                            details.address
+                        );
 
-                    yield call(writeDeviceMetadata, info.capabilities, info.metadata);
+                        yield call(
+                            writeDeviceMetadata,
+                            info.capabilities,
+                            info.metadata
+                        );
 
-                    console.log(info);
-                    const file = {
-                        id: details.id,
-                        size: details.length,
-                        version: details.version
-                    };
-                    const settings = {
-                        offset: details.offset,
-                        length: details.length,
-                        paths: {
-                            file: details.file,
-                            headers: details.headers
+                        console.log(info);
+                        const file = {
+                            id: details.id,
+                            size: details.length,
+                            version: details.version
+                        };
+                        const settings = {
+                            offset: details.offset,
+                            length: details.length,
+                            paths: {
+                                file: details.file,
+                                headers: details.headers
+                            }
+                        };
+
+                        const { downloaded, stop } = yield race({
+                            downloaded: call(
+                                deviceCall,
+                                queryDownloadFile(
+                                    info.capabilities,
+                                    file,
+                                    settings,
+                                    details.address
+                                )
+                            ),
+                            stop: take(Types.OPERATION_CANCEL)
+                        });
+
+                        if (_.isObject(stop)) {
+                            yield put({
+                                type: Types.TASK_DONE,
+                                task: {
+                                    done: true
+                                }
+                            });
+                            return;
                         }
-                    };
 
-                    const { downloaded, stop } = yield race({
-                        downloaded: call(deviceCall, queryDownloadFile(info.capabilities, file, settings, details.address)),
-                        stop: take(Types.OPERATION_CANCEL),
-                    });
+                        break;
+                    }
+                    case "archive": {
+                        yield call(archiveLocalFile(details.file));
 
-                    if (_.isObject(stop)) {
-                        yield put({
-                            type: Types.TASK_DONE,
-                            task: {
-                                done: true
-                            }
+                        if (_.isString(details.touch)) {
+                            yield call(touchLocalFile(details.touch));
+                        }
+
+                        break;
+                    }
+                    case "upload": {
+                        const dispatcher = new Dispatcher();
+                        const started = new Date();
+
+                        function progress(info) {
+                            const bytesTotal = info.totalBytesExpectedToSend;
+                            const bytesRead = info.totalBytesSent;
+                            const now = new Date();
+
+                            dispatcher.dispatch({
+                                type: Types.DOWNLOAD_FILE_PROGRESS,
+                                download: {
+                                    done: bytesTotal == bytesRead,
+                                    cancelable: false,
+                                    bytesTotal: bytesTotal,
+                                    bytesRead: bytesRead,
+                                    progress: bytesRead / bytesTotal,
+                                    started: started,
+                                    elapsed: now - started
+                                }
+                            });
+                        }
+
+                        const { upload, stop } = yield race({
+                            upload: call(
+                                uploadFile,
+                                details.file,
+                                details.headers,
+                                progress
+                            ),
+                            stop: take(Types.OPERATION_CANCEL),
+                            actions: dispatcher.pump()
                         });
-                        return;
+
+                        if (_.isObject(stop)) {
+                            yield put({
+                                type: Types.TASK_DONE,
+                                task: {
+                                    done: true
+                                }
+                            });
+                            return;
+                        } else {
+                        }
+
+                        break;
                     }
-
-                    break;
-                }
-                case "archive": {
-                    yield call(archiveLocalFile(details.file));
-
-                    if (_.isString(details.touch)) {
-                        yield call(touchLocalFile(details.touch));
-                    }
-
-                    break;
-                }
-                case "upload": {
-                    const dispatcher = new Dispatcher();
-                    const started = new Date();
-
-                    function progress(info) {
-                        const bytesTotal = info.totalBytesExpectedToSend;
-                        const bytesRead = info.totalBytesSent;
-                        const now = new Date();
-
-                        dispatcher.dispatch({
-                            type: Types.DOWNLOAD_FILE_PROGRESS,
-                            download: {
-                                done: bytesTotal == bytesRead,
-                                cancelable: false,
-                                bytesTotal: bytesTotal,
-                                bytesRead: bytesRead,
-                                progress: bytesRead / bytesTotal,
-                                started: started,
-                                elapsed: now - started
-                            }
-                        });
-                    }
-
-                    const { upload, stop } = yield race({
-                        upload: call(uploadFile, details.file, details.headers, progress),
-                        stop: take(Types.OPERATION_CANCEL),
-                        actions: dispatcher.pump()
-                    });
-
-                    if (_.isObject(stop)) {
-                        yield put({
-                            type: Types.TASK_DONE,
-                            task: {
-                                done: true
-                            }
-                        });
-                        return;
-                    }
-                    else {
-                    }
-
-                    break;
-                }
                 }
 
                 stepsCompleted++;
@@ -170,8 +207,7 @@ export function* executePlans() {
                     done: true
                 }
             });
-        }
-        catch (err) {
+        } catch (err) {
             console.log("Error", err);
             yield put({
                 type: Types.DEVICE_CONNECTION_ERROR

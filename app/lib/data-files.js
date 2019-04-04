@@ -1,8 +1,8 @@
-import _ from 'lodash';
+import _ from "lodash";
 import protobuf from "protobufjs";
 
-import { base64ToArrayBuffer } from '../lib/base64';
-import { DataRecord } from '../lib/protocol';
+import { base64ToArrayBuffer } from "../lib/base64";
+import { DataRecord } from "../lib/protocol";
 
 function toByteArray(byteArrayOrString) {
     if (_.isString(byteArrayOrString)) {
@@ -23,8 +23,7 @@ export function readDataRecords(byteArrayOrString, filter) {
                 record.index = index++;
                 records.unshift(record);
             }
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e);
             break;
         }

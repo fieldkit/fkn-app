@@ -1,20 +1,24 @@
-import 'react-native';
+import "react-native";
 
-import SagaTester from 'redux-saga-tester';
+import SagaTester from "redux-saga-tester";
 import Promise from "bluebird";
 
-import { Alert } from 'react-native';
+import { Alert } from "react-native";
 
-import { useFakeDeviceConnection } from '../../middleware/device-api';
-import { QueryType, ReplyType } from '../../lib/protocol';
+import { useFakeDeviceConnection } from "../../middleware/device-api";
+import { QueryType, ReplyType } from "../../lib/protocol";
 
-import * as Types from '../types';
-import { navigateConnecting, navigateDeviceMenu, navigateWelcome } from '../navigation';
+import * as Types from "../types";
+import {
+    navigateConnecting,
+    navigateDeviceMenu,
+    navigateWelcome
+} from "../navigation";
 
-import { findDeviceInfo } from './discovery';
-import { connectionRelatedNavigation } from './navigation-sagas';
+import { findDeviceInfo } from "./discovery";
+import { connectionRelatedNavigation } from "./navigation-sagas";
 
-describe('device connection navigation', () => {
+describe("device connection navigation", () => {
     let tester;
     let fakeDevice;
     let task;
@@ -23,17 +27,19 @@ describe('device connection navigation', () => {
         fakeDevice = useFakeDeviceConnection();
         tester = new SagaTester({
             initialState: {
-                devices: { },
+                devices: {},
                 deviceStatus: {
                     connected: null
                 },
                 nav: {
                     index: 0,
-                    routes: [{
-                        params: {}
-                    }]
+                    routes: [
+                        {
+                            params: {}
+                        }
+                    ]
                 }
-            },
+            }
         });
 
         task = tester.start(connectionRelatedNavigation);
@@ -43,7 +49,7 @@ describe('device connection navigation', () => {
         task.cancel();
     });
 
-    it('should navigate nowhere on WelcomeScreen after FIND_DEVICE_SUCCESS', () => {
+    it("should navigate nowhere on WelcomeScreen after FIND_DEVICE_SUCCESS", () => {
         const findDeviceSuccess = {
             type: Types.FIND_DEVICE_SUCCESS
         };
@@ -53,12 +59,12 @@ describe('device connection navigation', () => {
         expect(tester.getLatestCalledAction()).toEqual(findDeviceSuccess);
     });
 
-    it('should navigate nowhere from ConnectingScreen more than 1 found device', () => {
+    it("should navigate nowhere from ConnectingScreen more than 1 found device", () => {
         const state = tester.getState();
-        state.deviceStatus.connected = { address: '192.168.0.100' };
+        state.deviceStatus.connected = { address: "192.168.0.100" };
         state.devices = {
-            '192.168.0.100': state.deviceStatus.connected,
-            '192.168.0.101': { }
+            "192.168.0.100": state.deviceStatus.connected,
+            "192.168.0.101": {}
         };
 
         tester.dispatch(navigateConnecting());
@@ -108,7 +114,7 @@ describe('device connection navigation', () => {
     });
     */
 
-    it('should navigate nowhere on no connectionRequired route after FIND_DEVICE_LOST', () => {
+    it("should navigate nowhere on no connectionRequired route after FIND_DEVICE_LOST", () => {
         const { nav } = tester.getState();
         nav.routes[0].params.connectionRequired = false;
 

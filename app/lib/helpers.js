@@ -1,5 +1,5 @@
-'use strict';
+"use strict";
 
 export function unixNow() {
-    return Math.round((new Date()).getTime() / 1000);
+    return Math.round(new Date().getTime() / 1000);
 }

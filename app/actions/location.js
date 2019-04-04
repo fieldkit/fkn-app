@@ -1,15 +1,15 @@
 import * as Types from "./types";
 
 export function location() {
-  return dispatch => {
-    global.navigator.geolocation.getCurrentPosition(position => {
-      dispatch({
-        type: Types.PHONE_LOC,
-        lat: position.coords.latitude,
-        long: position.coords.longitude
-      });
-    });
-  };
+    return dispatch => {
+        global.navigator.geolocation.getCurrentPosition(position => {
+            dispatch({
+                type: Types.PHONE_LOC,
+                lat: position.coords.latitude,
+                long: position.coords.longitude
+            });
+        });
+    };
 }
 //
 // export function sensorLocation() {

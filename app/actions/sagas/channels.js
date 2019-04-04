@@ -1,4 +1,4 @@
-const CHANNEL_CLOSED = Symbol('Channel Closed');
+const CHANNEL_CLOSED = Symbol("Channel Closed");
 
 export function createChannel(name) {
     const messageQueue = [];
@@ -28,7 +28,7 @@ export function createChannel(name) {
         if (messageQueue.length) {
             return Promise.resolve(messageQueue.shift());
         } else {
-            return new Promise((resolve) => resolveQueue.push(resolve));
+            return new Promise(resolve => resolveQueue.push(resolve));
         }
     }
 
@@ -39,4 +39,3 @@ export function createChannel(name) {
         isOpen
     };
 }
-

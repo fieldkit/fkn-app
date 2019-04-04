@@ -1,19 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import RNLanguages from 'react-native-languages';
-import i18n from '../internationalization/i18n';
+import RNLanguages from "react-native-languages";
+import i18n from "../internationalization/i18n";
 
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView, Text } from "react-native";
 
-import { AppScreen, DeviceInfo } from '../components';
+import { AppScreen, DeviceInfo } from "../components";
 
-import { navigateBack } from '../actions';
+import { navigateBack } from "../actions";
 
-import { selectedDevice } from '../reducers/selectors';
+import { selectedDevice } from "../reducers/selectors";
 
-import styles from '../styles';
+import styles from "../styles";
 
 class SensorInfo extends React.Component {
     getUnitOfMeasure(sensor) {
@@ -27,15 +27,20 @@ class SensorInfo extends React.Component {
 
         return (
             <View style={styles.sensor.container}>
-                <Text style={styles.sensor.name}>{sensor.name} <Text style={styles.sensor.unitOfMeasure}>{this.getUnitOfMeasure(sensor)}</Text></Text>
+                <Text style={styles.sensor.name}>
+                    {sensor.name}{" "}
+                    <Text style={styles.sensor.unitOfMeasure}>
+                        {this.getUnitOfMeasure(sensor)}
+                    </Text>
+                </Text>
             </View>
         );
     }
 }
 
 class SensorsScreen extends React.Component {
-    static navigationOptions = ({navigation}) => {
-        return { title: i18n.t('sensors.title') };
+    static navigationOptions = ({ navigation }) => {
+        return { title: i18n.t("sensors.title") };
     };
     // static navigationOptions = {
     //     title: 'Sensors',
@@ -48,7 +53,9 @@ class SensorsScreen extends React.Component {
             <AppScreen background={false}>
                 <ScrollView>
                     <DeviceInfo info={deviceInfo} />
-                    {deviceCapabilities.sensors.map((s, i) => <SensorInfo key={i} sensor={s} />)}
+                    {deviceCapabilities.sensors.map((s, i) => (
+                        <SensorInfo key={i} sensor={s} />
+                    ))}
                 </ScrollView>
             </AppScreen>
         );
@@ -58,11 +65,14 @@ class SensorsScreen extends React.Component {
 SensorsScreen.propTypes = {
     navigateBack: PropTypes.func.isRequired,
     deviceInfo: PropTypes.object.isRequired,
-    deviceCapabilities: PropTypes.object.isRequired,
+    deviceCapabilities: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => selectedDevice(state);
 
-export default connect(mapStateToProps, {
-    navigateBack
-})(SensorsScreen);
+export default connect(
+    mapStateToProps,
+    {
+        navigateBack
+    }
+)(SensorsScreen);

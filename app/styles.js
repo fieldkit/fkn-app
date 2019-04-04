@@ -1,6 +1,6 @@
 const colors = {
     defaultBackground: "#efefef",
-    secondaryButton: 'darkblue',
+    secondaryButton: "darkblue"
 };
 
 export const Colors = colors;
@@ -8,38 +8,36 @@ export const Colors = colors;
 export default {
     mainView: {
         flex: 1,
-        flexDirection: 'column',
-        backgroundColor: colors.defaultBackground,
+        flexDirection: "column",
+        backgroundColor: colors.defaultBackground
     },
     menuButton: {
-        fontSize: 30,
+        fontSize: 30
     },
     menuButtonContainer: {
-        flexDirection: 'column',
-        alignContent: 'center',
-        padding: 20,
+        flexDirection: "column",
+        alignContent: "center",
+        padding: 20
     },
     menuButton: {
         height: 75
     },
     connecting: {
-        cancel: {
-        },
+        cancel: {},
         status: {
-            alignItems: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0)',
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0)",
             fontSize: 25,
-            textAlign: 'center',
-            padding: 20,
+            textAlign: "center",
+            padding: 20
         }
     },
     browser: {
         listing: {
-            container: {
-            },
+            container: {},
             back: {
                 container: {
-                    backgroundColor: '#F7DC6F',
+                    backgroundColor: "#F7DC6F",
                     paddingTop: 10,
                     paddingLeft: 20,
                     paddingRight: 20
@@ -52,7 +50,7 @@ export default {
             },
             path: {
                 container: {
-                    backgroundColor: 'rgba(196, 196, 196, 64)',
+                    backgroundColor: "rgba(196, 196, 196, 64)",
                     paddingTop: 10,
                     paddingLeft: 20,
                     paddingRight: 20,
@@ -77,8 +75,7 @@ export default {
             }
         },
         file: {
-            container: {
-            },
+            container: {},
             name: {
                 container: {
                     padding: 20
@@ -94,7 +91,7 @@ export default {
                     padding: 20
                 },
                 text: {
-                    fontSize: 16,
+                    fontSize: 16
                 }
             },
             modified: {
@@ -102,102 +99,98 @@ export default {
                     padding: 20
                 },
                 text: {
-                    fontSize: 16,
+                    fontSize: 16
                 }
             }
         }
     },
     deviceInfo: {
         container: {
-            backgroundColor: 'rgba(196, 196, 196, 64)',
+            backgroundColor: "rgba(196, 196, 196, 64)",
             borderBottomWidth: 1,
-            borderColor: '#000',
-            marginBottom: 10,
+            borderColor: "#000",
+            marginBottom: 10
         },
         name: {
             paddingLeft: 20,
             paddingRight: 20,
             fontWeight: "bold",
-            fontSize: 30,
+            fontSize: 30
         },
         lineTwo: {
             paddingLeft: 20,
             paddingRight: 20,
             paddingBottom: 10,
-            flexDirection: 'row',
+            flexDirection: "row"
         },
         address: {
             fontSize: 14,
-            flex: 2,
+            flex: 2
         },
         battery: {
             flex: 1,
             textAlign: "right",
-            fontSize: 14,
+            fontSize: 14
         }
     },
     sensor: {
         container: {
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-            paddingLeft: 20,
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            paddingLeft: 20
         },
         name: {
             paddingBottom: 6,
             fontSize: 20
         },
-        frequency: {
-        },
-        unitOfMeasure: {
-        }
+        frequency: {},
+        unitOfMeasure: {}
     },
     loading: {
-        alignItems: 'center',
+        alignItems: "center",
         fontSize: 25,
-        textAlign: 'center',
+        textAlign: "center",
         height: 80,
-        padding: 20,
+        padding: 20
     },
     device: {
         container: {
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-            flexDirection: 'row',
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            flexDirection: "row",
             paddingLeft: 20,
             paddingRight: 20,
-            paddingBottom: 10,
+            paddingBottom: 10
         },
         name: {
             fontSize: 25,
             fontWeight: "bold"
         },
         details: {
-            fontSize: 20,
+            fontSize: 20
         }
     },
     file: {
         container: {
-            backgroundColor: 'rgba(0, 0, 0, 0)',
+            backgroundColor: "rgba(0, 0, 0, 0)",
             paddingLeft: 20,
-            paddingBottom: 10,
+            paddingBottom: 10
         },
         name: {
             fontSize: 25,
             fontWeight: "bold"
         },
-        details: {
-        }
+        details: {}
     },
     dataSet: {
         container: {
-            backgroundColor: 'rgba(0, 0, 0, 0)',
+            backgroundColor: "rgba(0, 0, 0, 0)",
             paddingLeft: 20,
-            paddingBottom: 10,
+            paddingBottom: 10
         },
         name: {
             fontSize: 25,
             fontWeight: "bold"
         },
-        details: {
-        }
+        details: {}
     },
     buttons: {
         small: {
@@ -209,31 +202,31 @@ export default {
     },
     liveData: {
         container: {
-            backgroundColor: 'rgba(0, 0, 0, 0)',
+            backgroundColor: "rgba(0, 0, 0, 0)",
             flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'space-between'
+            flexDirection: "column",
+            justifyContent: "space-between"
         },
         chart: {
             container: {
-                width: '100%',
-                backgroundColor: '#fff',
+                width: "100%",
+                backgroundColor: "#fff",
                 borderTopWidth: 1,
-                borderColor: '#000'
+                borderColor: "#000"
             }
         },
         legend: {
             container: {
                 height: 40,
                 padding: 5,
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center'
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center"
             },
             dotStyle: {
                 width: 30,
                 height: 30,
-                borderRadius: 30/2
+                borderRadius: 30 / 2
             },
             sensor: {
                 name: {
@@ -242,17 +235,17 @@ export default {
                     fontWeight: "bold"
                 },
                 value: {
-                    fontSize: 20,
-                },
-            },
-        },
+                    fontSize: 20
+                }
+            }
+        }
     },
     networks: {
         container: {
-            backgroundColor: 'rgba(0, 0, 0, 0)',
+            backgroundColor: "rgba(0, 0, 0, 0)",
             paddingLeft: 20,
             paddingRight: 20,
-            paddingBottom: 10,
+            paddingBottom: 10
         },
         heading: {
             fontSize: 24,
@@ -260,57 +253,55 @@ export default {
         },
         network: {
             editing: {
-                container: {
-                },
+                container: {},
                 ssid: {
-                    backgroundColor: 'white',
+                    backgroundColor: "white",
                     height: 40,
                     marginBottom: 10,
-                    borderColor: 'gray',
-                    borderWidth: 1,
+                    borderColor: "gray",
+                    borderWidth: 1
                 },
                 password: {
-                    backgroundColor: 'white',
+                    backgroundColor: "white",
                     height: 40,
                     marginBottom: 10,
-                    borderColor: 'gray',
-                    borderWidth: 1,
-                },
+                    borderColor: "gray",
+                    borderWidth: 1
+                }
             },
             viewing: {
                 container: {
-                    flexDirection: 'row',
+                    flexDirection: "row"
                 },
                 ssid: {
-                    fontSize: 20,
+                    fontSize: 20
                 },
                 password: {
-                    fontSize: 20,
-                },
-            },
-        },
+                    fontSize: 20
+                }
+            }
+        }
     },
     dataTable: {
         container: {
-            padding: 5,
+            padding: 5
         },
-        header: {
-        },
+        header: {},
         row: {
             log: {
-                flexDirection: 'row',
+                flexDirection: "row",
                 fontSize: 10
             },
             reading: {
-                flexDirection: 'row',
+                flexDirection: "row",
                 fontSize: 10
             },
             status: {
-                flexDirection: 'row',
+                flexDirection: "row",
                 fontSize: 10
             },
             metadata: {
-                flexDirection: 'row',
+                flexDirection: "row",
                 fontSize: 10
             }
         }

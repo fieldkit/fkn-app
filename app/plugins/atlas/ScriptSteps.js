@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { View, Text, Button } from 'react-native';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { View, Text, Button } from "react-native";
 
-import { ScriptButtons, AtlasCommandStatus } from './Components';
+import { ScriptButtons, AtlasCommandStatus } from "./Components";
 
-import atlasStyles  from './styles';
+import atlasStyles from "./styles";
 
 export class ScriptStep extends React.Component {
     canMoveNext() {
@@ -21,43 +21,47 @@ export class ScriptStep extends React.Component {
         const canMoveNext = this.canMoveNext();
         const showNext = this.isNextVisible();
 
-        return <View style={atlasStyles.step.container}>
-            {this.renderStep()}
-            <View style={atlasStyles.step.children.container}>{children}</View>
-            <ScriptButtons {...props} canMoveNext={canMoveNext} showNext={showNext} />
-        </View>;
+        return (
+            <View style={atlasStyles.step.container}>
+                {this.renderStep()}
+                <View style={atlasStyles.step.children.container}>
+                    {children}
+                </View>
+                <ScriptButtons
+                    {...props}
+                    canMoveNext={canMoveNext}
+                    showNext={showNext}
+                />
+            </View>
+        );
     }
 
     renderStep() {
-        return <View></View>;
+        return <View />;
     }
-};
+}
 
-ScriptStep.propTypes = {
-};
+ScriptStep.propTypes = {};
 
-export class InstructionsStep extends ScriptStep {
+export class InstructionsStep extends ScriptStep {}
 
-};
-
-InstructionsStep.propTypes = {
-};
+InstructionsStep.propTypes = {};
 
 export class WaitingStep extends ScriptStep {
     state = {
         skipped: false
-    }
+    };
 
     componentDidMount() {
         const { timerStart, delay } = this.props;
 
-        timerStart('Atlas', delay);
+        timerStart("Atlas", delay);
     }
 
     componentWillUnmount() {
         const { timerCancel } = this.props;
 
-        timerCancel('Atlas');
+        timerCancel("Atlas");
     }
 
     canMoveNext() {
@@ -77,16 +81,23 @@ export class WaitingStep extends ScriptStep {
         const { timer } = this.props;
 
         if (!timer) {
-            return <View></View>;
+            return <View />;
         }
-        return <Text style={atlasStyles.step.waiting.remaining} onPress={() => this.onSkipped()}>{timer.remaining} Seconds</Text>;
+        return (
+            <Text
+                style={atlasStyles.step.waiting.remaining}
+                onPress={() => this.onSkipped()}
+            >
+                {timer.remaining} Seconds
+            </Text>
+        );
     }
-};
+}
 
 WaitingStep.propTypes = {
     timerStart: PropTypes.func.isRequired,
     timerCancel: PropTypes.func.isRequired,
-    delay: PropTypes.number.isRequired,
+    delay: PropTypes.number.isRequired
 };
 
 export class AtlasCalibrationCommandStep extends ScriptStep {
@@ -113,16 +124,21 @@ export class AtlasCalibrationCommandStep extends ScriptStep {
 
         console.log("Render", this.props);
 
-        return <View>
-            <Text style={atlasStyles.step.command.command}>{command}</Text>
-            <AtlasCommandStatus command={calibration} onRetry={() => this.onRetry()} />
-        </View>;
+        return (
+            <View>
+                <Text style={atlasStyles.step.command.command}>{command}</Text>
+                <AtlasCommandStatus
+                    command={calibration}
+                    onRetry={() => this.onRetry()}
+                />
+            </View>
+        );
     }
-};
+}
 
 AtlasCalibrationCommandStep.propTypes = {
     atlasCalibrate: PropTypes.func.isRequired,
     atlasState: PropTypes.object.isRequired,
     sensor: PropTypes.number.isRequired,
-    command: PropTypes.string.isRequired,
+    command: PropTypes.string.isRequired
 };

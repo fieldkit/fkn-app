@@ -1,6 +1,6 @@
-import _ from 'lodash';
+import _ from "lodash";
 
-import * as ActionTypes from '../actions/types';
+import * as ActionTypes from "../actions/types";
 
 export function download(state = {}, action) {
     let nextState = state;

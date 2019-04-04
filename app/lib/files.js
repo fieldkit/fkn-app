@@ -1,8 +1,8 @@
-import _ from 'lodash';
+import _ from "lodash";
 
 export function getPathName(path) {
-    if (path == '/') {
-        return '/';
+    if (path == "/") {
+        return "/";
     }
     const parts = path.split("/");
     return parts.pop();
@@ -43,14 +43,14 @@ export function getFileEntry(localFiles, path) {
     if (!_.isArray(parentListing)) {
         return null;
     }
-    return _.find(parentListing, (e) => e.relativePath == path);
+    return _.find(parentListing, e => e.relativePath == path);
 }
 
 export function getFileInformation(entry) {
     const types = [
         {
             re: /\/([a-z0-9]{16})\/(\d+)_(\d+)_offset_(\d+)_(.+)/i,
-            handler: (match) => {
+            handler: match => {
                 return {
                     deviceId: match[1],
                     fileId: Number(match[2]),
@@ -64,7 +64,7 @@ export function getFileInformation(entry) {
         },
         {
             re: /\/([a-z0-9]{16})\/(\d+)_(\d+)_headers_(.+)/i,
-            handler: (match) => {
+            handler: match => {
                 return {
                     deviceId: match[1],
                     fileId: Number(match[2]),
@@ -77,7 +77,7 @@ export function getFileInformation(entry) {
         },
         {
             re: /\/([a-z0-9]{16})\/(\d+)_(\d+)_(.+)/i,
-            handler: (match) => {
+            handler: match => {
                 return {
                     deviceId: match[1],
                     fileId: Number(match[2]),
@@ -90,7 +90,7 @@ export function getFileInformation(entry) {
         },
         {
             re: /\/([a-z0-9]{16})\/metadata.fkpb/i,
-            handler: (match) => {
+            handler: match => {
                 return {
                     deviceId: match[1],
                     metadata: true,

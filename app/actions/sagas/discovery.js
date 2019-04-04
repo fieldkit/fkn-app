@@ -1,47 +1,47 @@
-import _ from 'lodash';
-import { takeLatest, all, put, call } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import _ from "lodash";
+import { takeLatest, all, put, call } from "redux-saga/effects";
+import { delay } from "redux-saga";
 
-import { Platform } from 'react-native';
-import dgram from 'react-native-udp';
+import { Platform } from "react-native";
+import dgram from "react-native-udp";
 
-import WifiManager from 'react-native-wifi';
+import WifiManager from "react-native-wifi";
 
 import ServiceDiscovery from "react-native-service-discovery";
 
-import { unixNow } from '../../lib/helpers';
-import Config from '../../config';
+import { unixNow } from "../../lib/helpers";
+import Config from "../../config";
 
-import * as Types from '../types';
+import * as Types from "../types";
 
-import { createChannel } from './channels';
+import { createChannel } from "./channels";
 
 function createServiceDiscoveryChannel() {
-    const channel = createChannel('SD');
+    const channel = createChannel("SD");
 
     // This is no longer being used, though may come back. I wanted to keep
     // creating this just to avoid regressions.
     const serviceDiscovery = new ServiceDiscovery();
 
-    serviceDiscovery.on('service-resolved', (ev) => {
-    });
+    serviceDiscovery.on("service-resolved", ev => {});
 
-    serviceDiscovery.on('udp-discovery', (ev) => {
+    serviceDiscovery.on("udp-discovery", ev => {
         channel.put(findDeviceInfo(ev.address, ev.port));
     });
 
     const port = 54321;
 
-    if (__ENV__ !== 'test') {
+    if (__ENV__ !== "test") {
         // serviceDiscovery.start(port);
 
         const socket = dgram.createSocket("udp4");
         socket.bind(port);
-        socket.on('message', (data, remoteInfo) => {
-            if (true || remoteInfo.address == '192.168.0.115') {
-                channel.put(findDeviceInfo(remoteInfo.address, remoteInfo.port));
-            }
-            else {
+        socket.on("message", (data, remoteInfo) => {
+            if (true || remoteInfo.address == "192.168.0.115") {
+                channel.put(
+                    findDeviceInfo(remoteInfo.address, remoteInfo.port)
+                );
+            } else {
                 console.log("Skipping", remoteInfo);
             }
         });
@@ -58,7 +58,12 @@ function* monitorServiceDiscoveryEvents(channel) {
         }
     } else if (Config.fixedDeviceInfo) {
         while (true) {
-            yield put(findDeviceInfo(Config.fixedDeviceInfo.address, Config.fixedDeviceInfo.port));
+            yield put(
+                findDeviceInfo(
+                    Config.fixedDeviceInfo.address,
+                    Config.fixedDeviceInfo.port
+                )
+            );
             yield delay(1000);
         }
     }
@@ -84,11 +89,11 @@ export function wifiSsidChanged(ssid) {
 }
 
 function* monitorWifi() {
-    const channel = createChannel('Wifi');
+    const channel = createChannel("Wifi");
 
     let currentSsid = null;
     while (true) {
-        WifiManager.getCurrentWifiSSID().then((ssid) => {
+        WifiManager.getCurrentWifiSSID().then(ssid => {
             channel.put(ssid);
         });
 
@@ -106,11 +111,11 @@ function isFkSsidName(ssid) {
     return /^FK-(.+)/.test(ssid);
 }
 
-function *fakeDiscoveryOnFkAps() {
+function* fakeDiscoveryOnFkAps() {
     yield takeLatest(Types.WIFI_SSID_CHANGED, function* watcher(action) {
         if (isFkSsidName(action.ssid)) {
             while (true) {
-                yield put(findDeviceInfo('192.168.2.1', 54321));
+                yield put(findDeviceInfo("192.168.2.1", 54321));
                 yield delay(1000);
             }
             console.log(action);

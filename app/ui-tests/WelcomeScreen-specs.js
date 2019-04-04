@@ -8,11 +8,11 @@ import toJson from "enzyme-to-json";
 const store = mockFunctionHelper({});
 
 describe("<WelcomeScreen/>", () => {
-  describe("render()", () => {
-    test("renders the component", () => {
-      const wrapper = shallow(<WelcomeScreen store={store} />);
-      const component = wrapper.dive();
-      expect(toJson(component)).toMatchSnapshot();
+    describe("render()", () => {
+        test("renders the component", () => {
+            const wrapper = shallow(<WelcomeScreen store={store} />);
+            const component = wrapper.dive();
+            expect(toJson(component)).toMatchSnapshot();
+        });
     });
-  });
 });

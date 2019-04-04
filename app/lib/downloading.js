@@ -1,30 +1,32 @@
-import _ from 'lodash';
-import moment from 'moment';
+import _ from "lodash";
+import moment from "moment";
 
-import varint from 'varint';
+import varint from "varint";
 import protobuf from "protobufjs";
 
 import Promise from "bluebird";
-import RNFS from 'react-native-fs';
+import RNFS from "react-native-fs";
 
-import { hexArrayBuffer, arrayBufferToBase64 } from '../lib/base64';
+import { hexArrayBuffer, arrayBufferToBase64 } from "../lib/base64";
 
 // TODO: May want to pass these in. Opportunity for circular dependency.
-import * as Types from '../actions/types';
+import * as Types from "../actions/types";
 
-import { WireMessageReply } from './protocol';
+import { WireMessageReply } from "./protocol";
 
-import * as Files from './files';
+import * as Files from "./files";
 
 let resolvedDataDirectoryPath = null;
 
 export function createDataDirectoryPath() {
-    return resolvedDataDirectoryPath = Promise.resolve(RNFS.DocumentDirectoryPath + "/Data").then((path) => {
+    return (resolvedDataDirectoryPath = Promise.resolve(
+        RNFS.DocumentDirectoryPath + "/Data"
+    ).then(path => {
         return RNFS.mkdir(path).then(() => {
             console.log("Created", path);
             return path;
         });
-    });
+    }));
 }
 
 export function resolveDataDirectoryPath() {
@@ -36,7 +38,15 @@ export function resolveDataDirectoryPath() {
 
 export function openWriter(device, file, settings, dispatch) {
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
-        return Promise.resolve(new DownloadWriter(dataDirectoryPath, device, file, settings, dispatch)).then(writer => {
+        return Promise.resolve(
+            new DownloadWriter(
+                dataDirectoryPath,
+                device,
+                file,
+                settings,
+                dispatch
+            )
+        ).then(writer => {
             return writer.open().then(() => {
                 return writer;
             });
@@ -61,13 +71,13 @@ function fileStatIfExists(path) {
 }
 
 export class LocalFileStructure {
-    constructor(dataDirectoryPath, device) {
-    }
+    constructor(dataDirectoryPath, device) {}
 }
 
 export function writeDeviceMetadata(device, metadata) {
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
-        const directory = dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId);
+        const directory =
+            dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId);
 
         return RNFS.mkdir(directory).then(() => {
             const path = directory + "/" + "metadata.fkpb";
@@ -101,19 +111,27 @@ export class DownloadWriter {
 
     open() {
         return this.fileSystemOp(() => {
-            return Promise.resolve(true).then(() => {
-                console.log('settings', this.settings);
-                this.headersPath = this.dataDirectoryPath + "/" + this.settings.paths.headers;
-                this.path = this.dataDirectoryPath + "/" + this.settings.paths.file;
-                this.directory = Files.getParentPath(this.path);
-                console.log("Making", this.directory);
-                return RNFS.mkdir(this.directory);
-            }).then(() => {
-                // We touch all the files here so we can just use append all the time down below.
-                return Promise.all([ this.path, this.headersPath ].map(p => {
-                    return RNFS.touch(p, new Date());
-                }));
-            });
+            return Promise.resolve(true)
+                .then(() => {
+                    console.log("settings", this.settings);
+                    this.headersPath =
+                        this.dataDirectoryPath +
+                        "/" +
+                        this.settings.paths.headers;
+                    this.path =
+                        this.dataDirectoryPath + "/" + this.settings.paths.file;
+                    this.directory = Files.getParentPath(this.path);
+                    console.log("Making", this.directory);
+                    return RNFS.mkdir(this.directory);
+                })
+                .then(() => {
+                    // We touch all the files here so we can just use append all the time down below.
+                    return Promise.all(
+                        [this.path, this.headersPath].map(p => {
+                            return RNFS.touch(p, new Date());
+                        })
+                    );
+                });
         });
     }
 
@@ -143,13 +161,12 @@ export class DownloadWriter {
             this.readHeader = true;
             this.bytesTotal = header.fileData.size;
 
-            console.log('Header', header, headerData.length);
+            console.log("Header", header, headerData.length);
 
             this.appendToFile(headerData, this.headersPath);
 
             return this.append(remaining);
-        }
-        else {
+        } else {
             return this.append(data);
         }
     }
@@ -161,12 +178,15 @@ export class DownloadWriter {
     }
 
     fileSystemOp(resolve) {
-        return this.appendChain = this.appendChain.then(resolve);
+        return (this.appendChain = this.appendChain.then(resolve));
     }
 
     progress(type) {
         const now = new Date();
-        const fn = type == Types.DOWNLOAD_FILE_DONE ? this.dispatch : this.throttledDispatch;
+        const fn =
+            type == Types.DOWNLOAD_FILE_DONE
+                ? this.dispatch
+                : this.throttledDispatch;
 
         fn({
             type: type,
@@ -177,8 +197,8 @@ export class DownloadWriter {
                 bytesRead: this.bytesRead,
                 progress: this.bytesRead / this.bytesTotal,
                 started: this.started,
-                elapsed: now - this.started,
+                elapsed: now - this.started
             }
         });
     }
-};
+}
