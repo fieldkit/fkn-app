@@ -1,8 +1,6 @@
 import * as ActionTypes from "../actions/types";
 
-//suppiles the initial state
 export function giveLocation(state = {}, action) {
-    console.log("calling reducer");
     switch (action.type) {
         case ActionTypes.PHONE_LOC: {
             return {
