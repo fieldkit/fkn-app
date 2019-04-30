@@ -45,7 +45,8 @@
   "files": {
     "title": "Files",
     "download": "Download",
-    "delete": "Delete"
+    "delete": "Delete",
+    "map": "Map Data"
   },
   "liveData": {
     "title": "Live Data"
@@ -71,5 +72,8 @@
   },
   "mapScreen": {
     "title": "Map"
+  },
+  "dataMapScreen": {
+    "title": "Map Data"
   }
 }

@@ -1,75 +1,77 @@
 {
-    "global": {
-    },
-    "welcome": {
-        "title": "Bienvenue",
-        "connect": "Connect",
-        "browser": "Navigateu",
-        "mode": "Mode",
-        "about": "A propos de"
-    },
-    "about": {
-        "title": "Sur",
-        "welcome": "Bienvenue",
-        "commit": "Commettre:",
-        "tag": "Etiquette:",
-        "time": "Temps:"
-    },
-    "connecting": {
-        "title": "De liaison...",
-        "searching": "Recherche...",
-        "cancel": "Annuler"
-    },
-    "deviceMenu": {
-        "title": "Menu de l'appareil",
-        "files": "Fichiers",
-        "liveData": "Live Data",
-        "sensors": "Capteurs",
-        "configure": "Configure",
-        "home": "Maison"
-    },
-    "sensors": {
-        "title": "Capteurs"
-    },
-    "configure": {
-        "title": "Configurar",
-        "network": "Réseau",
-        "reset": "Reset"
-    },
-    "network": {
-        "title": "Réseau",
-        "save": "Enregistrer",
-        "cancel": "Annuler",
-        "edit": "Edit"
-    },
-    "files": {
-        "title": "Files",
-        "download": "Télécharger",
-        "delete": "Delete"
-    },
-    "liveData": {
-        "title": "Données en direct"
-    },
-    "browser": {
-        "title": "Navigateur"
-    },
-    "localFile": {
-        "title": "Fichier"
-    },
-    "easyMode": {
-        "title": "Bienvenue",
-        "noPendingFiles": "Aucun fichier en attente trouvé.",
-        "pendingFiles": "Il y a %{numberOfFiles} en attente de téléchargement.",
-        "noDevicesConnect": "Aucun périphérique trouvé. Essayez de vous connecter au point d’accès d’un périphérique FieldKit.",
-        "noDevices": "Aucun périphérique trouvé.",
-        "devicesFound": "Succès, périphérique(s) trouvé(s) {numberOfDevices}",
-        "deleteAll": "Supprimer Tout",
-        "archiveAll": "Archiver Tout"
-    },
-    "dataTable": {
-        "title": "Tableau de données"
-    },
-    "mapScreen": {
-        "title": "Carte"
-    }
+  "global": {},
+  "welcome": {
+    "title": "Bienvenue",
+    "connect": "Connect",
+    "browser": "Navigateu",
+    "mode": "Mode",
+    "about": "A propos de"
+  },
+  "about": {
+    "title": "Sur",
+    "welcome": "Bienvenue",
+    "commit": "Commettre:",
+    "tag": "Etiquette:",
+    "time": "Temps:"
+  },
+  "connecting": {
+    "title": "De liaison...",
+    "searching": "Recherche...",
+    "cancel": "Annuler"
+  },
+  "deviceMenu": {
+    "title": "Menu de l'appareil",
+    "files": "Fichiers",
+    "liveData": "Live Data",
+    "sensors": "Capteurs",
+    "configure": "Configure",
+    "home": "Maison"
+  },
+  "sensors": {
+    "title": "Capteurs"
+  },
+  "configure": {
+    "title": "Configurar",
+    "network": "Réseau",
+    "reset": "Reset"
+  },
+  "network": {
+    "title": "Réseau",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "edit": "Edit"
+  },
+  "files": {
+    "title": "Files",
+    "download": "Télécharger",
+    "delete": "Delete"
+  },
+  "liveData": {
+    "title": "Données en direct"
+  },
+  "browser": {
+    "title": "Navigateur"
+  },
+  "localFile": {
+    "title": "Fichier"
+  },
+  "easyMode": {
+    "title": "Bienvenue",
+    "noPendingFiles": "Aucun fichier en attente trouvé.",
+    "pendingFiles": "Il y a %{numberOfFiles} en attente de téléchargement.",
+    "noDevicesConnect": "Aucun périphérique trouvé. Essayez de vous connecter au point d’accès d’un périphérique FieldKit.",
+    "noDevices": "Aucun périphérique trouvé.",
+    "devicesFound": "Succès, périphérique(s) trouvé(s) {numberOfDevices}",
+    "deleteAll": "Supprimer Tout",
+    "archiveAll": "Archiver Tout"
+  },
+  "dataTable": {
+    "title": "Tableau de données"
+  },
+  "mapScreen": {
+    "title": "Carte"
+  },
+  "dataMapScreen": {
+    "title": "Marte Data"
+  }
 }

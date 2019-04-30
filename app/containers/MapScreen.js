@@ -12,6 +12,7 @@ import Config from "../config";
 import { View, Text, Image } from "react-native";
 
 import { AppScreen, MenuButtonContainer, MenuButton } from "../components";
+import { queryFiles } from "../actions";
 
 import {
   navigateBack,
@@ -81,11 +82,11 @@ class MapScreen extends React.Component {
       navigateBack,
       navigateMap,
       navigateWelcome,
-      giveLocation
+      giveLocation,
+      records
     } = this.props;
-
     if (giveLocation.phone !== undefined) {
-      console.log(giveLocation);
+      console.log("This is give location", giveLocation);
       let coordinateArray = [giveLocation.phone.long, giveLocation.phone.lat];
       return (
         <View style={styles.container}>
@@ -95,6 +96,9 @@ class MapScreen extends React.Component {
             centerCoordinate={coordinateArray}
             style={styles.container}
           >
+            <Mapbox.ShapeSource id="line1" shape={giveLocation.route}>
+              <Mapbox.LineLayer id="linelayer1" style={{ lineColor: "red" }} />
+            </Mapbox.ShapeSource>
             {giveLocation.sensors.map((coordinate, index) => {
               return this.renderAnnotations(coordinate, index);
             })}
@@ -117,9 +121,15 @@ MapScreen.propTypes = {
   navigateBack: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  giveLocation: state.giveLocation
-});
+const mapStateToProps = state => {
+  //const route = state.nav.routes[state.nav.index];
+  //const path = route.params.path;
+  return {
+    //path: path,
+    giveLocation: state.giveLocation
+    //records: state.localFiles.records[path] || {}
+  };
+};
 
 export default connect(
   mapStateToProps,
@@ -127,6 +137,7 @@ export default connect(
     navigateMap,
     location,
     navigateBack,
-    navigateWelcome
+    navigateWelcome,
+    queryFiles
   }
 )(MapScreen);
