@@ -1,79 +1,79 @@
 {
-  "global": {},
-  "welcome": {
-    "title": "Welcome",
-    "connect": "Connect",
-    "browser": "Browser",
-    "mode": "Easy Mode",
-    "map": "Map",
-    "about": "About"
-  },
-  "about": {
-    "title": "About",
-    "welcome": "Welcome",
-    "commit": "Commit:",
-    "tag": "Tag:",
-    "time": "Time:"
-  },
-  "connecting": {
-    "title": "Connecting...",
-    "searching": "Searching...",
-    "cancel": "Cancel"
-  },
-  "deviceMenu": {
-    "title": "Device Menu",
-    "files": "Files",
-    "liveData": "Live Data",
-    "sensors": "Sensors",
-    "configure": "Configure",
-    "home": "Home"
-  },
-  "sensors": {
-    "title": "Sensors"
-  },
-  "configure": {
-    "title": "Configure",
-    "network": "Network",
-    "reset": "Reset"
-  },
-  "network": {
-    "title": "Network",
-    "save": "Save",
-    "cancel": "Cancel",
-    "edit": "Edit"
-  },
-  "files": {
-    "title": "Files",
-    "download": "Download",
-    "delete": "Delete",
-    "map": "Map Data"
-  },
-  "liveData": {
-    "title": "Live Data"
-  },
-  "browser": {
-    "title": "Browser"
-  },
-  "localFile": {
-    "title": "File"
-  },
-  "easyMode": {
-    "title": "Welcome",
-    "noPendingFiles": "No pending files found.",
-    "pendingFiles": "There are %{numberOfFiles} file(s) pending for upload.",
-    "noDevicesConnect": "No devices found. Try connecting to a FieldKit device's AP.",
-    "noDevices": "No devices found.",
-    "devicesFound": "Success, %{numberOfDevices} device(s) found",
-    "deleteAll": "Delete All",
-    "archiveAll": "Archive All"
-  },
-  "dataTable": {
-    "title": "Data Table"
-  },
-  "mapScreen": {
-    "title": "Map"
-  },
-  "dataMapScreen": {
-    "title": "Map Data"
-  }
+    "global": {},
+    "welcome": {
+        "title": "Welcome",
+        "connect": "Connect",
+        "browser": "Browser",
+        "mode": "Easy Mode",
+        "map": "Map",
+        "about": "About"
+    },
+    "about": {
+        "title": "About",
+        "welcome": "Welcome",
+        "commit": "Commit:",
+        "tag": "Tag:",
+        "time": "Time:"
+    },
+    "connecting": {
+        "title": "Connecting...",
+        "searching": "Searching...",
+        "cancel": "Cancel"
+    },
+    "deviceMenu": {
+        "title": "Device Menu",
+        "files": "Files",
+        "liveData": "Live Data",
+        "sensors": "Sensors",
+        "configure": "Configure",
+        "home": "Home"
+    },
+    "sensors": {
+        "title": "Sensors"
+    },
+    "configure": {
+        "title": "Configure",
+        "network": "Network",
+        "reset": "Reset"
+    },
+    "network": {
+        "title": "Network",
+        "save": "Save",
+        "cancel": "Cancel",
+        "edit": "Edit"
+    },
+    "files": {
+        "title": "Files",
+        "download": "Download",
+        "delete": "Delete",
+        "map": "Map Data"
+    },
+    "liveData": {
+        "title": "Live Data"
+    },
+    "browser": {
+        "title": "Browser"
+    },
+    "localFile": {
+        "title": "File"
+    },
+    "easyMode": {
+        "title": "Welcome",
+        "noPendingFiles": "No pending files found.",
+        "pendingFiles": "There are %{numberOfFiles} file(s) pending for upload.",
+        "noDevicesConnect": "No devices found. Try connecting to a FieldKit device's AP.",
+        "noDevices": "No devices found.",
+        "devicesFound": "Success, %{numberOfDevices} device(s) found",
+        "deleteAll": "Delete All",
+        "archiveAll": "Archive All"
+    },
+    "dataTable": {
+        "title": "Data Table"
+    },
+    "mapScreen": {
+        "title": "Map"
+    },
+    "dataMapScreen": {
+        "title": "Map Data"
+    }
 }

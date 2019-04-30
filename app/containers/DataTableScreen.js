@@ -52,14 +52,14 @@ class DataRecordRow extends React.Component {
         const { metadata } = record;
 
         if (true) {
-      return <View />;
+            return <View />;
         }
 
         return (
             <View style={styles.dataTable.row.metadata}>
-        <Text style={{ paddingLeft: 0 }}>
-          {this.unixToString(metadata.time)}
-        </Text>
+                <Text style={{ paddingLeft: 0 }}>
+                    {this.unixToString(metadata.time)}
+                </Text>
                 <Text style={{ paddingLeft: 5 }}>{metadata.deviceId}</Text>
                 <Text style={{ paddingLeft: 5 }}>{metadata.git}</Text>
                 <Text style={{ paddingLeft: 5 }}>{metadata.build}</Text>
@@ -72,8 +72,12 @@ class DataRecordRow extends React.Component {
         const { status } = record;
         return (
             <View style={styles.dataTable.row.status}>
-                <Text style={{ paddingLeft: 0 }}>{this.unixToString(status.time)}</Text>
-                <Text style={{ paddingLeft: 5 }}>Battery: {parseInt(status.battery)}%</Text>
+                <Text style={{ paddingLeft: 0 }}>
+                    {this.unixToString(status.time)}
+                </Text>
+                <Text style={{ paddingLeft: 5 }}>
+                    Battery: {parseInt(status.battery)}%
+                </Text>
                 <Text style={{ paddingLeft: 5 }}>
                     Uptime: {status.uptime}ms
                 </Text>
@@ -90,29 +94,29 @@ class DataRecordRow extends React.Component {
 
             return (
                 <View style={styles.dataTable.row.reading}>
-          <Text style={{ paddingLeft: 0 }}>
-            {this.unixToString(reading.time)}
-          </Text>
+                    <Text style={{ paddingLeft: 0 }}>
+                        {this.unixToString(reading.time)}
+                    </Text>
                     <Text style={{ paddingLeft: 5 }}>
                         Sensor #{reading.sensor}
                     </Text>
                     <Text style={{ paddingLeft: 5 }}>{rounded}</Text>
                 </View>
             );
-    } else if (location) {
+        } else if (location) {
             return (
                 <View style={styles.dataTable.row.reading}>
-          <Text style={{ paddingLeft: 0 }}>
-            {this.unixToString(location.time)}
-          </Text>
-          <Text style={{ paddingLeft: 5 }}>
-            Location {location.longitude} x {location.latitude}
-          </Text>
+                    <Text style={{ paddingLeft: 0 }}>
+                        {this.unixToString(location.time)}
+                    </Text>
+                    <Text style={{ paddingLeft: 5 }}>
+                        Location {location.longitude} x {location.latitude}
+                    </Text>
                 </View>
             );
         }
 
-    return <View />;
+        return <View />;
     }
 
     renderLog(record) {
@@ -132,19 +136,19 @@ class DataRecordRow extends React.Component {
 class DataRecordListing extends React.Component {
     render() {
         const { records } = this.props;
-    console.log(records);
+        console.log(records);
 
         if (!_.isArray(records.records)) {
-      return <View />;
+            return <View />;
         }
 
         return (
             <View style={styles.dataTable.container}>
-        <FlatList
-          data={records.records}
-          renderItem={item => this.renderItem(item)}
-          keyExtractor={record => record.index.toString()}
-        />
+                <FlatList
+                    data={records.records}
+                    renderItem={item => this.renderItem(item)}
+                    keyExtractor={record => record.index.toString()}
+                />
             </View>
         );
     }
@@ -155,12 +159,12 @@ class DataRecordListing extends React.Component {
 }
 
 DataRecordListing.propTypes = {
-  records: PropTypes.object.isRequired
+    records: PropTypes.object.isRequired
 };
 
 class DataTableScreen extends React.Component {
-    static navigationOptions = ({navigation}) => {
-    return { title: i18n.t("dataTable.title") };
+    static navigationOptions = ({ navigation }) => {
+        return { title: i18n.t("dataTable.title") };
     };
 
     render() {
@@ -179,7 +183,7 @@ DataTableScreen.propTypes = {
     records: PropTypes.object.isRequired,
     navigateBack: PropTypes.func.isRequired,
     deleteFile: PropTypes.func.isRequired,
-  queryFiles: PropTypes.func.isRequired
+    queryFiles: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -187,15 +191,15 @@ const mapStateToProps = state => {
     const path = route.params.path;
     return {
         path: path,
-        records: state.localFiles.records[path] || { }
+        records: state.localFiles.records[path] || {}
     };
 };
 
 export default connect(
-  mapStateToProps,
-  {
-    navigateBack,
-    queryFiles,
-    deleteFile
-  }
+    mapStateToProps,
+    {
+        navigateBack,
+        queryFiles,
+        deleteFile
+    }
 )(DataTableScreen);

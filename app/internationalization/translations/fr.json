@@ -1,5 +1,5 @@
 {
-  "global": {},
+    "global": {},
     "welcome": {
         "title": "Bienvenue",
         "connect": "Connect",
@@ -70,8 +70,8 @@
     },
     "mapScreen": {
         "title": "Carte"
-  },
-  "dataMapScreen": {
-    "title": "Marte Data"
+    },
+    "dataMapScreen": {
+        "title": "Marte Data"
     }
 }

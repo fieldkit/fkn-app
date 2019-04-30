@@ -1,5 +1,5 @@
 {
-  "global": {},
+    "global": {},
     "welcome": {
         "title": "Bem Vinda",
         "connect": "Conectar",
@@ -70,8 +70,8 @@
     },
     "mapScreen": {
         "title": "Mapa"
-  },
-  "dataMapScreen": {
-    "title": "Mapa Data"
+    },
+    "dataMapScreen": {
+        "title": "Mapa Data"
     }
 }

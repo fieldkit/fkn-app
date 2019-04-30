@@ -12,16 +12,16 @@ import * as Files from "../lib/files";
 import { AppScreen, Loading, FileMenu, MenuButton } from "../components";
 
 import {
-  browseDirectory,
-  openLocalFile,
-  uploadLocalFile,
-  deleteLocalFile,
-  openDataMap
+    browseDirectory,
+    openLocalFile,
+    uploadLocalFile,
+    deleteLocalFile,
+    openDataMap
 } from "../actions";
 
 class LocalFileScreen extends React.Component {
-    static navigationOptions = ({navigation}) => {
-    return { title: i18n.t("localFile.title") };
+    static navigationOptions = ({ navigation }) => {
+        return { title: i18n.t("localFile.title") };
     };
 
     onOpen(entry, parentEntry) {
@@ -37,12 +37,12 @@ class LocalFileScreen extends React.Component {
         this.props.browseDirectory(parentEntry.relativePath);
     }
 
-  onOpenDataMap(entry, parentEntry) {
-    this.props.openDataMap(entry.relativePath);
-  }
+    onOpenDataMap(entry, parentEntry) {
+        this.props.openDataMap(entry.relativePath);
+    }
 
     render() {
-    const { onOpen, onUpload, onDelete, navigateDataMap } = this.props;
+        const { onOpen, onUpload, onDelete, navigateDataMap } = this.props;
         const { localFiles, path } = this.props;
 
         const file = Files.getFileEntry(localFiles, path);
@@ -52,13 +52,13 @@ class LocalFileScreen extends React.Component {
 
         return (
             <AppScreen background={false}>
-        <FileMenu
-          file={file}
-          onOpenDataMap={this.onOpenDataMap.bind(this)}
-          onOpen={this.onOpen.bind(this)}
-          onUpload={this.onUpload.bind(this)}
-          onDelete={this.onDelete.bind(this)}
-        />
+                <FileMenu
+                    file={file}
+                    onOpenDataMap={this.onOpenDataMap.bind(this)}
+                    onOpen={this.onOpen.bind(this)}
+                    onUpload={this.onUpload.bind(this)}
+                    onDelete={this.onDelete.bind(this)}
+                />
             </AppScreen>
         );
     }
@@ -69,22 +69,23 @@ LocalFileScreen.propTypes = {
     browseDirectory: PropTypes.func.isRequired,
     uploadLocalFile: PropTypes.func.isRequired,
     openLocalFile: PropTypes.func.isRequired,
-  deleteLocalFile: PropTypes.func.isRequired
+    deleteLocalFile: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
     const route = state.nav.routes[state.nav.index];
     return {
         path: route.params ? route.params.path : "/",
-    localFiles: state.localFiles
+        localFiles: state.localFiles
     };
 };
 
 export default connect(
-  mapStateToProps,
-  {
-    browseDirectory,
-    openLocalFile,
-    uploadLocalFile,
-    deleteLocalFile
-})(LocalFileScreen);
+    mapStateToProps,
+    {
+        browseDirectory,
+        openLocalFile,
+        uploadLocalFile,
+        deleteLocalFile
+    }
+)(LocalFileScreen);
