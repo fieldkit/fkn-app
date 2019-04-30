@@ -1,14 +1,12 @@
-import 'react-native';
+import "react-native";
 
-import React from 'react';
-import renderer from 'react-test-renderer';
+import React from "react";
+import renderer from "react-test-renderer";
 
-import AtlasCalibrationScreen from './AtlasCalibrationScreen';
+import AtlasCalibrationScreen from "./AtlasCalibrationScreen";
 
-describe('Atlas Plugin', () => {
-    describe('Calibration Screen', () => {
-        it('renders', () => {
-
-        });
+describe("Atlas Plugin", () => {
+    describe("Calibration Screen", () => {
+        it("renders", () => {});
     });
 });

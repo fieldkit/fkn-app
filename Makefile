@@ -8,8 +8,12 @@ test:
 
 setup:
 	npm install
+	git config core.hooksPath .githooks
 	rm -rf node_modules/*/.git
 	echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+
+prettier:
+	prettier --write './app/**/*.{ts,js,css,json}'
 
 clean:
 

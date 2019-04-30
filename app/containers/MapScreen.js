@@ -24,7 +24,7 @@ import {
 import { StyleSheet } from "react-native";
 
 import Mapbox from "@mapbox/react-native-mapbox-gl";
-import { MAPBOX_ACCESS_TOKEN, MAPBOX_STYLE } from "../../secrets";
+import { MAPBOX_ACCESS_TOKEN, MAPBOX_STYLE } from "../secrets";
 
 const styles = StyleSheet.create({
   container: {
@@ -87,7 +87,10 @@ class MapScreen extends React.Component {
     } = this.props;
     if (giveLocation.phone !== undefined) {
       console.log("This is give location", giveLocation);
-      let coordinateArray = [giveLocation.phone.long, giveLocation.phone.lat];
+            let coordinateArray = [
+                giveLocation.phone.long,
+                giveLocation.phone.lat
+            ];
       return (
         <View style={styles.container}>
           <Mapbox.MapView
@@ -126,7 +129,7 @@ const mapStateToProps = state => {
   //const path = route.params.path;
   return {
     //path: path,
-    giveLocation: state.giveLocation
+  giveLocation: state.giveLocation
     //records: state.localFiles.records[path] || {}
   };
 };

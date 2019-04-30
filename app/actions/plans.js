@@ -1,6 +1,6 @@
-import _ from 'lodash';
+import _ from "lodash";
 
-import * as Types from './types';
+import * as Types from "./types";
 
 export function executePlan(plan) {
     return {
@@ -8,4 +8,3 @@ export function executePlan(plan) {
         plan: plan
     };
 }
-

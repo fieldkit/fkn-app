@@ -1,19 +1,18 @@
-import { CALL_DEVICE_API } from '../middleware/device-api';
-import { QueryType } from '../lib/protocol';
+import { CALL_DEVICE_API } from "../middleware/device-api";
+import { QueryType } from "../lib/protocol";
 
-import * as Types from './types';
+import * as Types from "./types";
 
 export function deviceStartConnect() {
     // This will cause tests to take forever, they'll wait until the saga to
     // look completes. A quick hack, for now.
-    if (typeof __SPECS__ == 'undefined') {
+    if (typeof __SPECS__ == "undefined") {
         return {
-            type: Types.FIND_DEVICE_START,
+            type: Types.FIND_DEVICE_START
         };
-    }
-    else {
+    } else {
         return {
-            type: Types.NOOP,
+            type: Types.NOOP
         };
     }
 }
@@ -21,26 +20,30 @@ export function deviceStartConnect() {
 export function deviceSelect(address) {
     return {
         type: Types.FIND_DEVICE_SELECT,
-        address: address,
+        address: address
     };
 }
 
 export function deviceStopConnect() {
     return {
-        type: Types.FIND_DEVICE_STOP,
+        type: Types.FIND_DEVICE_STOP
     };
 }
 
 export function queryCapabilities(address) {
     return {
         [CALL_DEVICE_API]: {
-            types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
+            types: [
+                Types.DEVICE_CAPABILITIES_START,
+                Types.DEVICE_CAPABILITIES_SUCCESS,
+                Types.DEVICE_CAPABILITIES_FAIL
+            ],
             address: address,
             blocking: true,
             message: {
-                type: QueryType.values.QUERY_CAPABILITIES,
+                type: QueryType.values.QUERY_CAPABILITIES
             }
-        },
+        }
     };
 }
 
@@ -49,22 +52,30 @@ export function queryInfo() {
     return (dispatch, getState) => {
         dispatch({
             [CALL_DEVICE_API]: {
-                types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
+                types: [
+                    Types.DEVICE_CAPABILITIES_START,
+                    Types.DEVICE_CAPABILITIES_SUCCESS,
+                    Types.DEVICE_CAPABILITIES_FAIL
+                ],
                 blocking: true,
                 message: {
-                    type: QueryType.values.QUERY_CAPABILITIES,
+                    type: QueryType.values.QUERY_CAPABILITIES
                 }
-            },
+            }
         });
 
         dispatch({
             [CALL_DEVICE_API]: {
-                types: [Types.DEVICE_STATUS_START, Types.DEVICE_STATUS_SUCCESS, Types.DEVICE_STATUS_FAIL],
+                types: [
+                    Types.DEVICE_STATUS_START,
+                    Types.DEVICE_STATUS_SUCCESS,
+                    Types.DEVICE_STATUS_FAIL
+                ],
                 blocking: true,
                 message: {
-                    type: QueryType.values.QUERY_STATUS,
+                    type: QueryType.values.QUERY_STATUS
                 }
-            },
+            }
         });
     };
 }
@@ -72,12 +83,16 @@ export function queryInfo() {
 export function resetDevice() {
     return {
         [CALL_DEVICE_API]: {
-            types: [Types.DEVICE_RESET_START, Types.DEVICE_RESET_SUCCESS, Types.DEVICE_RESET_FAIL],
+            types: [
+                Types.DEVICE_RESET_START,
+                Types.DEVICE_RESET_SUCCESS,
+                Types.DEVICE_RESET_FAIL
+            ],
             blocking: true,
             noReply: true,
             message: {
-                type: QueryType.values.QUERY_RESET,
+                type: QueryType.values.QUERY_RESET
             }
-        },
+        }
     };
 }

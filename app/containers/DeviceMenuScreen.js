@@ -1,15 +1,21 @@
-import _ from 'lodash';
+import _ from "lodash";
 
-import RNLanguages from 'react-native-languages';
-import i18n from '../internationalization/i18n';
+import RNLanguages from "react-native-languages";
+import i18n from "../internationalization/i18n";
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import { View, Text } from 'react-native';
+import { View, Text } from "react-native";
 
-import { AppScreen, Loading, DeviceInfo, MenuButtonContainer, MenuButton } from '../components';
+import {
+    AppScreen,
+    Loading,
+    DeviceInfo,
+    MenuButtonContainer,
+    MenuButton
+} from "../components";
 
 import {
     navigateWelcome,
@@ -21,15 +27,15 @@ import {
     queryInfo,
     deviceStartConnect,
     deviceStopConnect
-} from '../actions';
+} from "../actions";
 
-import { selectedDevice } from '../reducers/selectors';
+import { selectedDevice } from "../reducers/selectors";
 
-import styles from '../styles';
+import styles from "../styles";
 
 class DeviceMenuScreen extends React.Component {
-    static navigationOptions = ({navigation}) => {
-        return { title: i18n.t('deviceMenu.title') };
+    static navigationOptions = ({ navigation }) => {
+        return { title: i18n.t("deviceMenu.title") };
     };
 
     componentDidMount() {
@@ -42,7 +48,13 @@ class DeviceMenuScreen extends React.Component {
         return (
             <View>
                 {deviceSpecificRoutes.home.routes.map((r, i) => {
-                    return <MenuButton key={i} title={r.title} onPress={() => this.props.navigateName(r.name)} />
+                    return (
+                        <MenuButton
+                            key={i}
+                            title={r.title}
+                            onPress={() => this.props.navigateName(r.name)}
+                        />
+                    );
                 })}
             </View>
         );
@@ -55,12 +67,27 @@ class DeviceMenuScreen extends React.Component {
             <AppScreen>
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
-                    <MenuButton title={i18n.t('deviceMenu.files')} onPress={() => this.props.navigateFiles()} />
-                    <MenuButton title={i18n.t('deviceMenu.liveData')} onPress={() => this.props.navigateLiveData()} />
-                    <MenuButton title={i18n.t('deviceMenu.sensors')} onPress={() => this.props.navigateSensors()} />
-                    <MenuButton title={i18n.t('deviceMenu.home')} onPress={() => this.props.navigateConfigure()} />
+                    <MenuButton
+                        title={i18n.t("deviceMenu.files")}
+                        onPress={() => this.props.navigateFiles()}
+                    />
+                    <MenuButton
+                        title={i18n.t("deviceMenu.liveData")}
+                        onPress={() => this.props.navigateLiveData()}
+                    />
+                    <MenuButton
+                        title={i18n.t("deviceMenu.sensors")}
+                        onPress={() => this.props.navigateSensors()}
+                    />
+                    <MenuButton
+                        title={i18n.t("deviceMenu.home")}
+                        onPress={() => this.props.navigateConfigure()}
+                    />
                     {this.renderDeviceSpecific()}
-                    <MenuButton title="Home" onPress={() => this.props.navigateWelcome()} />
+                    <MenuButton
+                        title="Home"
+                        onPress={() => this.props.navigateWelcome()}
+                    />
                 </MenuButtonContainer>
             </AppScreen>
         );
@@ -77,19 +104,22 @@ DeviceMenuScreen.propTypes = {
     queryInfo: PropTypes.func.isRequired,
     deviceInfo: PropTypes.object.isRequired,
     deviceCapabilities: PropTypes.object.isRequired,
-    deviceSpecificRoutes: PropTypes.object.isRequired,
+    deviceSpecificRoutes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => selectedDevice(state);
 
-export default connect(mapStateToProps, {
-    deviceStartConnect,
-    deviceStopConnect,
-    queryInfo,
-    navigateFiles,
-    navigateSensors,
-    navigateLiveData,
-    navigateConfigure,
-    navigateName,
-    navigateWelcome
-})(DeviceMenuScreen);
+export default connect(
+    mapStateToProps,
+    {
+        deviceStartConnect,
+        deviceStopConnect,
+        queryInfo,
+        navigateFiles,
+        navigateSensors,
+        navigateLiveData,
+        navigateConfigure,
+        navigateName,
+        navigateWelcome
+    }
+)(DeviceMenuScreen);

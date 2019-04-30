@@ -15,80 +15,80 @@ import MapScreen from "../containers/MapScreen";
 import DataMapScreen from "../containers/DataMapScreen";
 
 export class ApplicationRoutesManager {
-  constructor() {
-    this.routes = {
-      Welcome: {
-        path: "/",
-        screen: WelcomeScreen
-      },
-      Connecting: {
-        path: "/connecting",
-        screen: ConnectingScreen
-      },
-      DeviceMenu: {
-        path: "/device",
-        screen: DeviceMenuScreen
-      },
-      Sensors: {
-        path: "/sensors",
-        screen: SensorsScreen
-      },
-      Configure: {
-        path: "/configure",
-        screen: ConfigureScreen
-      },
-      Network: {
-        path: "/network",
-        screen: NetworkScreen
-      },
-      Files: {
-        path: "/files",
-        screen: FilesScreen
-      },
-      LiveData: {
-        path: "/live-data",
-        screen: LiveDataScreen
-      },
-      About: {
-        path: "/about",
-        screen: AboutScreen
-      },
-      EasyModeWelcome: {
-        path: "/easy-mode",
-        screen: EasyModeScreen
-      },
-      Browser: {
-        path: "/browser",
-        screen: BrowserScreen
-      },
-      LocalFile: {
-        path: "/local-file",
-        screen: LocalFileScreen
-      },
-      DataTable: {
-        path: "/data-table",
-        screen: DataTableScreen
-      },
-      Map: {
-        path: "/map",
-        screen: MapScreen
-      },
-      DataMap: {
-        path: "/data-map",
-        screen: DataMapScreen
-      }
-    };
-  }
+    constructor() {
+        this.routes = {
+            Welcome: {
+                path: "/",
+                screen: WelcomeScreen
+            },
+            Connecting: {
+                path: "/connecting",
+                screen: ConnectingScreen
+            },
+            DeviceMenu: {
+                path: "/device",
+                screen: DeviceMenuScreen
+            },
+            Sensors: {
+                path: "/sensors",
+                screen: SensorsScreen
+            },
+            Configure: {
+                path: "/configure",
+                screen: ConfigureScreen
+            },
+            Network: {
+                path: "/network",
+                screen: NetworkScreen
+            },
+            Files: {
+                path: "/files",
+                screen: FilesScreen
+            },
+            LiveData: {
+                path: "/live-data",
+                screen: LiveDataScreen
+            },
+            About: {
+                path: "/about",
+                screen: AboutScreen
+            },
+            EasyModeWelcome: {
+                path: "/easy-mode",
+                screen: EasyModeScreen
+            },
+            Browser: {
+                path: "/browser",
+                screen: BrowserScreen
+            },
+            LocalFile: {
+                path: "/local-file",
+                screen: LocalFileScreen
+            },
+            DataTable: {
+                path: "/data-table",
+                screen: DataTableScreen
+            },
+            Map: {
+                path: "/map",
+                screen: MapScreen
+            },
+            DataMap: {
+                path: "/data-map",
+                screen: DataMapScreen
+            }
+        };
+    }
 
-  getRoutes() {
-    console.log("Returning routes");
-    return this.routes;
-  }
+    getRoutes() {
+        console.log("Returning routes");
+        return this.routes;
+    }
 
-  register(routes) {
-    console.log("Registering", routes);
-    Object.assign(this.routes, routes);
-  }
+    register(routes) {
+        console.log("Registering", routes);
+        Object.assign(this.routes, routes);
+    }
 }
 
 export const routesManager = new ApplicationRoutesManager();

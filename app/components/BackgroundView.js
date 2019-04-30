@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, ImageBackground } from 'react-native';
+import React from "react";
+import { View, ImageBackground } from "react-native";
 
-import styles from '../styles';
+import styles from "../styles";
 
 export class BackgroundView extends React.Component {
     render() {
@@ -9,14 +9,13 @@ export class BackgroundView extends React.Component {
 
         return (
             <ImageBackground
-                source={require('../../assets/fk-background.png')} 
+                source={require("../../assets/fk-background.png")}
                 style={{
-                    width: '100%',
-                    height: '100%',
-                }}>
-                <View style={this.props.style}>
-                    {children}
-                </View>
+                    width: "100%",
+                    height: "100%"
+                }}
+            >
+                <View style={this.props.style}>{children}</View>
             </ImageBackground>
         );
     }

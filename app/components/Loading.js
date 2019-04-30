@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import { View, Text } from 'react-native';
-import styles from '../styles';
+import { View, Text } from "react-native";
+import styles from "../styles";
 
 export class Loading extends React.Component {
     render() {

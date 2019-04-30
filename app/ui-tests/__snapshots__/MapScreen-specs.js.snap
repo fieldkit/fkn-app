@@ -38,6 +38,19 @@ exports[`<MapScreen/> render() renders the component 1`] = `
     userTrackingMode="None"
     zoomLevel={15}
   >
+    <ShapeSource
+      id="line1"
+    >
+      <LineLayer
+        id="linelayer1"
+        sourceID="DefaultSourceID"
+        style={
+          Object {
+            "lineColor": "red",
+          }
+        }
+      />
+    </ShapeSource>
     <PointAnnotation
       anchor={
         Object {

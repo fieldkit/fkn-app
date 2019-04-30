@@ -1,35 +1,44 @@
-import _ from 'lodash';
+import _ from "lodash";
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import RNLanguages from 'react-native-languages';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import RNLanguages from "react-native-languages";
 
-import i18n from '../internationalization/i18n';
+import i18n from "../internationalization/i18n";
 
-import { View, Button, Text, TextInput } from 'react-native';
+import { View, Button, Text, TextInput } from "react-native";
 
-import { AppScreen, SmallButton, Loading, DeviceInfo } from '../components';
+import { AppScreen, SmallButton, Loading, DeviceInfo } from "../components";
 
-import { navigateNetwork, navigateBack, queryConfiguration, saveNetworkConfiguration } from '../actions';
+import {
+    navigateNetwork,
+    navigateBack,
+    queryConfiguration,
+    saveNetworkConfiguration
+} from "../actions";
 
-import { selectedDevice } from '../reducers/selectors';
+import { selectedDevice } from "../reducers/selectors";
 
-import styles, { Colors } from '../styles';
+import styles, { Colors } from "../styles";
 
 class NetworkInfo extends React.Component {
     constructor() {
         super();
         this.state = {
             editing: false,
-            ssid: "",
+            ssid: ""
         };
     }
 
     onEdit() {
         const { network } = this.props;
 
-        this.setState({ editing: true, ssid: network.ssid, password: network.password });
+        this.setState({
+            editing: true,
+            ssid: network.ssid,
+            password: network.password
+        });
     }
 
     onCancel() {
@@ -52,12 +61,30 @@ class NetworkInfo extends React.Component {
             return (
                 <View style={styles.networks.network.editing.container}>
                     <View>
-                        <TextInput style={styles.networks.network.editing.ssid} value={ssid} onChangeText={(text) => this.setState({ ssid: text })} />
-                        <TextInput style={styles.networks.network.editing.password} value={password} onChangeText={(text) => this.setState({ password: text })} />
+                        <TextInput
+                            style={styles.networks.network.editing.ssid}
+                            value={ssid}
+                            onChangeText={text => this.setState({ ssid: text })}
+                        />
+                        <TextInput
+                            style={styles.networks.network.editing.password}
+                            value={password}
+                            onChangeText={text =>
+                                this.setState({ password: text })
+                            }
+                        />
                     </View>
-                    <View style={{flexDirection: 'row'}}>
-                        <SmallButton title={i18n.t('network.save')} onPress={() => this.onSave()} color={Colors.secondaryButton} />
-                        <SmallButton title={i18n.t('network.cancel')} onPress={() => this.onCancel()} color={Colors.secondaryButton} />
+                    <View style={{ flexDirection: "row" }}>
+                        <SmallButton
+                            title={i18n.t("network.save")}
+                            onPress={() => this.onSave()}
+                            color={Colors.secondaryButton}
+                        />
+                        <SmallButton
+                            title={i18n.t("network.cancel")}
+                            onPress={() => this.onCancel()}
+                            color={Colors.secondaryButton}
+                        />
                     </View>
                 </View>
             );
@@ -65,22 +92,27 @@ class NetworkInfo extends React.Component {
 
         return (
             <View style={styles.networks.network.viewing.container}>
-                <View style={{flex: 2, flexDirection: 'column'}}>
-                    <Text style={styles.networks.network.viewing.ssid}>{network.ssid}</Text>
+                <View style={{ flex: 2, flexDirection: "column" }}>
+                    <Text style={styles.networks.network.viewing.ssid}>
+                        {network.ssid}
+                    </Text>
                 </View>
-                <View style={{flex: 1, flexDirection: 'column'}}>
-                    <SmallButton title={i18n.t('network.edit')} onPress={() => this.onEdit(network)} color={Colors.secondaryButton} />
+                <View style={{ flex: 1, flexDirection: "column" }}>
+                    <SmallButton
+                        title={i18n.t("network.edit")}
+                        onPress={() => this.onEdit(network)}
+                        color={Colors.secondaryButton}
+                    />
                 </View>
             </View>
         );
     }
-};
+}
 
 class NetworkScreen extends React.Component {
-    static navigationOptions = ({navigation}) => {
-        return { title: i18n.t('network.title') };
+    static navigationOptions = ({ navigation }) => {
+        return { title: i18n.t("network.title") };
     };
-
 
     componentWillMount() {
         this.props.queryConfiguration();
@@ -88,7 +120,9 @@ class NetworkScreen extends React.Component {
 
     onSaveNetwork(index, old, modified) {
         const { saveNetworkConfiguration, deviceConfiguration } = this.props;
-        const newNetworkConfiguration = _.cloneDeep(deviceConfiguration.network);
+        const newNetworkConfiguration = _.cloneDeep(
+            deviceConfiguration.network
+        );
         newNetworkConfiguration.networks[index] = modified;
         saveNetworkConfiguration(newNetworkConfiguration);
     }
@@ -102,7 +136,15 @@ class NetworkScreen extends React.Component {
                 <View style={styles.networks.container}>
                     <Text style={styles.networks.heading}>Saved Networks:</Text>
 
-                    {deviceConfiguration.network.networks.map((network, i) => <NetworkInfo key={i} network={network} onSave={modified => this.onSaveNetwork(i, network, modified)} />)}
+                    {deviceConfiguration.network.networks.map((network, i) => (
+                        <NetworkInfo
+                            key={i}
+                            network={network}
+                            onSave={modified =>
+                                this.onSaveNetwork(i, network, modified)
+                            }
+                        />
+                    ))}
                 </View>
             </AppScreen>
         );
@@ -114,13 +156,16 @@ NetworkScreen.propTypes = {
     queryConfiguration: PropTypes.func.isRequired,
     saveNetworkConfiguration: PropTypes.func.isRequired,
     deviceInfo: PropTypes.object.isRequired,
-    deviceConfiguration: PropTypes.object.isRequired,
+    deviceConfiguration: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => selectedDevice(state);
 
-export default connect(mapStateToProps, {
-    navigateBack,
-    queryConfiguration,
-    saveNetworkConfiguration,
-})(NetworkScreen);
+export default connect(
+    mapStateToProps,
+    {
+        navigateBack,
+        queryConfiguration,
+        saveNetworkConfiguration
+    }
+)(NetworkScreen);

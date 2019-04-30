@@ -23,7 +23,7 @@ const loggerMiddleware = createLogger({
     action.type != Types.DEVICE_HANDSHAKE_SUCCESS,
   collapsed: (getState, action) =>
     action.type === Types.FIND_DEVICE_INFO || true,
-  _stateTransformer: state => {
+    _stateTransformer: state => {
     return "state";
   }
 });
@@ -31,27 +31,27 @@ const loggerMiddleware = createLogger({
 const sagaMiddleware = createSagaMiddleware();
 
 export function configureStore(reducer, initialState) {
-  const enhancer = compose(
-    applyMiddleware(
-      thunkMiddleware, // lets us dispatch() functions
-      webApiMiddleware,
-      deviceApiMiddleware,
-      sagaMiddleware,
+    const enhancer = compose(
+        applyMiddleware(
+            thunkMiddleware, // lets us dispatch() functions
+            webApiMiddleware,
+            deviceApiMiddleware,
+            sagaMiddleware,
       loggerMiddleware
     )
-  );
-  return createStore(reducer, initialState, enhancer);
+    );
+    return createStore(reducer, initialState, enhancer);
 }
 
 export function* allSagas() {
-  const pluginSagas = pluginManager.getSagas();
+    const pluginSagas = pluginManager.getSagas();
   const invoked = _(pluginSagas)
     .concat([rootSaga])
     .map(s => s())
     .value();
-  yield all(invoked);
+    yield all(invoked);
 }
 
 export function runSagas() {
-  return sagaMiddleware.run(allSagas);
+    return sagaMiddleware.run(allSagas);
 }

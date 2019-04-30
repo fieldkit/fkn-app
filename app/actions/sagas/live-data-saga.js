@@ -1,16 +1,29 @@
-import { delay } from 'redux-saga';
-import { put, take, takeLatest, takeEvery, select, all, race, call } from 'redux-saga/effects';
+import { delay } from "redux-saga";
+import {
+    put,
+    take,
+    takeLatest,
+    takeEvery,
+    select,
+    all,
+    race,
+    call
+} from "redux-saga/effects";
 
-import * as Types from '../types';
+import * as Types from "../types";
 
-import { QueryType } from '../../lib/protocol';
+import { QueryType } from "../../lib/protocol";
 
-import { deviceCall } from './saga-utils';
+import { deviceCall } from "./saga-utils";
 
 export function* deviceLiveDataPoll(interval) {
     const state = yield select();
     yield call(deviceCall, {
-        types: [Types.DEVICE_LIVE_DATA_POLL_START, Types.DEVICE_LIVE_DATA_POLL_SUCCESS, Types.DEVICE_LIVE_DATA_POLL_FAIL],
+        types: [
+            Types.DEVICE_LIVE_DATA_POLL_START,
+            Types.DEVICE_LIVE_DATA_POLL_SUCCESS,
+            Types.DEVICE_LIVE_DATA_POLL_FAIL
+        ],
         address: state.deviceStatus.connected,
         message: {
             type: QueryType.values.QUERY_LIVE_DATA_POLL,
@@ -31,15 +44,14 @@ export function* liveDataSaga() {
             try {
                 yield deviceLiveDataPoll(1000);
                 numberOfErrors = 0;
-            }
-            catch (err) {
+            } catch (err) {
                 numberOfErrors++;
                 console.log(err);
             }
 
             const { stop } = yield race({
                 stop: take(Types.LIVE_DATA_POLL_STOP),
-                delay: delay(5000),
+                delay: delay(5000)
             });
 
             if (stop) {
@@ -50,8 +62,7 @@ export function* liveDataSaga() {
 
         try {
             yield deviceLiveDataPoll(0);
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
     });

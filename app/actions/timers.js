@@ -1,4 +1,4 @@
-import * as ActionTypes from './types';
+import * as ActionTypes from "./types";
 
 export function timerStart(name, seconds) {
     return {
@@ -6,7 +6,7 @@ export function timerStart(name, seconds) {
         name: name,
         seconds: seconds,
         remaining: seconds,
-        done: false,
+        done: false
     };
 }
 
@@ -16,14 +16,14 @@ export function timerTick(name, seconds, remaining) {
         name: name,
         seconds: seconds,
         remaining: remaining,
-        done: false,
+        done: false
     };
 }
 
 export function timerCancel(name) {
     return {
         type: ActionTypes.TIMER_CANCEL,
-        name: name,
+        name: name
     };
 }
 
@@ -33,6 +33,6 @@ export function timerDone(name, seconds) {
         name: name,
         seconds: seconds,
         remaining: 0,
-        done: true,
+        done: true
     };
 }

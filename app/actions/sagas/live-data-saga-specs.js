@@ -1,16 +1,16 @@
-import 'react-native';
+import "react-native";
 
-import SagaTester from 'redux-saga-tester';
+import SagaTester from "redux-saga-tester";
 import Promise from "bluebird";
 
-import { useFakeDeviceConnection } from '../../middleware/device-api';
-import { QueryType, ReplyType } from '../../lib/protocol';
+import { useFakeDeviceConnection } from "../../middleware/device-api";
+import { QueryType, ReplyType } from "../../lib/protocol";
 
-import * as Types from '../types';
+import * as Types from "../types";
 
-import { liveDataSaga } from './live-data-saga';
+import { liveDataSaga } from "./live-data-saga";
 
-describe('live data saga', () => {
+describe("live data saga", () => {
     let tester;
     let fakeDevice;
 
@@ -26,23 +26,30 @@ describe('live data saga', () => {
         tester.start(liveDataSaga);
     });
 
-    it.skip('should poll for data until stopped', async () => {
+    it.skip("should poll for data until stopped", async () => {
         for (let i = 0; i < 3; ++i) {
-            fakeDevice.push({}, {
-                type: ReplyType.values.REPLY_LATEST_DATA_SET,
-                dataSets: {
-                    dataSets: [{
-                        pages: 2
-                    }]
+            fakeDevice.push(
+                {},
+                {
+                    type: ReplyType.values.REPLY_LATEST_DATA_SET,
+                    dataSets: {
+                        dataSets: [
+                            {
+                                pages: 2
+                            }
+                        ]
+                    }
                 }
-            });
+            );
         }
 
         tester.dispatch({
             type: Types.LIVE_DATA_POLL_START
         });
 
-        const pollStart = await tester.waitFor(Types.DEVICE_LIVE_DATA_POLL_START);
+        const pollStart = await tester.waitFor(
+            Types.DEVICE_LIVE_DATA_POLL_START
+        );
 
         expect(pollStart.message.liveDataPoll.interval).toBe(1000);
 
@@ -69,4 +76,3 @@ describe('live data saga', () => {
         expect(fakeDevice.queue).toHaveLength(0);
     });
 });
-

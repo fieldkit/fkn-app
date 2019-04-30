@@ -1,6 +1,6 @@
-import _ from 'lodash';
-import { hexArrayBuffer } from '../lib/base64';
-import { getFileInformation } from '../lib/files';
+import _ from "lodash";
+import { hexArrayBuffer } from "../lib/base64";
+import { getFileInformation } from "../lib/files";
 
 function lpadZeros(value, padding) {
     var zeroes = new Array(padding + 1).join("0");
@@ -8,11 +8,23 @@ function lpadZeros(value, padding) {
 }
 
 function makeFilename(directory, id, version, offset, name) {
-    return directory + "/" + id + "_" + lpadZeros(version, 6) + "_offset_" + offset + "_" + name;
+    return (
+        directory +
+        "/" +
+        id +
+        "_" +
+        lpadZeros(version, 6) +
+        "_offset_" +
+        offset +
+        "_" +
+        name
+    );
 }
 
 function makeHeadersFilename(directory, id, version, name) {
-    return directory + "/" + id + "_" + lpadZeros(version, 6) + "_headers_" + name;
+    return (
+        directory + "/" + id + "_" + lpadZeros(version, 6) + "_headers_" + name
+    );
 }
 
 export function getDownloadSettings(device, file) {
@@ -22,7 +34,12 @@ export function getDownloadSettings(device, file) {
         length: 0,
         paths: {
             file: makeFilename(directory, file.id, file.version, 0, file.name),
-            headers: makeHeadersFilename(directory, file.id, file.version, file.name)
+            headers: makeHeadersFilename(
+                directory,
+                file.id,
+                file.version,
+                file.name
+            )
         }
     };
     return Promise.resolve(settings);
@@ -33,35 +50,48 @@ class DownloadPlanGenerator {
         this.config = config;
         this.deviceId = remote.deviceId;
         this.address = remote.address;
-        this.infos = _(local.files).filter(entry => !entry.directory).map(entry => getFileInformation(entry)).filter(info => _.isObject(info)).value();
+        this.infos = _(local.files)
+            .filter(entry => !entry.directory)
+            .map(entry => getFileInformation(entry))
+            .filter(info => _.isObject(info))
+            .value();
         this.remote = remote;
     }
 
     generateChunks(size, chunked) {
         const numberOfChunks = size / chunked;
-        return _(_.range(0, size, chunked)).map(i => {
-            return {
-                offset: i,
-                length: i + chunked < size ? chunked : (size - i)
-            };
-        }).reverse().value();
+        return _(_.range(0, size, chunked))
+            .map(i => {
+                return {
+                    offset: i,
+                    length: i + chunked < size ? chunked : size - i
+                };
+            })
+            .reverse()
+            .value();
     }
 
     generate() {
         const plan = _(this.config)
             .map(config => {
-                const remote = _(this.remote.files).filter(i => i.id === config.fileId).first();
+                const remote = _(this.remote.files)
+                    .filter(i => i.id === config.fileId)
+                    .first();
                 if (remote == null) {
                     return null;
                 }
 
-                const locals = _(this.infos).filter(i => !i.headers).filter(i => i.fileId === config.fileId).filter(i => i.version === remote.version).value();
+                const locals = _(this.infos)
+                    .filter(i => !i.headers)
+                    .filter(i => i.fileId === config.fileId)
+                    .filter(i => i.version === remote.version)
+                    .value();
 
                 return {
                     directory: "/" + this.deviceId,
                     config: config,
                     remote: remote,
-                    locals: locals,
+                    locals: locals
                 };
             })
             .filter(row => {
@@ -74,15 +104,29 @@ class DownloadPlanGenerator {
                 const { directory, config, remote, locals } = row;
 
                 if (config.chunked > 0) {
-                    const chunks = this.generateChunks(remote.size, config.chunked);
+                    const chunks = this.generateChunks(
+                        remote.size,
+                        config.chunked
+                    );
 
                     function chunkToDownload(row) {
                         const { chunk } = row;
                         return {
                             download: {
                                 address: this.address,
-                                file: makeFilename(directory, config.fileId, remote.version, chunk.offset, remote.name),
-                                headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
+                                file: makeFilename(
+                                    directory,
+                                    config.fileId,
+                                    remote.version,
+                                    chunk.offset,
+                                    remote.name
+                                ),
+                                headers: makeHeadersFilename(
+                                    directory,
+                                    config.fileId,
+                                    remote.version,
+                                    remote.name
+                                ),
                                 id: config.fileId,
                                 offset: chunk.offset + row.localSize,
                                 length: chunk.length - row.localSize
@@ -90,33 +134,49 @@ class DownloadPlanGenerator {
                         };
                     }
 
-                    const chunkPlans = _(chunks)
-                        .map(chunk => {
-                            const localSize = _(locals).filter(i => i.offset === chunk.offset).map(i => i.entry.size).first() || 0;
+                    const chunkPlans = _(chunks).map(chunk => {
+                        const localSize =
+                            _(locals)
+                                .filter(i => i.offset === chunk.offset)
+                                .map(i => i.entry.size)
+                                .first() || 0;
 
-                            return {
-                                localSize: localSize,
-                                remaining: chunk.length - localSize,
-                                begun: localSize > 0,
-                                completed: chunk.length == localSize,
-                                chunk: chunk
-                            };
-                        });
+                        return {
+                            localSize: localSize,
+                            remaining: chunk.length - localSize,
+                            begun: localSize > 0,
+                            completed: chunk.length == localSize,
+                            chunk: chunk
+                        };
+                    });
 
                     const test = [
-                        chunkPlans.filter(cp => cp.begun && !cp.completed).map(chunkToDownload.bind(this)).value(),
-                        chunkPlans.filter(cp => !cp.begun && !cp.completed).map(chunkToDownload.bind(this)).first(),
+                        chunkPlans
+                            .filter(cp => cp.begun && !cp.completed)
+                            .map(chunkToDownload.bind(this))
+                            .value(),
+                        chunkPlans
+                            .filter(cp => !cp.begun && !cp.completed)
+                            .map(chunkToDownload.bind(this))
+                            .first()
                     ];
 
                     return _.flatten(test);
-                }
-                else if (config.tail > 0) {
+                } else if (config.tail > 0) {
                     let offset = 0;
                     if (remote.size > config.tail) {
                         offset = remote.size - config.tail;
                     }
 
-                    if (_(locals).filter(lf => lf.offset == offset && lf.entry.size == config.tail).some()) {
+                    if (
+                        _(locals)
+                            .filter(
+                                lf =>
+                                    lf.offset == offset &&
+                                    lf.entry.size == config.tail
+                            )
+                            .some()
+                    ) {
                         return [];
                     }
 
@@ -127,16 +187,29 @@ class DownloadPlanGenerator {
                     return {
                         download: {
                             address: this.address,
-                            file: makeFilename(directory, config.fileId, remote.version, offset, remote.name),
-                            headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
+                            file: makeFilename(
+                                directory,
+                                config.fileId,
+                                remote.version,
+                                offset,
+                                remote.name
+                            ),
+                            headers: makeHeadersFilename(
+                                directory,
+                                config.fileId,
+                                remote.version,
+                                remote.name
+                            ),
                             id: config.fileId,
                             offset: offset,
                             length: config.tail
                         }
                     };
-                }
-                else {
-                    const existingLocalFile = _(locals).orderBy(lf => lf.offset).reverse().first() || { entry: { size: 0 }, offset: 0 };
+                } else {
+                    const existingLocalFile = _(locals)
+                        .orderBy(lf => lf.offset)
+                        .reverse()
+                        .first() || { entry: { size: 0 }, offset: 0 };
                     const sizeOfExisting = existingLocalFile.entry.size;
 
                     if (sizeOfExisting > remote.size) {
@@ -149,8 +222,19 @@ class DownloadPlanGenerator {
                             {
                                 download: {
                                     address: this.address,
-                                    file: makeFilename(directory, config.fileId, remote.version, existingLocalFile.offset, remote.name),
-                                    headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
+                                    file: makeFilename(
+                                        directory,
+                                        config.fileId,
+                                        remote.version,
+                                        existingLocalFile.offset,
+                                        remote.name
+                                    ),
+                                    headers: makeHeadersFilename(
+                                        directory,
+                                        config.fileId,
+                                        remote.version,
+                                        remote.name
+                                    ),
                                     id: config.fileId,
                                     offset: 0 + existingLocalFile.offset,
                                     length: 0
@@ -166,8 +250,19 @@ class DownloadPlanGenerator {
                     return {
                         download: {
                             address: this.address,
-                            file: makeFilename(directory, config.fileId, remote.version, existingLocalFile.offset, remote.name),
-                            headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
+                            file: makeFilename(
+                                directory,
+                                config.fileId,
+                                remote.version,
+                                existingLocalFile.offset,
+                                remote.name
+                            ),
+                            headers: makeHeadersFilename(
+                                directory,
+                                config.fileId,
+                                remote.version,
+                                remote.name
+                            ),
                             id: config.fileId,
                             offset: sizeOfExisting + existingLocalFile.offset,
                             length: 0
@@ -188,13 +283,23 @@ class DownloadPlanGenerator {
 class UploadPlanGenerator {
     constructor(config, local) {
         this.config = config;
-        this.infos = _(local.files).filter(entry => !entry.directory).map(entry => getFileInformation(entry)).filter(info => _.isObject(info)).value();
+        this.infos = _(local.files)
+            .filter(entry => !entry.directory)
+            .map(entry => getFileInformation(entry))
+            .filter(info => _.isObject(info))
+            .value();
     }
 
     generate() {
-        const metadata = _(this.infos).filter(f => f.metadata).first();
-        const nonEmpty = _(this.infos).filter(f => f.entry.size > 0).value();
-        const dataFiles = _(nonEmpty).filter(f => _.isNumber(f.offset)).value();
+        const metadata = _(this.infos)
+            .filter(f => f.metadata)
+            .first();
+        const nonEmpty = _(this.infos)
+            .filter(f => f.entry.size > 0)
+            .value();
+        const dataFiles = _(nonEmpty)
+            .filter(f => _.isNumber(f.offset))
+            .value();
 
         const plan = _(dataFiles)
             .map(file => {
@@ -203,7 +308,9 @@ class UploadPlanGenerator {
                 return [
                     {
                         upload: {
-                            metadata: metadata ? metadata.entry.relativePath : null,
+                            metadata: metadata
+                                ? metadata.entry.relativePath
+                                : null,
                             file: file.entry.relativePath,
                             headers: {
                                 deviceId: file.deviceId,
@@ -218,7 +325,13 @@ class UploadPlanGenerator {
                     {
                         archive: {
                             file: file.entry.relativePath,
-                            touch: makeFilename(directory, file.fileId, file.version, file.entry.size, file.name),
+                            touch: makeFilename(
+                                directory,
+                                file.fileId,
+                                file.version,
+                                file.entry.size,
+                                file.name
+                            )
                         }
                     }
                 ];

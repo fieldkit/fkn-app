@@ -1,15 +1,21 @@
-import _ from 'lodash';
-import moment from 'moment';
+import _ from "lodash";
+import moment from "moment";
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { View, Text, ScrollView, FlatList, TouchableOpacity } from 'react-native';
+import React from "react";
+import PropTypes from "prop-types";
+import {
+    View,
+    Text,
+    ScrollView,
+    FlatList,
+    TouchableOpacity
+} from "react-native";
 
-import * as Files from '../lib/files';
+import * as Files from "../lib/files";
 
-import { Loading, MenuButtonContainer, MenuButton } from '../components';
+import { Loading, MenuButtonContainer, MenuButton } from "../components";
 
-import styles from '../styles';
+import styles from "../styles";
 
 export class DirectoryEntry extends React.Component {
     render() {
@@ -18,8 +24,8 @@ export class DirectoryEntry extends React.Component {
         return (
             <TouchableOpacity onPress={() => onSelect(entry)}>
                 <View style={style.container}>
-                { entry.directory && this.renderDirectory(entry)}
-                {!entry.directory && this.renderFile(entry)}
+                    {entry.directory && this.renderDirectory(entry)}
+                    {!entry.directory && this.renderFile(entry)}
                 </View>
             </TouchableOpacity>
         );
@@ -30,8 +36,11 @@ export class DirectoryEntry extends React.Component {
 
         return (
             <View>
-              <Text style={style.text}>{entry.name} <Text style={{ fontSize: 12 }}>({entry.size})</Text></Text>
-              <Text style={style.modified}>{entry.modifiedPretty}</Text>
+                <Text style={style.text}>
+                    {entry.name}{" "}
+                    <Text style={{ fontSize: 12 }}>({entry.size})</Text>
+                </Text>
+                <Text style={style.modified}>{entry.modifiedPretty}</Text>
             </View>
         );
     }
@@ -45,7 +54,7 @@ export class DirectoryEntry extends React.Component {
 DirectoryEntry.propTypes = {
     style: PropTypes.object.isRequired,
     entry: PropTypes.object.isRequired,
-    onSelect: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired
 };
 
 export class DirectoryListing extends React.Component {
@@ -55,17 +64,31 @@ export class DirectoryListing extends React.Component {
         return (
             <View style={styles.browser.listing.container}>
                 <View style={styles.browser.listing.path.container}>
-                    <Text style={styles.browser.listing.path.text}>{Files.getPathName(path)}</Text>
+                    <Text style={styles.browser.listing.path.text}>
+                        {Files.getPathName(path)}
+                    </Text>
                 </View>
 
-                {parent && <DirectoryEntry style={styles.browser.listing.back} entry={parent} onSelect={onSelectEntry} />}
+                {parent && (
+                    <DirectoryEntry
+                        style={styles.browser.listing.back}
+                        entry={parent}
+                        onSelect={onSelectEntry}
+                    />
+                )}
 
                 <FlatList
                     style={{ marginBottom: 100 }}
                     data={listing}
                     keyExtractor={(entry, index) => index.toString()}
-                    renderItem={({item}) => <DirectoryEntry style={styles.browser.listing.entry} entry={item} onSelect={onSelectEntry} />}
-                    />
+                    renderItem={({ item }) => (
+                        <DirectoryEntry
+                            style={styles.browser.listing.entry}
+                            entry={item}
+                            onSelect={onSelectEntry}
+                        />
+                    )}
+                />
             </View>
         );
     }
@@ -75,7 +98,7 @@ DirectoryListing.propTypes = {
     path: PropTypes.string.isRequired,
     parent: PropTypes.object,
     listing: PropTypes.array.isRequired,
-    onSelectEntry: PropTypes.func.isRequired,
+    onSelectEntry: PropTypes.func.isRequired
 };
 
 export class DirectoryBrowser extends React.Component {
@@ -90,7 +113,12 @@ export class DirectoryBrowser extends React.Component {
         }
 
         return (
-            <DirectoryListing parent={parent} path={path} listing={listing} onSelectEntry={onSelectEntry} />
+            <DirectoryListing
+                parent={parent}
+                path={path}
+                listing={listing}
+                onSelectEntry={onSelectEntry}
+            />
         );
     }
 }
@@ -98,5 +126,5 @@ export class DirectoryBrowser extends React.Component {
 DirectoryBrowser.propTypes = {
     path: PropTypes.string.isRequired,
     localFiles: PropTypes.object.isRequired,
-    onSelectEntry: PropTypes.func.isRequired,
+    onSelectEntry: PropTypes.func.isRequired
 };

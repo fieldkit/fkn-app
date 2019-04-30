@@ -45,7 +45,7 @@ export function navigatePath(path) {
 }
 
 export function navigateName(name) {
-  return NavigationActions.navigate({ routeName: name });
+    return NavigationActions.navigate({ routeName: name });
 }
 
 export function navigateNetwork() {
@@ -82,5 +82,5 @@ export function navigateLiveData() {
 }
 
 export function navigateBack() {
-  return NavigationActions.back();
+    return NavigationActions.back();
 }

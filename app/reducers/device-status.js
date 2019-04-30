@@ -1,6 +1,6 @@
-import _ from 'lodash';
-import * as ActionTypes from '../actions/types';
-import { unixNow } from '../lib/helpers';
+import _ from "lodash";
+import * as ActionTypes from "../actions/types";
+import { unixNow } from "../lib/helpers";
 
 const initialDeviceStatusState = {
     started: 0,
@@ -26,39 +26,39 @@ export function deviceStatus(state = initialDeviceStatusState, action) {
     }
 
     switch (action.type) {
-    case ActionTypes.FIND_DEVICE_START: {
-        return { ...nextState, ...{ started: unixNow() } };
-    }
-    case ActionTypes.FIND_DEVICE_SELECT: {
-        return { ...nextState, ...{ connected: action.address } };
-    }
-    case ActionTypes.DEVICE_PING_SUCCESS: {
-        nextState.ping = {
-            time: unixNow(),
-            success: true
-        };
-        return nextState;
-    }
-    case ActionTypes.DEVICE_PING_FAIL: {
-        nextState.ping = {
-            time: unixNow(),
-            success: false
-        };
-        return nextState;
-    }
-    default:
-        return nextState;
+        case ActionTypes.FIND_DEVICE_START: {
+            return { ...nextState, ...{ started: unixNow() } };
+        }
+        case ActionTypes.FIND_DEVICE_SELECT: {
+            return { ...nextState, ...{ connected: action.address } };
+        }
+        case ActionTypes.DEVICE_PING_SUCCESS: {
+            nextState.ping = {
+                time: unixNow(),
+                success: true
+            };
+            return nextState;
+        }
+        case ActionTypes.DEVICE_PING_FAIL: {
+            nextState.ping = {
+                time: unixNow(),
+                success: false
+            };
+            return nextState;
+        }
+        default:
+            return nextState;
     }
 }
 
-export function selectedDevice(state = { }, action) {
+export function selectedDevice(state = {}, action) {
     switch (action.type) {
-    case ActionTypes.FIND_DEVICE_SELECT: {
-        return { connected: action.address };
-    }
-    case ActionTypes.FIND_DEVICE_LOST: {
-        return { connected: null };
-    }
+        case ActionTypes.FIND_DEVICE_SELECT: {
+            return { connected: action.address };
+        }
+        case ActionTypes.FIND_DEVICE_LOST: {
+            return { connected: null };
+        }
     }
 
     return state;
@@ -84,7 +84,7 @@ export function devices(state = initialDevicesState, action) {
                 const update = {};
                 update[action.deviceApi.address.key] = {
                     address: action.deviceApi.address,
-                    time: unixNow(),
+                    time: unixNow()
                 };
                 nextState = { ...state, ...update };
             }
@@ -92,72 +92,72 @@ export function devices(state = initialDevicesState, action) {
     }
 
     switch (action.type) {
-    case ActionTypes.FIND_DEVICE_SUCCESS: {
-        const key = action.address.key;
-        const after = {
-            address: action.address,
-            capabilities: action.capabilities,
-            time: unixNow(),
-        };
-        return mergeUpdate(key, after);
-    }
-    case ActionTypes.DEVICE_PING_SUCCESS: {
-        const key = action.deviceApi.address.key;
-        const after = {
-            address: action.deviceApi.address,
-            time: unixNow(),
-        };
-        return mergeUpdate(key, after);
-    }
-    case ActionTypes.DEVICE_FILES_SUCCESS: {
-        const key = action.deviceApi.address.key;
-        const after = {
-            files: action.response.files.files,
-            time: unixNow(),
-        };
-        return mergeUpdate(key, after);
-    }
-    case ActionTypes.DEVICE_ERASE_FILE_SUCCESS: {
-        const key = action.deviceApi.address.key;
-        const after = {
-            files: action.response.files.files,
-            time: unixNow(),
-        };
-        return mergeUpdate(key, after);
-    }
-    case ActionTypes.DEVICE_STATUS_SUCCESS: {
-        const key = action.deviceApi.address.key;
-        const after = {
-            status: action.response.status,
-            time: unixNow(),
-        };
-        return mergeUpdate(key, after);
-    }
-    case ActionTypes.DEVICE_CAPABILITIES_SUCCESS: {
-        const key = action.deviceApi.address.key;
-        const after = {
-            capabilities: action.response.capabilities,
-            time: unixNow(),
-        };
-        return mergeUpdate(key, after);
-    }
-    case ActionTypes.DEVICE_NETWORK_CONFIGURATION_SUCCESS: {
-        const key = action.deviceApi.address.key;
-        const after = {
-            networkSettings: action.response.networkSettings,
-            time: unixNow(),
-        };
-        return mergeUpdate(key, after);
-    }
-    case ActionTypes.DEVICE_SAVE_NETWORK_CONFIGURATION_SUCCESS: {
-        const key = action.deviceApi.address.key;
-        const after = {
-            networkSettings: action.response.networkSettings,
-            time: unixNow(),
-        };
-        return mergeUpdate(key, after);
-    }
-    default:
-        return nextState;
+        case ActionTypes.FIND_DEVICE_SUCCESS: {
+            const key = action.address.key;
+            const after = {
+                address: action.address,
+                capabilities: action.capabilities,
+                time: unixNow()
+            };
+            return mergeUpdate(key, after);
+        }
+        case ActionTypes.DEVICE_PING_SUCCESS: {
+            const key = action.deviceApi.address.key;
+            const after = {
+                address: action.deviceApi.address,
+                time: unixNow()
+            };
+            return mergeUpdate(key, after);
+        }
+        case ActionTypes.DEVICE_FILES_SUCCESS: {
+            const key = action.deviceApi.address.key;
+            const after = {
+                files: action.response.files.files,
+                time: unixNow()
+            };
+            return mergeUpdate(key, after);
+        }
+        case ActionTypes.DEVICE_ERASE_FILE_SUCCESS: {
+            const key = action.deviceApi.address.key;
+            const after = {
+                files: action.response.files.files,
+                time: unixNow()
+            };
+            return mergeUpdate(key, after);
+        }
+        case ActionTypes.DEVICE_STATUS_SUCCESS: {
+            const key = action.deviceApi.address.key;
+            const after = {
+                status: action.response.status,
+                time: unixNow()
+            };
+            return mergeUpdate(key, after);
+        }
+        case ActionTypes.DEVICE_CAPABILITIES_SUCCESS: {
+            const key = action.deviceApi.address.key;
+            const after = {
+                capabilities: action.response.capabilities,
+                time: unixNow()
+            };
+            return mergeUpdate(key, after);
+        }
+        case ActionTypes.DEVICE_NETWORK_CONFIGURATION_SUCCESS: {
+            const key = action.deviceApi.address.key;
+            const after = {
+                networkSettings: action.response.networkSettings,
+                time: unixNow()
+            };
+            return mergeUpdate(key, after);
+        }
+        case ActionTypes.DEVICE_SAVE_NETWORK_CONFIGURATION_SUCCESS: {
+            const key = action.deviceApi.address.key;
+            const after = {
+                networkSettings: action.response.networkSettings,
+                time: unixNow()
+            };
+            return mergeUpdate(key, after);
+        }
+        default:
+            return nextState;
     }
 }

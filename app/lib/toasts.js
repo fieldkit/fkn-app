@@ -1,10 +1,9 @@
-import Config from '../config';
+import Config from "../config";
 
-import Toast from 'react-native-simple-toast';
+import Toast from "react-native-simple-toast";
 
 export const Toasts = {
-    show: (message) => {
+    show: message => {
         Toast.show(message);
     }
-}
-
+};

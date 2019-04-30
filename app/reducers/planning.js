@@ -1,9 +1,9 @@
-import _ from 'lodash';
-import * as ActionTypes from '../actions/types';
+import _ from "lodash";
+import * as ActionTypes from "../actions/types";
 
-import { hexArrayBuffer, arrayBufferToBase64 } from '../lib/base64';
+import { hexArrayBuffer, arrayBufferToBase64 } from "../lib/base64";
 
-import { generateDownloadPlan, generateUploadPlan } from './synchronizing';
+import { generateDownloadPlan, generateUploadPlan } from "./synchronizing";
 
 function tryParseDeviceIdPath(path) {
     // Example: 0004a30b001cc468
@@ -19,29 +19,37 @@ function isArchivePath(path) {
     return path.match(/archive/);
 }
 
-const Configuration = [ {
-    fileId: 4,
-    chunked: 0,
-    offset: 0,
-    length: 0,
-    condition: (file, others) => true,
-}, {
-    fileId: 2,
-    tail: 1000000,
-    offset: 0,
-    length: 0,
-    condition: (file, others) => {
-        return _(others).filter(f => f.id == 3 && f.size == 0 || f.size > file.size).some();
+const Configuration = [
+    {
+        fileId: 4,
+        chunked: 0,
+        offset: 0,
+        length: 0,
+        condition: (file, others) => true
+    },
+    {
+        fileId: 2,
+        tail: 1000000,
+        offset: 0,
+        length: 0,
+        condition: (file, others) => {
+            return _(others)
+                .filter(f => (f.id == 3 && f.size == 0) || f.size > file.size)
+                .some();
+        }
+    },
+    {
+        fileId: 3,
+        tail: 1000000,
+        offset: 0,
+        length: 0,
+        condition: (file, others) => {
+            return _(others)
+                .filter(f => (f.id == 2 && f.size == 0) || f.size > file.size)
+                .some();
+        }
     }
-}, {
-    fileId: 3,
-    tail: 1000000,
-    offset: 0,
-    length: 0,
-    condition: (file, others) => {
-        return _(others).filter(f => f.id == 2 && f.size == 0 || f.size > file.size).some();
-    }
-}];
+];
 
 const initialDeviceState = {
     local: {
@@ -54,22 +62,27 @@ const initialDeviceState = {
 
 function mergeUpdate(state, deviceId, after) {
     const newState = _.cloneDeep(state);
-    const deviceBefore = newState.devices[deviceId] || _.cloneDeep(initialDeviceState);
+    const deviceBefore =
+        newState.devices[deviceId] || _.cloneDeep(initialDeviceState);
     const deviceAfter = _.assign(deviceBefore, after);
     newState.devices[deviceId] = deviceAfter;
 
     deviceAfter.plans = {
-        download: generateDownloadPlan(Configuration, deviceAfter.local, deviceAfter.remote),
+        download: generateDownloadPlan(
+            Configuration,
+            deviceAfter.local,
+            deviceAfter.remote
+        ),
         upload: generateUploadPlan(Configuration, deviceAfter.local)
     };
 
     const downloads = _(newState.devices)
-          .map((value, key ) => value.plans.download)
-          .value();
+        .map((value, key) => value.plans.download)
+        .value();
 
     const uploads = _(newState.devices)
-          .map((value, key ) => value.plans.upload)
-          .value();
+        .map((value, key) => value.plans.upload)
+        .value();
 
     newState.plans = {
         downloads: downloads,
@@ -134,32 +147,34 @@ export function planning(state = initialPlanningState, action) {
     let nextState = state;
 
     switch (action.type) {
-    case ActionTypes.DEVICE_HANDSHAKE_SUCCESS: {
-        const key = action.deviceApi.address.key;
-        const deviceId = hexArrayBuffer(action.response.capabilities.deviceId);
-        if (state.map[key] === deviceId) {
+        case ActionTypes.DEVICE_HANDSHAKE_SUCCESS: {
+            const key = action.deviceApi.address.key;
+            const deviceId = hexArrayBuffer(
+                action.response.capabilities.deviceId
+            );
+            if (state.map[key] === deviceId) {
+                return nextState;
+            }
+            nextState = _.cloneDeep(state);
+            nextState.map[key] = deviceId;
             return nextState;
         }
-        nextState = _.cloneDeep(state);
-        nextState.map[key] = deviceId;
-        return nextState;
-    }
-    case ActionTypes.LOCAL_FILES_ARCHIVING_ALL: {
-        return emptyAllLocalFiles(state);
-    }
-    case ActionTypes.LOCAL_FILES_DELETING_ALL: {
-        return emptyAllLocalFiles(state);
-    }
-    case ActionTypes.LOCAL_FILES_BROWSE: {
-        return mergeLocalFiles(state, action);
-    }
-    case ActionTypes.DEVICE_FILES_SUCCESS: {
-        return mergeRemoteFiles(state, action);
-    }
-    case ActionTypes.DEVICE_ERASE_FILE_SUCCESS: {
-        return mergeRemoteFiles(state, action);
-    }
-    default:
-        return nextState;
+        case ActionTypes.LOCAL_FILES_ARCHIVING_ALL: {
+            return emptyAllLocalFiles(state);
+        }
+        case ActionTypes.LOCAL_FILES_DELETING_ALL: {
+            return emptyAllLocalFiles(state);
+        }
+        case ActionTypes.LOCAL_FILES_BROWSE: {
+            return mergeLocalFiles(state, action);
+        }
+        case ActionTypes.DEVICE_FILES_SUCCESS: {
+            return mergeRemoteFiles(state, action);
+        }
+        case ActionTypes.DEVICE_ERASE_FILE_SUCCESS: {
+            return mergeRemoteFiles(state, action);
+        }
+        default:
+            return nextState;
     }
 }

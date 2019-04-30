@@ -1,25 +1,30 @@
-import _ from 'lodash';
+import _ from "lodash";
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import RNLanguages from 'react-native-languages';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import RNLanguages from "react-native-languages";
 
-import i18n from '../internationalization/i18n';
+import i18n from "../internationalization/i18n";
 
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button } from "react-native";
 
-import { AppScreen, SmallButton } from '../components';
+import { AppScreen, SmallButton } from "../components";
 
-import { navigateWelcome, deviceStartConnect, deviceSelect, deviceStopConnect } from '../actions';
+import {
+    navigateWelcome,
+    deviceStartConnect,
+    deviceSelect,
+    deviceStopConnect
+} from "../actions";
 
-import { unixNow } from '../lib/helpers';
+import { unixNow } from "../lib/helpers";
 
-import styles, { Colors } from '../styles';
+import styles, { Colors } from "../styles";
 
 class ConnectingScreen extends React.Component {
-    static navigationOptions = ({navigation}) => {
-        return { title: i18n.t('connecting.title') };
+    static navigationOptions = ({ navigation }) => {
+        return { title: i18n.t("connecting.title") };
     };
 
     componentDidMount() {
@@ -32,14 +37,22 @@ class ConnectingScreen extends React.Component {
         let status = null;
 
         if (_.size(devices) == 0) {
-            status = i18n.t('connecting.searching');
+            status = i18n.t("connecting.searching");
         }
 
         return (
             <AppScreen>
-                <Button style={styles.connecting.cancel} title={i18n.t('connecting.cancel')} onPress={() => this.props.navigateWelcome()} />
-                { status != null ? <Text style={styles.connecting.status}>{status}</Text> : <View/> }
-                <View style={{marginTop: 10, flexDirection: 'column'}}>
+                <Button
+                    style={styles.connecting.cancel}
+                    title={i18n.t("connecting.cancel")}
+                    onPress={() => this.props.navigateWelcome()}
+                />
+                {status != null ? (
+                    <Text style={styles.connecting.status}>{status}</Text>
+                ) : (
+                    <View />
+                )}
+                <View style={{ marginTop: 10, flexDirection: "column" }}>
                     {_.map(devices, (device, _) => this.renderDevice(device))}
                 </View>
             </AppScreen>
@@ -49,12 +62,20 @@ class ConnectingScreen extends React.Component {
     renderDevice(device) {
         return (
             <View key={device.address.key} style={styles.device.container}>
-                <View style={{flex: 2, flexDirection: 'column'}}>
-                    <Text style={styles.device.name}>{device.address.host}</Text>
-                    <Text style={styles.device.details}>{device.capabilities.name}</Text>
+                <View style={{ flex: 2, flexDirection: "column" }}>
+                    <Text style={styles.device.name}>
+                        {device.address.host}
+                    </Text>
+                    <Text style={styles.device.details}>
+                        {device.capabilities.name}
+                    </Text>
                 </View>
-                <View style={{flex: 1, flexDirection: 'column'}}>
-                    <SmallButton title="Connect" onPress={() => this.props.deviceSelect(device.address)} color={Colors.secondaryButton} />
+                <View style={{ flex: 1, flexDirection: "column" }}>
+                    <SmallButton
+                        title="Connect"
+                        onPress={() => this.props.deviceSelect(device.address)}
+                        color={Colors.secondaryButton}
+                    />
                 </View>
             </View>
         );
@@ -66,16 +87,19 @@ ConnectingScreen.propTypes = {
     deviceStartConnect: PropTypes.func.isRequired,
     deviceStopConnect: PropTypes.func.isRequired,
     deviceSelect: PropTypes.func.isRequired,
-    devices: PropTypes.object.isRequired,
+    devices: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
     devices: state.devices
 });
 
-export default connect(mapStateToProps, {
-    deviceStartConnect,
-    deviceStopConnect,
-    deviceSelect,
-    navigateWelcome
-})(ConnectingScreen);
+export default connect(
+    mapStateToProps,
+    {
+        deviceStartConnect,
+        deviceStopConnect,
+        deviceSelect,
+        navigateWelcome
+    }
+)(ConnectingScreen);

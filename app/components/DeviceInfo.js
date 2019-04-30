@@ -1,22 +1,25 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React from "react";
+import { View, Text } from "react-native";
 
-import styles from '../styles';
+import styles from "../styles";
 
 export class DeviceInfo extends React.Component {
     render() {
         const { info } = this.props;
 
         if (!info.name) {
-            return <View></View>;
+            return <View />;
         }
 
         return (
             <View style={styles.deviceInfo.container}>
-                    <Text style={styles.deviceInfo.name}>{info.name}</Text>
-                    <View style={styles.deviceInfo.lineTwo}>
-                        <Text style={styles.deviceInfo.address}>{info.address}, {this.getUptime(info.status.uptime)}, {parseInt(info.status.batteryPercentage)}%</Text>
-                    </View>
+                <Text style={styles.deviceInfo.name}>{info.name}</Text>
+                <View style={styles.deviceInfo.lineTwo}>
+                    <Text style={styles.deviceInfo.address}>
+                        {info.address}, {this.getUptime(info.status.uptime)},{" "}
+                        {parseInt(info.status.batteryPercentage)}%
+                    </Text>
+                </View>
             </View>
         );
     }
@@ -33,8 +36,8 @@ export class DeviceInfo extends React.Component {
         }
         let minutes = 0;
         if (seconds > 60) {
-            minutes = Math.floor(seconds / (60));
-            seconds -= minutes * (60);
+            minutes = Math.floor(seconds / 60);
+            seconds -= minutes * 60;
             str += minutes + "M";
         }
         if (false) {

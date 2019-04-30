@@ -1,17 +1,15 @@
-import _ from 'lodash';
+import _ from "lodash";
 
 const emptySelectedDevice = {
-    deviceInfo: {
-    },
-    deviceCapabilities: {
-    },
+    deviceInfo: {},
+    deviceCapabilities: {},
     deviceSpecificRoutes: {
         home: {
             routes: []
         }
     },
     deviceConfiguration: {
-        network: { networks: [] },
+        network: { networks: [] }
     },
     files: {
         files: {
@@ -21,7 +19,10 @@ const emptySelectedDevice = {
 };
 
 export function selectedDevice(state) {
-    if (!_.isObject(state.selectedDevice) || !_.isObject(state.selectedDevice.connected)) {
+    if (
+        !_.isObject(state.selectedDevice) ||
+        !_.isObject(state.selectedDevice.connected)
+    ) {
         console.log("No selected device");
         return emptySelectedDevice;
     }
@@ -37,7 +38,7 @@ export function selectedDevice(state) {
             status: {
                 batteryVoltage: device.status.batteryVoltage,
                 batteryPercentage: device.status.batteryPercentage,
-                uptime: device.status.uptime,
+                uptime: device.status.uptime
             },
             address: state.selectedDevice.connected.key,
             name: device.capabilities.name
@@ -45,7 +46,7 @@ export function selectedDevice(state) {
         deviceCapabilities: device.capabilities,
         deviceSpecificRoutes: state.deviceSpecificRoutes,
         deviceConfiguration: {
-            network: device.networkSettings || { networks: [] },
+            network: device.networkSettings || { networks: [] }
         },
         files: {
             files: device.files

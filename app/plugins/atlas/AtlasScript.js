@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { View, Text } from "react-native";
 
-import { ProgressBar } from '../../components';
+import { ProgressBar } from "../../components";
 
 export class AtlasScript extends React.Component {
     constructor() {
         super();
         this.state = {
-            currentStepIndex: 0,
+            currentStepIndex: 0
         };
     }
 
@@ -30,12 +30,17 @@ export class AtlasScript extends React.Component {
         const { currentStepIndex } = this.state;
 
         this.setState({
-            currentStepIndex: currentStepIndex + 1,
+            currentStepIndex: currentStepIndex + 1
         });
     }
 
     render() {
-        const { timerStart, deviceModuleQuery, onCancel, children } = this.props;
+        const {
+            timerStart,
+            deviceModuleQuery,
+            onCancel,
+            children
+        } = this.props;
         const { currentStepIndex } = this.state;
 
         const step = this.currentStep();
@@ -45,17 +50,22 @@ export class AtlasScript extends React.Component {
             key: currentStepIndex,
             lastStep: lastStep,
             onMoveNextStep: this.onMoveNextStep.bind(this),
-            onCancel: onCancel,
+            onCancel: onCancel
         };
 
-        return <View style={{ margin: 20 }}>
-            <ProgressBar progress={((currentStepIndex + 1) / children.length) * 100.0} />
-            {React.cloneElement(step, { ...childProps })}
-        </View>;
+        return (
+            <View style={{ margin: 20 }}>
+                <ProgressBar
+                    progress={
+                        ((currentStepIndex + 1) / children.length) * 100.0
+                    }
+                />
+                {React.cloneElement(step, { ...childProps })}
+            </View>
+        );
     }
-};
+}
 
 AtlasScript.propTypes = {
-    onCancel: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired
 };
-

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import protobuf from "protobufjs";
 
@@ -10,13 +10,7 @@ const SensorType = atlasRoot.lookup("fk_atlas.SensorType");
 const QueryType = atlasRoot.lookup("fk_atlas.QueryType");
 const ReplyType = atlasRoot.lookup("fk_atlas.ReplyType");
 
-export {
-    SensorType,
-    WireAtlasQuery,
-    WireAtlasReply,
-    QueryType,
-    ReplyType
-};
+export { SensorType, WireAtlasQuery, WireAtlasReply, QueryType, ReplyType };
 
 export function encodeWireAtlasQuery(message) {
     return WireAtlasQuery.encode(message).finish();
@@ -29,9 +23,9 @@ export function decodeWireAtlasReply(data) {
 export function atlasSensorQuery(sensor, command) {
     return {
         type: QueryType.values.QUERY_ATLAS_COMMAND,
-        atlasCommand : {
+        atlasCommand: {
             sensor: sensor,
-            command: command,
+            command: command
         }
     };
 }

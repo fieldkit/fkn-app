@@ -1,25 +1,27 @@
-'use strict';
+"use strict";
 
-import _ from 'lodash';
+import _ from "lodash";
 
-import { Plugin } from '../plugin';
+import { Plugin } from "../plugin";
 
-import AtlasCalibrationScreen from './AtlasCalibrationScreen';
+import AtlasCalibrationScreen from "./AtlasCalibrationScreen";
 
-import * as reducers from './reducers';
-import { atlasSagas } from './actions';
+import * as reducers from "./reducers";
+import { atlasSagas } from "./actions";
 
 export class AtlasPlugin extends Plugin {
     appliesTo(deviceCapabilities) {
-        const thatWeHave = _(deviceCapabilities.modules).map(s => s.name).intersection(['Atlas']);
+        const thatWeHave = _(deviceCapabilities.modules)
+            .map(s => s.name)
+            .intersection(["Atlas"]);
         return thatWeHave.size() > 0;
     }
 
     getRoutes() {
         return {
             CalibrateAtlas: {
-                title: 'Calibrate',
-                path: '/atlas/calibrate',
+                title: "Calibrate",
+                path: "/atlas/calibrate",
                 screen: AtlasCalibrationScreen
             }
         };
@@ -32,4 +34,4 @@ export class AtlasPlugin extends Plugin {
     getSagas() {
         return atlasSagas;
     }
-};
+}
