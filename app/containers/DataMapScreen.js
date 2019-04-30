@@ -40,34 +40,6 @@ const styles = StyleSheet.create({
   }
 });
 
-// {locationArray.map((locationObject, index) => {
-//   return this.makeArray(
-//     locationObject.loggedReading.location,
-//     index
-//   );
-// })}
-
-// var locationArray = records.records.filter(
-//   locationObject =>
-//     locationObject.loggedReading &&
-//     locationObject.loggedReading.location &&
-//     (locationObject.loggedReading.location.fix == 0 ||
-//       locationObject.loggedReading.location.fix == 1)
-// );
-// console.log("this is the first location array", locationArray);
-// let routePoints = [];
-// {
-//   locationArray.map((locationObject, index) => {
-//     let coordinate = [
-//       locationObject.loggedReading.location.longitude,
-//       locationObject.loggedReading.location.latitude
-//     ];
-//     routePoints.push(coordinate);
-//   });
-// }
-
-// console.log("these are route points", routePoints);
-
 Mapbox.setAccessToken(MAPBOX_ACCESS_TOKEN);
 
 class DataMapScreen extends React.Component {
@@ -76,8 +48,6 @@ class DataMapScreen extends React.Component {
   };
 
   renderAnnotations(coordinate, i) {
-    console.log(coordinate);
-    console.log(i);
     let myString = coordinate.toString();
     return (
       <Mapbox.PointAnnotation
@@ -93,20 +63,10 @@ class DataMapScreen extends React.Component {
     );
   }
 
-  //getting an location object
-  // makeArray(locationObject, i) {
-  //   let coordinate = [locationObject.longitude, locationObject.latitude];
-  //   console.log(coordinate);
-  //   return this.renderAnnotations(coordinate, i);
-  // }
-
   render() {
     const { records } = this.props;
 
     if (records != null && records.records != null) {
-      // console.log("passed");
-      // console.log(records);
-
       var routePoints = _(records.records)
         .filter(
           locationObject =>
@@ -120,12 +80,10 @@ class DataMapScreen extends React.Component {
             locationObject.loggedReading.location.longitude,
             locationObject.loggedReading.location.latitude
           ];
-          //routePoints.push(coordinate);
           return coordinate;
         })
         .value();
 
-      // console.log("these are route points", routePoints);
       return (
         <View style={styles.container}>
           <Mapbox.MapView
