@@ -80,12 +80,12 @@ class DeviceMenuScreen extends React.Component {
                         onPress={() => this.props.navigateSensors()}
                     />
                     <MenuButton
-                        title={i18n.t("deviceMenu.home")}
+                        title={i18n.t("deviceMenu.configure")}
                         onPress={() => this.props.navigateConfigure()}
                     />
                     {this.renderDeviceSpecific()}
                     <MenuButton
-                        title="Home"
+                        title={i18n.t("deviceMenu.home")}
                         onPress={() => this.props.navigateWelcome()}
                     />
                 </MenuButtonContainer>

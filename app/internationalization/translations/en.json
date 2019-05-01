@@ -61,7 +61,7 @@
         "title": "Welcome",
         "noPendingFiles": "No pending files found.",
         "pendingFiles": "There are %{numberOfFiles} file(s) pending for upload.",
-        "noDevicesConnect": "No devices found. Try connecting to a FieldKit device's AP.",
+        "noDevicesConnect": "Devices found. Try connecting to a FieldKit device's AP.",
         "noDevices": "No devices found.",
         "devicesFound": "Success, %{numberOfDevices} device(s) found",
         "deleteAll": "Delete All",

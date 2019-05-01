@@ -91,8 +91,7 @@ class DeviceOptions extends React.Component {
         const { easyMode } = this.props;
         const { downloads } = easyMode.plans;
 
-        const numberOfDevices = 3;
-        //const numberOfDevices = _.size(easyMode.devices);
+        const numberOfDevices = _.size(easyMode.devices);
         if (
             numberOfDevices == 0 ||
             !_.isArray(downloads) ||
