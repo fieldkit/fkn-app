@@ -29,7 +29,7 @@ const Configuration = [
     },
     {
         fileId: 2,
-        tail: 1000000,
+        // tail: 1000000,
         offset: 0,
         length: 0,
         condition: (file, others) => {
@@ -40,7 +40,7 @@ const Configuration = [
     },
     {
         fileId: 3,
-        tail: 1000000,
+        // tail: 1000000,
         offset: 0,
         length: 0,
         condition: (file, others) => {
