@@ -16,21 +16,4 @@ import * as planningReducers from "./planning";
 import * as easyModeReducers from "./easy-mode";
 import * as locationReducers from "./location";
 
-export default combineReducers(
-    Object.assign(
-        navigationReducers,
-        authReducers,
-        deviceStatusReducers,
-        liveDataReducers,
-        networkConfigurationReducers,
-        timersReducers,
-        moduleReplyReducers,
-        downloadReducers,
-        progressReducers,
-        localFilesReducers,
-        planningReducers,
-        easyModeReducers,
-        locationReducers,
-        pluginManager.getReducers()
-    )
-);
+export default combineReducers(Object.assign(navigationReducers, authReducers, deviceStatusReducers, liveDataReducers, networkConfigurationReducers, timersReducers, moduleReplyReducers, downloadReducers, progressReducers, localFilesReducers, planningReducers, easyModeReducers, locationReducers, pluginManager.getReducers()));

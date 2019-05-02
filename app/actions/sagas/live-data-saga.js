@@ -1,14 +1,5 @@
 import { delay } from "redux-saga";
-import {
-    put,
-    take,
-    takeLatest,
-    takeEvery,
-    select,
-    all,
-    race,
-    call
-} from "redux-saga/effects";
+import { put, take, takeLatest, takeEvery, select, all, race, call } from "redux-saga/effects";
 
 import * as Types from "../types";
 
@@ -19,11 +10,7 @@ import { deviceCall } from "./saga-utils";
 export function* deviceLiveDataPoll(interval) {
     const state = yield select();
     yield call(deviceCall, {
-        types: [
-            Types.DEVICE_LIVE_DATA_POLL_START,
-            Types.DEVICE_LIVE_DATA_POLL_SUCCESS,
-            Types.DEVICE_LIVE_DATA_POLL_FAIL
-        ],
+        types: [Types.DEVICE_LIVE_DATA_POLL_START, Types.DEVICE_LIVE_DATA_POLL_SUCCESS, Types.DEVICE_LIVE_DATA_POLL_FAIL],
         address: state.deviceStatus.connected,
         message: {
             type: QueryType.values.QUERY_LIVE_DATA_POLL,

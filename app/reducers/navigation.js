@@ -9,18 +9,14 @@ import { pluginManager } from "../services";
 
 import Config from "../config";
 
-const welcomeAction = AppNavigator.router.getActionForPathAndParams(
-    Config.welcomeRoute
-);
+const welcomeAction = AppNavigator.router.getActionForPathAndParams(Config.welcomeRoute);
 const welcomeState = AppNavigator.router.getStateForAction(welcomeAction);
 
 export function deviceSpecificRoutes(state = { home: { routes: [] } }, action) {
     let nextState = state;
     switch (action.type) {
         case ActionTypes.DEVICE_CAPABILITIES_SUCCESS: {
-            const plugins = pluginManager.getActivePlugins(
-                action.response.capabilities
-            );
+            const plugins = pluginManager.getActivePlugins(action.response.capabilities);
 
             const routesObj = _(plugins)
                 .map(p => p.getRoutes())

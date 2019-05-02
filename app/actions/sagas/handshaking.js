@@ -1,17 +1,7 @@
 import Promise from "bluebird";
 import { Alert } from "react-native";
 import { delay } from "redux-saga";
-import {
-    put,
-    take,
-    takeLatest,
-    takeEvery,
-    select,
-    all,
-    race,
-    call,
-    fork
-} from "redux-saga/effects";
+import { put, take, takeLatest, takeEvery, select, all, race, call, fork } from "redux-saga/effects";
 
 import { QueryType } from "../../lib/protocol";
 import { unixNow } from "../../lib/helpers";
@@ -45,11 +35,7 @@ export function* deviceHandshake(device) {
         console.log("Handshake", device);
 
         const handshakeReply = yield call(deviceCall, {
-            types: [
-                Types.DEVICE_HANDSHAKE_START,
-                Types.DEVICE_HANDSHAKE_SUCCESS,
-                Types.DEVICE_HANDSHAKE_FAIL
-            ],
+            types: [Types.DEVICE_HANDSHAKE_START, Types.DEVICE_HANDSHAKE_SUCCESS, Types.DEVICE_HANDSHAKE_FAIL],
             address: device.address,
             message: {
                 type: QueryType.values.QUERY_CAPABILITIES,
@@ -70,11 +56,7 @@ export function* deviceHandshake(device) {
 
         if (Config.discoveryQueryFilesAndStatus) {
             const statusReply = yield call(deviceCall, {
-                types: [
-                    Types.DEVICE_STATUS_START,
-                    Types.DEVICE_STATUS_SUCCESS,
-                    Types.DEVICE_STATUS_FAIL
-                ],
+                types: [Types.DEVICE_STATUS_START, Types.DEVICE_STATUS_SUCCESS, Types.DEVICE_STATUS_FAIL],
                 address: device.address,
                 message: {
                     type: QueryType.values.QUERY_STATUS,
@@ -86,11 +68,7 @@ export function* deviceHandshake(device) {
             });
 
             const filesReply = yield call(deviceCall, {
-                types: [
-                    Types.DEVICE_FILES_START,
-                    Types.DEVICE_FILES_SUCCESS,
-                    Types.DEVICE_FILES_FAIL
-                ],
+                types: [Types.DEVICE_FILES_START, Types.DEVICE_FILES_SUCCESS, Types.DEVICE_FILES_FAIL],
                 address: device.address,
                 blocking: false,
                 message: {

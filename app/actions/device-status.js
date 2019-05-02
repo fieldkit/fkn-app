@@ -33,11 +33,7 @@ export function deviceStopConnect() {
 export function queryCapabilities(address) {
     return {
         [CALL_DEVICE_API]: {
-            types: [
-                Types.DEVICE_CAPABILITIES_START,
-                Types.DEVICE_CAPABILITIES_SUCCESS,
-                Types.DEVICE_CAPABILITIES_FAIL
-            ],
+            types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
             address: address,
             blocking: true,
             message: {
@@ -52,11 +48,7 @@ export function queryInfo() {
     return (dispatch, getState) => {
         dispatch({
             [CALL_DEVICE_API]: {
-                types: [
-                    Types.DEVICE_CAPABILITIES_START,
-                    Types.DEVICE_CAPABILITIES_SUCCESS,
-                    Types.DEVICE_CAPABILITIES_FAIL
-                ],
+                types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
                 blocking: true,
                 message: {
                     type: QueryType.values.QUERY_CAPABILITIES
@@ -66,11 +58,7 @@ export function queryInfo() {
 
         dispatch({
             [CALL_DEVICE_API]: {
-                types: [
-                    Types.DEVICE_STATUS_START,
-                    Types.DEVICE_STATUS_SUCCESS,
-                    Types.DEVICE_STATUS_FAIL
-                ],
+                types: [Types.DEVICE_STATUS_START, Types.DEVICE_STATUS_SUCCESS, Types.DEVICE_STATUS_FAIL],
                 blocking: true,
                 message: {
                     type: QueryType.values.QUERY_STATUS
@@ -83,11 +71,7 @@ export function queryInfo() {
 export function resetDevice() {
     return {
         [CALL_DEVICE_API]: {
-            types: [
-                Types.DEVICE_RESET_START,
-                Types.DEVICE_RESET_SUCCESS,
-                Types.DEVICE_RESET_FAIL
-            ],
+            types: [Types.DEVICE_RESET_START, Types.DEVICE_RESET_SUCCESS, Types.DEVICE_RESET_FAIL],
             blocking: true,
             noReply: true,
             message: {

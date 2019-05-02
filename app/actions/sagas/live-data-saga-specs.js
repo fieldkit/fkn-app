@@ -47,9 +47,7 @@ describe("live data saga", () => {
             type: Types.LIVE_DATA_POLL_START
         });
 
-        const pollStart = await tester.waitFor(
-            Types.DEVICE_LIVE_DATA_POLL_START
-        );
+        const pollStart = await tester.waitFor(Types.DEVICE_LIVE_DATA_POLL_START);
 
         expect(pollStart.message.liveDataPoll.interval).toBe(1000);
 

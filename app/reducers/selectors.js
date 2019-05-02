@@ -19,10 +19,7 @@ const emptySelectedDevice = {
 };
 
 export function selectedDevice(state) {
-    if (
-        !_.isObject(state.selectedDevice) ||
-        !_.isObject(state.selectedDevice.connected)
-    ) {
+    if (!_.isObject(state.selectedDevice) || !_.isObject(state.selectedDevice.connected)) {
         console.log("No selected device");
         return emptySelectedDevice;
     }

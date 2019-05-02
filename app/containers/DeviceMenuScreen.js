@@ -9,25 +9,9 @@ import { connect } from "react-redux";
 
 import { View, Text } from "react-native";
 
-import {
-    AppScreen,
-    Loading,
-    DeviceInfo,
-    MenuButtonContainer,
-    MenuButton
-} from "../components";
+import { AppScreen, Loading, DeviceInfo, MenuButtonContainer, MenuButton } from "../components";
 
-import {
-    navigateWelcome,
-    navigateFiles,
-    navigateSensors,
-    navigateConfigure,
-    navigateLiveData,
-    navigateName,
-    queryInfo,
-    deviceStartConnect,
-    deviceStopConnect
-} from "../actions";
+import { navigateWelcome, navigateFiles, navigateSensors, navigateConfigure, navigateLiveData, navigateName, queryInfo, deviceStartConnect, deviceStopConnect } from "../actions";
 
 import { selectedDevice } from "../reducers/selectors";
 
@@ -48,13 +32,7 @@ class DeviceMenuScreen extends React.Component {
         return (
             <View>
                 {deviceSpecificRoutes.home.routes.map((r, i) => {
-                    return (
-                        <MenuButton
-                            key={i}
-                            title={r.title}
-                            onPress={() => this.props.navigateName(r.name)}
-                        />
-                    );
+                    return <MenuButton key={i} title={r.title} onPress={() => this.props.navigateName(r.name)} />;
                 })}
             </View>
         );
@@ -67,27 +45,12 @@ class DeviceMenuScreen extends React.Component {
             <AppScreen>
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
-                    <MenuButton
-                        title={i18n.t("deviceMenu.files")}
-                        onPress={() => this.props.navigateFiles()}
-                    />
-                    <MenuButton
-                        title={i18n.t("deviceMenu.liveData")}
-                        onPress={() => this.props.navigateLiveData()}
-                    />
-                    <MenuButton
-                        title={i18n.t("deviceMenu.sensors")}
-                        onPress={() => this.props.navigateSensors()}
-                    />
-                    <MenuButton
-                        title={i18n.t("deviceMenu.configure")}
-                        onPress={() => this.props.navigateConfigure()}
-                    />
+                    <MenuButton title={i18n.t("deviceMenu.files")} onPress={() => this.props.navigateFiles()} />
+                    <MenuButton title={i18n.t("deviceMenu.liveData")} onPress={() => this.props.navigateLiveData()} />
+                    <MenuButton title={i18n.t("deviceMenu.sensors")} onPress={() => this.props.navigateSensors()} />
+                    <MenuButton title={i18n.t("deviceMenu.configure")} onPress={() => this.props.navigateConfigure()} />
                     {this.renderDeviceSpecific()}
-                    <MenuButton
-                        title={i18n.t("deviceMenu.home")}
-                        onPress={() => this.props.navigateWelcome()}
-                    />
+                    <MenuButton title={i18n.t("deviceMenu.home")} onPress={() => this.props.navigateWelcome()} />
                 </MenuButtonContainer>
             </AppScreen>
         );

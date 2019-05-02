@@ -11,12 +11,7 @@ import { View, Button, Text, TextInput } from "react-native";
 
 import { AppScreen, SmallButton, Loading, DeviceInfo } from "../components";
 
-import {
-    navigateNetwork,
-    navigateBack,
-    queryConfiguration,
-    saveNetworkConfiguration
-} from "../actions";
+import { navigateNetwork, navigateBack, queryConfiguration, saveNetworkConfiguration } from "../actions";
 
 import { selectedDevice } from "../reducers/selectors";
 
@@ -61,30 +56,12 @@ class NetworkInfo extends React.Component {
             return (
                 <View style={styles.networks.network.editing.container}>
                     <View>
-                        <TextInput
-                            style={styles.networks.network.editing.ssid}
-                            value={ssid}
-                            onChangeText={text => this.setState({ ssid: text })}
-                        />
-                        <TextInput
-                            style={styles.networks.network.editing.password}
-                            value={password}
-                            onChangeText={text =>
-                                this.setState({ password: text })
-                            }
-                        />
+                        <TextInput style={styles.networks.network.editing.ssid} value={ssid} onChangeText={text => this.setState({ ssid: text })} />
+                        <TextInput style={styles.networks.network.editing.password} value={password} onChangeText={text => this.setState({ password: text })} />
                     </View>
                     <View style={{ flexDirection: "row" }}>
-                        <SmallButton
-                            title={i18n.t("network.save")}
-                            onPress={() => this.onSave()}
-                            color={Colors.secondaryButton}
-                        />
-                        <SmallButton
-                            title={i18n.t("network.cancel")}
-                            onPress={() => this.onCancel()}
-                            color={Colors.secondaryButton}
-                        />
+                        <SmallButton title={i18n.t("network.save")} onPress={() => this.onSave()} color={Colors.secondaryButton} />
+                        <SmallButton title={i18n.t("network.cancel")} onPress={() => this.onCancel()} color={Colors.secondaryButton} />
                     </View>
                 </View>
             );
@@ -93,16 +70,10 @@ class NetworkInfo extends React.Component {
         return (
             <View style={styles.networks.network.viewing.container}>
                 <View style={{ flex: 2, flexDirection: "column" }}>
-                    <Text style={styles.networks.network.viewing.ssid}>
-                        {network.ssid}
-                    </Text>
+                    <Text style={styles.networks.network.viewing.ssid}>{network.ssid}</Text>
                 </View>
                 <View style={{ flex: 1, flexDirection: "column" }}>
-                    <SmallButton
-                        title={i18n.t("network.edit")}
-                        onPress={() => this.onEdit(network)}
-                        color={Colors.secondaryButton}
-                    />
+                    <SmallButton title={i18n.t("network.edit")} onPress={() => this.onEdit(network)} color={Colors.secondaryButton} />
                 </View>
             </View>
         );
@@ -120,9 +91,7 @@ class NetworkScreen extends React.Component {
 
     onSaveNetwork(index, old, modified) {
         const { saveNetworkConfiguration, deviceConfiguration } = this.props;
-        const newNetworkConfiguration = _.cloneDeep(
-            deviceConfiguration.network
-        );
+        const newNetworkConfiguration = _.cloneDeep(deviceConfiguration.network);
         newNetworkConfiguration.networks[index] = modified;
         saveNetworkConfiguration(newNetworkConfiguration);
     }
@@ -137,13 +106,7 @@ class NetworkScreen extends React.Component {
                     <Text style={styles.networks.heading}>Saved Networks:</Text>
 
                     {deviceConfiguration.network.networks.map((network, i) => (
-                        <NetworkInfo
-                            key={i}
-                            network={network}
-                            onSave={modified =>
-                                this.onSaveNetwork(i, network, modified)
-                            }
-                        />
+                        <NetworkInfo key={i} network={network} onSave={modified => this.onSaveNetwork(i, network, modified)} />
                     ))}
                 </View>
             </AppScreen>

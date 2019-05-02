@@ -8,10 +8,7 @@ const initialNetworkConfigurationState = {
     }
 };
 
-export function networkConfiguration(
-    state = initialNetworkConfigurationState,
-    action
-) {
+export function networkConfiguration(state = initialNetworkConfigurationState, action) {
     let nextState = state;
 
     switch (action.type) {

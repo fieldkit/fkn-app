@@ -10,11 +10,7 @@ export function emailData(id) {
             })
             .then(() => {
                 const path = RNFS.ExternalDirectoryPath + "/data.csv";
-                return RNFS.writeFile(
-                    path,
-                    "Time,Depth,Temperature,Conductivity\n",
-                    "utf8"
-                );
+                return RNFS.writeFile(path, "Time,Depth,Temperature,Conductivity\n", "utf8");
             })
             .then(() => {
                 return new Promise((resolve, reject) => {
@@ -22,8 +18,7 @@ export function emailData(id) {
                         {
                             subject: "FieldKit NOAA-CTD Data",
                             recipients: ["jlewalle@gmail.com"],
-                            body:
-                                "<p>Please see the attached file, data.csv.</p><br/><p>Thanks!</p>",
+                            body: "<p>Please see the attached file, data.csv.</p><br/><p>Thanks!</p>",
                             isHTML: true,
                             attachment: {
                                 path: RNFS.ExternalDirectoryPath + "/data.csv",

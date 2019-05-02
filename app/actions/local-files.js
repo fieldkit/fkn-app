@@ -8,19 +8,11 @@ import * as Types from "./types";
 import { Toasts } from "../lib/toasts";
 import * as Files from "../lib/files";
 
-import {
-    resolveDataDirectoryPath,
-    createDataDirectoryPath
-} from "../lib/downloading";
+import { resolveDataDirectoryPath, createDataDirectoryPath } from "../lib/downloading";
 import { uploadFile } from "../lib/uploading";
 import { readAllDataRecords } from "../lib/data-files";
 
-import {
-    navigateBrowser,
-    navigateLocalFile,
-    navigateOpenFile,
-    navigateDataMap
-} from "./navigation";
+import { navigateBrowser, navigateLocalFile, navigateOpenFile, navigateDataMap } from "./navigation";
 
 function toDisplayModel(entry) {
     if (entry.directory) {
@@ -57,9 +49,7 @@ function getDirectory(relativePath) {
             }
 
             function toEntry(e) {
-                const modifiedPretty = moment(e.mtime).format(
-                    "MMM D YYYY h:mm:ss"
-                );
+                const modifiedPretty = moment(e.mtime).format("MMM D YYYY h:mm:ss");
 
                 return {
                     name: e.name,
@@ -100,11 +90,7 @@ function walkDirectory(relativePath, dispatch, callback) {
             return Promise.all(
                 _.map(action.listing, entry => {
                     if (entry.directory) {
-                        return walkDirectory(
-                            entry.relativePath,
-                            dispatch,
-                            callback
-                        );
+                        return walkDirectory(entry.relativePath, dispatch, callback);
                     }
                     return Promise.resolve(false);
                 })
@@ -142,9 +128,7 @@ export function deleteAllLocalFiles() {
                 return RNFS.unlink(dataDirectoryPath).then(() => {
                     console.log("Refreshing");
                     return createDataDirectoryPath().then(() => {
-                        return walkDirectory("/", dispatch, () =>
-                            Promise.resolve(true)
-                        );
+                        return walkDirectory("/", dispatch, () => Promise.resolve(true));
                     });
                 });
             })
@@ -191,10 +175,7 @@ export function touchLocalFile(relativePath) {
             const directory = Files.getParentPath(relativePath);
             return RNFS.mkdir(dataDirectoryPath + "/" + directory).then(() => {
                 console.log("Touching", relativePath);
-                return RNFS.touch(
-                    dataDirectoryPath + "/" + relativePath,
-                    new Date()
-                ).then(() => {
+                return RNFS.touch(dataDirectoryPath + "/" + relativePath, new Date()).then(() => {
                     return browseDirectory(directory);
                 });
             });
@@ -209,14 +190,7 @@ export function archiveLocalFile(relativePath) {
             const archivePath = Files.getParentPath(oldPath) + "/archive/";
             const newPath = archivePath + Files.getPathName(relativePath);
             return RNFS.mkdir(archivePath).then(() => {
-                console.log(
-                    "Archiving",
-                    relativePath,
-                    "from",
-                    oldPath,
-                    "to",
-                    newPath
-                );
+                console.log("Archiving", relativePath, "from", oldPath, "to", newPath);
                 return RNFS.moveFile(oldPath, newPath).then(() => {
                     console.log("Done");
                     return browseDirectory(Files.getParentPath(oldPath));
@@ -242,14 +216,8 @@ export function openLocalFile(relativePath) {
     return dispatch => {
         dispatch(navigateOpenFile(relativePath));
         return resolveDataDirectoryPath().then(dataDirectoryPath => {
-            return RNFS.readFile(
-                dataDirectoryPath + relativePath,
-                "base64"
-            ).then(data => {
-                return RNFS.readFile(
-                    dataDirectoryPath + relativePath,
-                    "base64"
-                ).then(data => {
+            return RNFS.readFile(dataDirectoryPath + relativePath, "base64").then(data => {
+                return RNFS.readFile(dataDirectoryPath + relativePath, "base64").then(data => {
                     const records = readAllDataRecords(data);
                     dispatch({
                         type: Types.LOCAL_FILES_RECORDS,
@@ -267,10 +235,7 @@ export function openDataMap(relativePath) {
         dispatch(navigateDataMap(relativePath));
 
         return resolveDataDirectoryPath().then(dataDirectoryPath => {
-            return RNFS.readFile(
-                dataDirectoryPath + relativePath,
-                "base64"
-            ).then(data => {
+            return RNFS.readFile(dataDirectoryPath + relativePath, "base64").then(data => {
                 const records = readAllDataRecords(data);
                 dispatch({
                     type: Types.LOCAL_FILES_RECORDS,

@@ -5,62 +5,29 @@ import { View, Text } from "react-native";
 import { SensorType } from "./protocol";
 
 import { AtlasScript } from "./AtlasScript";
-import {
-    InstructionsStep,
-    WaitingStep,
-    AtlasCalibrationCommandStep
-} from "./ScriptSteps";
+import { InstructionsStep, WaitingStep, AtlasCalibrationCommandStep } from "./ScriptSteps";
 import { Paragraph } from "./Components";
 
 import atlasStyles from "./styles";
 
 export class AtlasOrpScript extends React.Component {
     render() {
-        const {
-            timerStart,
-            timerCancel,
-            atlasCalibrate,
-            onCancel,
-            timer,
-            atlasState
-        } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, onCancel, timer, atlasState } = this.props;
 
         return (
             <AtlasScript onCancel={() => onCancel()}>
                 <InstructionsStep>
-                    <Paragraph>
-                        Remove soaker bottle and place probe in ORP calibration
-                        solution.
-                    </Paragraph>
+                    <Paragraph>Remove soaker bottle and place probe in ORP calibration solution.</Paragraph>
                 </InstructionsStep>
-                <WaitingStep
-                    delay={60}
-                    timer={timer}
-                    timerStart={timerStart}
-                    timerCancel={timerCancel}
-                >
-                    <Paragraph>
-                        Let the probe soak in the calibration solution until
-                        readings stabalize.
-                    </Paragraph>
+                <WaitingStep delay={60} timer={timer} timerStart={timerStart} timerCancel={timerCancel}>
+                    <Paragraph>Let the probe soak in the calibration solution until readings stabalize.</Paragraph>
                 </WaitingStep>
-                <AtlasCalibrationCommandStep
-                    sensor={SensorType.values.ORP}
-                    command={atlasState.commands.Orp.Calibrate}
-                    atlasState={atlasState}
-                    atlasCalibrate={atlasCalibrate}
-                >
+                <AtlasCalibrationCommandStep sensor={SensorType.values.ORP} command={atlasState.commands.Orp.Calibrate} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                     <Paragraph>Performing calibration.</Paragraph>
                 </AtlasCalibrationCommandStep>
                 <InstructionsStep>
-                    <Paragraph>
-                        Do not pour the calibration solution back into the
-                        bottle.
-                    </Paragraph>
-                    <Paragraph>
-                        You're done. Please review the manual for maintenance
-                        procedures and recalibration schedule.
-                    </Paragraph>
+                    <Paragraph>Do not pour the calibration solution back into the bottle.</Paragraph>
+                    <Paragraph>You're done. Please review the manual for maintenance procedures and recalibration schedule.</Paragraph>
                 </InstructionsStep>
             </AtlasScript>
         );

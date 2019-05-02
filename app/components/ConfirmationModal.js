@@ -23,10 +23,7 @@ export class ConfirmationModal extends React.Component {
         const { visible } = this.props;
 
         return (
-            <Modal
-                visible={visible}
-                onRequestClose={() => console.log("onRequestClose")}
-            >
+            <Modal visible={visible} onRequestClose={() => console.log("onRequestClose")}>
                 <View
                     style={{
                         flex: 1,
@@ -46,14 +43,8 @@ export class ConfirmationModal extends React.Component {
                         <Text>Are you sure?</Text>
 
                         <MenuButtonContainer>
-                            <MenuButton
-                                title="Yes"
-                                onPress={() => this.onYes()}
-                            />
-                            <MenuButton
-                                title="No"
-                                onPress={() => this.onNo()}
-                            />
+                            <MenuButton title="Yes" onPress={() => this.onYes()} />
+                            <MenuButton title="No" onPress={() => this.onNo()} />
                         </MenuButtonContainer>
                     </View>
                 </View>

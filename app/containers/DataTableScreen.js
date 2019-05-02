@@ -57,9 +57,7 @@ class DataRecordRow extends React.Component {
 
         return (
             <View style={styles.dataTable.row.metadata}>
-                <Text style={{ paddingLeft: 0 }}>
-                    {this.unixToString(metadata.time)}
-                </Text>
+                <Text style={{ paddingLeft: 0 }}>{this.unixToString(metadata.time)}</Text>
                 <Text style={{ paddingLeft: 5 }}>{metadata.deviceId}</Text>
                 <Text style={{ paddingLeft: 5 }}>{metadata.git}</Text>
                 <Text style={{ paddingLeft: 5 }}>{metadata.build}</Text>
@@ -72,15 +70,9 @@ class DataRecordRow extends React.Component {
         const { status } = record;
         return (
             <View style={styles.dataTable.row.status}>
-                <Text style={{ paddingLeft: 0 }}>
-                    {this.unixToString(status.time)}
-                </Text>
-                <Text style={{ paddingLeft: 5 }}>
-                    Battery: {parseInt(status.battery)}%
-                </Text>
-                <Text style={{ paddingLeft: 5 }}>
-                    Uptime: {status.uptime}ms
-                </Text>
+                <Text style={{ paddingLeft: 0 }}>{this.unixToString(status.time)}</Text>
+                <Text style={{ paddingLeft: 5 }}>Battery: {parseInt(status.battery)}%</Text>
+                <Text style={{ paddingLeft: 5 }}>Uptime: {status.uptime}ms</Text>
             </View>
         );
     }
@@ -94,21 +86,15 @@ class DataRecordRow extends React.Component {
 
             return (
                 <View style={styles.dataTable.row.reading}>
-                    <Text style={{ paddingLeft: 0 }}>
-                        {this.unixToString(reading.time)}
-                    </Text>
-                    <Text style={{ paddingLeft: 5 }}>
-                        Sensor #{reading.sensor}
-                    </Text>
+                    <Text style={{ paddingLeft: 0 }}>{this.unixToString(reading.time)}</Text>
+                    <Text style={{ paddingLeft: 5 }}>Sensor #{reading.sensor}</Text>
                     <Text style={{ paddingLeft: 5 }}>{rounded}</Text>
                 </View>
             );
         } else if (location) {
             return (
                 <View style={styles.dataTable.row.reading}>
-                    <Text style={{ paddingLeft: 0 }}>
-                        {this.unixToString(location.time)}
-                    </Text>
+                    <Text style={{ paddingLeft: 0 }}>{this.unixToString(location.time)}</Text>
                     <Text style={{ paddingLeft: 5 }}>
                         Location {location.longitude} x {location.latitude}
                     </Text>
@@ -123,9 +109,7 @@ class DataRecordRow extends React.Component {
         const { log } = record;
         return (
             <View style={styles.dataTable.row.log}>
-                <Text style={{ paddingLeft: 0 }}>
-                    {this.unixToString(log.time)}
-                </Text>
+                <Text style={{ paddingLeft: 0 }}>{this.unixToString(log.time)}</Text>
                 <Text style={{ paddingLeft: 5 }}>{log.facility}</Text>
                 <Text style={{ paddingLeft: 5 }}>{log.message}</Text>
             </View>
@@ -144,11 +128,7 @@ class DataRecordListing extends React.Component {
 
         return (
             <View style={styles.dataTable.container}>
-                <FlatList
-                    data={records.records}
-                    renderItem={item => this.renderItem(item)}
-                    keyExtractor={record => record.index.toString()}
-                />
+                <FlatList data={records.records} renderItem={item => this.renderItem(item)} keyExtractor={record => record.index.toString()} />
             </View>
         );
     }

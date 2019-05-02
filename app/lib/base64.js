@@ -1,7 +1,6 @@
 export function arrayBufferToBase64(arrayBuffer) {
     var base64 = "";
-    var encodings =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    var encodings = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     var bytes = new Uint8Array(arrayBuffer);
     var byteLength = bytes.byteLength;
@@ -62,7 +61,5 @@ export function base64ToArrayBuffer(base64) {
 }
 
 export function hexArrayBuffer(arrayBuffer) {
-    return Array.prototype.map
-        .call(arrayBuffer, x => ("00" + x.toString(16)).slice(-2))
-        .join("");
+    return Array.prototype.map.call(arrayBuffer, x => ("00" + x.toString(16)).slice(-2)).join("");
 }

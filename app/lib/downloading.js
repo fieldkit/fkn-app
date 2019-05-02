@@ -19,9 +19,7 @@ import * as Files from "./files";
 let resolvedDataDirectoryPath = null;
 
 export function createDataDirectoryPath() {
-    return (resolvedDataDirectoryPath = Promise.resolve(
-        RNFS.DocumentDirectoryPath + "/Data"
-    ).then(path => {
+    return (resolvedDataDirectoryPath = Promise.resolve(RNFS.DocumentDirectoryPath + "/Data").then(path => {
         return RNFS.mkdir(path).then(() => {
             console.log("Created", path);
             return path;
@@ -38,15 +36,7 @@ export function resolveDataDirectoryPath() {
 
 export function openWriter(device, file, settings, dispatch) {
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
-        return Promise.resolve(
-            new DownloadWriter(
-                dataDirectoryPath,
-                device,
-                file,
-                settings,
-                dispatch
-            )
-        ).then(writer => {
+        return Promise.resolve(new DownloadWriter(dataDirectoryPath, device, file, settings, dispatch)).then(writer => {
             return writer.open().then(() => {
                 return writer;
             });
@@ -76,8 +66,7 @@ export class LocalFileStructure {
 
 export function writeDeviceMetadata(device, metadata) {
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
-        const directory =
-            dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId);
+        const directory = dataDirectoryPath + "/" + hexArrayBuffer(device.deviceId);
 
         return RNFS.mkdir(directory).then(() => {
             const path = directory + "/" + "metadata.fkpb";
@@ -117,12 +106,8 @@ export class DownloadWriter {
             return Promise.resolve(true)
                 .then(() => {
                     console.log("settings", this.settings);
-                    this.headersPath =
-                        this.dataDirectoryPath +
-                        "/" +
-                        this.settings.paths.headers;
-                    this.path =
-                        this.dataDirectoryPath + "/" + this.settings.paths.file;
+                    this.headersPath = this.dataDirectoryPath + "/" + this.settings.paths.headers;
+                    this.path = this.dataDirectoryPath + "/" + this.settings.paths.file;
                     this.directory = Files.getParentPath(this.path);
                     console.log("Making", this.directory);
                     return RNFS.mkdir(this.directory);
@@ -221,10 +206,7 @@ export class DownloadWriter {
 
     progress(type) {
         const now = new Date();
-        const fn =
-            type == Types.DOWNLOAD_FILE_DONE
-                ? this.dispatch
-                : this.throttledDispatch;
+        const fn = type == Types.DOWNLOAD_FILE_DONE ? this.dispatch : this.throttledDispatch;
 
         fn({
             type: type,

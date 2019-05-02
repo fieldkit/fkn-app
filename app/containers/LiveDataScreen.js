@@ -6,15 +6,7 @@ import RNLanguages from "react-native-languages";
 import i18n from "../internationalization/i18n";
 
 import { View, Text, FlatList, ScrollView, Dimensions } from "react-native";
-import {
-    VictoryLine,
-    VictoryChart,
-    VictoryTheme,
-    VictoryLegend,
-    VictoryCursorContainer,
-    VictoryContainer,
-    VictoryAxis
-} from "victory-native";
+import { VictoryLine, VictoryChart, VictoryTheme, VictoryLegend, VictoryCursorContainer, VictoryContainer, VictoryAxis } from "victory-native";
 import Svg from "react-native-svg";
 
 import { AppScreen, Loading } from "../components";
@@ -51,11 +43,7 @@ class LiveDataScreen extends React.Component {
         if (this.state.chartPerSensor) {
             return (
                 <View style={styles.liveData.container}>
-                    <FlatList
-                        data={liveData.sensors}
-                        renderItem={item => this.renderSensorChart(item)}
-                        keyExtractor={this.keyExtractor}
-                    />
+                    <FlatList data={liveData.sensors} renderItem={item => this.renderSensorChart(item)} keyExtractor={this.keyExtractor} />
                 </View>
             );
         }
@@ -63,36 +51,21 @@ class LiveDataScreen extends React.Component {
         return (
             <AppScreen background={false}>
                 <View style={styles.liveData.container}>
-                    <View style={{ flex: 1 }}>
-                        {liveData.sensors.map((s, i) =>
-                            this.renderSensor(s, s.id)
-                        )}
-                    </View>
-                    <View style={styles.liveData.chart.container}>
-                        {this.renderChart()}
-                    </View>
+                    <View style={{ flex: 1 }}>{liveData.sensors.map((s, i) => this.renderSensor(s, s.id))}</View>
+                    <View style={styles.liveData.chart.container}>{this.renderChart()}</View>
                 </View>
             </AppScreen>
         );
     }
 
     renderSensorHeader(sensor, id, key) {
-        const dotStyle = Object.assign(
-            { backgroundColor: this.sensorColor(id) },
-            styles.liveData.legend.dotStyle
-        );
+        const dotStyle = Object.assign({ backgroundColor: this.sensorColor(id) }, styles.liveData.legend.dotStyle);
         const rounded = Math.round(sensor.value * 1000) / 1000;
         return (
             <View key={key} style={styles.liveData.legend.container}>
                 <View style={dotStyle} />
-                <Text style={styles.liveData.legend.sensor.name}>
-                    {sensor.name}:{" "}
-                </Text>
-                <Text style={styles.liveData.legend.sensor.value}>
-                    {sensor.value
-                        ? rounded + " " + sensor.unitOfMeasure
-                        : "Collecting..."}
-                </Text>
+                <Text style={styles.liveData.legend.sensor.name}>{sensor.name}: </Text>
+                <Text style={styles.liveData.legend.sensor.value}>{sensor.value ? rounded + " " + sensor.unitOfMeasure : "Collecting..."}</Text>
             </View>
         );
     }
@@ -106,10 +79,7 @@ class LiveDataScreen extends React.Component {
         const sensor = item.item;
         const id = item.index;
         const key = "sensor-" + id;
-        const dotStyle = Object.assign(
-            { backgroundColor: this.sensorColor(id) },
-            styles.liveData.legend.dotStyle
-        );
+        const dotStyle = Object.assign({ backgroundColor: this.sensorColor(id) }, styles.liveData.legend.dotStyle);
 
         let chart = <View />;
         if (false && sensor.data.length > 1) {
@@ -124,29 +94,11 @@ class LiveDataScreen extends React.Component {
                 // react native or react-native-svg and nobody knows what's going on.
                 // There were some other workarounds, although none of them worked for
                 // me. This seems to work best.
-                <Svg
-                    width={chartWidth}
-                    height={chartHeight}
-                    viewBox={viewBox}
-                    style={{ width: "100%", height: "auto" }}
-                >
-                    <VictoryChart
-                        theme={VictoryTheme.material}
-                        scale={{ x: "time" }}
-                        standalone={false}
-                        width={chartWidth}
-                        height={chartHeight}
-                    >
+                <Svg width={chartWidth} height={chartHeight} viewBox={viewBox} style={{ width: "100%", height: "auto" }}>
+                    <VictoryChart theme={VictoryTheme.material} scale={{ x: "time" }} standalone={false} width={chartWidth} height={chartHeight}>
                         <VictoryAxis />
-                        <VictoryAxis
-                            dependentAxis
-                            tickFormat={x => `${Math.round(x * 100) / 100}`}
-                        />
-                        <VictoryLine
-                            key={id}
-                            data={sensor.data}
-                            style={{ data: { stroke: this.sensorColor(id) } }}
-                        />
+                        <VictoryAxis dependentAxis tickFormat={x => `${Math.round(x * 100) / 100}`} />
+                        <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: this.sensorColor(id) } }} />
                     </VictoryChart>
                 </Svg>
             );
@@ -169,13 +121,7 @@ class LiveDataScreen extends React.Component {
                 {liveData.sensors
                     .filter(s => s.data.length > 1)
                     .map((sensor, id) => {
-                        return (
-                            <VictoryLine
-                                key={id}
-                                data={sensor.data}
-                                style={{ data: { stroke: colors[id + 1] } }}
-                            />
-                        );
+                        return <VictoryLine key={id} data={sensor.data} style={{ data: { stroke: colors[id + 1] } }} />;
                     })}
             </VictoryChart>
         );

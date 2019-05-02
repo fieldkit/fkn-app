@@ -4,12 +4,7 @@ import varint from "varint";
 import protobuf from "protobufjs";
 import net from "net";
 
-import {
-    WireMessageQuery,
-    WireMessageReply,
-    QueryType,
-    ReplyType
-} from "../lib/protocol";
+import { WireMessageQuery, WireMessageReply, QueryType, ReplyType } from "../lib/protocol";
 
 import * as ActionTypes from "../actions/types";
 
@@ -100,9 +95,7 @@ class DeviceConnection {
             };
         }
 
-        const decoded = WireMessageReply.decodeDelimited(
-            protobuf.Reader.create(response)
-        );
+        const decoded = WireMessageReply.decodeDelimited(protobuf.Reader.create(response));
         if (decoded.type == ReplyType.values.REPLY_ERROR) {
             return {
                 deviceApi: {
@@ -139,16 +132,8 @@ class DeviceConnection {
                 return address;
             })
             .then(address => {
-                const encoded = WireMessageQuery.encodeDelimited(
-                    callApi.message
-                ).finish();
-                return this.rpcImplFactory(
-                    address.host,
-                    address.port,
-                    encoded,
-                    callApi.noReply === true,
-                    callApi.writer
-                );
+                const encoded = WireMessageQuery.encodeDelimited(callApi.message).finish();
+                return this.rpcImplFactory(address.host, address.port, encoded, callApi.noReply === true, callApi.writer);
             })
             .then(
                 response => {

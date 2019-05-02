@@ -46,18 +46,11 @@ export function* deviceCall(raw, existingChannel) {
         if (actions.length == 0) {
             throw new Error("Error: No actions returned from dispatch.", raw);
         } else if (actions.length > 1) {
-            throw new Error(
-                "Error: Not sure how to handle two actions from dispatch.",
-                raw,
-                actions
-            );
+            throw new Error("Error: Not sure how to handle two actions from dispatch.", raw, actions);
         }
         const call = actions[0][CALL_DEVICE_API];
         if (_.isUndefined(call)) {
-            throw new Error(
-                "Action callback returned invalid CALL_DEVICE_API",
-                raw
-            );
+            throw new Error("Action callback returned invalid CALL_DEVICE_API", raw);
         }
         return call;
     };

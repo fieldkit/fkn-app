@@ -35,12 +35,7 @@ export class AtlasScript extends React.Component {
     }
 
     render() {
-        const {
-            timerStart,
-            deviceModuleQuery,
-            onCancel,
-            children
-        } = this.props;
+        const { timerStart, deviceModuleQuery, onCancel, children } = this.props;
         const { currentStepIndex } = this.state;
 
         const step = this.currentStep();
@@ -55,11 +50,7 @@ export class AtlasScript extends React.Component {
 
         return (
             <View style={{ margin: 20 }}>
-                <ProgressBar
-                    progress={
-                        ((currentStepIndex + 1) / children.length) * 100.0
-                    }
-                />
+                <ProgressBar progress={((currentStepIndex + 1) / children.length) * 100.0} />
                 {React.cloneElement(step, { ...childProps })}
             </View>
         );

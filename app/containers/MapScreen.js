@@ -14,12 +14,7 @@ import { View, Text, Image } from "react-native";
 import { AppScreen, MenuButtonContainer, MenuButton } from "../components";
 import { queryFiles } from "../actions";
 
-import {
-    navigateBack,
-    navigateMap,
-    navigateWelcome,
-    location
-} from "../actions";
+import { navigateBack, navigateMap, navigateWelcome, location } from "../actions";
 
 import { StyleSheet } from "react-native";
 
@@ -64,11 +59,7 @@ class MapScreen extends React.Component {
         console.log(i);
         let myString = coordinate.toString();
         return (
-            <Mapbox.PointAnnotation
-                key={i}
-                id={"pointAnnotation-" + i}
-                coordinate={coordinate}
-            >
+            <Mapbox.PointAnnotation key={i} id={"pointAnnotation-" + i} coordinate={coordinate}>
                 <View style={styles.annotationContainer}>
                     <View style={styles.annotationFill} />
                 </View>
@@ -78,35 +69,15 @@ class MapScreen extends React.Component {
     }
 
     render() {
-        const {
-            navigateBack,
-            navigateMap,
-            navigateWelcome,
-            giveLocation,
-            records
-        } = this.props;
+        const { navigateBack, navigateMap, navigateWelcome, giveLocation, records } = this.props;
         if (giveLocation.phone !== undefined) {
             console.log("This is give location", giveLocation);
-            let coordinateArray = [
-                giveLocation.phone.long,
-                giveLocation.phone.lat
-            ];
+            let coordinateArray = [giveLocation.phone.long, giveLocation.phone.lat];
             return (
                 <View style={styles.container}>
-                    <Mapbox.MapView
-                        styleURL={MAPBOX_STYLE}
-                        zoomLevel={15}
-                        centerCoordinate={coordinateArray}
-                        style={styles.container}
-                    >
-                        <Mapbox.ShapeSource
-                            id="line1"
-                            shape={giveLocation.route}
-                        >
-                            <Mapbox.LineLayer
-                                id="linelayer1"
-                                style={{ lineColor: "red" }}
-                            />
+                    <Mapbox.MapView styleURL={MAPBOX_STYLE} zoomLevel={15} centerCoordinate={coordinateArray} style={styles.container}>
+                        <Mapbox.ShapeSource id="line1" shape={giveLocation.route}>
+                            <Mapbox.LineLayer id="linelayer1" style={{ lineColor: "red" }} />
                         </Mapbox.ShapeSource>
                         {giveLocation.sensors.map((coordinate, index) => {
                             return this.renderAnnotations(coordinate, index);

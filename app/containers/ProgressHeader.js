@@ -26,11 +26,7 @@ class ProgressHeader extends React.Component {
         const { progress } = this.props;
 
         if (progress.operations.length > 0) {
-            return (
-                <View>
-                    {progress.operations.map((p, i) => this.renderBar(i, p))}
-                </View>
-            );
+            return <View>{progress.operations.map((p, i) => this.renderBar(i, p))}</View>;
         }
 
         const bars = [];
@@ -70,11 +66,7 @@ class ProgressHeader extends React.Component {
     renderCancel() {
         return (
             <View style={{}}>
-                <Button
-                    title="Cancel"
-                    onPress={() => this.onCancel()}
-                    color="#F8C471"
-                />
+                <Button title="Cancel" onPress={() => this.onCancel()} color="#F8C471" />
             </View>
         );
     }

@@ -9,11 +9,7 @@ import { useFakeDeviceConnection } from "../../middleware/device-api";
 import { QueryType, ReplyType } from "../../lib/protocol";
 
 import * as Types from "../types";
-import {
-    navigateConnecting,
-    navigateDeviceMenu,
-    navigateWelcome
-} from "../navigation";
+import { navigateConnecting, navigateDeviceMenu, navigateWelcome } from "../navigation";
 
 import { findDeviceInfo } from "./discovery";
 import { connectionRelatedNavigation } from "./navigation-sagas";

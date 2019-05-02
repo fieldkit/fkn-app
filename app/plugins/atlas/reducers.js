@@ -84,10 +84,7 @@ export function atlasState(state = initialAtlasCalibrationState, action) {
                 ...state,
                 ...{
                     temperature: action.temperature,
-                    commands: atlasCommands.getCommands(
-                        action.temperature,
-                        state.probeType
-                    )
+                    commands: atlasCommands.getCommands(action.temperature, state.probeType)
                 }
             };
         }
@@ -96,10 +93,7 @@ export function atlasState(state = initialAtlasCalibrationState, action) {
                 ...state,
                 ...{
                     probeType: action.probeType,
-                    commands: atlasCommands.getCommands(
-                        state.temperature,
-                        action.probeType
-                    )
+                    commands: atlasCommands.getCommands(state.temperature, action.probeType)
                 }
             };
         }
@@ -133,9 +127,7 @@ export function atlasState(state = initialAtlasCalibrationState, action) {
             if (replyState.error || replyState.lastReply == null) {
                 return { ...state, ...{ values: [], reading: replyState } };
             }
-            const values = replyState.lastReply.atlasReply.reply
-                .split(",")
-                .map(s => Number(s));
+            const values = replyState.lastReply.atlasReply.reply.split(",").map(s => Number(s));
             return { ...state, ...{ values: values, reading: replyState } };
         }
     }

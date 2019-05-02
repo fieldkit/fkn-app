@@ -12,55 +12,23 @@ import atlasStyles from "./styles";
 
 export class ResetScript extends React.Component {
     render() {
-        const {
-            timerStart,
-            timerCancel,
-            atlasCalibrate,
-            onCancel,
-            timer,
-            atlasState
-        } = this.props;
+        const { timerStart, timerCancel, atlasCalibrate, onCancel, timer, atlasState } = this.props;
 
         return (
             <AtlasScript onCancel={() => onCancel()}>
-                <AtlasCalibrationCommandStep
-                    sensor={SensorType.values.PH}
-                    command={atlasState.commands.Ph.Clear}
-                    atlasState={atlasState}
-                    atlasCalibrate={atlasCalibrate}
-                >
+                <AtlasCalibrationCommandStep sensor={SensorType.values.PH} command={atlasState.commands.Ph.Clear} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                     <Paragraph>Clearing calibration.</Paragraph>
                 </AtlasCalibrationCommandStep>
-                <AtlasCalibrationCommandStep
-                    sensor={SensorType.values.TEMP}
-                    command={atlasState.commands.Temperature.Clear}
-                    atlasState={atlasState}
-                    atlasCalibrate={atlasCalibrate}
-                >
+                <AtlasCalibrationCommandStep sensor={SensorType.values.TEMP} command={atlasState.commands.Temperature.Clear} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                     <Paragraph>Clearing calibration.</Paragraph>
                 </AtlasCalibrationCommandStep>
-                <AtlasCalibrationCommandStep
-                    sensor={SensorType.values.ORP}
-                    command={atlasState.commands.Orp.Clear}
-                    atlasState={atlasState}
-                    atlasCalibrate={atlasCalibrate}
-                >
+                <AtlasCalibrationCommandStep sensor={SensorType.values.ORP} command={atlasState.commands.Orp.Clear} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                     <Paragraph>Clearing calibration.</Paragraph>
                 </AtlasCalibrationCommandStep>
-                <AtlasCalibrationCommandStep
-                    sensor={SensorType.values.DO}
-                    command={atlasState.commands.Do.Clear}
-                    atlasState={atlasState}
-                    atlasCalibrate={atlasCalibrate}
-                >
+                <AtlasCalibrationCommandStep sensor={SensorType.values.DO} command={atlasState.commands.Do.Clear} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                     <Paragraph>Clearing calibration.</Paragraph>
                 </AtlasCalibrationCommandStep>
-                <AtlasCalibrationCommandStep
-                    sensor={SensorType.values.EC}
-                    command={atlasState.commands.Ec.Clear}
-                    atlasState={atlasState}
-                    atlasCalibrate={atlasCalibrate}
-                >
+                <AtlasCalibrationCommandStep sensor={SensorType.values.EC} command={atlasState.commands.Ec.Clear} atlasState={atlasState} atlasCalibrate={atlasCalibrate}>
                     <Paragraph>Clearing calibration.</Paragraph>
                 </AtlasCalibrationCommandStep>
             </AtlasScript>

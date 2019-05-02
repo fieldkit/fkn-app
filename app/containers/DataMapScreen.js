@@ -14,12 +14,7 @@ import { View, Text, Image } from "react-native";
 import { AppScreen, MenuButtonContainer, MenuButton } from "../components";
 import { queryFiles } from "../actions";
 
-import {
-    navigateBack,
-    openDataMap,
-    navigateWelcome,
-    location
-} from "../actions";
+import { navigateBack, openDataMap, navigateWelcome, location } from "../actions";
 
 import { StyleSheet } from "react-native";
 
@@ -50,11 +45,7 @@ class DataMapScreen extends React.Component {
     renderAnnotations(coordinate, i) {
         let myString = coordinate.toString();
         return (
-            <Mapbox.PointAnnotation
-                key={i}
-                id={"pointAnnotation-" + i}
-                coordinate={coordinate}
-            >
+            <Mapbox.PointAnnotation key={i} id={"pointAnnotation-" + i} coordinate={coordinate}>
                 <View style={styles.annotationContainer}>
                     <View style={styles.annotationFill} />
                 </View>
@@ -68,30 +59,16 @@ class DataMapScreen extends React.Component {
 
         if (records != null && records.records != null) {
             var routePoints = _(records.records)
-                .filter(
-                    locationObject =>
-                        locationObject.loggedReading &&
-                        locationObject.loggedReading.location &&
-                        (locationObject.loggedReading.location.fix == 0 ||
-                            locationObject.loggedReading.location.fix == 1)
-                )
+                .filter(locationObject => locationObject.loggedReading && locationObject.loggedReading.location && (locationObject.loggedReading.location.fix == 0 || locationObject.loggedReading.location.fix == 1))
                 .map((locationObject, index) => {
-                    let coordinate = [
-                        locationObject.loggedReading.location.longitude,
-                        locationObject.loggedReading.location.latitude
-                    ];
+                    let coordinate = [locationObject.loggedReading.location.longitude, locationObject.loggedReading.location.latitude];
                     return coordinate;
                 })
                 .value();
 
             return (
                 <View style={styles.container}>
-                    <Mapbox.MapView
-                        styleURL={MAPBOX_STYLE}
-                        zoomLevel={15}
-                        style={styles.container}
-                        centerCoordinate={routePoints[0]}
-                    >
+                    <Mapbox.MapView styleURL={MAPBOX_STYLE} zoomLevel={15} style={styles.container} centerCoordinate={routePoints[0]}>
                         <Mapbox.ShapeSource
                             id="line1"
                             shape={{

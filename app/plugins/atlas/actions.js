@@ -1,14 +1,5 @@
 import { delay } from "redux-saga";
-import {
-    put,
-    take,
-    takeLatest,
-    takeEvery,
-    select,
-    all,
-    race,
-    call
-} from "redux-saga/effects";
+import { put, take, takeLatest, takeEvery, select, all, race, call } from "redux-saga/effects";
 
 import * as AppActionTypes from "../../actions/types";
 import { QueryType as AppQueryType } from "../../lib/protocol";
@@ -17,13 +8,7 @@ import * as AtlasActionTypes from "./types";
 import { deviceCall } from "../../actions/sagas/saga-utils";
 import { CALL_DEVICE_API } from "../../middleware/device-api";
 
-import {
-    QueryType,
-    SensorType,
-    atlasSensorQuery,
-    encodeWireAtlasQuery,
-    decodeWireAtlasReply
-} from "./protocol";
+import { QueryType, SensorType, atlasSensorQuery, encodeWireAtlasQuery, decodeWireAtlasReply } from "./protocol";
 
 export function atlasCalibrationBegin() {
     return {
@@ -83,46 +68,29 @@ export function atlasSetProbeType(sensor, command, probeType) {
             probeType: probeType
         });
 
-        const types = [
-            AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_START,
-            AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_SUCCESS,
-            AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_FAIL
-        ];
+        const types = [AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_START, AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_SUCCESS, AtlasActionTypes.DEVICE_ATLAS_SENSOR_SET_PROBE_TYPE_FAIL];
         const sensorCommand = atlasSensorCommand(types, true, sensor, command);
         return sensorCommand(dispatch, getState);
     };
 }
 
 export function atlasCalibrate(sensor, command) {
-    const types = [
-        AtlasActionTypes.DEVICE_ATLAS_SENSOR_CALIBRATE_START,
-        AtlasActionTypes.DEVICE_ATLAS_SENSOR_CALIBRATE_SUCCESS,
-        AtlasActionTypes.DEVICE_ATLAS_SENSOR_CALIBRATE_FAIL
-    ];
+    const types = [AtlasActionTypes.DEVICE_ATLAS_SENSOR_CALIBRATE_START, AtlasActionTypes.DEVICE_ATLAS_SENSOR_CALIBRATE_SUCCESS, AtlasActionTypes.DEVICE_ATLAS_SENSOR_CALIBRATE_FAIL];
     return atlasSensorCommand(types, true, sensor, command);
 }
 
 export function atlasReading(sensor) {
-    const types = [
-        AtlasActionTypes.DEVICE_ATLAS_SENSOR_READING_START,
-        AtlasActionTypes.DEVICE_ATLAS_SENSOR_READING_SUCCESS,
-        AtlasActionTypes.DEVICE_ATLAS_SENSOR_READING_FAIL
-    ];
+    const types = [AtlasActionTypes.DEVICE_ATLAS_SENSOR_READING_START, AtlasActionTypes.DEVICE_ATLAS_SENSOR_READING_SUCCESS, AtlasActionTypes.DEVICE_ATLAS_SENSOR_READING_FAIL];
     return atlasSensorCommand(types, false, sensor, "R");
 }
 
 function* takeAtlasReadings() {
-    yield takeLatest([AtlasActionTypes.ATLAS_READ_SENSOR_START], function*(
-        start
-    ) {
+    yield takeLatest([AtlasActionTypes.ATLAS_READ_SENSOR_START], function*(start) {
         while (true) {
             yield call(deviceCall, atlasReading(start.sensor));
 
             const { stopped, to } = yield race({
-                stopped: take([
-                    AtlasActionTypes.ATLAS_READ_SENSOR_STOP,
-                    AtlasActionTypes.ATLAS_CALIBRATION_END
-                ]),
+                stopped: take([AtlasActionTypes.ATLAS_READ_SENSOR_STOP, AtlasActionTypes.ATLAS_CALIBRATION_END]),
                 to: delay(2000)
             });
 

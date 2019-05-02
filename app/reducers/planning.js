@@ -62,19 +62,14 @@ const initialDeviceState = {
 
 function mergeUpdate(state, deviceId, after) {
     const newState = _.cloneDeep(state);
-    const deviceBefore =
-        newState.devices[deviceId] || _.cloneDeep(initialDeviceState);
+    const deviceBefore = newState.devices[deviceId] || _.cloneDeep(initialDeviceState);
     const deviceAfter = _.assign(deviceBefore, after);
     newState.devices[deviceId] = deviceAfter;
 
     console.log("Generating New Plans");
 
     deviceAfter.plans = {
-        download: generateDownloadPlan(
-            Configuration,
-            deviceAfter.local,
-            deviceAfter.remote
-        ),
+        download: generateDownloadPlan(Configuration, deviceAfter.local, deviceAfter.remote),
         upload: generateUploadPlan(Configuration, deviceAfter.local)
     };
 
@@ -126,7 +121,9 @@ function mergeRemoteFiles(state, action) {
 
 function emptyAllLocalFiles(state) {
     let nextState = state;
+    console.log("EmptyAllLocalFiles", state.map);
     _.values(state.map).forEach(deviceId => {
+        console.log("Emptying", deviceId);
         nextState = mergeUpdate(nextState, deviceId, {
             local: {
                 files: []
@@ -151,9 +148,7 @@ export function planning(state = initialPlanningState, action) {
     switch (action.type) {
         case ActionTypes.DEVICE_HANDSHAKE_SUCCESS: {
             const key = action.deviceApi.address.key;
-            const deviceId = hexArrayBuffer(
-                action.response.capabilities.deviceId
-            );
+            const deviceId = hexArrayBuffer(action.response.capabilities.deviceId);
             if (state.map[key] === deviceId) {
                 return nextState;
             }

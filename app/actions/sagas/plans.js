@@ -1,16 +1,7 @@
 import _ from "lodash";
 
 import { delay } from "redux-saga";
-import {
-    put,
-    take,
-    takeLatest,
-    takeEvery,
-    select,
-    all,
-    race,
-    call
-} from "redux-saga/effects";
+import { put, take, takeLatest, takeEvery, select, all, race, call } from "redux-saga/effects";
 
 import { QueryType } from "../../lib/protocol";
 import { Toasts } from "../../lib/toasts";
@@ -18,11 +9,7 @@ import { Toasts } from "../../lib/toasts";
 import * as Types from "../types";
 
 import { queryCapabilities } from "../device-status";
-import {
-    queryFiles,
-    queryDeviceMetadata,
-    queryDownloadFile
-} from "../device-data";
+import { queryFiles, queryDeviceMetadata, queryDownloadFile } from "../device-data";
 import { archiveLocalFile, touchLocalFile } from "../local-files";
 
 import { uploadFile } from "../../lib/uploading";
@@ -37,14 +24,8 @@ class Devices {
 
     *getInformation(address) {
         if (!_.isObject(this.cache[address.key])) {
-            const capabilitiesAction = yield call(
-                deviceCall,
-                queryCapabilities(address)
-            );
-            const metadataAction = yield call(
-                deviceCall,
-                queryDeviceMetadata(address)
-            );
+            const capabilitiesAction = yield call(deviceCall, queryCapabilities(address));
+            const metadataAction = yield call(deviceCall, queryDeviceMetadata(address));
 
             this.cache[address.key] = {
                 capabilities: capabilitiesAction.response.capabilities,
@@ -90,15 +71,9 @@ export function* executePlans() {
 
                 switch (key) {
                     case "download": {
-                        const info = yield devices.getInformation(
-                            details.address
-                        );
+                        const info = yield devices.getInformation(details.address);
 
-                        yield call(
-                            writeDeviceMetadata,
-                            info.capabilities,
-                            info.metadata
-                        );
+                        yield call(writeDeviceMetadata, info.capabilities, info.metadata);
 
                         console.log(info);
                         const file = {
@@ -116,15 +91,7 @@ export function* executePlans() {
                         };
 
                         const { downloaded, stop } = yield race({
-                            downloaded: call(
-                                deviceCall,
-                                queryDownloadFile(
-                                    info.capabilities,
-                                    file,
-                                    settings,
-                                    details.address
-                                )
-                            ),
+                            downloaded: call(deviceCall, queryDownloadFile(info.capabilities, file, settings, details.address)),
                             stop: take(Types.OPERATION_CANCEL)
                         });
 
@@ -173,12 +140,7 @@ export function* executePlans() {
                         }
 
                         const { upload, stop } = yield race({
-                            upload: call(
-                                uploadFile,
-                                details.file,
-                                details.headers,
-                                progress
-                            ),
+                            upload: call(uploadFile, details.file, details.headers, progress),
                             stop: take(Types.OPERATION_CANCEL),
                             actions: dispatcher.pump()
                         });

@@ -31,22 +31,13 @@ class AboutScreen extends React.Component {
                     }}
                 />
                 <MenuButtonContainer>
-                    <MenuButton
-                        title={i18n.t("about.welcome")}
-                        onPress={() => navigateWelcome()}
-                    />
+                    <MenuButton title={i18n.t("about.welcome")} onPress={() => navigateWelcome()} />
                     <View>
-                        <Text style={{ fontWeight: "bold" }}>
-                            {i18n.t("about.commit")}
-                        </Text>
+                        <Text style={{ fontWeight: "bold" }}>{i18n.t("about.commit")}</Text>
                         <Text>{Config.build.gitCommit || "NA"}</Text>
-                        <Text style={{ fontWeight: "bold" }}>
-                            {i18n.t("about.tag")}
-                        </Text>
+                        <Text style={{ fontWeight: "bold" }}>{i18n.t("about.tag")}</Text>
                         <Text>{Config.build.buildTag || "NA"}</Text>
-                        <Text style={{ fontWeight: "bold" }}>
-                            {i18n.t("about.time")}
-                        </Text>
+                        <Text style={{ fontWeight: "bold" }}>{i18n.t("about.time")}</Text>
                         <Text>{Config.build.buildTime || "NA"}</Text>
                     </View>
                 </MenuButtonContainer>

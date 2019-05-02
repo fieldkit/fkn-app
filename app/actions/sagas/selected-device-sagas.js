@@ -2,16 +2,7 @@ import _ from "lodash";
 import Promise from "bluebird";
 import { Alert } from "react-native";
 import { delay } from "redux-saga";
-import {
-    put,
-    take,
-    takeLatest,
-    takeEvery,
-    select,
-    all,
-    race,
-    call
-} from "redux-saga/effects";
+import { put, take, takeLatest, takeEvery, select, all, race, call } from "redux-saga/effects";
 
 import { QueryType } from "../../lib/protocol";
 import { unixNow } from "../../lib/helpers";
@@ -32,11 +23,7 @@ export function* queryActiveDeviceInformation() {
             yield put(navigateDeviceMenu());
 
             yield call(deviceCall, {
-                types: [
-                    Types.DEVICE_CAPABILITIES_START,
-                    Types.DEVICE_CAPABILITIES_SUCCESS,
-                    Types.DEVICE_CAPABILITIES_FAIL
-                ],
+                types: [Types.DEVICE_CAPABILITIES_START, Types.DEVICE_CAPABILITIES_SUCCESS, Types.DEVICE_CAPABILITIES_FAIL],
                 address: selected.address,
                 message: {
                     type: QueryType.values.QUERY_CAPABILITIES,
@@ -93,11 +80,7 @@ export function* pingConnectedDevice() {
             if (elapsed > Config.pingDeviceInterval) {
                 try {
                     yield call(deviceCall, {
-                        types: [
-                            Types.DEVICE_PING_START,
-                            Types.DEVICE_PING_SUCCESS,
-                            Types.DEVICE_PING_FAIL
-                        ],
+                        types: [Types.DEVICE_PING_START, Types.DEVICE_PING_SUCCESS, Types.DEVICE_PING_FAIL],
                         address: selectedDevice.connected,
                         message: {
                             type: QueryType.values.QUERY_STATUS,
@@ -120,11 +103,7 @@ export function* pingConnectedDevice() {
 export function* selectedDeviceSagas() {
     yield takeLatest([Types.FIND_DEVICE_START], function*() {
         try {
-            yield all([
-                pingConnectedDevice(),
-                queryActiveDeviceInformation(),
-                liveDataSaga()
-            ]);
+            yield all([pingConnectedDevice(), queryActiveDeviceInformation(), liveDataSaga()]);
         } catch (err) {
             console.log("Error", err);
         }

@@ -16,8 +16,7 @@ export class DeviceInfo extends React.Component {
                 <Text style={styles.deviceInfo.name}>{info.name}</Text>
                 <View style={styles.deviceInfo.lineTwo}>
                     <Text style={styles.deviceInfo.address}>
-                        {info.address}, {this.getUptime(info.status.uptime)},{" "}
-                        {parseInt(info.status.batteryPercentage)}%
+                        {info.address}, {this.getUptime(info.status.uptime)}, {parseInt(info.status.batteryPercentage)}%
                     </Text>
                 </View>
             </View>

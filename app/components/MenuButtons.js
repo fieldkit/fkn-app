@@ -7,9 +7,7 @@ export class MenuButtonContainer extends React.Component {
     render() {
         const { children, style } = this.props;
 
-        return (
-            <View style={[styles.menuButtonContainer, style]}>{children}</View>
-        );
+        return <View style={[styles.menuButtonContainer, style]}>{children}</View>;
     }
 }
 

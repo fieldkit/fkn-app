@@ -11,13 +11,7 @@ import * as Files from "../lib/files";
 
 import { AppScreen, Loading, FileMenu, MenuButton } from "../components";
 
-import {
-    browseDirectory,
-    openLocalFile,
-    uploadLocalFile,
-    deleteLocalFile,
-    openDataMap
-} from "../actions";
+import { browseDirectory, openLocalFile, uploadLocalFile, deleteLocalFile, openDataMap } from "../actions";
 
 class LocalFileScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -52,13 +46,7 @@ class LocalFileScreen extends React.Component {
 
         return (
             <AppScreen background={false}>
-                <FileMenu
-                    file={file}
-                    onOpenDataMap={this.onOpenDataMap.bind(this)}
-                    onOpen={this.onOpen.bind(this)}
-                    onUpload={this.onUpload.bind(this)}
-                    onDelete={this.onDelete.bind(this)}
-                />
+                <FileMenu file={file} onOpenDataMap={this.onOpenDataMap.bind(this)} onOpen={this.onOpen.bind(this)} onUpload={this.onUpload.bind(this)} onDelete={this.onDelete.bind(this)} />
             </AppScreen>
         );
     }

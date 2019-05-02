@@ -3,13 +3,7 @@ import moment from "moment";
 
 import React from "react";
 import PropTypes from "prop-types";
-import {
-    View,
-    Text,
-    ScrollView,
-    FlatList,
-    TouchableOpacity
-} from "react-native";
+import { View, Text, ScrollView, FlatList, TouchableOpacity } from "react-native";
 
 import * as Files from "../lib/files";
 
@@ -37,8 +31,7 @@ export class DirectoryEntry extends React.Component {
         return (
             <View>
                 <Text style={style.text}>
-                    {entry.name}{" "}
-                    <Text style={{ fontSize: 12 }}>({entry.size})</Text>
+                    {entry.name} <Text style={{ fontSize: 12 }}>({entry.size})</Text>
                 </Text>
                 <Text style={style.modified}>{entry.modifiedPretty}</Text>
             </View>
@@ -64,31 +57,12 @@ export class DirectoryListing extends React.Component {
         return (
             <View style={styles.browser.listing.container}>
                 <View style={styles.browser.listing.path.container}>
-                    <Text style={styles.browser.listing.path.text}>
-                        {Files.getPathName(path)}
-                    </Text>
+                    <Text style={styles.browser.listing.path.text}>{Files.getPathName(path)}</Text>
                 </View>
 
-                {parent && (
-                    <DirectoryEntry
-                        style={styles.browser.listing.back}
-                        entry={parent}
-                        onSelect={onSelectEntry}
-                    />
-                )}
+                {parent && <DirectoryEntry style={styles.browser.listing.back} entry={parent} onSelect={onSelectEntry} />}
 
-                <FlatList
-                    style={{ marginBottom: 100 }}
-                    data={listing}
-                    keyExtractor={(entry, index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <DirectoryEntry
-                            style={styles.browser.listing.entry}
-                            entry={item}
-                            onSelect={onSelectEntry}
-                        />
-                    )}
-                />
+                <FlatList style={{ marginBottom: 100 }} data={listing} keyExtractor={(entry, index) => index.toString()} renderItem={({ item }) => <DirectoryEntry style={styles.browser.listing.entry} entry={item} onSelect={onSelectEntry} />} />
             </View>
         );
     }
@@ -112,14 +86,7 @@ export class DirectoryBrowser extends React.Component {
             return <Loading />;
         }
 
-        return (
-            <DirectoryListing
-                parent={parent}
-                path={path}
-                listing={listing}
-                onSelectEntry={onSelectEntry}
-            />
-        );
+        return <DirectoryListing parent={parent} path={path} listing={listing} onSelectEntry={onSelectEntry} />;
     }
 }
 

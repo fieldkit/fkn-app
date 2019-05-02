@@ -29,11 +29,7 @@ class BrowserScreen extends React.Component {
 
         return (
             <AppScreen background={false}>
-                <DirectoryBrowser
-                    path={path}
-                    localFiles={localFiles}
-                    onSelectEntry={this.onSelectEntry.bind(this)}
-                />
+                <DirectoryBrowser path={path} localFiles={localFiles} onSelectEntry={this.onSelectEntry.bind(this)} />
             </AppScreen>
         );
     }

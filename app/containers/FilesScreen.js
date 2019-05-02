@@ -12,12 +12,7 @@ import { View, Text, ScrollView } from "react-native";
 
 import { SmallButton, AppScreen, Loading, DeviceInfo } from "../components";
 
-import {
-    navigateBack,
-    queryFiles,
-    startDownloadFile,
-    deleteFile
-} from "../actions";
+import { navigateBack, queryFiles, startDownloadFile, deleteFile } from "../actions";
 
 import { selectedDevice } from "../reducers/selectors";
 
@@ -45,11 +40,7 @@ class FilesScreen extends React.Component {
         return (
             <AppScreen background={false}>
                 <DeviceInfo info={deviceInfo} />
-                <ScrollView>
-                    {files.files.map((file, index) =>
-                        this.renderFile(file, index)
-                    )}
-                </ScrollView>
+                <ScrollView>{files.files.map((file, index) => this.renderFile(file, index))}</ScrollView>
             </AppScreen>
         );
     }
@@ -62,15 +53,8 @@ class FilesScreen extends React.Component {
                 <Text style={styles.file.name}>{file.name}</Text>
                 <Text style={styles.file.details}>Size: {file.size}</Text>
                 <View style={{ flexDirection: "row" }}>
-                    <SmallButton
-                        title={i18n.t("files.download")}
-                        onPress={() => startDownloadFile(file.id)}
-                    />
-                    <SmallButton
-                        title={i18n.t("files.delete")}
-                        onPress={() => deleteFile(file.id)}
-                        color="#E74C3C"
-                    />
+                    <SmallButton title={i18n.t("files.download")} onPress={() => startDownloadFile(file.id)} />
+                    <SmallButton title={i18n.t("files.delete")} onPress={() => deleteFile(file.id)} color="#E74C3C" />
                 </View>
             </View>
         );

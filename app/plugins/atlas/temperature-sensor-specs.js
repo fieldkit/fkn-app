@@ -31,9 +31,7 @@ describe("Atlas Plugin", () => {
 
     describe("Temperature", () => {
         it("renders", () => {
-            const tree = TestRenderer.create(
-                <AtlasTemperatureScript {...props} />
-            );
+            const tree = TestRenderer.create(<AtlasTemperatureScript {...props} />);
 
             console.log(tree.toJSON());
         });

@@ -10,15 +10,7 @@ export class ProgressBar extends React.Component {
 
         return (
             <View>
-                <AnimatedBar
-                    progress={progress / 100.0}
-                    height={25}
-                    borderColor="#ddd"
-                    barColor="tomato"
-                    borderRadius={5}
-                    borderWidth={2}
-                    animate={false}
-                />
+                <AnimatedBar progress={progress / 100.0} height={25} borderColor="#ddd" barColor="tomato" borderRadius={5} borderWidth={2} animate={false} />
             </View>
         );
     }

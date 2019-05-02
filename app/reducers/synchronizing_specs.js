@@ -51,18 +51,9 @@ describe("synchronizing", () => {
 
             describe("with empty remote files", () => {
                 beforeEach(() => {
-                    const device = [
-                        { id: 1, version: 1, size: 0, name: "startup.log" },
-                        { id: 2, version: 1, size: 0, name: "now.log" },
-                        { id: 3, version: 1, size: 0, name: "emergency.log" },
-                        { id: 4, version: 1, size: 0, name: "data.fk" }
-                    ];
+                    const device = [{ id: 1, version: 1, size: 0, name: "startup.log" }, { id: 2, version: 1, size: 0, name: "now.log" }, { id: 3, version: 1, size: 0, name: "emergency.log" }, { id: 4, version: 1, size: 0, name: "data.fk" }];
 
-                    this.plan = generateDownloadPlan(
-                        ChunkedConfiguration,
-                        makeLocal([]),
-                        makeDevice(device)
-                    );
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, makeLocal([]), makeDevice(device));
                 });
 
                 it("should generate empty plan", () => {
@@ -84,11 +75,7 @@ describe("synchronizing", () => {
                         { id: 4, version: 1, size: 15000, name: "data.fk" }
                     ];
 
-                    this.plan = generateDownloadPlan(
-                        ChunkedConfiguration,
-                        makeLocal([]),
-                        makeDevice(device)
-                    );
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, makeLocal([]), makeDevice(device));
                 });
 
                 it("should download entire data file", () => {
@@ -97,8 +84,7 @@ describe("synchronizing", () => {
                             address: DeviceAddress,
                             id: 4,
                             file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                            headers:
-                                "/0004a30b001cc468/4_000001_headers_data.fk",
+                            headers: "/0004a30b001cc468/4_000001_headers_data.fk",
                             offset: 0,
                             length: 0
                         }
@@ -110,10 +96,8 @@ describe("synchronizing", () => {
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file:
-                                "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
-                            headers:
-                                "/0004a30b001cc468/1_000001_headers_startup.log",
+                            file: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            headers: "/0004a30b001cc468/1_000001_headers_startup.log",
                             offset: 8000000,
                             length: 100000
                         }
@@ -126,14 +110,12 @@ describe("synchronizing", () => {
                     const local = [
                         {
                             name: "4_000001_offset_15000_data.fk",
-                            relativePath:
-                                "/0004a30b001cc468/4_000001_offset_15000_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_15000_data.fk",
                             size: 0
                         },
                         {
                             name: "1_000001_offset_8000000_startup.log",
-                            relativePath:
-                                "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
                             size: 100000
                         }
                     ];
@@ -150,11 +132,7 @@ describe("synchronizing", () => {
                         { id: 4, version: 1, size: 30000, name: "data.fk" }
                     ];
 
-                    this.plan = generateDownloadPlan(
-                        ChunkedConfiguration,
-                        makeLocal(local),
-                        makeDevice(device)
-                    );
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, makeLocal(local), makeDevice(device));
                 });
 
                 it("should resume data file", () => {
@@ -162,10 +140,8 @@ describe("synchronizing", () => {
                         download: {
                             address: DeviceAddress,
                             id: 4,
-                            file:
-                                "/0004a30b001cc468/4_000001_offset_15000_data.fk",
-                            headers:
-                                "/0004a30b001cc468/4_000001_headers_data.fk",
+                            file: "/0004a30b001cc468/4_000001_offset_15000_data.fk",
+                            headers: "/0004a30b001cc468/4_000001_headers_data.fk",
                             offset: 15000,
                             length: 0
                         }
@@ -177,10 +153,8 @@ describe("synchronizing", () => {
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file:
-                                "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
-                            headers:
-                                "/0004a30b001cc468/1_000001_headers_startup.log",
+                            file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
+                            headers: "/0004a30b001cc468/1_000001_headers_startup.log",
                             offset: 7000000,
                             length: 1000000
                         }
@@ -193,14 +167,12 @@ describe("synchronizing", () => {
                     const local = [
                         {
                             name: "4_000001_offset_0_data.fk",
-                            relativePath:
-                                "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             size: 15000
                         },
                         {
                             name: "1_000001_offset_8000000_startup.log",
-                            relativePath:
-                                "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
                             size: 100000
                         }
                     ];
@@ -217,11 +189,7 @@ describe("synchronizing", () => {
                         { id: 4, version: 2, size: 15000, name: "data.fk" }
                     ];
 
-                    this.plan = generateDownloadPlan(
-                        ChunkedConfiguration,
-                        makeLocal(local),
-                        makeDevice(device)
-                    );
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, makeLocal(local), makeDevice(device));
                 });
 
                 it("should download entire data file", () => {
@@ -230,8 +198,7 @@ describe("synchronizing", () => {
                             address: DeviceAddress,
                             id: 4,
                             file: "/0004a30b001cc468/4_000002_offset_0_data.fk",
-                            headers:
-                                "/0004a30b001cc468/4_000002_headers_data.fk",
+                            headers: "/0004a30b001cc468/4_000002_headers_data.fk",
                             offset: 0,
                             length: 0
                         }
@@ -243,10 +210,8 @@ describe("synchronizing", () => {
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file:
-                                "/0004a30b001cc468/1_000002_offset_8000000_startup.log",
-                            headers:
-                                "/0004a30b001cc468/1_000002_headers_startup.log",
+                            file: "/0004a30b001cc468/1_000002_offset_8000000_startup.log",
+                            headers: "/0004a30b001cc468/1_000002_headers_startup.log",
                             offset: 8000000,
                             length: 100000
                         }
@@ -259,14 +224,12 @@ describe("synchronizing", () => {
                     const local = [
                         {
                             name: "4_000001_offset_0_data.fk",
-                            relativePath:
-                                "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             size: 15000
                         },
                         {
                             name: "1_000001_offset_8000000_startup.log",
-                            relativePath:
-                                "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
                             size: 100000
                         }
                     ];
@@ -283,11 +246,7 @@ describe("synchronizing", () => {
                         { id: 4, version: 1, size: 30000, name: "data.fk" }
                     ];
 
-                    this.plan = generateDownloadPlan(
-                        ChunkedConfiguration,
-                        makeLocal(local),
-                        makeDevice(device)
-                    );
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, makeLocal(local), makeDevice(device));
                 });
 
                 it("should resume data file", () => {
@@ -296,8 +255,7 @@ describe("synchronizing", () => {
                             address: DeviceAddress,
                             id: 4,
                             file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                            headers:
-                                "/0004a30b001cc468/4_000001_headers_data.fk",
+                            headers: "/0004a30b001cc468/4_000001_headers_data.fk",
                             offset: 15000,
                             length: 0
                         }
@@ -309,10 +267,8 @@ describe("synchronizing", () => {
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file:
-                                "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
-                            headers:
-                                "/0004a30b001cc468/1_000001_headers_startup.log",
+                            file: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            headers: "/0004a30b001cc468/1_000001_headers_startup.log",
                             offset: 8100000,
                             length: 100000
                         }
@@ -324,10 +280,8 @@ describe("synchronizing", () => {
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file:
-                                "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
-                            headers:
-                                "/0004a30b001cc468/1_000001_headers_startup.log",
+                            file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
+                            headers: "/0004a30b001cc468/1_000001_headers_startup.log",
                             offset: 7000000,
                             length: 1000000
                         }
@@ -340,14 +294,12 @@ describe("synchronizing", () => {
                     const local = [
                         {
                             name: "4_000001_offset_0_data.fk",
-                            relativePath:
-                                "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             size: 15000
                         },
                         {
                             name: "1_000001_offset_8000000_startup.log",
-                            relativePath:
-                                "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
                             size: 200000
                         }
                     ];
@@ -364,11 +316,7 @@ describe("synchronizing", () => {
                         { id: 4, version: 1, size: 30000, name: "data.fk" }
                     ];
 
-                    this.plan = generateDownloadPlan(
-                        ChunkedConfiguration,
-                        makeLocal(local),
-                        makeDevice(device)
-                    );
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, makeLocal(local), makeDevice(device));
                 });
 
                 it("should resume data file", () => {
@@ -377,8 +325,7 @@ describe("synchronizing", () => {
                             address: DeviceAddress,
                             id: 4,
                             file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                            headers:
-                                "/0004a30b001cc468/4_000001_headers_data.fk",
+                            headers: "/0004a30b001cc468/4_000001_headers_data.fk",
                             offset: 15000,
                             length: 0
                         }
@@ -390,10 +337,8 @@ describe("synchronizing", () => {
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file:
-                                "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
-                            headers:
-                                "/0004a30b001cc468/1_000001_headers_startup.log",
+                            file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
+                            headers: "/0004a30b001cc468/1_000001_headers_startup.log",
                             offset: 7000000,
                             length: 1000000
                         }
@@ -406,20 +351,17 @@ describe("synchronizing", () => {
                     const local = [
                         {
                             name: "4_000001_offset_0_data.fk",
-                            relativePath:
-                                "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             size: 30000
                         },
                         {
                             name: "1_000001_offset_8000000_startup.log",
-                            relativePath:
-                                "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
                             size: 200000
                         },
                         {
                             name: "1_000001_offset_7000000_startup.log",
-                            relativePath:
-                                "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
                             size: 1000000
                         }
                     ];
@@ -434,11 +376,7 @@ describe("synchronizing", () => {
                         { id: 4, version: 1, size: 30000, name: "data.fk" }
                     ];
 
-                    this.plan = generateDownloadPlan(
-                        ChunkedConfiguration,
-                        makeLocal(local),
-                        makeDevice(device)
-                    );
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, makeLocal(local), makeDevice(device));
                 });
 
                 it("should download the chunk before", () => {
@@ -446,10 +384,8 @@ describe("synchronizing", () => {
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file:
-                                "/0004a30b001cc468/1_000001_offset_6000000_startup.log",
-                            headers:
-                                "/0004a30b001cc468/1_000001_headers_startup.log",
+                            file: "/0004a30b001cc468/1_000001_offset_6000000_startup.log",
+                            headers: "/0004a30b001cc468/1_000001_headers_startup.log",
                             offset: 6000000,
                             length: 1000000
                         }
@@ -462,14 +398,12 @@ describe("synchronizing", () => {
                     const local = [
                         {
                             name: "4_000001_offset_0_data.fk",
-                            relativePath:
-                                "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             size: 31000
                         },
                         {
                             name: "1_000001_offset_8000000_startup.log",
-                            relativePath:
-                                "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
                             size: 200000
                         }
                     ];
@@ -484,11 +418,7 @@ describe("synchronizing", () => {
                         { id: 4, version: 1, size: 30000, name: "data.fk" }
                     ];
 
-                    this.plan = generateDownloadPlan(
-                        ChunkedConfiguration,
-                        makeLocal(local),
-                        makeDevice(device)
-                    );
+                    this.plan = generateDownloadPlan(ChunkedConfiguration, makeLocal(local), makeDevice(device));
                 });
 
                 it("should archive backup local file", () => {
@@ -505,8 +435,7 @@ describe("synchronizing", () => {
                             address: DeviceAddress,
                             id: 4,
                             file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                            headers:
-                                "/0004a30b001cc468/4_000001_headers_data.fk",
+                            headers: "/0004a30b001cc468/4_000001_headers_data.fk",
                             offset: 0,
                             length: 0
                         }
@@ -531,8 +460,7 @@ describe("synchronizing", () => {
                     const local = [
                         {
                             name: "4_000001_offset_0_data.fk",
-                            relativePath:
-                                "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             size: 31000
                         }
                     ];
@@ -547,11 +475,7 @@ describe("synchronizing", () => {
                         { id: 4, version: 1, size: 30000, name: "data.fk" }
                     ];
 
-                    this.plan = generateDownloadPlan(
-                        TailConfiguration,
-                        makeLocal(local),
-                        makeDevice(device)
-                    );
+                    this.plan = generateDownloadPlan(TailConfiguration, makeLocal(local), makeDevice(device));
                 });
 
                 it("should download tail of the file", () => {
@@ -559,10 +483,8 @@ describe("synchronizing", () => {
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file:
-                                "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
-                            headers:
-                                "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                            file: "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
+                            headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
                             offset: 7200000,
                             length: 1000000
                         }
@@ -575,14 +497,12 @@ describe("synchronizing", () => {
                     const local = [
                         {
                             name: "4_000001_offset_0_data.fk",
-                            relativePath:
-                                "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             size: 31000
                         },
                         {
                             name: "1_000001_offset_7200000_logs-a.fklog",
-                            relativePath:
-                                "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
                             size: 1000000
                         }
                     ];
@@ -597,11 +517,7 @@ describe("synchronizing", () => {
                         { id: 4, version: 1, size: 30000, name: "data.fk" }
                     ];
 
-                    this.plan = generateDownloadPlan(
-                        TailConfiguration,
-                        makeLocal(local),
-                        makeDevice(device)
-                    );
+                    this.plan = generateDownloadPlan(TailConfiguration, makeLocal(local), makeDevice(device));
                 });
 
                 it("should download nothing", () => {
@@ -614,14 +530,12 @@ describe("synchronizing", () => {
                     const local = [
                         {
                             name: "4_000001_offset_0_data.fk",
-                            relativePath:
-                                "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             size: 31000
                         },
                         {
                             name: "1_000001_offset_5000000_logs-a.fklog",
-                            relativePath:
-                                "/0004a30b001cc468/1_000001_offset_5000000_logs-a.fklog",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_5000000_logs-a.fklog",
                             size: 1000000
                         }
                     ];
@@ -636,11 +550,7 @@ describe("synchronizing", () => {
                         { id: 4, version: 1, size: 30000, name: "data.fk" }
                     ];
 
-                    this.plan = generateDownloadPlan(
-                        TailConfiguration,
-                        makeLocal(local),
-                        makeDevice(device)
-                    );
+                    this.plan = generateDownloadPlan(TailConfiguration, makeLocal(local), makeDevice(device));
                 });
 
                 it("should download tail of the file", () => {
@@ -648,10 +558,8 @@ describe("synchronizing", () => {
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file:
-                                "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
-                            headers:
-                                "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                            file: "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
+                            headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
                             offset: 7200000,
                             length: 1000000
                         }
@@ -668,11 +576,7 @@ describe("synchronizing", () => {
                         length: 0,
                         condition: (file, others) => {
                             return _(others)
-                                .filter(
-                                    f =>
-                                        (f.id == 2 && f.size == 0) ||
-                                        f.size > file.size
-                                )
+                                .filter(f => (f.id == 2 && f.size == 0) || f.size > file.size)
                                 .some();
                         }
                     },
@@ -683,11 +587,7 @@ describe("synchronizing", () => {
                         length: 0,
                         condition: (file, others) => {
                             return _(others)
-                                .filter(
-                                    f =>
-                                        (f.id == 1 && f.size == 0) ||
-                                        f.size > file.size
-                                )
+                                .filter(f => (f.id == 1 && f.size == 0) || f.size > file.size)
                                 .some();
                         }
                     }
@@ -707,11 +607,7 @@ describe("synchronizing", () => {
                             { id: 2, version: 1, size: 0, name: "logs-b.fklog" }
                         ];
 
-                        this.plan = generateDownloadPlan(
-                            TailConfiguration,
-                            makeLocal(local),
-                            makeDevice(device)
-                        );
+                        this.plan = generateDownloadPlan(TailConfiguration, makeLocal(local), makeDevice(device));
                     });
 
                     it("should download nothing", () => {
@@ -738,11 +634,7 @@ describe("synchronizing", () => {
                             }
                         ];
 
-                        this.plan = generateDownloadPlan(
-                            TailConfiguration,
-                            makeLocal(local),
-                            makeDevice(device)
-                        );
+                        this.plan = generateDownloadPlan(TailConfiguration, makeLocal(local), makeDevice(device));
                     });
 
                     it("should download tail of non-empty file", () => {
@@ -750,10 +642,8 @@ describe("synchronizing", () => {
                             download: {
                                 address: DeviceAddress,
                                 id: 2,
-                                file:
-                                    "/0004a30b001cc468/2_000001_offset_4000000_logs-b.fklog",
-                                headers:
-                                    "/0004a30b001cc468/2_000001_headers_logs-b.fklog",
+                                file: "/0004a30b001cc468/2_000001_offset_4000000_logs-b.fklog",
+                                headers: "/0004a30b001cc468/2_000001_headers_logs-b.fklog",
                                 offset: 4000000,
                                 length: 1000000
                             }
@@ -780,11 +670,7 @@ describe("synchronizing", () => {
                             }
                         ];
 
-                        this.plan = generateDownloadPlan(
-                            TailConfiguration,
-                            makeLocal(local),
-                            makeDevice(device)
-                        );
+                        this.plan = generateDownloadPlan(TailConfiguration, makeLocal(local), makeDevice(device));
                     });
 
                     it("should download tail of smaller file", () => {
@@ -792,10 +678,8 @@ describe("synchronizing", () => {
                             download: {
                                 address: DeviceAddress,
                                 id: 1,
-                                file:
-                                    "/0004a30b001cc468/1_000001_offset_1000000_logs-a.fklog",
-                                headers:
-                                    "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                                file: "/0004a30b001cc468/1_000001_offset_1000000_logs-a.fklog",
+                                headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
                                 offset: 1000000,
                                 length: 1000000
                             }
@@ -809,10 +693,7 @@ describe("synchronizing", () => {
     describe("uploading planning", () => {
         describe("with no local files", () => {
             beforeEach(() => {
-                this.plan = generateUploadPlan(
-                    SimpleConfiguration,
-                    makeLocal([])
-                );
+                this.plan = generateUploadPlan(SimpleConfiguration, makeLocal([]));
             });
 
             it("should generate empty plan", () => {
@@ -825,16 +706,12 @@ describe("synchronizing", () => {
                 const local = [
                     {
                         name: "4_000001_offset_0_data.fk",
-                        relativePath:
-                            "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                        relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                         size: 0
                     }
                 ];
 
-                this.plan = generateUploadPlan(
-                    SimpleConfiguration,
-                    makeLocal(local)
-                );
+                this.plan = generateUploadPlan(SimpleConfiguration, makeLocal(local));
             });
 
             it("should generate empty plan", () => {
@@ -853,16 +730,12 @@ describe("synchronizing", () => {
                     },
                     {
                         name: "4_000001_offset_0_data.fk",
-                        relativePath:
-                            "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                        relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                         size: 31000
                     }
                 ];
 
-                this.plan = generateUploadPlan(
-                    SimpleConfiguration,
-                    makeLocal(local)
-                );
+                this.plan = generateUploadPlan(SimpleConfiguration, makeLocal(local));
             });
 
             it("should have 2 steps", () => {
@@ -902,16 +775,12 @@ describe("synchronizing", () => {
                 const local = [
                     {
                         name: "4_000001_offset_0_data.fk",
-                        relativePath:
-                            "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                        relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                         size: 31000
                     }
                 ];
 
-                this.plan = generateUploadPlan(
-                    SimpleConfiguration,
-                    makeLocal(local)
-                );
+                this.plan = generateUploadPlan(SimpleConfiguration, makeLocal(local));
             });
 
             it("should upload the file", () => {
@@ -964,22 +833,17 @@ describe("synchronizing", () => {
                     const local = [
                         {
                             name: "4_000001_offset_0_data.fk",
-                            relativePath:
-                                "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             size: 15000
                         },
                         {
                             name: "1_000001_offset_8000000_startup.log",
-                            relativePath:
-                                "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
                             size: 200000
                         }
                     ];
 
-                    this.plan = generateUploadPlan(
-                        ChunkedConfiguration,
-                        makeLocal(local)
-                    );
+                    this.plan = generateUploadPlan(ChunkedConfiguration, makeLocal(local));
                 });
 
                 it("should upload the file", () => {
@@ -1003,8 +867,7 @@ describe("synchronizing", () => {
                     expect(this.plan.plan[1]).toEqual({
                         archive: {
                             file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                            touch:
-                                "/0004a30b001cc468/4_000001_offset_15000_data.fk"
+                            touch: "/0004a30b001cc468/4_000001_offset_15000_data.fk"
                         }
                     });
                 });

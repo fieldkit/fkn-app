@@ -61,12 +61,7 @@ function* monitorServiceDiscoveryEvents(channel) {
         }
     } else if (Config.fixedDeviceInfo) {
         while (true) {
-            yield put(
-                findDeviceInfo(
-                    Config.fixedDeviceInfo.address,
-                    Config.fixedDeviceInfo.port
-                )
-            );
+            yield put(findDeviceInfo(Config.fixedDeviceInfo.address, Config.fixedDeviceInfo.port));
             yield delay(1000);
         }
     }
@@ -127,9 +122,5 @@ function* fakeDiscoveryOnFkAps() {
 }
 
 export function* serviceDiscovery() {
-    yield all([
-        call(monitorServiceDiscoveryEvents, createServiceDiscoveryChannel()),
-        monitorWifi(),
-        fakeDiscoveryOnFkAps()
-    ]);
+    yield all([call(monitorServiceDiscoveryEvents, createServiceDiscoveryChannel()), monitorWifi(), fakeDiscoveryOnFkAps()]);
 }

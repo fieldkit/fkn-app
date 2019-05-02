@@ -31,9 +31,7 @@ describe("Atlas Plugin", () => {
 
     describe("DO One Point", () => {
         it("renders", () => {
-            const tree = TestRenderer.create(
-                <AtlasDoOnePointScript {...props} />
-            );
+            const tree = TestRenderer.create(<AtlasDoOnePointScript {...props} />);
 
             console.log(tree.toJSON());
         });
@@ -41,9 +39,7 @@ describe("Atlas Plugin", () => {
 
     describe("DO Two Point", () => {
         it("renders", () => {
-            const tree = TestRenderer.create(
-                <AtlasDoTwoPointScript {...props} />
-            );
+            const tree = TestRenderer.create(<AtlasDoTwoPointScript {...props} />);
 
             console.log(tree.toJSON());
         });

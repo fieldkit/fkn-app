@@ -3,11 +3,7 @@ import "react-native";
 import React from "react";
 import TestRenderer from "react-test-renderer";
 
-import {
-    AtlasPhOnePointScript,
-    AtlasPhTwoPointScript,
-    AtlasPhThreePointScript
-} from "./PhSensor";
+import { AtlasPhOnePointScript, AtlasPhTwoPointScript, AtlasPhThreePointScript } from "./PhSensor";
 
 import { AtlasScript } from "./AtlasScript";
 
@@ -35,9 +31,7 @@ describe("Atlas Plugin", () => {
 
     describe("PH One Point", () => {
         it("renders", () => {
-            const tree = TestRenderer.create(
-                <AtlasPhOnePointScript {...props} />
-            );
+            const tree = TestRenderer.create(<AtlasPhOnePointScript {...props} />);
 
             console.log(tree.toJSON());
         });
@@ -45,9 +39,7 @@ describe("Atlas Plugin", () => {
 
     describe("PH Two Point", () => {
         it("renders", () => {
-            const tree = TestRenderer.create(
-                <AtlasPhTwoPointScript {...props} />
-            );
+            const tree = TestRenderer.create(<AtlasPhTwoPointScript {...props} />);
 
             console.log(tree.toJSON());
         });
@@ -55,9 +47,7 @@ describe("Atlas Plugin", () => {
 
     describe("PH Three Point", () => {
         it("renders", () => {
-            const tree = TestRenderer.create(
-                <AtlasPhThreePointScript {...props} />
-            );
+            const tree = TestRenderer.create(<AtlasPhThreePointScript {...props} />);
 
             console.log(tree.toJSON());
         });

@@ -28,10 +28,7 @@ class SensorInfo extends React.Component {
         return (
             <View style={styles.sensor.container}>
                 <Text style={styles.sensor.name}>
-                    {sensor.name}{" "}
-                    <Text style={styles.sensor.unitOfMeasure}>
-                        {this.getUnitOfMeasure(sensor)}
-                    </Text>
+                    {sensor.name} <Text style={styles.sensor.unitOfMeasure}>{this.getUnitOfMeasure(sensor)}</Text>
                 </Text>
             </View>
         );
