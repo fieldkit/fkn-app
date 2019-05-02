@@ -85,6 +85,7 @@ describe("synchronizing", () => {
                             id: 4,
                             file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             headers: "/0004a30b001cc468/4_000001_headers_data.fk",
+                            downloading: 0,
                             offset: 0,
                             length: 0
                         }
@@ -98,6 +99,7 @@ describe("synchronizing", () => {
                             id: 1,
                             file: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
                             headers: "/0004a30b001cc468/1_000001_headers_startup.log",
+                            downloading: 0,
                             offset: 8000000,
                             length: 100000
                         }
@@ -142,6 +144,7 @@ describe("synchronizing", () => {
                             id: 4,
                             file: "/0004a30b001cc468/4_000001_offset_15000_data.fk",
                             headers: "/0004a30b001cc468/4_000001_headers_data.fk",
+                            downloading: 0,
                             offset: 15000,
                             length: 0
                         }
@@ -155,6 +158,7 @@ describe("synchronizing", () => {
                             id: 1,
                             file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
                             headers: "/0004a30b001cc468/1_000001_headers_startup.log",
+                            downloading: 0,
                             offset: 7000000,
                             length: 1000000
                         }
@@ -199,6 +203,7 @@ describe("synchronizing", () => {
                             id: 4,
                             file: "/0004a30b001cc468/4_000002_offset_0_data.fk",
                             headers: "/0004a30b001cc468/4_000002_headers_data.fk",
+                            downloading: 0,
                             offset: 0,
                             length: 0
                         }
@@ -212,6 +217,7 @@ describe("synchronizing", () => {
                             id: 1,
                             file: "/0004a30b001cc468/1_000002_offset_8000000_startup.log",
                             headers: "/0004a30b001cc468/1_000002_headers_startup.log",
+                            downloading: 0,
                             offset: 8000000,
                             length: 100000
                         }
@@ -256,6 +262,7 @@ describe("synchronizing", () => {
                             id: 4,
                             file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             headers: "/0004a30b001cc468/4_000001_headers_data.fk",
+                            downloading: 0,
                             offset: 15000,
                             length: 0
                         }
@@ -269,6 +276,7 @@ describe("synchronizing", () => {
                             id: 1,
                             file: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
                             headers: "/0004a30b001cc468/1_000001_headers_startup.log",
+                            downloading: 0,
                             offset: 8100000,
                             length: 100000
                         }
@@ -282,6 +290,7 @@ describe("synchronizing", () => {
                             id: 1,
                             file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
                             headers: "/0004a30b001cc468/1_000001_headers_startup.log",
+                            downloading: 0,
                             offset: 7000000,
                             length: 1000000
                         }
@@ -326,6 +335,7 @@ describe("synchronizing", () => {
                             id: 4,
                             file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             headers: "/0004a30b001cc468/4_000001_headers_data.fk",
+                            downloading: 0,
                             offset: 15000,
                             length: 0
                         }
@@ -339,6 +349,7 @@ describe("synchronizing", () => {
                             id: 1,
                             file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
                             headers: "/0004a30b001cc468/1_000001_headers_startup.log",
+                            downloading: 0,
                             offset: 7000000,
                             length: 1000000
                         }
@@ -386,6 +397,7 @@ describe("synchronizing", () => {
                             id: 1,
                             file: "/0004a30b001cc468/1_000001_offset_6000000_startup.log",
                             headers: "/0004a30b001cc468/1_000001_headers_startup.log",
+                            downloading: 0,
                             offset: 6000000,
                             length: 1000000
                         }
@@ -436,6 +448,7 @@ describe("synchronizing", () => {
                             id: 4,
                             file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                             headers: "/0004a30b001cc468/4_000001_headers_data.fk",
+                            downloading: 30000,
                             offset: 0,
                             length: 0
                         }
@@ -485,6 +498,7 @@ describe("synchronizing", () => {
                             id: 1,
                             file: "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
                             headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                            downloading: 0,
                             offset: 7200000,
                             length: 1000000
                         }
@@ -560,6 +574,7 @@ describe("synchronizing", () => {
                             id: 1,
                             file: "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
                             headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                            downloading: 0,
                             offset: 7200000,
                             length: 1000000
                         }
@@ -644,6 +659,7 @@ describe("synchronizing", () => {
                                 id: 2,
                                 file: "/0004a30b001cc468/2_000001_offset_4000000_logs-b.fklog",
                                 headers: "/0004a30b001cc468/2_000001_headers_logs-b.fklog",
+                                downloading: 0,
                                 offset: 4000000,
                                 length: 1000000
                             }
@@ -680,6 +696,7 @@ describe("synchronizing", () => {
                                 id: 1,
                                 file: "/0004a30b001cc468/1_000001_offset_1000000_logs-a.fklog",
                                 headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                                downloading: 0,
                                 offset: 1000000,
                                 length: 1000000
                             }

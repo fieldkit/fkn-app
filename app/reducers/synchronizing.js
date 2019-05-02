@@ -198,6 +198,7 @@ class DownloadPlanGenerator {
                             address: this.address,
                             file: makeFilename(directory, config.fileId, remote.version, existingLocalFile.offset, remote.name),
                             headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
+                            downloading: 0,
                             id: config.fileId,
                             offset: sizeOfExisting + existingLocalFile.offset,
                             length: 0

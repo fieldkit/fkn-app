@@ -15,13 +15,13 @@ export class FileMenu extends React.Component {
     render() {
         const { file, onOpen, onUpload, onDelete, onOpenDataMap } = this.props;
         const parentEntry = Files.getParentEntry(file.relativePath);
+        const fileName = Files.getPathName(file.path);
 
         return (
             <View style={styles.browser.file.container}>
                 <View style={styles.browser.file.name.container}>
                     <Text style={styles.browser.file.name.text}> {file.name} </Text>
-                    <Text style={styles.browser.file.size.text}> Size: {file.size} bytes. </Text>
-                    <Text style={styles.browser.file.modified.text}> Modified: {file.modifiedPretty} </Text>
+                    <Text style={styles.browser.file.filename.text}> {fileName} </Text>
                     <Text style={styles.browser.file.size.text}> Size: {file.size} bytes. </Text>
                     <Text style={styles.browser.file.modified.text}> Modified: {file.modifiedPretty} </Text>
                 </View>

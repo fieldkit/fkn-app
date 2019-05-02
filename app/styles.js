@@ -91,7 +91,7 @@ export default {
                     padding: 20
                 },
                 text: {
-                    fontSize: 16
+                    fontSize: 14
                 }
             },
             modified: {
@@ -99,7 +99,15 @@ export default {
                     padding: 20
                 },
                 text: {
-                    fontSize: 16
+                    fontSize: 14
+                }
+            },
+            filename: {
+                container: {
+                    padding: 20
+                },
+                text: {
+                    fontSize: 14
                 }
             }
         }
