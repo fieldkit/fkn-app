@@ -40,6 +40,7 @@ function getDirectory(relativePath) {
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
         const path = dataDirectoryPath + relativePath;
         const actual = path.replace(/\/$/, "");
+
         return RNFS.stat(actual).then(info => {
             if (info.isFile()) {
                 return {
@@ -175,7 +176,7 @@ export function touchLocalFile(relativePath) {
             const directory = Files.getParentPath(relativePath);
             return RNFS.mkdir(dataDirectoryPath + "/" + directory).then(() => {
                 console.log("Touching", relativePath);
-                return RNFS.touch(dataDirectoryPath + "/" + relativePath, new Date()).then(() => {
+                return RNFS.appendFile(dataDirectoryPath + "/" + relativePath, "", "base64").then(() => {
                     return browseDirectory(directory);
                 });
             });

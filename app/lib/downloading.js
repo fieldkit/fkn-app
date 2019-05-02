@@ -73,10 +73,8 @@ export function writeDeviceMetadata(device, metadata) {
 
             console.log("Writing metadata");
 
-            return RNFS.touch(path, new Date()).then(() => {
-                const block = arrayBufferToBase64(metadata);
-                return RNFS.appendFile(path, block, "base64");
-            });
+            const block = arrayBufferToBase64(metadata);
+            return RNFS.appendFile(path, block, "base64");
         });
     });
 }
@@ -117,7 +115,7 @@ export class DownloadWriter {
                     // We touch all the files here so we can just use append all the time down below.
                     return Promise.all(
                         [this.path, this.headersPath].map(p => {
-                            return RNFS.touch(p, new Date());
+                            return RNFS.appendFile(p, "", "base64");
                         })
                     );
                 });
