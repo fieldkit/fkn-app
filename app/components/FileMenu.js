@@ -20,19 +20,24 @@ export class FileMenu extends React.Component {
             <View style={styles.browser.file.container}>
                 <View style={styles.browser.file.name.container}>
                     <Text style={styles.browser.file.name.text}>
-                        {file.name}
+                        {" "}
+                        {file.name}{" "}
                     </Text>
                     <Text style={styles.browser.file.size.text}>
-                        Size: {file.size} bytes.
+                        {" "}
+                        Size: {file.size} bytes.{" "}
                     </Text>
                     <Text style={styles.browser.file.modified.text}>
-                        Modified: {file.modifiedPretty}
+                        {" "}
+                        Modified: {file.modifiedPretty}{" "}
                     </Text>
                     <Text style={styles.browser.file.size.text}>
-                        Size: {file.size} bytes.
+                        {" "}
+                        Size: {file.size} bytes.{" "}
                     </Text>
                     <Text style={styles.browser.file.modified.text}>
-                        Modified: {file.modifiedPretty}
+                        {" "}
+                        Modified: {file.modifiedPretty}{" "}
                     </Text>
                 </View>
 
@@ -40,15 +45,6 @@ export class FileMenu extends React.Component {
                     <MenuButton
                         title="Open"
                         onPress={() => onOpen(file, parentEntry)}
-                    />
-                    <MenuButton
-                        title="Upload"
-                        onPress={() => onUpload(file, parentEntry)}
-                    />
-                    <MenuButton
-                        title="Delete"
-                        onPress={() => onDelete(file, parentEntry)}
-                        color="#E74C3C"
                     />
                     <MenuButton
                         title="Upload"
