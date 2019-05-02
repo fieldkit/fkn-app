@@ -30,6 +30,7 @@ function createServiceDiscoveryChannel() {
     });
 
     const port = 54321;
+    const previous = {};
 
     if (__ENV__ !== "test") {
         // serviceDiscovery.start(port);
@@ -37,12 +38,14 @@ function createServiceDiscoveryChannel() {
         const socket = dgram.createSocket("udp4");
         socket.bind(port);
         socket.on("message", (data, remoteInfo) => {
-            if (true || remoteInfo.address == "192.168.0.115") {
-                channel.put(
-                    findDeviceInfo(remoteInfo.address, remoteInfo.port)
-                );
+            const fdi = findDeviceInfo(remoteInfo.address, remoteInfo.port);
+            const last = previous[remoteInfo.address] || 0;
+            const elapsed = unixNow() - last;
+            if (elapsed > 5) {
+                channel.put(fdi);
+                previous[remoteInfo.address] = unixNow();
             } else {
-                console.log("Skipping", remoteInfo);
+                console.log("Dropped", last, elapsed, fdi);
             }
         });
     }
