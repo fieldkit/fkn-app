@@ -99,7 +99,7 @@ export class DownloadWriter {
         this.bytesTotal = this.file.size;
         this.pending = 0;
         this.buffer = new Uint8Array(0);
-        this.bufferSize = 65536 * 1;
+        this.bufferSize = 65536 * 0.5;
     }
 
     open() {
@@ -124,13 +124,15 @@ export class DownloadWriter {
         });
     }
 
-    appendToFile(data, path) {
+    appendToFile(data, path, closing) {
         this.fileSystemOp(() => {
             const block = arrayBufferToBase64(data);
             return RNFS.appendFile(path, block, "base64").then(() => {
                 const blockSize = data.length;
                 this.bytesWritten += blockSize;
-                this.progress(Types.DOWNLOAD_FILE_PROGRESS);
+                if (!_.isUndefined(closing)) {
+                    this.progress(closing ? Types.DOWNLOAD_FILE_DONE : Types.DOWNLOAD_FILE_PROGRESS);
+                }
             });
         });
     }
@@ -153,18 +155,22 @@ export class DownloadWriter {
         this.buffer = this.concatenate(Uint8Array, this.buffer, data);
 
         if (this.buffer.length >= this.bufferSize) {
-            this.flush();
+            this.flush(false);
         }
 
         const blockSize = data.length;
         this.bytesRead += blockSize;
     }
 
-    flush() {
-        console.log("Flush", this.buffer.length, this.pending);
+    flush(closing) {
+        console.log("Flushing", this.buffer.length, this.pending);
         if (this.buffer.length > 0) {
-            this.appendToFile(this.buffer, this.path);
+            this.appendToFile(this.buffer, this.path, closing);
             this.buffer = new Uint8Array(0);
+        } else {
+            if (closing) {
+                this.progress(Types.DOWNLOAD_FILE_DONE);
+            }
         }
     }
 
@@ -190,11 +196,9 @@ export class DownloadWriter {
     }
 
     close() {
-        this.flush();
+        this.flush(true);
 
-        this.progress(Types.DOWNLOAD_FILE_DONE);
-
-        return {};
+        return this.appendChain;
     }
 
     fileSystemOp(resolve) {

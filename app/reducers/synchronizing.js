@@ -97,6 +97,7 @@ class DownloadPlanGenerator {
                                 file: makeFilename(directory, config.fileId, remote.version, chunk.offset, remote.name),
                                 headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
                                 id: config.fileId,
+                                downloading: 0,
                                 offset: chunk.offset + row.localSize,
                                 length: chunk.length - row.localSize
                             }
@@ -155,6 +156,7 @@ class DownloadPlanGenerator {
                             file: makeFilename(directory, config.fileId, remote.version, offset, remote.name),
                             headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
                             id: config.fileId,
+                            downloading: 0,
                             offset: offset,
                             length: config.tail
                         }
@@ -179,6 +181,7 @@ class DownloadPlanGenerator {
                                     file: makeFilename(directory, config.fileId, remote.version, existingLocalFile.offset, remote.name),
                                     headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
                                     id: config.fileId,
+                                    downloading: remote.size - existingLocalFile.offset,
                                     offset: 0 + existingLocalFile.offset,
                                     length: 0
                                 }
