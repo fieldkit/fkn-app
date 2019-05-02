@@ -89,10 +89,11 @@ export function getFileInformation(entry) {
             }
         },
         {
-            re: /\/([a-z0-9]{16})\/metadata.fkpb/i,
+            re: /\/([a-z0-9]{16})\/(metadata.fkpb)/i,
             handler: match => {
                 return {
                     deviceId: match[1],
+                    name: match[2],
                     metadata: true,
                     headers: false
                 };
