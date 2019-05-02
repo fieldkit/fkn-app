@@ -21,9 +21,9 @@ timestamps {
                 sh """
 rm -rf node_modules/*/.git
 
-make
-
 npm install
+
+make
 
 export ANDROID_HOME=/var/jenkins_home/workspace/android-sdk/android-sdk
 export FIELDKIT_ENV=release
