@@ -94,6 +94,7 @@ function mergeLocalFiles(state, action) {
     if (deviceId === null) {
         return state;
     }
+
     if (isArchivePath(action.relativePath)) {
         return state;
     }

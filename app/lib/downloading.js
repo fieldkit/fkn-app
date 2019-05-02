@@ -95,10 +95,11 @@ export class DownloadWriter {
         this.throttledDispatch = _.throttle(dispatch, 1000, { leading: true });
 
         this.bytesRead = 0;
+        this.bytesWritten = 0;
         this.bytesTotal = this.file.size;
         this.pending = 0;
         this.buffer = new Uint8Array(0);
-        this.bufferSize = 65536 * 2;
+        this.bufferSize = 65536 * 1;
     }
 
     open() {
@@ -126,7 +127,11 @@ export class DownloadWriter {
     appendToFile(data, path) {
         this.fileSystemOp(() => {
             const block = arrayBufferToBase64(data);
-            return RNFS.appendFile(path, block, "base64");
+            return RNFS.appendFile(path, block, "base64").then(() => {
+                const blockSize = data.length;
+                this.bytesWritten += blockSize;
+                this.progress(Types.DOWNLOAD_FILE_PROGRESS);
+            });
         });
     }
 
@@ -153,7 +158,6 @@ export class DownloadWriter {
 
         const blockSize = data.length;
         this.bytesRead += blockSize;
-        this.progress(Types.DOWNLOAD_FILE_PROGRESS);
     }
 
     flush() {
@@ -197,7 +201,6 @@ export class DownloadWriter {
         this.pending++;
         return (this.appendChain = this.appendChain.then(resolve).then(() => {
             this.pending--;
-
             if (this.pending == 0) {
                 console.log("Done writing");
             }
@@ -215,7 +218,8 @@ export class DownloadWriter {
                 cancelable: true,
                 bytesTotal: this.bytesTotal,
                 bytesRead: this.bytesRead,
-                progress: this.bytesRead / this.bytesTotal,
+                bytesWritten: this.bytesWritten,
+                progress: this.bytesWritten / this.bytesTotal,
                 started: this.started,
                 elapsed: now - this.started
             }
