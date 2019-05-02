@@ -122,8 +122,8 @@ function mergeRemoteFiles(state, action) {
 
 function emptyAllLocalFiles(state) {
     let nextState = state;
-    console.log("EmptyAllLocalFiles", state.map);
-    _.values(state.map).forEach(deviceId => {
+    console.log("EmptyAllLocalFiles", _.keys(state.devices));
+    _.keys(state.devices).forEach(deviceId => {
         console.log("Emptying", deviceId);
         nextState = mergeUpdate(nextState, deviceId, {
             local: {
