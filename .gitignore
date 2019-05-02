@@ -62,3 +62,4 @@ android/app/gradle.properties
 secrets.js
 
 .meghanada/
+.tern-port

@@ -107,6 +107,9 @@ export class DownloadWriter {
 
         this.bytesRead = 0;
         this.bytesTotal = this.file.size;
+        this.pending = 0;
+        this.buffer = new Uint8Array(0);
+        this.bufferSize = 65536 * 2;
     }
 
     open() {
@@ -142,12 +145,38 @@ export class DownloadWriter {
         });
     }
 
+    concatenate(resultConstructor, ...arrays) {
+        let totalLength = 0;
+        for (let arr of arrays) {
+            totalLength += arr.length;
+        }
+        let result = new resultConstructor(totalLength);
+        let offset = 0;
+        for (let arr of arrays) {
+            result.set(arr, offset);
+            offset += arr.length;
+        }
+        return result;
+    }
+
     append(data) {
-        this.appendToFile(data, this.path);
+        this.buffer = this.concatenate(Uint8Array, this.buffer, data);
+
+        if (this.buffer.length >= this.bufferSize) {
+            this.flush();
+        }
 
         const blockSize = data.length;
         this.bytesRead += blockSize;
         this.progress(Types.DOWNLOAD_FILE_PROGRESS);
+    }
+
+    flush() {
+        console.log("Flush", this.buffer.length, this.pending);
+        if (this.buffer.length > 0) {
+            this.appendToFile(this.buffer, this.path);
+            this.buffer = new Uint8Array(0);
+        }
     }
 
     write(data) {
@@ -172,13 +201,22 @@ export class DownloadWriter {
     }
 
     close() {
+        this.flush();
+
         this.progress(Types.DOWNLOAD_FILE_DONE);
 
         return {};
     }
 
     fileSystemOp(resolve) {
-        return (this.appendChain = this.appendChain.then(resolve));
+        this.pending++;
+        return (this.appendChain = this.appendChain.then(resolve).then(() => {
+            this.pending--;
+
+            if (this.pending == 0) {
+                console.log("Done writing");
+            }
+        }));
     }
 
     progress(type) {
