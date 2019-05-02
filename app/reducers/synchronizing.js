@@ -97,7 +97,7 @@ class DownloadPlanGenerator {
                                 file: makeFilename(directory, config.fileId, remote.version, chunk.offset, remote.name),
                                 headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
                                 id: config.fileId,
-                                downloading: 0,
+                                downloading: chunk.length - row.localSize,
                                 offset: chunk.offset + row.localSize,
                                 length: chunk.length - row.localSize
                             }
@@ -156,7 +156,7 @@ class DownloadPlanGenerator {
                             file: makeFilename(directory, config.fileId, remote.version, offset, remote.name),
                             headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
                             id: config.fileId,
-                            downloading: 0,
+                            downloading: config.tail,
                             offset: offset,
                             length: config.tail
                         }
@@ -193,14 +193,16 @@ class DownloadPlanGenerator {
                         return null;
                     }
 
+                    const offset = sizeOfExisting + existingLocalFile.offset;
+
                     return {
                         download: {
                             address: this.address,
                             file: makeFilename(directory, config.fileId, remote.version, existingLocalFile.offset, remote.name),
                             headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
-                            downloading: 0,
+                            downloading: remote.size - offset,
                             id: config.fileId,
-                            offset: sizeOfExisting + existingLocalFile.offset,
+                            offset: offset,
                             length: 0
                         }
                     };
@@ -210,7 +212,7 @@ class DownloadPlanGenerator {
             .compact()
             .value();
 
-        console.log("Plan", plan);
+        // console.log("Plan", plan);
 
         return {
             plan: plan
