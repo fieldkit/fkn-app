@@ -273,13 +273,17 @@ export function cancelPendingDeviceCalls() {
 
 export function invokeDeviceApi(callApi) {
     const key = callApi.address.key;
+
     if (pendingExecutions[key] != null) {
+        numberOfPendingExecutions++;
         console.log("Append execution chain", key, numberOfPendingExecutions);
         return (pendingExecutions[key] = pendingExecutions[key].then(
             () => {
+                numberOfPendingExecutions--;
                 return deviceConnection.execute(callApi);
             },
             ignoredError => {
+                numberOfPendingExecutions--;
                 return deviceConnection.execute(callApi);
             }
         ));
