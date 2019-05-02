@@ -55,9 +55,7 @@ class MapScreen extends React.Component {
     }
 
     renderAnnotations(coordinate, i) {
-        console.log(coordinate);
-        console.log(i);
-        let myString = coordinate.toString();
+        const myString = coordinate.toString();
         return (
             <Mapbox.PointAnnotation key={i} id={"pointAnnotation-" + i} coordinate={coordinate}>
                 <View style={styles.annotationContainer}>
@@ -71,8 +69,7 @@ class MapScreen extends React.Component {
     render() {
         const { navigateBack, navigateMap, navigateWelcome, giveLocation, records } = this.props;
         if (giveLocation.phone !== undefined) {
-            console.log("This is give location", giveLocation);
-            let coordinateArray = [giveLocation.phone.long, giveLocation.phone.lat];
+            const coordinateArray = [giveLocation.phone.long, giveLocation.phone.lat];
             return (
                 <View style={styles.container}>
                     <Mapbox.MapView styleURL={MAPBOX_STYLE} zoomLevel={15} centerCoordinate={coordinateArray} style={styles.container}>

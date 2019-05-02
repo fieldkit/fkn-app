@@ -4,7 +4,7 @@ app/secrets.js: app/secrets.js.template
 	cp app/secrets.js.template app/secrets.js
 
 test:
-	npm test
+	jest --ci --silent
 
 setup:
 	npm install

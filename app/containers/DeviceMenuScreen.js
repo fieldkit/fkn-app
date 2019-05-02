@@ -46,7 +46,6 @@ class DeviceMenuScreen extends React.Component {
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
                     <MenuButton title={i18n.t("deviceMenu.files")} onPress={() => this.props.navigateFiles()} />
-                    <MenuButton title={i18n.t("deviceMenu.liveData")} onPress={() => this.props.navigateLiveData()} />
                     <MenuButton title={i18n.t("deviceMenu.sensors")} onPress={() => this.props.navigateSensors()} />
                     <MenuButton title={i18n.t("deviceMenu.configure")} onPress={() => this.props.navigateConfigure()} />
                     {this.renderDeviceSpecific()}
