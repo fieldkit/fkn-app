@@ -29,7 +29,7 @@ const Configuration = [
     },
     {
         fileId: 2,
-        // tail: 1000000,
+        chunked: 0,
         offset: 0,
         length: 0,
         condition: (file, others) => {
@@ -40,7 +40,7 @@ const Configuration = [
     },
     {
         fileId: 3,
-        // tail: 1000000,
+        chunked: 0,
         offset: 0,
         length: 0,
         condition: (file, others) => {
@@ -66,6 +66,8 @@ function mergeUpdate(state, deviceId, after) {
         newState.devices[deviceId] || _.cloneDeep(initialDeviceState);
     const deviceAfter = _.assign(deviceBefore, after);
     newState.devices[deviceId] = deviceAfter;
+
+    console.log("Generating New Plans");
 
     deviceAfter.plans = {
         download: generateDownloadPlan(

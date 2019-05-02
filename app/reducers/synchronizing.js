@@ -274,6 +274,8 @@ class DownloadPlanGenerator {
             .compact()
             .value();
 
+        console.log("Plan", plan);
+
         return {
             plan: plan
         };

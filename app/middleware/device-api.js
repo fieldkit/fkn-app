@@ -259,6 +259,7 @@ export function useFakeDeviceConnection() {
 }
 
 const pendingExecutions = {};
+let numberOfPendingExecutions = 0;
 
 export function cancelPendingDeviceCalls() {
     for (let key in pendingExecutions) {
@@ -273,7 +274,7 @@ export function cancelPendingDeviceCalls() {
 export function invokeDeviceApi(callApi) {
     const key = callApi.address.key;
     if (pendingExecutions[key] != null) {
-        console.log("Append execution chain", key);
+        console.log("Append execution chain", key, numberOfPendingExecutions);
         return (pendingExecutions[key] = pendingExecutions[key].then(
             () => {
                 return deviceConnection.execute(callApi);
@@ -295,10 +296,9 @@ export default store => dispatch => action => {
     if (typeof callApi.address === "undefined") {
         const address = store.getState().deviceStatus.connected;
         if (typeof address === "undefined") {
-            dispatch({
+            return dispatch({
                 type: ActionTypes.DEVICE_CONNECTION_ERROR
             });
-            return;
         }
         callApi.address = address;
     }

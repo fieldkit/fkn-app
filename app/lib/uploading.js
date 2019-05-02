@@ -11,8 +11,12 @@ import * as Files from "./files";
 function makeHeaders(headers) {
     return _({ ...headers, ...Config.build })
         .map((value, key) => {
+            if (_.isUndefined(value)) {
+                return [];
+            }
             return ["Fk-" + _.upperFirst(key), String(value)];
         })
+        .filter(pair => pair.length)
         .fromPairs()
         .value();
 }
@@ -22,21 +26,26 @@ export function uploadFile(relativePath, userHeaders, progressCallback) {
     const uploadPath = "/messages/ingestion/stream";
     const mimeType = "application/vnd.fk.data+binary";
 
+    console.log("UserHeaders", userHeaders);
+
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
         const path = dataDirectoryPath + relativePath;
         const headers = makeHeaders(userHeaders);
 
         const files = [
             {
-                name: Files.getPathName(path),
                 filename: Files.getPathName(path),
                 filepath: path,
                 filetype: mimeType
             }
         ];
 
+        const url = baseUri + uploadPath;
+
+        console.log("Uploading", url, files, headers);
+
         return RNFS.uploadFiles({
-            toUrl: baseUri + uploadPath,
+            toUrl: url,
             files: files,
             method: "POST",
             headers: headers,
