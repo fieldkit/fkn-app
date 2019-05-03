@@ -8,7 +8,7 @@ import i18n from "../internationalization/i18n";
 
 import { AppScreen, MenuButtonContainer, MenuButton } from "../components";
 
-import { initialize, navigateConnecting, browseDirectory, navigateBrowser, navigateEasyModeWelcome, navigateAbout, navigateMap, deviceStartConnect, deviceStopConnect } from "../actions";
+import { initialize, navigateConnecting, browseDirectory, navigateBrowser, navigateEasyModeWelcome, navigateAbout, navigateMap, deviceStartConnect, deviceStopConnect, deleteAllLocalFiles, archiveAllLocalFiles } from "../actions";
 
 import styles from "../styles";
 
@@ -23,7 +23,7 @@ class WelcomeScreen extends React.Component {
     }
 
     render() {
-        const { navigateConnecting, browseDirectory, navigateEasyModeWelcome, navigateMap, navigateAbout } = this.props;
+        const { navigateConnecting, browseDirectory, navigateEasyModeWelcome, navigateMap, navigateAbout, deleteAllLocalFiles, archiveAllLocalFiles } = this.props;
 
         return (
             <ScrollView>
@@ -41,6 +41,8 @@ class WelcomeScreen extends React.Component {
                         <MenuButton title={i18n.t("welcome.connect")} onPress={() => navigateConnecting()} />
                         <MenuButton title={i18n.t("welcome.browser")} onPress={() => browseDirectory("/")} />
                         <MenuButton title={i18n.t("welcome.map")} onPress={() => navigateMap()} />
+                        <MenuButton title={i18n.t("welcome.deleteAll")} onPress={() => deleteAllLocalFiles()} />
+                        <MenuButton title={i18n.t("welcome.archiveAll")} onPress={() => archiveAllLocalFiles()} />
                         <MenuButton title={i18n.t("welcome.about")} onPress={() => navigateAbout()} />
                     </MenuButtonContainer>
                 </AppScreen>
@@ -70,6 +72,8 @@ export default connect(
         navigateMap,
         navigateAbout,
         browseDirectory,
-        deviceStartConnect
+        deviceStartConnect,
+        deleteAllLocalFiles,
+        archiveAllLocalFiles
     }
 )(WelcomeScreen);

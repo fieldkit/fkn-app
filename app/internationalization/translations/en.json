@@ -6,6 +6,8 @@
         "browser": "Browser",
         "mode": "Easy Mode",
         "map": "Map",
+        "deleteAll": "Delete All",
+        "archiveAll": "Archive All",
         "about": "About"
     },
     "about": {
@@ -64,8 +66,6 @@
         "noDevicesConnect": "No devices found.\nPlease try connecting to a FieldKit device's WiFi access point.",
         "noDevices": "No devices found.",
         "devicesFound": "Success, %{numberOfDevices} device(s) found.\nSyncing will download %{estimatedDownload} bytes.",
-        "deleteAll": "Delete All",
-        "archiveAll": "Archive All",
         "advanced": "Advanced Options",
         "syncServer": "Upload to Server",
         "syncPhone": "Sync from FieldKit",
