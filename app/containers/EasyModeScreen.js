@@ -95,6 +95,7 @@ class DeviceOptions extends React.Component {
         const estimatedDownload = _(downloads)
             .map(d => d.plan)
             .flatten()
+            .filter(p => p.download)
             .map(p => p.download.downloading)
             .sum();
 

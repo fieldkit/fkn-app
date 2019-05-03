@@ -92,6 +92,7 @@ function* monitorWifi() {
     let currentSsid = null;
     while (true) {
         WifiManager.getCurrentWifiSSID().then(ssid => {
+            console.log("SSID", ssid);
             channel.put(ssid);
         });
 
@@ -112,6 +113,7 @@ function isFkSsidName(ssid) {
 function* fakeDiscoveryOnFkAps() {
     yield takeLatest(Types.WIFI_SSID_CHANGED, function* watcher(action) {
         if (isFkSsidName(action.ssid)) {
+            console.log("Faking Device at 192.168.2.1");
             while (true) {
                 yield put(findDeviceInfo("192.168.2.1", 54321));
                 yield delay(1000);
