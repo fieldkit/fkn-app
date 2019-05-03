@@ -11,11 +11,13 @@ timestamps {
 
             stage ('build') {
                 sh """
-  npm --version
-  node --version
-  npm install
-  make
-  """
+export PATH=$PATH:node_modules/.bin
+
+npm --version
+node --version
+npm install
+make
+"""
             }
 
             notifySuccess()

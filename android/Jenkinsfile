@@ -19,6 +19,8 @@ timestamps {
 
             stage ('build') {
                 sh """
+export PATH=$PATH:node_modules/.bin
+
 rm -rf node_modules/*/.git
 
 npm install
