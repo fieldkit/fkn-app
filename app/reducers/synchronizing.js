@@ -264,7 +264,7 @@ class UploadPlanGenerator {
                     {
                         archive: {
                             file: file.entry.relativePath,
-                            touch: makeFilename(directory, file.fileId, file.version, file.entry.size, file.name)
+                            touch: makeFilename(directory, file.fileId, file.version, file.offset + file.entry.size, file.name)
                         }
                     }
                 ];

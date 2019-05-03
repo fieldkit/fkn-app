@@ -765,6 +765,7 @@ describe("synchronizing", () => {
                     upload: {
                         metadata: "/0004a30b001cc468/metadata.fkpb",
                         file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                        uploading: 31000,
                         headers: {
                             deviceId: "0004a30b001cc468",
                             fileId: 4,
@@ -805,6 +806,7 @@ describe("synchronizing", () => {
                     upload: {
                         metadata: null,
                         file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                        uploading: 31000,
                         headers: {
                             deviceId: "0004a30b001cc468",
                             fileId: 4,
@@ -822,6 +824,47 @@ describe("synchronizing", () => {
                     archive: {
                         file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
                         touch: "/0004a30b001cc468/4_000001_offset_31000_data.fk"
+                    }
+                });
+            });
+        });
+
+        describe("with local offset data file", () => {
+            beforeEach(() => {
+                const local = [
+                    {
+                        name: "4_000001_offset_15000_data.fk",
+                        relativePath: "/0004a30b001cc468/4_000001_offset_15000_data.fk",
+                        size: 30000
+                    }
+                ];
+
+                this.plan = generateUploadPlan(SimpleConfiguration, makeLocal(local));
+            });
+
+            it("should upload the file", () => {
+                expect(this.plan.plan[0]).toEqual({
+                    upload: {
+                        metadata: null,
+                        file: "/0004a30b001cc468/4_000001_offset_15000_data.fk",
+                        uploading: 30000,
+                        headers: {
+                            deviceId: "0004a30b001cc468",
+                            fileId: 4,
+                            fileOffset: 15000,
+                            fileVersion: 1,
+                            fileName: "data.fk",
+                            uploadName: "4_000001_offset_15000_data.fk"
+                        }
+                    }
+                });
+            });
+
+            it("should archive the file at the end", () => {
+                expect(this.plan.plan[1]).toEqual({
+                    archive: {
+                        file: "/0004a30b001cc468/4_000001_offset_15000_data.fk",
+                        touch: "/0004a30b001cc468/4_000001_offset_45000_data.fk"
                     }
                 });
             });
@@ -868,6 +911,7 @@ describe("synchronizing", () => {
                         upload: {
                             metadata: null,
                             file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            uploading: 15000,
                             headers: {
                                 deviceId: "0004a30b001cc468",
                                 fileId: 4,
