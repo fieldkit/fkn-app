@@ -20,6 +20,10 @@ exports[`<WelcomeScreen/> render() renders the component 1`] = `
     <MenuButtonContainer>
       <MenuButton
         onPress={[Function]}
+        title="Easy Mode"
+      />
+      <MenuButton
+        onPress={[Function]}
         title="Connect"
       />
       <MenuButton
@@ -28,11 +32,15 @@ exports[`<WelcomeScreen/> render() renders the component 1`] = `
       />
       <MenuButton
         onPress={[Function]}
-        title="Easy Mode"
+        title="Map"
       />
       <MenuButton
         onPress={[Function]}
-        title="Map"
+        title="Delete All"
+      />
+      <MenuButton
+        onPress={[Function]}
+        title="Archive All"
       />
       <MenuButton
         onPress={[Function]}
