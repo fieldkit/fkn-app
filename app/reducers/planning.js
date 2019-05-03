@@ -143,7 +143,7 @@ function mergeDeviceAway(state, address) {
 }
 
 function emptyAllLocalFiles(state) {
-    let nextState = state;
+    let nextState = _.cloneDeep(state);
     _.keys(state.devices).forEach(deviceId => {
         nextState = mergeUpdate(nextState, deviceId, {
             local: {
