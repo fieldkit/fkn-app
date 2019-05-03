@@ -250,6 +250,7 @@ class UploadPlanGenerator {
                         upload: {
                             metadata: metadata ? metadata.entry.relativePath : null,
                             file: file.entry.relativePath,
+                            uploading: file.entry.size,
                             headers: {
                                 deviceId: file.deviceId,
                                 fileId: file.fileId,

@@ -28,29 +28,10 @@ const configs = {
             return true;
         }
     },
-    noaa: {
-        build: build,
-        baseUri: "http://api.fkdev.org",
-        welcomeRoute: "/",
-        serviceDiscoveryOnStartup: false,
-        discoveryQueryFilesAndStatus: false,
-        fixedDeviceInfo: {
-            address: "192.168.0.136",
-            port: 12345
-        },
-        findDeviceInterval: 1000,
-        findDeviceTimeout: 10 * 1000,
-        deviceQueryInterval: 10 * 1000,
-        deviceExpireInterval: 21 * 1000,
-        pingDeviceInterval: 10 * 1000,
-        deviceFilter: device => {
-            return true;
-        }
-    },
     dev: {
         build: build,
         baseUri: "http://api.fkdev.org",
-        welcomeRoute: "/",
+        welcomeRoute: "/easy-mode",
         serviceDiscoveryOnStartup: true,
         discoveryQueryFilesAndStatus: true,
         findDeviceInterval: 1000,
@@ -65,7 +46,7 @@ const configs = {
     release: {
         build: build,
         baseUri: "http://api.fkdev.org",
-        welcomeRoute: "/",
+        welcomeRoute: "/easy-mode",
         serviceDiscoveryOnStartup: true,
         discoveryQueryFilesAndStatus: false,
         findDeviceInterval: 1000,

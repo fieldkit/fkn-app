@@ -11,9 +11,15 @@ import i18n from "../internationalization/i18n";
 import * as Files from "../lib/files";
 import { AppScreen } from "../components";
 
-import { deviceStartConnect, findAllFiles, executePlan, deleteAllLocalFiles, archiveAllLocalFiles } from "../actions";
+import { navigateWelcome, deviceStartConnect, findAllFiles, executePlan, deleteAllLocalFiles, archiveAllLocalFiles } from "../actions";
 
 import styles from "../styles";
+
+const textPanelStyle = {
+    padding: 10,
+    textAlign: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.7)"
+};
 
 class UploadQueueOptions extends React.Component {
     onSync() {
@@ -35,28 +41,33 @@ class UploadQueueOptions extends React.Component {
         const numberOfFiles = _(uploads)
             .map(r => r.numberOfFiles)
             .sum();
+        const estimatedUpload = _(uploads)
+            .map(d => d.plan)
+            .flatten()
+            .filter(p => p.upload)
+            .map(p => p.upload.uploading)
+            .sum();
 
         if (numberOfFiles == 0) {
             return (
-                <View style={{ padding: 10 }}>
-                    <Text style={{ textAlign: "center" }}>{i18n.t("easyMode.noPendingFiles")}</Text>
+                <View>
+                    <Text style={textPanelStyle}>{i18n.t("easyMode.noPendingFiles")}</Text>
                 </View>
             );
         }
 
         return (
-            <View style={{ padding: 10 }}>
+            <View>
                 <View>
-                    <Text style={{ textAlign: "center" }}>
+                    <Text style={textPanelStyle}>
                         {i18n.t("easyMode.pendingFiles", {
-                            numberOfFiles: _(uploads)
-                                .map(r => r.numberOfFiles)
-                                .sum()
+                            numberOfFiles: numberOfFiles,
+                            estimatedUpload: estimatedUpload
                         })}
                     </Text>
                 </View>
-                <View>
-                    <Button title="Phone -> Web" onPress={() => this.onSync()} />
+                <View style={{ padding: 10 }}>
+                    <Button title={i18n.t("easyMode.syncServer")} onPress={() => this.onSync()} />
                 </View>
             </View>
         );
@@ -81,33 +92,40 @@ class DeviceOptions extends React.Component {
         const { downloads } = easyMode.plans;
 
         const numberOfDevices = _.size(easyMode.devices);
+        const estimatedDownload = _(downloads)
+            .map(d => d.plan)
+            .flatten()
+            .map(p => p.download.downloading)
+            .sum();
+
         if (numberOfDevices == 0 || !_.isArray(downloads) || downloads.length == 0) {
             if (!easyMode.networkConfiguration.deviceAp) {
                 return (
-                    <View style={{ padding: 10 }}>
-                        <Text style={{ textAlign: "center" }}>{i18n.t("easyMode.noDevicesConnect")}</Text>
+                    <View style={textPanelStyle}>
+                        <Text style={{ padding: 10, textAlign: "center" }}>{i18n.t("easyMode.noDevicesConnect")}</Text>
                     </View>
                 );
             } else {
                 return (
-                    <View style={{ padding: 10 }}>
-                        <Text style={{ textAlign: "center" }}>{i18n.t("easyMode.noDevices")}</Text>
+                    <View style={textPanelStyle}>
+                        <Text style={{ padding: 10, textAlign: "center" }}>{i18n.t("easyMode.noDevices")}</Text>
                     </View>
                 );
             }
         }
 
         return (
-            <View style={{ padding: 10 }}>
+            <View>
                 <View>
-                    <Text style={{ textAlign: "center" }}>
+                    <Text style={textPanelStyle}>
                         {i18n.t("easyMode.devicesFound", {
-                            numberOfDevices: _.size(easyMode.devices)
+                            numberOfDevices: numberOfDevices,
+                            estimatedDownload: estimatedDownload
                         })}
                     </Text>
                 </View>
-                <View>
-                    <Button title="Device -> Phone" onPress={() => this.onSync()} />
+                <View style={{ padding: 10 }}>
+                    <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                 </View>
             </View>
         );
@@ -133,11 +151,37 @@ class EasyModeScreen extends React.Component {
         }
     }
 
-    render() {
-        const { easyMode, executePlan, deleteAllLocalFiles, archiveAllLocalFiles, plan } = this.props;
+    renderBusy() {
+        return (
+            <View>
+                <Text style={textPanelStyle}>{i18n.t("easyMode.busy")}</Text>
+            </View>
+        );
+    }
+
+    renderMenu() {
+        const { easyMode, executePlan, navigateWelcome } = this.props;
 
         return (
-            <AppScreen>
+            <View style={{ flex: 1, alignSelf: "stretch" }}>
+                <DeviceOptions easyMode={easyMode} executePlan={executePlan} />
+
+                <UploadQueueOptions easyMode={easyMode} executePlan={executePlan} />
+
+                <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: 20 }}>
+                    <View style={{ bottom: 0, position: "absolute", paddingLeft: 10, paddingRight: 10, width: "100%" }}>
+                        <Button title={i18n.t("easyMode.advanced")} onPress={() => navigateWelcome()} />
+                    </View>
+                </View>
+            </View>
+        );
+    }
+
+    render() {
+        const { easyMode } = this.props;
+
+        return (
+            <AppScreen backgroundStyle={{ height: "100%" }}>
                 <Image
                     source={require("../../assets/fk-header.png")}
                     style={{
@@ -147,17 +191,7 @@ class EasyModeScreen extends React.Component {
                     }}
                 />
 
-                <DeviceOptions easyMode={easyMode} executePlan={executePlan} />
-                <UploadQueueOptions easyMode={easyMode} executePlan={executePlan} />
-
-                <View>
-                    <View style={{ padding: 10 }}>
-                        <Button title={i18n.t("easyMode.deleteAll")} onPress={() => deleteAllLocalFiles()} />
-                    </View>
-                    <View style={{ padding: 10 }}>
-                        <Button title={i18n.t("easyMode.archiveAll")} onPress={() => archiveAllLocalFiles()} />
-                    </View>
-                </View>
+                {easyMode.busy ? this.renderBusy() : this.renderMenu()}
             </AppScreen>
         );
     }
@@ -187,6 +221,7 @@ export default connect(
         executePlan,
         deviceStartConnect,
         deleteAllLocalFiles,
-        archiveAllLocalFiles
+        archiveAllLocalFiles,
+        navigateWelcome
     }
 )(EasyModeScreen);

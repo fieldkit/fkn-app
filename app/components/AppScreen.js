@@ -26,7 +26,7 @@ export class AppScreen extends React.Component {
     }
 
     render() {
-        const { style, background } = this.props;
+        const { style, background, backgroundStyle } = this.props;
         const { children } = this.props;
 
         if (background === false) {
@@ -40,7 +40,7 @@ export class AppScreen extends React.Component {
 
         return (
             <View style={styles.mainView}>
-                <BackgroundView>
+                <BackgroundView style={backgroundStyle}>
                     <ProgressHeader />
                     {children}
                 </BackgroundView>

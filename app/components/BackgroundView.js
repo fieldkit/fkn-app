@@ -8,13 +8,7 @@ export class BackgroundView extends React.Component {
         const { children } = this.props;
 
         return (
-            <ImageBackground
-                source={require("../../assets/fk-background.png")}
-                style={{
-                    width: "100%",
-                    height: "100%"
-                }}
-            >
+            <ImageBackground source={require("../../assets/fk-background.png")} style={{ width: "100%", height: "100%" }}>
                 <View style={this.props.style}>{children}</View>
             </ImageBackground>
         );

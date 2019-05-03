@@ -58,14 +58,18 @@
         "title": "File"
     },
     "easyMode": {
-        "title": "Welcome",
-        "noPendingFiles": "No pending files found.",
-        "pendingFiles": "There are %{numberOfFiles} file(s) pending for upload.",
-        "noDevicesConnect": "Devices found. Try connecting to a FieldKit device's AP.",
+        "title": "FieldKit Easy Transfer",
+        "noPendingFiles": "No files found on phone.\nPlease sync from a FieldKit device.",
+        "pendingFiles": "There are %{numberOfFiles} file(s) pending for upload.\nSize: %{estimatedUpload}",
+        "noDevicesConnect": "No devices found.\nPlease try connecting to a FieldKit device's WiFi access point.",
         "noDevices": "No devices found.",
-        "devicesFound": "Success, %{numberOfDevices} device(s) found",
+        "devicesFound": "Success, %{numberOfDevices} device(s) found.\nSyncing will download %{estimatedDownload} bytes.",
         "deleteAll": "Delete All",
-        "archiveAll": "Archive All"
+        "archiveAll": "Archive All",
+        "advanced": "Advanced Options",
+        "syncServer": "Upload to Server",
+        "syncPhone": "Sync from FieldKit",
+        "busy": "A transfer is currently in progress."
     },
     "dataTable": {
         "title": "Data Table"

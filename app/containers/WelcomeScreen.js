@@ -37,9 +37,9 @@ class WelcomeScreen extends React.Component {
                         }}
                     />
                     <MenuButtonContainer>
+                        <MenuButton title={i18n.t("welcome.mode")} onPress={() => navigateEasyModeWelcome()} />
                         <MenuButton title={i18n.t("welcome.connect")} onPress={() => navigateConnecting()} />
                         <MenuButton title={i18n.t("welcome.browser")} onPress={() => browseDirectory("/")} />
-                        <MenuButton title={i18n.t("welcome.mode")} onPress={() => navigateEasyModeWelcome()} />
                         <MenuButton title={i18n.t("welcome.map")} onPress={() => navigateMap()} />
                         <MenuButton title={i18n.t("welcome.about")} onPress={() => navigateAbout()} />
                     </MenuButtonContainer>
