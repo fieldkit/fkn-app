@@ -25,7 +25,6 @@ export function* loseExpiredDevices() {
                 type: Types.FIND_DEVICE_LOST,
                 address: entry.address
             });
-            delete devices[key];
         }
     }
 }

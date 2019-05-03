@@ -120,11 +120,31 @@ function mergeRemoteFiles(state, action) {
     });
 }
 
+function mergeDeviceAway(state, address) {
+    const key = address.key;
+    const deviceId = state.map[key];
+    if (!_.isString(deviceId)) {
+        console.log("Noop");
+        return state;
+    }
+    const nextState = mergeUpdate(state, deviceId, {
+        remote: {
+            deviceId: deviceId,
+            address: address,
+            files: []
+        }
+    });
+
+    delete nextState.devices[deviceId];
+    delete nextState.map[key];
+
+    console.log("Merged device away");
+    return nextState;
+}
+
 function emptyAllLocalFiles(state) {
     let nextState = state;
-    console.log("EmptyAllLocalFiles", _.keys(state.devices));
     _.keys(state.devices).forEach(deviceId => {
-        console.log("Emptying", deviceId);
         nextState = mergeUpdate(nextState, deviceId, {
             local: {
                 files: []
@@ -156,6 +176,9 @@ export function planning(state = initialPlanningState, action) {
             nextState = _.cloneDeep(state);
             nextState.map[key] = deviceId;
             return nextState;
+        }
+        case ActionTypes.FIND_DEVICE_LOST: {
+            return mergeDeviceAway(state, action.address);
         }
         case ActionTypes.LOCAL_FILES_ARCHIVING_ALL: {
             return emptyAllLocalFiles(state);

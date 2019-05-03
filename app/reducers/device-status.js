@@ -57,7 +57,7 @@ export function selectedDevice(state = {}, action) {
             return { connected: action.address };
         }
         case ActionTypes.FIND_DEVICE_LOST: {
-            return { connected: null };
+            return {};
         }
     }
 
@@ -73,7 +73,6 @@ export function devices(state = initialDevicesState, action) {
         const before = state[key] || { time: 0 };
         const update = {};
         update[key] = { ...before, ...after };
-        // console.log(action.type, unixNow(), before.time, after.time, after.time - before.time, unixNow() - after.time);
         return { ...nextState, ...update };
     }
 
@@ -100,6 +99,11 @@ export function devices(state = initialDevicesState, action) {
                 time: unixNow()
             };
             return mergeUpdate(key, after);
+        }
+        case ActionTypes.FIND_DEVICE_LOST: {
+            const nextState = _.cloneDeep(state);
+            delete nextState[action.address.key];
+            return nextState;
         }
         case ActionTypes.DEVICE_PING_SUCCESS: {
             const key = action.deviceApi.address.key;
