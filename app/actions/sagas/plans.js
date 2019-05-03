@@ -28,11 +28,23 @@ class Devices {
             const metadataAction = yield call(deviceCall, queryDeviceMetadata(address));
 
             this.cache[address.key] = {
+                address: address,
                 capabilities: capabilitiesAction.response.capabilities,
                 metadata: metadataAction.response.fileData.data
             };
         }
         return this.cache[address.key];
+    }
+
+    *refresh() {
+        const queries = _(this.cache)
+            .values()
+            .map(row => {
+                return call(deviceCall, queryFiles(row.address));
+            })
+            .value();
+
+        return yield all(queries);
     }
 }
 
@@ -162,6 +174,8 @@ export function* executePlans() {
 
                 stepsCompleted++;
             }
+
+            yield devices.refresh();
 
             yield put({
                 type: Types.TASK_DONE,
