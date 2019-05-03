@@ -7,7 +7,7 @@ import { View, Text } from "react-native";
 
 import * as Files from "../lib/files";
 
-import { MenuButtonContainer, MenuButton } from "../components";
+import { MenuButtonContainer, MenuButton } from "./MenuButtons";
 
 import styles from "../styles";
 

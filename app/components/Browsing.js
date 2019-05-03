@@ -7,7 +7,8 @@ import { View, Text, ScrollView, FlatList, TouchableOpacity } from "react-native
 
 import * as Files from "../lib/files";
 
-import { Loading, MenuButtonContainer, MenuButton } from "../components";
+import { Loading } from "./Loading";
+import { MenuButtonContainer, MenuButton } from "./MenuButtons";
 
 import styles from "../styles";
 
