@@ -132,23 +132,8 @@ export function* executePlans() {
                         const dispatcher = new Dispatcher();
                         const started = new Date();
 
-                        function progress(info) {
-                            const bytesTotal = info.totalBytesExpectedToSend;
-                            const bytesRead = info.totalBytesSent;
-                            const now = new Date();
-
-                            dispatcher.dispatch({
-                                type: Types.DOWNLOAD_FILE_PROGRESS,
-                                download: {
-                                    done: bytesTotal == bytesRead,
-                                    cancelable: false,
-                                    bytesTotal: bytesTotal,
-                                    bytesRead: bytesRead,
-                                    progress: bytesRead / bytesTotal,
-                                    started: started,
-                                    elapsed: now - started
-                                }
-                            });
+                        function progress(action) {
+                            dispatcher.dispatch(action);
                         }
 
                         const { upload, stop } = yield race({

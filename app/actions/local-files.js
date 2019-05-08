@@ -250,23 +250,34 @@ export function openDataMap(relativePath) {
 
 export function uploadLocalFile(relativePath) {
     return dispatch => {
+        const started = new Date();
+
+        function getHeaders(fileInfo) {
+            if (_.isObject(fileInfo)) {
+                return {
+                    deviceId: fileInfo.deviceId,
+                    fileId: fileInfo.fileId,
+                    fileOffset: fileInfo.offset,
+                    fileVersion: fileInfo.version,
+                    fileName: fileInfo.name,
+                    uploadName: fileInfo.entry.name
+                };
+            }
+            return { };
+        }
+
+        function progress(action) {
+            dispatch(action);
+        }
+
         console.log("Uploading", relativePath);
         return getDirectory(Files.getParentPath(relativePath)).then(files => {
-            const fileEntry = _(files.listing)
-                .filter(entry => entry.relativePath === relativePath)
-                .first();
+            const fileEntry = _(files.listing).filter(entry => entry.relativePath === relativePath).first();
             console.log("FileEntry", fileEntry);
             const fileInfo = Files.getFileInformation(fileEntry);
             console.log("FileInfo", fileInfo);
-            const headers = {
-                deviceId: fileInfo.deviceId,
-                fileId: fileInfo.fileId,
-                fileOffset: fileInfo.offset,
-                fileVersion: fileInfo.version,
-                fileName: fileInfo.name,
-                uploadName: fileInfo.entry.name
-            };
-            return uploadFile(relativePath, headers, progress => {});
+            const headers = getHeaders(fileInfo);
+            return uploadFile(relativePath, headers, progress);
         });
     };
 }
