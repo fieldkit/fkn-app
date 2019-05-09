@@ -13,6 +13,8 @@ timestamps {
                 sh """
 export PATH=$PATH:node_modules/.bin
 
+rm -rf node_modules/*/.git
+
 npm --version
 node --version
 npm install
