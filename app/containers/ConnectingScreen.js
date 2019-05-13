@@ -7,9 +7,9 @@ import RNLanguages from "react-native-languages";
 
 import i18n from "../internationalization/i18n";
 
-import { View, Text, Button } from "react-native";
+import { View, Text } from "react-native";
 
-import { AppScreen, SmallButton } from "../components";
+import { AppScreen, Button, SmallButton } from "../components";
 
 import { navigateWelcome, deviceStartConnect, deviceSelect, deviceStopConnect } from "../actions";
 

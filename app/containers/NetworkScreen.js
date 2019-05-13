@@ -7,9 +7,9 @@ import RNLanguages from "react-native-languages";
 
 import i18n from "../internationalization/i18n";
 
-import { View, Button, Text, TextInput } from "react-native";
+import { View, Text, TextInput } from "react-native";
 
-import { AppScreen, SmallButton, Loading, DeviceInfo } from "../components";
+import { AppScreen, Button, SmallButton, Loading, DeviceInfo } from "../components";
 
 import { navigateNetwork, navigateBack, queryConfiguration, saveNetworkConfiguration } from "../actions";
 

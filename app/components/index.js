@@ -2,7 +2,8 @@
 
 export * from "./AppScreen";
 export * from "./BackgroundView";
-export * from "./Buttons";
+export * from "./Button";
+export * from "./SmallButton";
 export * from "./MenuButtons";
 export * from "./DeviceInfo";
 export * from "./Loading";

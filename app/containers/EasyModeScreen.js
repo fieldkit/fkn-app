@@ -3,13 +3,13 @@ import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { View, Text, Image, Button } from "react-native";
+import { View, Text, Image } from "react-native";
 
 import RNLanguages from "react-native-languages";
 import i18n from "../internationalization/i18n";
 
 import * as Files from "../lib/files";
-import { AppScreen } from "../components";
+import { AppScreen, Button } from "../components";
 
 import { navigateWelcome, deviceStartConnect, findAllFiles, executePlan, deleteAllLocalFiles, archiveAllLocalFiles } from "../actions";
 
