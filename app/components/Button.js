@@ -168,7 +168,11 @@ export class Button extends React.Component<ButtonProps> {
 
 const styles = StyleSheet.create({
     button: Platform.select({
-        ios: {},
+        ios: {
+            // Material design blue from https://material.google.com/style/color.html#color-color-palette
+            backgroundColor: "#2196F3",
+            borderRadius: 2
+        },
         android: {
             elevation: 4,
             // Material design blue from https://material.google.com/style/color.html#color-color-palette
@@ -181,8 +185,7 @@ const styles = StyleSheet.create({
         padding: 8,
         ...Platform.select({
             ios: {
-                // iOS blue from https://developer.apple.com/ios/human-interface-guidelines/visual-design/color/
-                color: "#007AFF",
+                color: "#ffffff",
                 fontSize: 18
             },
             android: {
@@ -192,7 +195,10 @@ const styles = StyleSheet.create({
         })
     },
     buttonDisabled: Platform.select({
-        ios: {},
+        ios: {
+            elevation: 0,
+            backgroundColor: "#dfdfdf"
+        },
         android: {
             elevation: 0,
             backgroundColor: "#dfdfdf"
@@ -200,7 +206,7 @@ const styles = StyleSheet.create({
     }),
     textDisabled: Platform.select({
         ios: {
-            color: "#cdcdcd"
+            color: "#a1a1a1"
         },
         android: {
             color: "#a1a1a1"
