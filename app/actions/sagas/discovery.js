@@ -77,10 +77,15 @@ function* monitorWifi() {
 
     let currentSsid = null;
     while (true) {
-        WifiManager.getCurrentWifiSSID().then(ssid => {
-            console.log("SSID", ssid);
-            channel.put(ssid);
-        });
+        WifiManager.getCurrentWifiSSID().then(
+            ssid => {
+                console.log("SSID", ssid);
+                channel.put(ssid);
+            },
+            err => {
+                console.log("WiFi SSID:", err);
+            }
+        );
 
         const ssid = yield call(channel.take);
         if (currentSsid != ssid) {
