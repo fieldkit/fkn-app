@@ -7,8 +7,6 @@ import dgram from "react-native-udp";
 
 import WifiManager from "react-native-wifi";
 
-import ServiceDiscovery from "react-native-service-discovery";
-
 import { unixNow } from "../../lib/helpers";
 import Config from "../../config";
 
@@ -19,22 +17,10 @@ import { createChannel } from "./channels";
 function createServiceDiscoveryChannel() {
     const channel = createChannel("SD");
 
-    // This is no longer being used, though may come back. I wanted to keep
-    // creating this just to avoid regressions.
-    const serviceDiscovery = new ServiceDiscovery();
-
-    serviceDiscovery.on("service-resolved", ev => {});
-
-    serviceDiscovery.on("udp-discovery", ev => {
-        channel.put(findDeviceInfo(ev.address, ev.port));
-    });
-
     const port = 54321;
     const previous = {};
 
     if (__ENV__ !== "test") {
-        // serviceDiscovery.start(port);
-
         const socket = dgram.createSocket("udp4");
         socket.bind(port);
         socket.on("message", (data, remoteInfo) => {
