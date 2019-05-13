@@ -53,7 +53,10 @@ security show-keychain-info login.keychain
 
 cd ios
 
-xcodebuild -project FieldKit.xcodeproj -scheme FieldKit -sdk iphoneos -configuration Release archive -archivePath $PWD/build/FieldKit.xcarchive
+xcodebuild -project FieldKit.xcodeproj -scheme FieldKit -sdk iphoneos -configuration Release archive -archivePath $PWD/build/FieldKit.xcarchive \
+    PROVISIONING_PROFILE="dff15cae-922b-45df-889a-aa38c334599e" \
+    CODE_SIGN_IDENTITY="iPhone Distribution" \
+    PROVISIONING_PROFILE_SPECIFIER="Conservify Ad Hoc"
 
 xcodebuild -exportArchive -archivePath $PWD/build/FieldKit.xcarchive -exportOptionsPlist exportOptions.plist -exportPath $PWD/build
 
