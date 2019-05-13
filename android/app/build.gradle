@@ -148,6 +148,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-service-discovery')
     compile project(':react-native-i18n')
     compile project(':react-native-svg')
     compile project(':react-native-wifi')

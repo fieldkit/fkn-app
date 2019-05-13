@@ -1,4 +1,6 @@
 rootProject.name = 'FieldKit'
+include ':react-native-service-discovery'
+project(':react-native-service-discovery').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-service-discovery/android')
 include ':react-native-i18n'
 project(':react-native-i18n').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-i18n/android')
 include ':react-native-svg'
