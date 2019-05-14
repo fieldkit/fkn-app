@@ -17,24 +17,26 @@ timestamps {
             stage ('build') {
                 withCredentials([string(credentialsId: 'app-ios-keychain-password', variable: 'APP_IOS_KEYCHAIN_PASSWORD')]) {
                     sh """
+set -xe
+
 export PATH=$PATH:$HOME/tools/node/bin:node_modules/.bin
 
 ls -alh ../
 
 if [ ! -d ../app-protocol ]; then
-  git clone https://github.com/fieldkit/app-protocol.git ../app-protocol
+    git clone https://github.com/fieldkit/app-protocol.git ../app-protocol
 else
-  (cd ../app-protocol && git pull)
+    (cd ../app-protocol && git pull)
 fi
 if [ ! -d ../data-protocol ]; then
-  git clone https://github.com/fieldkit/data-protocol.git ../data-protocol
+    git clone https://github.com/fieldkit/data-protocol.git ../data-protocol
 else
-  (cd ../data-protocol && git pull)
+    (cd ../data-protocol && git pull)
 fi
 if [ ! -d ../atlas ]; then
-  git clone https://github.com/fieldkit/atlas.git ../atlas
+    git clone https://github.com/fieldkit/atlas.git ../atlas
 else
-  (cd ../atlas && git pull)
+    (cd ../atlas && git pull)
 fi
 
 rm -rf node_modules/*/.git
@@ -53,7 +55,10 @@ security show-keychain-info login.keychain
 
 cd ios
 
-xcodebuild -project FieldKit.xcodeproj -scheme FieldKit -sdk iphoneos -configuration Release archive -archivePath $PWD/build/FieldKit.xcarchive
+xcodebuild -project FieldKit.xcodeproj -scheme FieldKit -sdk iphoneos -configuration Release archive -archivePath $PWD/build/FieldKit.xcarchive \
+    PROVISIONING_PROFILE="dff15cae-922b-45df-889a-aa38c334599e" \
+    CODE_SIGN_IDENTITY="iPhone Distribution" \
+    PROVISIONING_PROFILE_SPECIFIER="Conservify Ad Hoc"
 
 xcodebuild -exportArchive -archivePath $PWD/build/FieldKit.xcarchive -exportOptionsPlist exportOptions.plist -exportPath $PWD/build
 
