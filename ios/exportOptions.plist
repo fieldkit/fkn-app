@@ -6,11 +6,10 @@
     <string>ad-hoc</string>
     <key>provisioningProfiles</key>
     <dict>
-      <key>org.reactjs.native.example.FieldKit</key>
+      <key>org.fieldkit.fieldkit</key>
       <string>Conservify Ad Hoc</string>
     </dict>
     <key>teamID</key>
     <string>5X96U27N9J</string>
   </dict>
 </plist>
-
