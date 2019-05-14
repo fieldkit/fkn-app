@@ -126,11 +126,7 @@ export class Button extends React.Component<ButtonProps> {
         const buttonStyles = [styles.button];
         const textStyles = [styles.text];
         if (color) {
-            if (Platform.OS === "ios") {
-                textStyles.push({ color: color });
-            } else {
-                buttonStyles.push({ backgroundColor: color });
-            }
+            buttonStyles.push({ backgroundColor: color });
         }
         const accessibilityStates = [];
         if (disabled) {
