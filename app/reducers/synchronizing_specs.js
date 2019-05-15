@@ -957,7 +957,7 @@ describe("synchronizing", () => {
                     this.plan = generateDownloadPlan(ResumingConfiguration, makeLocal(local), makeDevice(device));
                 });
 
-                it.only("should download remainder of the file", () => {
+                it("should download remainder of the file", () => {
                     expect(this.plan.plan).toEqual([
                         {
                             download: {
