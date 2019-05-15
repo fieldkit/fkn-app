@@ -1,10 +1,13 @@
 import _ from "lodash";
 
+import Promise from "bluebird";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { View, Text, Image } from "react-native";
-import KeepAwake from 'react-native-keep-awake';
+
+import KeepAwake from "react-native-keep-awake";
+import Permissions from "react-native-permissions";
 
 import RNLanguages from "react-native-languages";
 import i18n from "../internationalization/i18n";
@@ -144,9 +147,40 @@ class EasyModeScreen extends React.Component {
         return { title: i18n.t("easyMode.title") };
     };
 
+    verifyPermissions() {
+        const keys = ["location", "storage"];
+        Permissions.checkMultiple(keys)
+            .then(permissions => {
+                console.log("Permissions before", permissions);
+                return _(permissions)
+                    .map((value, key) => {
+                        return {
+                            name: key,
+                            status: value
+                        };
+                    })
+                    .reduce((promise, permission) => {
+                        return promise.then(() => {
+                            if (permission.status == "undetermined") {
+                                return Permissions.request(permission.name);
+                            }
+                            return {};
+                        });
+                    }, Promise.resolve({}));
+            })
+            .then(() => {
+                return Permissions.checkMultiple(keys);
+            })
+            .then(permissions => {
+                console.log("Permissions after", permissions);
+            });
+    }
+
     componentDidMount() {
         this.props.findAllFiles();
         this.props.deviceStartConnect();
+
+        this.verifyPermissions();
     }
 
     componentWillUpdate(nextProps, nextState) {
