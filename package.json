@@ -40,6 +40,7 @@
     "react-native-languages": "^3.0.1",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-mail": "3.0.7",
+    "react-native-permissions": "^1.1.1",
     "react-native-progress-circle": "2.0.0",
     "react-native-simple-toast": "0.0.8",
     "react-native-svg": "5.4.2",
