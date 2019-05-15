@@ -14,6 +14,7 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* FieldKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FieldKitTests.m */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		12C837CC90944C83AC94FD42 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBF910EC9954CACAEFBD2A9 /* libReactNativePermissions.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -481,6 +482,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = FieldKit/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1C9385CAB18F4CCC88793921 /* KCKeepAwake.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = KCKeepAwake.xcodeproj; path = "../node_modules/react-native-keep-awake/ios/KCKeepAwake.xcodeproj"; sourceTree = "<group>"; };
+		23833BAEE2784E3CBBAF9F3E /* ReactNativePermissions.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativePermissions.xcodeproj; path = "../node_modules/react-native-permissions/ios/ReactNativePermissions.xcodeproj"; sourceTree = "<group>"; };
 		23E95AF1E8B74AF2AE2EE41C /* libRNLanguages-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNLanguages-tvOS.a"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* FieldKit-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FieldKit-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* FieldKit-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FieldKit-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -513,6 +515,7 @@
 		DDE67DE6F59F4F348D7398E1 /* libLRDRCTSimpleToast.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libLRDRCTSimpleToast.a; sourceTree = "<group>"; };
 		E1D5E883B58146F9B8BA8925 /* RNMail.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNMail.xcodeproj; path = "../node_modules/react-native-mail/RNMail.xcodeproj"; sourceTree = "<group>"; };
 		FCFF54548323417CA3892605 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
+		FFBF910EC9954CACAEFBD2A9 /* libReactNativePermissions.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativePermissions.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -553,6 +556,7 @@
 				45E0F2CDB798472AA31DDBC1 /* libRNLanguages.a in Frameworks */,
 				8AE910D2228CB0BE0045D07E /* NetworkExtension.framework in Frameworks */,
 				F7E60DB78F61499CBCA7269D /* libKCKeepAwake.a in Frameworks */,
+				12C837CC90944C83AC94FD42 /* libReactNativePermissions.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -755,6 +759,7 @@
 				0C8A0A85329B4B359345AF6C /* LRDRCTSimpleToast.xcodeproj */,
 				421E749FE6BD417E956F2FE9 /* RNLanguages.xcodeproj */,
 				1C9385CAB18F4CCC88793921 /* KCKeepAwake.xcodeproj */,
+				23833BAEE2784E3CBBAF9F3E /* ReactNativePermissions.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -828,6 +833,7 @@
 				A8B69340EA46440290ED10A4 /* libRNLanguages.a */,
 				23E95AF1E8B74AF2AE2EE41C /* libRNLanguages-tvOS.a */,
 				39907E68D58F48F9B1058638 /* libKCKeepAwake.a */,
+				FFBF910EC9954CACAEFBD2A9 /* libReactNativePermissions.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1690,12 +1696,14 @@
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = FieldKitTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1731,12 +1739,14 @@
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = FieldKitTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1775,6 +1785,7 @@
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = FieldKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1812,6 +1823,7 @@
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = FieldKit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1851,11 +1863,13 @@
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "FieldKit-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1896,11 +1910,13 @@
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "FieldKit-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1940,11 +1956,13 @@
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "FieldKit-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1984,11 +2002,13 @@
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "FieldKit-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
