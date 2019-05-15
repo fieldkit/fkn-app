@@ -32,6 +32,15 @@ function createNetInfoChannel() {
             timestamp: timestamp,
             info: connectionInfo
         });
+
+        WifiManager.getCurrentWifiSSID().then(
+            ssid => {
+                channel.put(wifiSsidChanged(ssid));
+            },
+            err => {
+                console.log("WiFi SSID:", err);
+            }
+        );
     };
 
     ConnectivityTracker.init({
