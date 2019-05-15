@@ -1880,7 +1880,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.fieldkit.fieldkit;
 				PRODUCT_NAME = FieldKit;
-				PROVISIONING_PROFILE_SPECIFIER = "iOS Dev Profile #2";
+				PROVISIONING_PROFILE_SPECIFIER = "iOS Dev Profile";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1919,7 +1919,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.fieldkit.fieldkit;
 				PRODUCT_NAME = FieldKit;
-				PROVISIONING_PROFILE_SPECIFIER = "iOS Dev Profile #2";
+				PROVISIONING_PROFILE_SPECIFIER = "iOS Dev Profile";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
