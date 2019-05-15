@@ -47,6 +47,7 @@
 		8AB5F6F4228A011300EF5FBB /* libRCTMGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE231FB2289E76600E141BF /* libRCTMGL.a */; };
 		8AE231F32289E74500E141BF /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE231F22289E74500E141BF /* Mapbox.framework */; };
 		8AE231F42289E74500E141BF /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE231F22289E74500E141BF /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8AE910D2228CB0BE0045D07E /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE910D1228CB0BE0045D07E /* NetworkExtension.framework */; };
 		9DED415B29824C95A7B1835B /* libTcpSockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB8ACC9132A4ACDAC2CDB88 /* libTcpSockets.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B541B1CC799D4482BCB7C183 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9844568AFF234B72AB45D859 /* libRNFS.a */; };
@@ -494,8 +495,10 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8478FA7544D746408E95965C /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		8A93AC70228CAF10004FCF7C /* FieldKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FieldKit.entitlements; path = FieldKit/FieldKit.entitlements; sourceTree = "<group>"; };
 		8AE231F22289E74500E141BF /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = "../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework"; sourceTree = "<group>"; };
 		8AE231F62289E76600E141BF /* RCTMGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTMGL.xcodeproj; path = "../node_modules/@mapbox/react-native-mapbox-gl/ios/RCTMGL.xcodeproj"; sourceTree = "<group>"; };
+		8AE910D1228CB0BE0045D07E /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		909033B72ED04AD4B17BDA63 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		9844568AFF234B72AB45D859 /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		A0E40BCD4CA3447A9B440B82 /* libRNMail.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNMail.a; sourceTree = "<group>"; };
@@ -548,6 +551,7 @@
 				81D50C1053524EC5AFD78E71 /* libRNSVG.a in Frameworks */,
 				41DE13D0A7924E0D97D0BA04 /* libLRDRCTSimpleToast.a in Frameworks */,
 				45E0F2CDB798472AA31DDBC1 /* libRNLanguages.a in Frameworks */,
+				8AE910D2228CB0BE0045D07E /* NetworkExtension.framework in Frameworks */,
 				F7E60DB78F61499CBCA7269D /* libKCKeepAwake.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -663,6 +667,7 @@
 		13B07FAE1A68108700A75B9A /* FieldKit */ = {
 			isa = PBXGroup;
 			children = (
+				8A93AC70228CAF10004FCF7C /* FieldKit.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -700,6 +705,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8AE910D1228CB0BE0045D07E /* NetworkExtension.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 			);
 			name = Frameworks;
@@ -1006,6 +1012,14 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 5X96U27N9J;
 						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.AccessWiFi = {
+								enabled = 1;
+							};
+							com.apple.HotspotConfiguration = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1742,6 +1756,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FieldKit/FieldKit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1770,7 +1785,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.fieldkit.fieldkit;
 				PRODUCT_NAME = FieldKit;
-				PROVISIONING_PROFILE_SPECIFIER = "iOS Dev Profile";
+				PROVISIONING_PROFILE_SPECIFIER = "iOS Dev Profile #2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1779,6 +1794,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FieldKit/FieldKit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1806,7 +1822,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.fieldkit.fieldkit;
 				PRODUCT_NAME = FieldKit;
-				PROVISIONING_PROFILE_SPECIFIER = "iOS Dev Profile";
+				PROVISIONING_PROFILE_SPECIFIER = "iOS Dev Profile #2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
