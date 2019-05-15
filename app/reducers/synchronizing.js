@@ -165,11 +165,21 @@ class DownloadPlanGenerator {
                     ];
                 } else {
                     const existingLocalFile = _(locals)
+                        .filter(lf => lf.version == remote.version)
                         .orderBy(lf => lf.offset)
                         .reverse()
                         .first() || { entry: { size: 0 }, offset: 0 };
 
                     const sizeOfExisting = existingLocalFile.entry.size;
+                    const downloading = remote.size - existingLocalFile.offset;
+
+                    if (downloading < 0) {
+                        console.log("locals", locals);
+                        console.log("existingLocalFile", existingLocalFile);
+                        console.log("sizeOfExisting", sizeOfExisting);
+                        console.log("remote", remote);
+                        console.log("downloading", downloading);
+                    }
 
                     if (sizeOfExisting > remote.size) {
                         return [

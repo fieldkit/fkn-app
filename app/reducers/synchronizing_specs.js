@@ -1024,6 +1024,56 @@ describe("synchronizing", () => {
                     ]);
                 });
             });
+
+            describe("with existing local file after previous file deleted", () => {
+                beforeEach(() => {
+                    const local = [
+                        {
+                            name: "1_000002_offset_0_logs-a.fklog",
+                            relativePath: "/0004a30b001cc468/1_000002_offset_0_logs-a.fklog",
+                            size: 20000
+                        },
+                        {
+                            name: "1_000001_offset_5000000_logs-a.fklog",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_1000000_logs-a.fklog",
+                            size: 0
+                        }
+                    ];
+
+                    const device = [
+                        {
+                            id: 1,
+                            version: 2,
+                            size: 30000,
+                            name: "logs-a.fklog"
+                        }
+                    ];
+
+                    this.plan = generateDownloadPlan(ResumingConfiguration, makeLocal(local), makeDevice(device));
+                });
+
+                it("should download to a new local file", () => {
+                    expect(this.plan.plan).toEqual([
+                        {
+                            download: {
+                                address: DeviceAddress,
+                                id: 1,
+                                file: "/0004a30b001cc468/1_000002_offset_0_logs-a.fklog",
+                                headers: "/0004a30b001cc468/1_000002_headers_logs-a.fklog",
+                                downloading: 10000,
+                                offset: 20000,
+                                length: 0
+                            }
+                        },
+                        {
+                            delete: {
+                                address: DeviceAddress,
+                                id: 1
+                            }
+                        }
+                    ]);
+                });
+            });
         });
     });
 
