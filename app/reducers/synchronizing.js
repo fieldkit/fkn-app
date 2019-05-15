@@ -220,6 +220,7 @@ class DownloadPlanGenerator {
                             },
                             {
                                 delete: {
+                                    address: this.address,
                                     id: config.fileId
                                 }
                             }
