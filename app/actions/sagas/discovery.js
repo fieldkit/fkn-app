@@ -19,35 +19,37 @@ import { createChannel } from "./channels";
 function createNetInfoChannel() {
     const channel = createChannel("NetInfo");
 
-    const listener = data => {
-        console.log("Connection", data);
-    };
+    if (__ENV__ !== "test") {
+        const listener = data => {
+            console.log("Connection", data);
+        };
 
-    NetInfo.addEventListener("connectionChange", listener);
+        NetInfo.addEventListener("connectionChange", listener);
 
-    const onConnectivityChange = (isConnected, timestamp, connectionInfo) => {
-        channel.put({
-            type: isConnected ? Types.INTERNET_ONLINE : Types.INTERNET_OFFLINE,
-            online: isConnected,
-            timestamp: timestamp,
-            info: connectionInfo
+        const onConnectivityChange = (isConnected, timestamp, connectionInfo) => {
+            channel.put({
+                type: isConnected ? Types.INTERNET_ONLINE : Types.INTERNET_OFFLINE,
+                online: isConnected,
+                timestamp: timestamp,
+                info: connectionInfo
+            });
+
+            WifiManager.getCurrentWifiSSID().then(
+                ssid => {
+                    channel.put(wifiSsidChanged(ssid));
+                },
+                err => {
+                    console.log("WiFi SSID:", err);
+                }
+            );
+        };
+
+        ConnectivityTracker.init({
+            onConnectivityChange,
+            attachConnectionInfo: true,
+            onError: msg => console.log(msg)
         });
-
-        WifiManager.getCurrentWifiSSID().then(
-            ssid => {
-                channel.put(wifiSsidChanged(ssid));
-            },
-            err => {
-                console.log("WiFi SSID:", err);
-            }
-        );
-    };
-
-    ConnectivityTracker.init({
-        onConnectivityChange,
-        attachConnectionInfo: true,
-        onError: msg => console.log(msg)
-    });
+    }
 
     return channel;
 }
