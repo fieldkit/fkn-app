@@ -4,6 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { View, Text, Image } from "react-native";
+import KeepAwake from 'react-native-keep-awake';
 
 import RNLanguages from "react-native-languages";
 import i18n from "../internationalization/i18n";
@@ -161,6 +162,7 @@ class EasyModeScreen extends React.Component {
         return (
             <View>
                 <Text style={textPanelStyle}>{i18n.t("easyMode.busy")}</Text>
+                <KeepAwake />
             </View>
         );
     }
