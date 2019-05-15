@@ -22,6 +22,9 @@ make
 """
             }
 
+            build job: "fkn-app-android", wait: false
+            build job: "fkn-app-ios", wait: false
+
             notifySuccess()
         }
         catch (Exception e) {
