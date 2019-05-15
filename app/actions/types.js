@@ -104,3 +104,6 @@ export const HOST_INFORMATION = "HOST_INFORMATION";
 
 export const PHONE_LOC = "PHONE_LOC";
 export const SENSOR_LOC = "SENSOR_LOC";
+
+export const INTERNET_ONLINE = "INTERNET_ONLINE";
+export const INTERNET_OFFLINE = "INTERNET_OFFLINE";

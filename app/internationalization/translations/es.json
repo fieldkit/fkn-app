@@ -62,7 +62,8 @@
         "noDevices": "No se encontraron dispositivos.",
         "devicesFound": "Success, %{numberOfDevices} dispositivo(s) encontrado(s)",
         "deleteAll": "Delete All",
-        "archiveAll": "Archive All"
+        "archiveAll": "Archive All",
+        "offline": "Unable to reach the internet, upload unavailable."
     },
     "dataTable": {
         "title": "Tabla de datos"

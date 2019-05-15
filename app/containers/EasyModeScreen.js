@@ -46,6 +46,7 @@ class UploadQueueOptions extends React.Component {
     render() {
         const { easyMode } = this.props;
         const { uploads } = easyMode.plans;
+        const { networkConfiguration } = easyMode;
 
         const numberOfFiles = _(uploads)
             .map(r => r.numberOfFiles)
@@ -61,6 +62,20 @@ class UploadQueueOptions extends React.Component {
             return (
                 <View style={textPanelStyle}>
                     <Text style={textStyle}>{i18n.t("easyMode.noPendingFiles")}</Text>
+                </View>
+            );
+        }
+
+        if (!networkConfiguration.internet.online) {
+            return (
+                <View style={textPanelStyle}>
+                    <Text style={textStyle}>
+                        {i18n.t("easyMode.pendingFiles", {
+                            numberOfFiles: numberOfFiles,
+                            estimatedUpload: estimatedUpload
+                        })}{" "}
+                        {i18n.t("easyMode.offline")}
+                    </Text>
                 </View>
             );
         }

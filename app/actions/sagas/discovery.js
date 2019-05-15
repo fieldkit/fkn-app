@@ -7,6 +7,7 @@ import dgram from "react-native-udp";
 
 import WifiManager from "react-native-wifi";
 import NetInfo from "@react-native-community/netinfo";
+import ConnectivityTracker from "react-native-connectivity-tracker";
 
 import { unixNow } from "../../lib/helpers";
 import Config from "../../config";
@@ -23,6 +24,21 @@ function createNetInfoChannel() {
     };
 
     NetInfo.addEventListener("connectionChange", listener);
+
+    const onConnectivityChange = (isConnected, timestamp, connectionInfo) => {
+        channel.put({
+            type: isConnected ? Types.INTERNET_ONLINE : Types.INTERNET_OFFLINE,
+            online: isConnected,
+            timestamp: timestamp,
+            info: connectionInfo
+        });
+    };
+
+    ConnectivityTracker.init({
+        onConnectivityChange,
+        attachConnectionInfo: true,
+        onError: msg => console.log(msg)
+    });
 
     return channel;
 }
