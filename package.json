@@ -19,6 +19,7 @@
   "dependencies": {
     "@babel/runtime": "^7.2.0",
     "@mapbox/react-native-mapbox-gl": "^6.1.3",
+    "@react-native-community/netinfo": "^2.0.10",
     "bluebird": "3.5.0",
     "es6-symbol": "3.1.1",
     "fk-app-protocol": "https://github.com/fieldkit/app-protocol.git",
