@@ -21,6 +21,11 @@ const textPanelStyle = {
     backgroundColor: "rgba(255, 255, 255, 0.7)"
 };
 
+const textStyle = {
+    padding: 10,
+    textAlign: "center"
+};
+
 class UploadQueueOptions extends React.Component {
     onSync() {
         const { easyMode, executePlan } = this.props;
@@ -50,16 +55,16 @@ class UploadQueueOptions extends React.Component {
 
         if (numberOfFiles == 0) {
             return (
-                <View>
-                    <Text style={textPanelStyle}>{i18n.t("easyMode.noPendingFiles")}</Text>
+                <View style={textPanelStyle}>
+                    <Text style={textStyle}>{i18n.t("easyMode.noPendingFiles")}</Text>
                 </View>
             );
         }
 
         return (
             <View>
-                <View>
-                    <Text style={textPanelStyle}>
+                <View style={textPanelStyle}>
+                    <Text style={textStyle}>
                         {i18n.t("easyMode.pendingFiles", {
                             numberOfFiles: numberOfFiles,
                             estimatedUpload: estimatedUpload
@@ -103,13 +108,13 @@ class DeviceOptions extends React.Component {
             if (!easyMode.networkConfiguration.deviceAp) {
                 return (
                     <View style={textPanelStyle}>
-                        <Text style={{ padding: 10, textAlign: "center" }}>{i18n.t("easyMode.noDevicesConnect")}</Text>
+                        <Text style={textStyle}>{i18n.t("easyMode.noDevicesConnect")}</Text>
                     </View>
                 );
             } else {
                 return (
                     <View style={textPanelStyle}>
-                        <Text style={{ padding: 10, textAlign: "center" }}>{i18n.t("easyMode.noDevices")}</Text>
+                        <Text style={textStyle}>{i18n.t("easyMode.noDevices")}</Text>
                     </View>
                 );
             }
