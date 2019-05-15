@@ -38,6 +38,7 @@ describe("synchronizing", () => {
                     chunked: 0,
                     offset: 0,
                     length: 0,
+                    delete: false,
                     condition: (file, others) => true
                 },
                 {
@@ -45,6 +46,7 @@ describe("synchronizing", () => {
                     chunked: 1000000,
                     offset: 0,
                     length: 0,
+                    delete: false,
                     condition: (file, others) => true
                 }
             ];
@@ -464,6 +466,7 @@ describe("synchronizing", () => {
                     tail: 1000000,
                     offset: 0,
                     length: 0,
+                    delete: false,
                     condition: (file, others) => true
                 }
             ];
@@ -579,6 +582,280 @@ describe("synchronizing", () => {
                             length: 1000000
                         }
                     });
+                });
+            });
+
+            describe("conditional tail configuration", () => {
+                const TailConfiguration = [
+                    {
+                        fileId: 1,
+                        tail: 1000000,
+                        offset: 0,
+                        length: 0,
+                        condition: (file, others) => {
+                            return _(others)
+                                .filter(f => (f.id == 2 && f.size == 0) || f.size > file.size)
+                                .some();
+                        }
+                    },
+                    {
+                        fileId: 2,
+                        tail: 1000000,
+                        offset: 0,
+                        length: 0,
+                        condition: (file, others) => {
+                            return _(others)
+                                .filter(f => (f.id == 1 && f.size == 0) || f.size > file.size)
+                                .some();
+                        }
+                    }
+                ];
+
+                describe("with both empty", () => {
+                    beforeEach(() => {
+                        const local = [];
+
+                        const device = [
+                            {
+                                id: 1,
+                                version: 1,
+                                size: 0,
+                                name: "logs-a.fklog"
+                            },
+                            { id: 2, version: 1, size: 0, name: "logs-b.fklog" }
+                        ];
+
+                        this.plan = generateDownloadPlan(TailConfiguration, makeLocal(local), makeDevice(device));
+                    });
+
+                    it("should download nothing", () => {
+                        expect(this.plan.plan.length).toEqual(0);
+                    });
+                });
+
+                describe("with one empty and another with data", () => {
+                    beforeEach(() => {
+                        const local = [];
+
+                        const device = [
+                            {
+                                id: 1,
+                                version: 1,
+                                size: 0,
+                                name: "logs-a.fklog"
+                            },
+                            {
+                                id: 2,
+                                version: 1,
+                                size: 5000000,
+                                name: "logs-b.fklog"
+                            }
+                        ];
+
+                        this.plan = generateDownloadPlan(TailConfiguration, makeLocal(local), makeDevice(device));
+                    });
+
+                    it("should download tail of non-empty file", () => {
+                        expect(this.plan.plan[0]).toEqual({
+                            download: {
+                                address: DeviceAddress,
+                                id: 2,
+                                file: "/0004a30b001cc468/2_000001_offset_4000000_logs-b.fklog",
+                                headers: "/0004a30b001cc468/2_000001_headers_logs-b.fklog",
+                                downloading: 1000000,
+                                offset: 4000000,
+                                length: 1000000
+                            }
+                        });
+                    });
+                });
+
+                describe("with one full and another with data", () => {
+                    beforeEach(() => {
+                        const local = [];
+
+                        const device = [
+                            {
+                                id: 1,
+                                version: 1,
+                                size: 2000000,
+                                name: "logs-a.fklog"
+                            },
+                            {
+                                id: 2,
+                                version: 1,
+                                size: 5000000,
+                                name: "logs-b.fklog"
+                            }
+                        ];
+
+                        this.plan = generateDownloadPlan(TailConfiguration, makeLocal(local), makeDevice(device));
+                    });
+
+                    it("should download tail of smaller file", () => {
+                        expect(this.plan.plan[0]).toEqual({
+                            download: {
+                                address: DeviceAddress,
+                                id: 1,
+                                file: "/0004a30b001cc468/1_000001_offset_1000000_logs-a.fklog",
+                                headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                                downloading: 1000000,
+                                offset: 1000000,
+                                length: 1000000
+                            }
+                        });
+                    });
+                });
+            });
+        });
+
+        describe("basic resuming configuration", () => {
+            const ResumingConfiguration = [
+                {
+                    fileId: 1,
+                    tail: 0,
+                    offset: 0,
+                    length: 0,
+                    delete: true,
+                    condition: (file, others) => true
+                }
+            ];
+
+            describe("with no local files", () => {
+                beforeEach(() => {
+                    const local = [
+                        {
+                            name: "4_000001_offset_0_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            size: 31000
+                        }
+                    ];
+
+                    const device = [
+                        {
+                            id: 1,
+                            version: 1,
+                            size: 8200000,
+                            name: "logs-a.fklog"
+                        },
+                        { id: 4, version: 1, size: 30000, name: "data.fk" }
+                    ];
+
+                    this.plan = generateDownloadPlan(ResumingConfiguration, makeLocal(local), makeDevice(device));
+                });
+
+                it("should download all of the files", () => {
+                    expect(this.plan.plan).toEqual([
+                        {
+                            download: {
+                                address: DeviceAddress,
+                                id: 1,
+                                file: "/0004a30b001cc468/1_000001_offset_0_data.fk",
+                                headers: "/0004a30b001cc468/1_000001_headers_data.fk",
+                                downloading: 31000,
+                                offset: 0,
+                                length: 0
+                            },
+                            download: {
+                                address: DeviceAddress,
+                                id: 1,
+                                file: "/0004a30b001cc468/1_000001_offset_0_logs-a.fklog",
+                                headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                                downloading: 8200000,
+                                offset: 0,
+                                length: 0
+                            }
+                        },
+                        {
+                            delete: {
+                                id: 1
+                            }
+                        }
+                    ]);
+                });
+            });
+
+            describe("with existing local file of same offset and expected length", () => {
+                beforeEach(() => {
+                    const local = [
+                        {
+                            name: "4_000001_offset_0_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            size: 31000
+                        },
+                        {
+                            name: "1_000001_offset_7200000_logs-a.fklog",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
+                            size: 1000000
+                        }
+                    ];
+
+                    const device = [
+                        {
+                            id: 1,
+                            version: 1,
+                            size: 8200000,
+                            name: "logs-a.fklog"
+                        },
+                        { id: 4, version: 1, size: 31000, name: "data.fk" }
+                    ];
+
+                    this.plan = generateDownloadPlan(ResumingConfiguration, makeLocal(local), makeDevice(device));
+                });
+
+                it("should download nothing", () => {
+                    console.log(this.plan.plan);
+                    expect(this.plan.plan.length).toEqual(0);
+                });
+            });
+
+            describe("with existing local file of another offset", () => {
+                beforeEach(() => {
+                    const local = [
+                        {
+                            name: "4_000001_offset_0_data.fk",
+                            relativePath: "/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            size: 31000
+                        },
+                        {
+                            name: "1_000001_offset_5000000_logs-a.fklog",
+                            relativePath: "/0004a30b001cc468/1_000001_offset_5000000_logs-a.fklog",
+                            size: 1000000
+                        }
+                    ];
+
+                    const device = [
+                        {
+                            id: 1,
+                            version: 1,
+                            size: 8200000,
+                            name: "logs-a.fklog"
+                        },
+                        { id: 4, version: 1, size: 30000, name: "data.fk" }
+                    ];
+
+                    this.plan = generateDownloadPlan(ResumingConfiguration, makeLocal(local), makeDevice(device));
+                });
+
+                it("should download tail of the file", () => {
+                    expect(this.plan.plan).toEqual([
+                        {
+                            download: {
+                                address: DeviceAddress,
+                                id: 1,
+                                file: "/0004a30b001cc468/1_000001_offset_5000000_logs-a.fklog",
+                                headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                                downloading: 2200000,
+                                offset: 6000000,
+                                length: 0
+                            }
+                        },
+                        {
+                            delete: {
+                                id: 1
+                            }
+                        }
+                    ]);
                 });
             });
 

@@ -25,6 +25,7 @@ const Configuration = [
         chunked: 0,
         offset: 0,
         length: 0,
+        delete: false,
         condition: (file, others) => true
     },
     {
@@ -32,6 +33,7 @@ const Configuration = [
         chunked: 0,
         offset: 0,
         length: 0,
+        delete: true,
         condition: (file, others) => {
             return _(others)
                 .filter(f => (f.id == 3 && f.size == 0) || f.size > file.size)
@@ -43,6 +45,7 @@ const Configuration = [
         chunked: 0,
         offset: 0,
         length: 0,
+        delete: true,
         condition: (file, others) => {
             return _(others)
                 .filter(f => (f.id == 2 && f.size == 0) || f.size > file.size)
