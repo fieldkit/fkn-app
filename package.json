@@ -36,6 +36,7 @@
     "react-native-device-info": "^0.24.3",
     "react-native-fs": "https://github.com/conservify/react-native-fs.git",
     "react-native-i18n": "^2.0.15",
+    "react-native-keep-awake": "^4.0.0",
     "react-native-languages": "^3.0.1",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-mail": "3.0.7",
