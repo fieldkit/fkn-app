@@ -6,6 +6,7 @@ import { Platform } from "react-native";
 import dgram from "react-native-udp";
 
 import WifiManager from "react-native-wifi";
+import NetInfo from "@react-native-community/netinfo";
 
 import { unixNow } from "../../lib/helpers";
 import Config from "../../config";
@@ -13,6 +14,27 @@ import Config from "../../config";
 import * as Types from "../types";
 
 import { createChannel } from "./channels";
+
+function createNetInfoChannel() {
+    const channel = createChannel("NetInfo");
+
+    const listener = data => {
+        console.log("Connection", data);
+    };
+
+    NetInfo.addEventListener("connectionChange", listener);
+
+    return channel;
+}
+
+function* monitorNetInfoEvents(channel) {
+    if (Config.serviceDiscoveryOnStartup) {
+        while (true) {
+            const info = yield call(channel.take);
+            yield put(info);
+        }
+    }
+}
 
 function createServiceDiscoveryChannel() {
     const channel = createChannel("SD");
@@ -115,5 +137,5 @@ function* fakeDiscoveryOnFkAps() {
 }
 
 export function* serviceDiscovery() {
-    yield all([call(monitorServiceDiscoveryEvents, createServiceDiscoveryChannel()), monitorWifi(), fakeDiscoveryOnFkAps()]);
+    yield all([call(monitorServiceDiscoveryEvents, createServiceDiscoveryChannel()), call(monitorNetInfoEvents, createNetInfoChannel()), monitorWifi(), fakeDiscoveryOnFkAps()]);
 }
