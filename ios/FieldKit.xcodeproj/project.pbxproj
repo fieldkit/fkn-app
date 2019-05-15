@@ -430,6 +430,13 @@
 			remoteGlobalIDString = 6456441F1EB8DA9100672408;
 			remoteInfo = "RNFS-tvOS";
 		};
+		8ABC7B12228CC1E900B4262E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23833BAEE2784E3CBBAF9F3E /* ReactNativePermissions.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D23B34F1C767B80008B4819;
+			remoteInfo = ReactNativePermissions;
+		};
 		8AE231FA2289E76600E141BF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8AE231F62289E76600E141BF /* RCTMGL.xcodeproj */;
@@ -906,6 +913,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8ABC7AE7228CC1E800B4262E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8ABC7B13228CC1E900B4262E /* libReactNativePermissions.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		8AE231F72289E76600E141BF /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1110,6 +1125,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = 8ABC7AE7228CC1E800B4262E /* Products */;
+					ProjectRef = 23833BAEE2784E3CBBAF9F3E /* ReactNativePermissions.xcodeproj */;
 				},
 				{
 					ProductGroup = 8AB3A72E21C8362F001C9A37 /* Products */;
@@ -1510,6 +1529,13 @@
 			fileType = archive.ar;
 			path = libRNFS.a;
 			remoteRef = 8AB3A76021C83630001C9A37 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8ABC7B13228CC1E900B4262E /* libReactNativePermissions.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactNativePermissions.a;
+			remoteRef = 8ABC7B12228CC1E900B4262E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		8AE231FB2289E76600E141BF /* libRCTMGL.a */ = {
