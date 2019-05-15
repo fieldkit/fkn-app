@@ -1,6 +1,9 @@
 @Library('conservify') _
 
-conservifyProperties([ disableConcurrentBuilds() ], manual: true)
+conservifyProperties(
+    additional: [ disableConcurrentBuilds() ],
+    manual: true
+)
 
 timestamps {
     node () {
