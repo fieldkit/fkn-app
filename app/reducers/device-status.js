@@ -121,6 +121,14 @@ export function devices(state = initialDevicesState, action) {
             };
             return mergeUpdate(key, after);
         }
+        case ActionTypes.DEVICE_QUERY_IDENTITY_SUCCESS: {
+            const key = action.deviceApi.address.key;
+            const after = {
+                identity: action.response.identity,
+                time: unixNow()
+            };
+            return mergeUpdate(key, after);
+        }
         case ActionTypes.DEVICE_ERASE_FILE_SUCCESS: {
             const key = action.deviceApi.address.key;
             const after = {

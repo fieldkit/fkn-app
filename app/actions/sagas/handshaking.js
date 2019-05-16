@@ -29,6 +29,30 @@ export function* loseExpiredDevices() {
     }
 }
 
+export function* deviceStatus(device) {
+    try {
+        console.log("Handshake (Status)", device);
+
+        const filesReply = yield call(deviceCall, {
+            types: [Types.DEVICE_FILES_START, Types.DEVICE_FILES_SUCCESS, Types.DEVICE_FILES_FAIL],
+            address: device.address,
+            blocking: false,
+            message: {
+                type: QueryType.values.QUERY_FILES
+            }
+        });
+
+        /*
+        yield put({
+            type: Types.FIND_DEVICE_SUCCESS,
+            address: device.address
+        });
+        */
+    } catch (err) {
+        console.log("Handshake Error:", err.message);
+    }
+}
+
 export function* deviceHandshake(device) {
     try {
         console.log("Handshake", device);
@@ -54,15 +78,11 @@ export function* deviceHandshake(device) {
         });
 
         if (Config.discoveryQueryFilesAndStatus) {
-            const statusReply = yield call(deviceCall, {
-                types: [Types.DEVICE_STATUS_START, Types.DEVICE_STATUS_SUCCESS, Types.DEVICE_STATUS_FAIL],
+            const identityReply = yield call(deviceCall, {
+                types: [Types.DEVICE_QUERY_IDENTITY_START, Types.DEVICE_QUERY_IDENTITY_SUCCESS, Types.DEVICE_QUERY_IDENTITY_FAIL],
                 address: device.address,
                 message: {
-                    type: QueryType.values.QUERY_STATUS,
-                    queryCapabilities: {
-                        version: 1,
-                        callerTime: unixNow()
-                    }
+                    type: QueryType.values.QUERY_IDENTITY
                 }
             });
 
@@ -74,6 +94,18 @@ export function* deviceHandshake(device) {
                     type: QueryType.values.QUERY_FILES
                 }
             });
+
+            const statusReply = yield call(deviceCall, {
+                types: [Types.DEVICE_STATUS_START, Types.DEVICE_STATUS_SUCCESS, Types.DEVICE_STATUS_FAIL],
+                address: device.address,
+                message: {
+                    type: QueryType.values.QUERY_STATUS,
+                    queryCapabilities: {
+                        version: 1,
+                        callerTime: unixNow()
+                    }
+                }
+            });
         }
     } catch (err) {
         console.log("Handshake Error:", err.message);
@@ -82,6 +114,7 @@ export function* deviceHandshake(device) {
 
 export function* discoverDevices() {
     const started = unixNow();
+    const lastChecked = {};
 
     while (true) {
         const { discovered, to } = yield race({
@@ -89,14 +122,20 @@ export function* discoverDevices() {
             to: delay(Config.findDeviceInterval)
         });
 
-        const { devices } = yield select();
-
         if (discovered && discovered.address.valid) {
             const key = discovered.address.key;
-            const entry = devices[key] || { time: 0 };
-            const elapsed = (unixNow() - entry.time) * 1000;
-            if (elapsed >= Config.deviceQueryInterval) {
+            const entry = lastChecked[key] || {
+                time: 0,
+                handshake: 0
+            };
+            const elapsedSinceCheck = (unixNow() - entry.time) * 1000;
+            const elapsedSinceHandshake = (unixNow() - entry.handshake) * 1000;
+            if (elapsedSinceHandshake >= Config.deviceHandshakeInterval) {
+                lastChecked[key] = { ...entry, ...{ handshake: unixNow(), time: unixNow() } };
                 yield fork(deviceHandshake, discovered);
+            } else if (elapsedSinceCheck >= Config.deviceQueryInterval) {
+                lastChecked[key] = { ...entry, ...{ time: unixNow() } };
+                yield fork(deviceStatus, discovered);
             }
         }
 

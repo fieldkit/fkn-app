@@ -158,7 +158,6 @@ function* fakeDiscoveryOnFkAps() {
                 yield put(findDeviceInfo("192.168.2.1", 54321));
                 yield delay(1000);
             }
-            console.log(action);
         }
     });
 }
