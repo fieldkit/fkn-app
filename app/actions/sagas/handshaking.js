@@ -78,11 +78,15 @@ export function* deviceHandshake(device) {
         });
 
         if (Config.discoveryQueryFilesAndStatus) {
-            const identityReply = yield call(deviceCall, {
-                types: [Types.DEVICE_QUERY_IDENTITY_START, Types.DEVICE_QUERY_IDENTITY_SUCCESS, Types.DEVICE_QUERY_IDENTITY_FAIL],
+            const statusReply = yield call(deviceCall, {
+                types: [Types.DEVICE_STATUS_START, Types.DEVICE_STATUS_SUCCESS, Types.DEVICE_STATUS_FAIL],
                 address: device.address,
                 message: {
-                    type: QueryType.values.QUERY_IDENTITY
+                    type: QueryType.values.QUERY_STATUS,
+                    queryCapabilities: {
+                        version: 1,
+                        callerTime: unixNow()
+                    }
                 }
             });
 
@@ -95,17 +99,29 @@ export function* deviceHandshake(device) {
                 }
             });
 
-            const statusReply = yield call(deviceCall, {
-                types: [Types.DEVICE_STATUS_START, Types.DEVICE_STATUS_SUCCESS, Types.DEVICE_STATUS_FAIL],
+            const identityReply = yield call(deviceCall, {
+                types: [Types.DEVICE_QUERY_IDENTITY_START, Types.DEVICE_QUERY_IDENTITY_SUCCESS, Types.DEVICE_QUERY_IDENTITY_FAIL],
                 address: device.address,
                 message: {
-                    type: QueryType.values.QUERY_STATUS,
-                    queryCapabilities: {
-                        version: 1,
-                        callerTime: unixNow()
-                    }
+                    type: QueryType.values.QUERY_IDENTITY
                 }
             });
+
+            /*
+            if (identityReply.response.identity.device == "") {
+                const identityReply = yield call(deviceCall, {
+                    types: [Types.DEVICE_CONFIGURE_IDENTITY_START, Types.DEVICE_CONFIGURE_IDENTITY_SUCCESS, Types.DEVICE_CONFIGURE_IDENTITY_FAIL],
+                    address: device.address,
+                    message: {
+                        type: QueryType.values.QUERY_CONFIGURE_IDENTITY,
+                        identity: {
+                            device: "Jacob's FkNat #4",
+                            stream: ""
+                        }
+                    }
+                });
+            }
+            */
         }
     } catch (err) {
         console.log("Handshake Error:", err.message);
