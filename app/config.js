@@ -22,6 +22,7 @@ const configs = {
         findDeviceInterval: 1000,
         findDeviceTimeout: 2 * 1000,
         deviceQueryInterval: 2 * 1000,
+        deviceHandshakeInterval: 40 * 1000,
         deviceExpireInterval: 5 * 1000,
         pingDeviceInterval: 500,
         deviceFilter: device => {
@@ -37,6 +38,7 @@ const configs = {
         findDeviceInterval: 1000,
         findDeviceTimeout: 10 * 1000,
         deviceQueryInterval: 10 * 1000,
+        deviceHandshakeInterval: 40 * 1000,
         deviceExpireInterval: 21 * 1000,
         pingDeviceInterval: 10 * 1000,
         deviceFilter: device => {
@@ -52,6 +54,7 @@ const configs = {
         findDeviceInterval: 1000,
         findDeviceTimeout: 10 * 1000,
         deviceQueryInterval: 10 * 1000,
+        deviceHandshakeInterval: 40 * 1000,
         deviceExpireInterval: 21 * 1000,
         pingDeviceInterval: 10 * 1000,
         deviceFilter: device => {
@@ -67,6 +70,7 @@ const configs = {
         findDeviceInterval: 1000,
         findDeviceTimeout: 10 * 1000,
         deviceQueryInterval: 10 * 1000,
+        deviceHandshakeInterval: 40 * 1000,
         deviceExpireInterval: 21 * 1000,
         pingDeviceInterval: 10 * 1000,
         deviceFilter: device => {
