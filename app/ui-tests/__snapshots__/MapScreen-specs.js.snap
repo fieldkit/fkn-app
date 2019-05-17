@@ -35,7 +35,7 @@ exports[`<MapScreen/> render() renders the component 1`] = `
     }
     styleURL="mapbox://styles/mapbox/satellite-v9"
     surfaceView={false}
-    userTrackingMode="None"
+    userTrackingMode={0}
     zoomLevel={15}
   >
     <ShapeSource

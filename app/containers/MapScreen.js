@@ -72,7 +72,7 @@ class MapScreen extends React.Component {
             const coordinateArray = [giveLocation.phone.long, giveLocation.phone.lat];
             return (
                 <View style={styles.container}>
-                    <Mapbox.MapView styleURL={MAPBOX_STYLE} zoomLevel={15} centerCoordinate={coordinateArray} style={styles.container}>
+                    <Mapbox.MapView styleURL={MAPBOX_STYLE} zoomLevel={15} centerCoordinate={coordinateArray} style={styles.container} userTrackingMode={0}>
                         <Mapbox.ShapeSource id="line1" shape={giveLocation.route}>
                             <Mapbox.LineLayer id="linelayer1" style={{ lineColor: "red" }} />
                         </Mapbox.ShapeSource>
