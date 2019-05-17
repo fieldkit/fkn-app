@@ -66,10 +66,15 @@ const initialDeviceState = {
 function mergeUpdate(state, deviceId, after) {
     const newState = _.cloneDeep(state);
     const deviceBefore = newState.devices[deviceId] || _.cloneDeep(initialDeviceState);
+    const jsonBefore = JSON.stringify({ local: deviceBefore.local, remote: deviceBefore.remote });
     const deviceAfter = _.assign(deviceBefore, after);
     newState.devices[deviceId] = deviceAfter;
 
     console.log("Generating New Plans");
+    const jsonAfter = JSON.stringify({ local: deviceAfter.local, remote: deviceAfter.remote });
+    if (jsonBefore != jsonAfter) {
+        console.log(jsonAfter);
+    }
 
     deviceAfter.plans = {
         download: generateDownloadPlan(Configuration, deviceAfter.local, deviceAfter.remote),

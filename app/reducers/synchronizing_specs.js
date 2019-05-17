@@ -919,7 +919,6 @@ describe("synchronizing", () => {
                 });
 
                 it("should download nothing", () => {
-                    console.log(this.plan.plan);
                     expect(this.plan.plan.length).toEqual(0);
                 });
             });

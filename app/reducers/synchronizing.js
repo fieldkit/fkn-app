@@ -165,10 +165,10 @@ class DownloadPlanGenerator {
                     ];
                 } else {
                     const existingLocalFile = _(locals)
-                        .filter(lf => lf.version == remote.version)
-                        .orderBy(lf => lf.offset)
-                        .reverse()
-                        .first() || { entry: { size: 0 }, offset: 0 };
+                          .filter(lf => lf.version == remote.version)
+                          .orderBy(lf => lf.offset)
+                          .reverse()
+                          .first() || { entry: { size: 0 }, offset: 0 };
 
                     const sizeOfExisting = existingLocalFile.entry.size;
                     const downloading = remote.size - existingLocalFile.offset;
@@ -247,8 +247,6 @@ class DownloadPlanGenerator {
             .flatten()
             .compact()
             .value();
-
-        // console.log("Plan", plan);
 
         return {
             plan: plan
