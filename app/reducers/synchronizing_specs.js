@@ -1325,4 +1325,39 @@ describe("synchronizing", () => {
             expect(this.download.plan[1].download).toBeDefined();
         });
     });
+
+    describe.skip("DownloadingNegative scenario 1", () => {
+        beforeEach(() => {
+            const data = Scenarios.DownloadingNegative1;
+            this.download = generateDownloadPlan(Configuration, data.local, data.remote);
+        });
+
+        it("should backup the local file before downloading", () => {
+            const downloads = _(this.download.plan)
+                .filter(s => _.isObject(s.download))
+                .value();
+            expect(downloads.length).toBe(2);
+            downloads.forEach(step => {
+                expect(step.download.downloading).toBeGreaterThan(0);
+            });
+        });
+    });
+
+    describe.skip("DownloadingNegative scenario 2", () => {
+        beforeEach(() => {
+            const data = Scenarios.DownloadingNegative2;
+            this.download = generateDownloadPlan(Configuration, data.local, data.remote);
+        });
+
+        it("should backup the local file before downloading", () => {
+            console.log(this.download.plan);
+            const downloads = _(this.download.plan)
+                .filter(s => _.isObject(s.download))
+                .value();
+            expect(downloads.length).toBe(2);
+            downloads.forEach(step => {
+                expect(step.download.downloading).toBeGreaterThan(0);
+            });
+        });
+    });
 });
