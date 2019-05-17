@@ -18,11 +18,13 @@ import { getDeviceInformation } from "../lib/device-information";
 
 export function initialize() {
     return dispatch => {
-        return getDeviceInformation().then(info => {
-            dispatch({
-                type: Types.HOST_INFORMATION,
-                info: info
+        if (__ENV__ !== "test") {
+            return getDeviceInformation().then(info => {
+                dispatch({
+                    type: Types.HOST_INFORMATION,
+                    info: info
+                });
             });
-        });
+        }
     };
 }
