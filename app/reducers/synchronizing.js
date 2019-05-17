@@ -165,10 +165,10 @@ class DownloadPlanGenerator {
                     ];
                 } else {
                     const existingLocalFile = _(locals)
-                          .filter(lf => lf.version == remote.version)
-                          .orderBy(lf => lf.offset)
-                          .reverse()
-                          .first() || { entry: { size: 0 }, offset: 0 };
+                        .filter(lf => lf.version == remote.version)
+                        .orderBy(lf => lf.offset)
+                        .reverse()
+                        .first() || { entry: { size: 0 }, offset: 0 };
 
                     const sizeOfExisting = existingLocalFile.entry.size;
                     const downloading = remote.size - existingLocalFile.offset;
@@ -195,7 +195,7 @@ class DownloadPlanGenerator {
                                     headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
                                     id: config.fileId,
                                     downloading: remote.size - existingLocalFile.offset,
-                                    offset: 0 + existingLocalFile.offset,
+                                    offset: existingLocalFile.offset,
                                     length: 0
                                 }
                             }

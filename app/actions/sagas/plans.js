@@ -133,6 +133,11 @@ export function* executePlans() {
 
                         break;
                     }
+                    case "backup": {
+                        yield call(archiveLocalFile(details.file));
+
+                        break;
+                    }
                     case "upload": {
                         const dispatcher = new Dispatcher();
                         const started = new Date();

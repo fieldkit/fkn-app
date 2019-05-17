@@ -2,6 +2,9 @@ import _ from "lodash";
 
 import { generateDownloadPlan, generateUploadPlan } from "./synchronizing";
 
+import { Configuration } from "./planning";
+import { Scenarios } from "./scenarios";
+
 describe("synchronizing", () => {
     const DeviceId = "0004a30b001cc468";
 
@@ -1308,6 +1311,18 @@ describe("synchronizing", () => {
 
                 it("should record upload of chunked file", () => {});
             });
+        });
+    });
+
+    describe("DownloadingBackupLargerLocalFile scenario", () => {
+        beforeEach(() => {
+            const data = Scenarios.DownloadingBackupLargerLocalFile;
+            this.download = generateDownloadPlan(Configuration, data.local, data.remote);
+        });
+
+        it("should backup the local file before downloading", () => {
+            expect(this.download.plan[0].backup).toBeDefined();
+            expect(this.download.plan[1].download).toBeDefined();
         });
     });
 });
