@@ -13,7 +13,7 @@ import { timerTick, timerDone } from "../timers";
 
 import { deviceCall } from "./saga-utils";
 
-export function* loseExpiredDevices() {
+export function* loseExpiredDevices(lastChecked) {
     const { devices } = yield select();
 
     for (let key in devices) {
@@ -21,6 +21,7 @@ export function* loseExpiredDevices() {
         const elapsed = (unixNow() - entry.time) * 1000;
         if (elapsed >= Config.deviceExpireInterval) {
             console.log("discoverDevices: Lost", key, "after", elapsed, entry);
+            delete lastChecked[key];
             yield put({
                 type: Types.FIND_DEVICE_LOST,
                 address: entry.address
@@ -156,7 +157,7 @@ export function* discoverDevices() {
         }
 
         if (unixNow() - started > 10) {
-            yield loseExpiredDevices();
+            yield loseExpiredDevices(lastChecked);
         }
     }
 }

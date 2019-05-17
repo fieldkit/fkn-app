@@ -112,7 +112,8 @@ function mergeRemoteFiles(state, action) {
     const key = action.deviceApi.address.key;
     const deviceId = state.map[key];
     if (!_.isString(deviceId)) {
-        throw new Error("No such device: " + key);
+        console.log("No such device: " + key);
+        return state;
     }
     return mergeUpdate(state, deviceId, {
         remote: {
