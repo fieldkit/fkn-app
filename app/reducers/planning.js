@@ -19,7 +19,7 @@ function isArchivePath(path) {
     return path.match(/archive/);
 }
 
-const Configuration = [
+export const Configuration = [
     {
         fileId: 4,
         chunked: 0,
@@ -36,7 +36,7 @@ const Configuration = [
         delete: true,
         condition: (file, others) => {
             return _(others)
-                .filter(f => (f.id == 3 && f.size == 0) || f.size > file.size)
+                .filter(f => (f.id == 3 && Number(f.size) == 0) || Number(f.size) > file.size)
                 .some();
         }
     },
@@ -48,7 +48,7 @@ const Configuration = [
         delete: true,
         condition: (file, others) => {
             return _(others)
-                .filter(f => (f.id == 2 && f.size == 0) || f.size > file.size)
+                .filter(f => (f.id == 2 && Number(f.size) == 0) || Number(f.size) > file.size)
                 .some();
         }
     }
