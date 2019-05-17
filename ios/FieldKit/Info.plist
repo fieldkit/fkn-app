@@ -44,9 +44,9 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to access your calendar.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to access your phone's location in the background.</string>
+	<string>Your location will be displayed alongside the sensor data on FieldKit.org to allow exploration of your data and to facilitate collaboration with others in your area.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to access your phone's location.</string>
+	<string>Your location will be displayed alongside the sensor data on FieldKit.org to allow exploration of your data and to facilitate collaboration with others in your area.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to access your accelerometer.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
