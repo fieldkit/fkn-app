@@ -1,7 +1,13 @@
 import _ from "lodash";
 import moment from "moment";
 import Promise from "bluebird";
+import protobuf from "protobufjs";
+
 import RNFS from "react-native-fs";
+
+import { DataRecord } from "./protocol";
+
+import { hexArrayBuffer, arrayBufferToBase64 } from "./base64";
 
 import { resolveDataDirectoryPath } from "./downloading";
 
@@ -62,11 +68,27 @@ function flush() {
     try {
         if (logs.length > 0) {
             return activePath().then(activePath => {
-                const data = JSON.stringify(logs);
+                const buffer = protobuf.Writer.create();
+                const encoded = _(logs)
+                    .map(log => {
+                        return {
+                            log: {
+                                time: 0,
+                                uptime: 0,
+                                level: 0,
+                                facility: "App",
+                                message: JSON.stringify(log)
+                            }
+                        };
+                    })
+                    .map(row => {
+                        return DataRecord.encodeDelimited(row, buffer).finish();
+                    })
+                    .value();
 
                 logs.length = 0; // Empty logs.
 
-                return RNFS.appendFile(activePath, data, "utf8")
+                return RNFS.appendFile(activePath, arrayBufferToBase64(buffer.finish()), "base64")
                     .then(() => {
                         return RNFS.stat(activePath);
                     })
@@ -122,7 +144,11 @@ export function initializeLogging() {
                     if (isState(arg)) {
                         parts.push({ __state__: true });
                     } else {
-                        parts.push(arg);
+                        if (typeof arg === "string") {
+                            parts.push(arg.trim());
+                        } else {
+                            parts.push(arg);
+                        }
                     }
                 }
             }
