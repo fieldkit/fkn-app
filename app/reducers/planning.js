@@ -70,10 +70,11 @@ function mergeUpdate(state, deviceId, after) {
     const deviceAfter = _.assign(deviceBefore, after);
     newState.devices[deviceId] = deviceAfter;
 
-    console.log("Generating New Plans");
     const jsonAfter = JSON.stringify({ local: deviceAfter.local, remote: deviceAfter.remote });
     if (jsonBefore != jsonAfter) {
+        console.groupCollapsed("Generating New Plans");
         console.log(jsonAfter);
+        console.groupEnd();
     }
 
     deviceAfter.plans = {

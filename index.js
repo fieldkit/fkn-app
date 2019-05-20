@@ -1,13 +1,15 @@
-import 'es6-symbol/implement';
+import "es6-symbol/implement";
 
-import React from 'react';
-import { YellowBox, AppRegistry } from 'react-native';
-import { Provider } from 'react-redux';
+import React from "react";
+import { YellowBox, AppRegistry } from "react-native";
+import { Provider } from "react-redux";
 
-import * as Services from './app/services';
-import reducer from './app/reducers';
-import { configureStore, runSagas } from './app/startup';
-import AppContainer from './app/containers/AppContainer';
+import * as Services from "./app/services";
+import reducer from "./app/reducers";
+import { configureStore, runSagas, initializeLogging } from "./app/startup";
+import AppContainer from "./app/containers/AppContainer";
+
+initializeLogging();
 
 const store = configureStore(reducer, {});
 
@@ -22,7 +24,7 @@ const App = () => (
 export default App;
 export const Sagas = sagas;
 
-console.ignoredYellowBox = ['Remote debugger'];
-YellowBox.ignoreWarnings(['Remote debugger', 'Require cycle']);
+console.ignoredYellowBox = ["Remote debugger"];
+YellowBox.ignoreWarnings(["Remote debugger", "Require cycle"]);
 
-AppRegistry.registerComponent('FieldKit', () => App);
+AppRegistry.registerComponent("FieldKit", () => App);
