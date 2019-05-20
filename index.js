@@ -4,9 +4,10 @@ import React from "react";
 import { YellowBox, AppRegistry } from "react-native";
 import { Provider } from "react-redux";
 
-import * as Services from "./app/services";
+import { configureStore, runSagas } from "./app/startup";
+import { initializeLogging } from "./app/lib/logging";
 import reducer from "./app/reducers";
-import { configureStore, runSagas, initializeLogging } from "./app/startup";
+import * as Services from "./app/services";
 import AppContainer from "./app/containers/AppContainer";
 
 initializeLogging();
