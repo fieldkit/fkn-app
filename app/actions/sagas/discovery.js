@@ -80,7 +80,9 @@ function createServiceDiscoveryChannel() {
                 channel.put(fdi);
                 previous[remoteInfo.address] = unixNow();
             } else {
-                console.log("Dropped", last, elapsed, fdi);
+                if (false) {
+                    console.log("Dropped", last, elapsed, fdi);
+                }
             }
         });
     }

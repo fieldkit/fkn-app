@@ -30,7 +30,7 @@ export function* loseExpiredDevices(lastChecked) {
     }
 }
 
-export function* deviceStatus(device) {
+export function* deviceStatus(device, lastChecked) {
     try {
         console.log("Handshake (Status)", device);
 
@@ -43,6 +43,8 @@ export function* deviceStatus(device) {
             }
         });
 
+        lastChecked.status(device.address.key);
+
         /*
         yield put({
             type: Types.FIND_DEVICE_SUCCESS,
@@ -51,10 +53,12 @@ export function* deviceStatus(device) {
         */
     } catch (err) {
         console.log("Handshake Error:", err.message);
+    } finally {
+        lastChecked.busy(device.address.key, false);
     }
 }
 
-export function* deviceHandshake(device) {
+export function* deviceHandshake(device, lastChecked) {
     try {
         console.log("Handshake", device);
 
@@ -124,14 +128,49 @@ export function* deviceHandshake(device) {
             }
             */
         }
+
+        lastChecked.handshake(device.address.key);
     } catch (err) {
         console.log("Handshake Error:", err.message);
+    } finally {
+        lastChecked.busy(device.address.key, false);
+    }
+}
+
+class LastChecked {
+    constructor() {
+        this.times = {};
+    }
+
+    get(key) {
+        return (
+            this.times[key] || {
+                busy: false,
+                time: 0,
+                handshake: 0
+            }
+        );
+    }
+
+    busy(key, flag) {
+        const entry = this.get(key);
+        this.times[key] = { ...entry, ...{ busy: flag } };
+    }
+
+    handshake(key) {
+        const entry = this.get(key);
+        this.times[key] = { ...entry, ...{ busy: false, handshake: unixNow(), time: unixNow() } };
+    }
+
+    status(key) {
+        const entry = this.get(key);
+        this.times[key] = { ...entry, ...{ busy: false, time: unixNow() } };
     }
 }
 
 export function* discoverDevices() {
     const started = unixNow();
-    const lastChecked = {};
+    const lastChecked = new LastChecked();
 
     while (true) {
         const { discovered, to } = yield race({
@@ -141,18 +180,17 @@ export function* discoverDevices() {
 
         if (discovered && discovered.address.valid) {
             const key = discovered.address.key;
-            const entry = lastChecked[key] || {
-                time: 0,
-                handshake: 0
-            };
-            const elapsedSinceCheck = (unixNow() - entry.time) * 1000;
-            const elapsedSinceHandshake = (unixNow() - entry.handshake) * 1000;
-            if (elapsedSinceHandshake >= Config.deviceHandshakeInterval) {
-                lastChecked[key] = { ...entry, ...{ handshake: unixNow(), time: unixNow() } };
-                yield fork(deviceHandshake, discovered);
-            } else if (elapsedSinceCheck >= Config.deviceQueryInterval) {
-                lastChecked[key] = { ...entry, ...{ time: unixNow() } };
-                yield fork(deviceStatus, discovered);
+            const entry = lastChecked.get(key);
+            if (!entry.busy) {
+                const elapsedSinceCheck = (unixNow() - entry.time) * 1000;
+                const elapsedSinceHandshake = (unixNow() - entry.handshake) * 1000;
+                if (elapsedSinceHandshake >= Config.deviceHandshakeInterval) {
+                    lastChecked.busy(key, true);
+                    yield fork(deviceHandshake, discovered, lastChecked);
+                } else if (elapsedSinceCheck >= Config.deviceQueryInterval) {
+                    lastChecked.busy(key, true);
+                    yield fork(deviceStatus, discovered, lastChecked);
+                }
             }
         }
 
