@@ -3,7 +3,7 @@ import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { View, Text, Image, Button, TextInput, KeyboardAvoidingView, AsyncStorage } from "react-native";
+import { View, Text, Image, Button, TextInput, ScrollView, AsyncStorage } from "react-native";
 
 import RNLanguages from "react-native-languages";
 import i18n from "../internationalization/i18n";
@@ -101,6 +101,8 @@ class DeviceOptions extends React.Component {
         console.log("updating in device options");
         const { easyMode: easyModeBefore } = this.props;
         const { easyMode: easyModeAfter } = nextProps;
+        const { deviceName: deviceNameBefore } = this.state;
+        const { deviceName: deviceNameAfter } = nextState;
 
         if (easyModeAfter.devices != easyModeBefore.devices) {
             try {
@@ -110,6 +112,10 @@ class DeviceOptions extends React.Component {
             } catch (error) {
                 console.log(error);
             }
+        }
+
+        if (deviceNameBefore != deviceNameAfter) {
+            return <Text style={textPanelStyle}>{this.state.recognizedDevice} was found.</Text>;
         }
     };
 
@@ -170,7 +176,6 @@ class DeviceOptions extends React.Component {
             }
         }
 
-        console.log("WILL RECOGNIZED DEVICE UPDATE?", this.state.recognizedDevice);
         if (this.state.recognizedDevice != "") {
             return (
                 <View>
@@ -233,27 +238,25 @@ class EasyModeScreen extends React.Component {
     renderMenu() {
         const { easyMode, executePlan, navigateWelcome } = this.props;
         return (
-            <View style={{ flex: 1, alignSelf: "stretch" }}>
-                <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-                    <DeviceOptions easyMode={easyMode} executePlan={executePlan} />
+            <ScrollView style={{ flex: 1, alignSelf: "stretch" }}>
+                <DeviceOptions easyMode={easyMode} executePlan={executePlan} />
 
-                    <UploadQueueOptions easyMode={easyMode} executePlan={executePlan} />
+                <UploadQueueOptions easyMode={easyMode} executePlan={executePlan} />
 
-                    <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: 20 }}>
-                        <View
-                            style={{
-                                bottom: 0,
-                                position: "absolute",
-                                paddingLeft: 10,
-                                paddingRight: 10,
-                                width: "100%"
-                            }}
-                        >
-                            <Button title={i18n.t("easyMode.advanced")} onPress={() => navigateWelcome()} />
-                        </View>
+                <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: 20 }}>
+                    <View
+                        style={{
+                            bottom: 0,
+                            position: "absolute",
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            width: "100%"
+                        }}
+                    >
+                        <Button title={i18n.t("easyMode.advanced")} onPress={() => navigateWelcome()} />
                     </View>
-                </KeyboardAvoidingView>
-            </View>
+                </View>
+            </ScrollView>
         );
     }
 
