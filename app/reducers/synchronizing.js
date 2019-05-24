@@ -150,24 +150,27 @@ class DownloadPlanGenerator {
                         return [];
                     }
 
-                    return {
-                        download: {
-                            address: this.address,
-                            file: makeFilename(directory, config.fileId, remote.version, offset, remote.name),
-                            headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
-                            id: config.fileId,
-                            downloading: config.tail,
-                            offset: offset,
-                            length: config.tail
+                    return [
+                        {
+                            download: {
+                                address: this.address,
+                                file: makeFilename(directory, config.fileId, remote.version, offset, remote.name),
+                                headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
+                                id: config.fileId,
+                                downloading: config.tail,
+                                offset: offset,
+                                length: config.tail
+                            }
                         }
-                    };
+                    ];
                 } else {
                     const existingLocalFile = _(locals)
+                        .filter(lf => lf.version == remote.version)
                         .orderBy(lf => lf.offset)
                         .reverse()
                         .first() || { entry: { size: 0 }, offset: 0 };
-                    const sizeOfExisting = existingLocalFile.entry.size;
 
+                    const sizeOfExisting = existingLocalFile.entry.size;
                     if (sizeOfExisting > remote.size) {
                         return [
                             {
@@ -182,7 +185,7 @@ class DownloadPlanGenerator {
                                     headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
                                     id: config.fileId,
                                     downloading: remote.size - existingLocalFile.offset,
-                                    offset: 0 + existingLocalFile.offset,
+                                    offset: existingLocalFile.offset,
                                     length: 0
                                 }
                             }
@@ -193,26 +196,47 @@ class DownloadPlanGenerator {
                         return null;
                     }
 
-                    const offset = sizeOfExisting + existingLocalFile.offset;
+                    // In this configuration we don't download earlier portions, we assume we have already.
+                    const existingSizePlusOffset = existingLocalFile.entry.size + existingLocalFile.offset;
+                    if (existingSizePlusOffset == remote.size) {
+                        return null;
+                    }
 
-                    return {
-                        download: {
-                            address: this.address,
-                            file: makeFilename(directory, config.fileId, remote.version, existingLocalFile.offset, remote.name),
-                            headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
-                            downloading: remote.size - offset,
-                            id: config.fileId,
-                            offset: offset,
-                            length: 0
-                        }
+                    const offset = sizeOfExisting + existingLocalFile.offset;
+                    const download = {
+                        address: this.address,
+                        file: makeFilename(directory, config.fileId, remote.version, existingLocalFile.offset, remote.name),
+                        headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
+                        downloading: remote.size - offset,
+                        id: config.fileId,
+                        offset: offset,
+                        length: 0
                     };
+
+                    if (config.delete) {
+                        return [
+                            {
+                                download: download
+                            },
+                            {
+                                delete: {
+                                    address: this.address,
+                                    id: config.fileId
+                                }
+                            }
+                        ];
+                    }
+
+                    return [
+                        {
+                            download: download
+                        }
+                    ];
                 }
             })
             .flatten()
             .compact()
             .value();
-
-        // console.log("Plan", plan);
 
         return {
             plan: plan

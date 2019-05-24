@@ -4,17 +4,15 @@ import { QueryType } from "../lib/protocol";
 import * as Types from "./types";
 
 export function deviceStartConnect() {
-    // This will cause tests to take forever, they'll wait until the saga to
-    // look completes. A quick hack, for now.
-    if (typeof __SPECS__ == "undefined") {
-        return {
-            type: Types.FIND_DEVICE_START
-        };
-    } else {
-        return {
-            type: Types.NOOP
-        };
-    }
+    return dispatch => {
+        // This will cause tests to take forever, they'll wait until the saga to
+        // look completes. A quick hack, for now.
+        if (typeof __SPECS__ == "undefined") {
+            dispatch({
+                type: Types.FIND_DEVICE_START
+            });
+        }
+    };
 }
 
 export function deviceSelect(address) {

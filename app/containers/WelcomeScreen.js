@@ -26,27 +26,25 @@ class WelcomeScreen extends React.Component {
         const { navigateConnecting, browseDirectory, navigateEasyModeWelcome, navigateMap, navigateAbout, deleteAllLocalFiles, archiveAllLocalFiles } = this.props;
 
         return (
-            <ScrollView>
-                <AppScreen>
-                    <Image
-                        source={require("../../assets/fk-header.png")}
-                        style={{
-                            resizeMode: "contain",
-                            width: "100%",
-                            height: 200
-                        }}
-                    />
-                    <MenuButtonContainer>
-                        <MenuButton title={i18n.t("welcome.mode")} onPress={() => navigateEasyModeWelcome()} />
-                        <MenuButton title={i18n.t("welcome.connect")} onPress={() => navigateConnecting()} />
-                        <MenuButton title={i18n.t("welcome.browser")} onPress={() => browseDirectory("/")} />
-                        <MenuButton title={i18n.t("welcome.map")} onPress={() => navigateMap()} />
-                        <MenuButton title={i18n.t("welcome.deleteAll")} onPress={() => deleteAllLocalFiles()} />
-                        <MenuButton title={i18n.t("welcome.archiveAll")} onPress={() => archiveAllLocalFiles()} />
-                        <MenuButton title={i18n.t("welcome.about")} onPress={() => navigateAbout()} />
-                    </MenuButtonContainer>
-                </AppScreen>
-            </ScrollView>
+            <AppScreen backgroundStyle={{ height: "100%" }}>
+                <Image
+                    source={require("../../assets/fk-header.png")}
+                    style={{
+                        resizeMode: "contain",
+                        width: "100%",
+                        height: 200
+                    }}
+                />
+                <MenuButtonContainer>
+                    <MenuButton title={i18n.t("welcome.mode")} onPress={() => navigateEasyModeWelcome()} />
+                    <MenuButton title={i18n.t("welcome.connect")} onPress={() => navigateConnecting()} />
+                    <MenuButton title={i18n.t("welcome.browser")} onPress={() => browseDirectory("/")} />
+                    {false && <MenuButton title={i18n.t("welcome.map")} onPress={() => navigateMap()} />}
+                    {false && <MenuButton title={i18n.t("welcome.deleteAll")} onPress={() => deleteAllLocalFiles()} />}
+                    {false && <MenuButton title={i18n.t("welcome.archiveAll")} onPress={() => archiveAllLocalFiles()} />}
+                    {false && <MenuButton title={i18n.t("welcome.about")} onPress={() => navigateAbout()} />}
+                </MenuButtonContainer>
+            </AppScreen>
         );
     }
 }

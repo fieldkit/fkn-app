@@ -19,12 +19,13 @@ function isArchivePath(path) {
     return path.match(/archive/);
 }
 
-const Configuration = [
+export const Configuration = [
     {
         fileId: 4,
         chunked: 0,
         offset: 0,
         length: 0,
+        delete: false,
         condition: (file, others) => true
     },
     {
@@ -32,9 +33,10 @@ const Configuration = [
         chunked: 0,
         offset: 0,
         length: 0,
+        delete: true,
         condition: (file, others) => {
             return _(others)
-                .filter(f => (f.id == 3 && f.size == 0) || f.size > file.size)
+                .filter(f => (f.id == 3 && Number(f.size) == 0) || Number(f.size) > file.size)
                 .some();
         }
     },
@@ -43,9 +45,10 @@ const Configuration = [
         chunked: 0,
         offset: 0,
         length: 0,
+        delete: true,
         condition: (file, others) => {
             return _(others)
-                .filter(f => (f.id == 2 && f.size == 0) || f.size > file.size)
+                .filter(f => (f.id == 2 && Number(f.size) == 0) || Number(f.size) > file.size)
                 .some();
         }
     }
@@ -63,10 +66,16 @@ const initialDeviceState = {
 function mergeUpdate(state, deviceId, after) {
     const newState = _.cloneDeep(state);
     const deviceBefore = newState.devices[deviceId] || _.cloneDeep(initialDeviceState);
+    const jsonBefore = JSON.stringify({ local: deviceBefore.local, remote: deviceBefore.remote });
     const deviceAfter = _.assign(deviceBefore, after);
     newState.devices[deviceId] = deviceAfter;
 
-    console.log("Generating New Plans");
+    const jsonAfter = JSON.stringify({ local: deviceAfter.local, remote: deviceAfter.remote });
+    if (jsonBefore != jsonAfter) {
+        console.groupCollapsed("Generating New Plans");
+        console.log(jsonAfter);
+        console.groupEnd();
+    }
 
     deviceAfter.plans = {
         download: generateDownloadPlan(Configuration, deviceAfter.local, deviceAfter.remote),
@@ -109,7 +118,8 @@ function mergeRemoteFiles(state, action) {
     const key = action.deviceApi.address.key;
     const deviceId = state.map[key];
     if (!_.isString(deviceId)) {
-        throw new Error("No such device: " + key);
+        console.log("No such device: " + key);
+        return state;
     }
     return mergeUpdate(state, deviceId, {
         remote: {

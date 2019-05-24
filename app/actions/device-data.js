@@ -26,10 +26,11 @@ export function startDownloadFile(id) {
     };
 }
 
-export function deleteFile(id) {
+export function deleteFile(id, address) {
     return {
         [CALL_DEVICE_API]: {
             types: [Types.DEVICE_ERASE_FILE_START, Types.DEVICE_ERASE_FILE_SUCCESS, Types.DEVICE_ERASE_FILE_FAIL],
+            address: address,
             blocking: true,
             message: {
                 type: QueryType.values.QUERY_ERASE_FILE,

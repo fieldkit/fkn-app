@@ -6,8 +6,8 @@ import { Platform } from "react-native";
 import dgram from "react-native-udp";
 
 import WifiManager from "react-native-wifi";
-
-import ServiceDiscovery from "react-native-service-discovery";
+import NetInfo from "@react-native-community/netinfo";
+import ConnectivityTracker from "react-native-connectivity-tracker";
 
 import { unixNow } from "../../lib/helpers";
 import Config from "../../config";
@@ -16,25 +16,60 @@ import * as Types from "../types";
 
 import { createChannel } from "./channels";
 
+function createNetInfoChannel() {
+    const channel = createChannel("NetInfo");
+
+    if (__ENV__ !== "test") {
+        const listener = data => {
+            console.log("Connection", data);
+        };
+
+        NetInfo.addEventListener("connectionChange", listener);
+
+        const onConnectivityChange = (isConnected, timestamp, connectionInfo) => {
+            channel.put({
+                type: isConnected ? Types.INTERNET_ONLINE : Types.INTERNET_OFFLINE,
+                online: isConnected,
+                timestamp: timestamp,
+                info: connectionInfo
+            });
+
+            WifiManager.getCurrentWifiSSID().then(
+                ssid => {
+                    channel.put(wifiSsidChanged(ssid));
+                },
+                err => {
+                    console.log("WiFi SSID:", err);
+                }
+            );
+        };
+
+        ConnectivityTracker.init({
+            onConnectivityChange,
+            attachConnectionInfo: true,
+            onError: msg => console.log(msg)
+        });
+    }
+
+    return channel;
+}
+
+function* monitorNetInfoEvents(channel) {
+    if (Config.serviceDiscoveryOnStartup) {
+        while (true) {
+            const info = yield call(channel.take);
+            yield put(info);
+        }
+    }
+}
+
 function createServiceDiscoveryChannel() {
     const channel = createChannel("SD");
-
-    // This is no longer being used, though may come back. I wanted to keep
-    // creating this just to avoid regressions.
-    const serviceDiscovery = new ServiceDiscovery();
-
-    serviceDiscovery.on("service-resolved", ev => {});
-
-    serviceDiscovery.on("udp-discovery", ev => {
-        channel.put(findDeviceInfo(ev.address, ev.port));
-    });
 
     const port = 54321;
     const previous = {};
 
     if (__ENV__ !== "test") {
-        // serviceDiscovery.start(port);
-
         const socket = dgram.createSocket("udp4");
         socket.bind(port);
         socket.on("message", (data, remoteInfo) => {
@@ -45,7 +80,9 @@ function createServiceDiscoveryChannel() {
                 channel.put(fdi);
                 previous[remoteInfo.address] = unixNow();
             } else {
-                console.log("Dropped", last, elapsed, fdi);
+                if (false) {
+                    console.log("Dropped", last, elapsed, fdi);
+                }
             }
         });
     }
@@ -91,10 +128,15 @@ function* monitorWifi() {
 
     let currentSsid = null;
     while (true) {
-        WifiManager.getCurrentWifiSSID().then(ssid => {
-            console.log("SSID", ssid);
-            channel.put(ssid);
-        });
+        WifiManager.getCurrentWifiSSID().then(
+            ssid => {
+                console.log("SSID", ssid);
+                channel.put(ssid);
+            },
+            err => {
+                console.log("WiFi SSID:", err);
+            }
+        );
 
         const ssid = yield call(channel.take);
         if (currentSsid != ssid) {
@@ -118,11 +160,10 @@ function* fakeDiscoveryOnFkAps() {
                 yield put(findDeviceInfo("192.168.2.1", 54321));
                 yield delay(1000);
             }
-            console.log(action);
         }
     });
 }
 
 export function* serviceDiscovery() {
-    yield all([call(monitorServiceDiscoveryEvents, createServiceDiscoveryChannel()), monitorWifi(), fakeDiscoveryOnFkAps()]);
+    yield all([call(monitorServiceDiscoveryEvents, createServiceDiscoveryChannel()), call(monitorNetInfoEvents, createNetInfoChannel()), monitorWifi(), fakeDiscoveryOnFkAps()]);
 }

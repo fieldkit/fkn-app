@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Button } from "react-native";
-
+import { View } from "react-native";
+import { Button } from "./Button";
 import styles from "../styles";
 
 export class MenuButtonContainer extends React.Component {

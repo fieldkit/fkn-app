@@ -62,14 +62,15 @@
     "easyMode": {
         "title": "FieldKit Easy Transfer",
         "noPendingFiles": "No files found on phone.\nPlease sync from a FieldKit device.",
-        "pendingFiles": "There are %{numberOfFiles} file(s) pending for upload.\nSize: %{estimatedUpload}",
+        "pendingFiles": "There are %{numberOfFiles} file(s) pending for upload (%{estimatedUpload} bytes).",
         "noDevicesConnect": "No devices found.\nPlease try connecting to a FieldKit device's WiFi access point.",
         "noDevices": "No devices found.",
         "devicesFound": "Success, %{numberOfDevices} device(s) found.\nSyncing will download %{estimatedDownload} bytes.",
         "advanced": "Advanced Options",
         "syncServer": "Upload to Server",
         "syncPhone": "Sync from FieldKit",
-        "busy": "A transfer is currently in progress."
+        "busy": "A transfer is currently in progress.",
+        "offline": "Unable to reach the internet, upload unavailable."
     },
     "dataTable": {
         "title": "Data Table"

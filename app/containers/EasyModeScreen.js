@@ -5,13 +5,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { View, Text, Image, Button, TextInput, ScrollView, AsyncStorage } from "react-native";
 
+import KeepAwake from "react-native-keep-awake";
+
 import RNLanguages from "react-native-languages";
 import i18n from "../internationalization/i18n";
 
 import { hexArrayBuffer, arrayBufferToBase64 } from "../lib/base64";
 
 import * as Files from "../lib/files";
-import { AppScreen } from "../components";
+import { AppPermissions } from "../lib/permissions";
+
+import { AppScreen, Button } from "../components";
 
 import { navigateWelcome, deviceStartConnect, findAllFiles, executePlan, deleteAllLocalFiles, archiveAllLocalFiles } from "../actions";
 
@@ -21,6 +25,11 @@ const textPanelStyle = {
     padding: 10,
     textAlign: "center",
     backgroundColor: "rgba(255, 255, 255, 0.7)"
+};
+
+const textStyle = {
+    padding: 10,
+    textAlign: "center"
 };
 
 class UploadQueueOptions extends React.Component {
@@ -39,6 +48,7 @@ class UploadQueueOptions extends React.Component {
     render() {
         const { easyMode } = this.props;
         const { uploads } = easyMode.plans;
+        const { networkConfiguration } = easyMode;
 
         const numberOfFiles = _(uploads)
             .map(r => r.numberOfFiles)
@@ -52,16 +62,30 @@ class UploadQueueOptions extends React.Component {
 
         if (numberOfFiles == 0) {
             return (
-                <View>
-                    <Text style={textPanelStyle}>{i18n.t("easyMode.noPendingFiles")}</Text>
+                <View style={textPanelStyle}>
+                    <Text style={textStyle}>{i18n.t("easyMode.noPendingFiles")}</Text>
+                </View>
+            );
+        }
+
+        if (!networkConfiguration.internet.online) {
+            return (
+                <View style={textPanelStyle}>
+                    <Text style={textStyle}>
+                        {i18n.t("easyMode.pendingFiles", {
+                            numberOfFiles: numberOfFiles,
+                            estimatedUpload: estimatedUpload
+                        })}{" "}
+                        {i18n.t("easyMode.offline")}
+                    </Text>
                 </View>
             );
         }
 
         return (
             <View>
-                <View>
-                    <Text style={textPanelStyle}>
+                <View style={textPanelStyle}>
+                    <Text style={textStyle}>
                         {i18n.t("easyMode.pendingFiles", {
                             numberOfFiles: numberOfFiles,
                             estimatedUpload: estimatedUpload
@@ -164,13 +188,13 @@ class DeviceOptions extends React.Component {
             if (!easyMode.networkConfiguration.deviceAp) {
                 return (
                     <View style={textPanelStyle}>
-                        <Text style={{ padding: 10, textAlign: "center" }}>{i18n.t("easyMode.noDevicesConnect")}</Text>
+                        <Text style={textStyle}>{i18n.t("easyMode.noDevicesConnect")}</Text>
                     </View>
                 );
             } else {
                 return (
                     <View style={textPanelStyle}>
-                        <Text style={{ padding: 10, textAlign: "center" }}>{i18n.t("easyMode.noDevices")}</Text>
+                        <Text style={textStyle}>{i18n.t("easyMode.noDevices")}</Text>
                     </View>
                 );
             }
@@ -215,6 +239,8 @@ class EasyModeScreen extends React.Component {
     componentDidMount() {
         this.props.findAllFiles();
         this.props.deviceStartConnect();
+
+        new AppPermissions().verifyPermissions();
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -231,6 +257,7 @@ class EasyModeScreen extends React.Component {
         return (
             <View>
                 <Text style={textPanelStyle}>{i18n.t("easyMode.busy")}</Text>
+                <KeepAwake />
             </View>
         );
     }

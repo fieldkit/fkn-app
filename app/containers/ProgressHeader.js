@@ -3,7 +3,9 @@ import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { View, Text, Button } from "react-native";
+import { View, Text } from "react-native";
+
+import { Button } from "../components";
 
 import { cancelInProgressOperation } from "../actions";
 
@@ -54,10 +56,6 @@ class ProgressHeader extends React.Component {
                     {cancelable && this.renderCancel()}
                 </View>
             );
-        }
-
-        if (progress.depth > 0) {
-            // return <Spinner visible={true} textContent={"Busy"} textStyle={{color: '#FFF'}} />;
         }
 
         return <View />;

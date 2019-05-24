@@ -15,4 +15,8 @@ import * as localFilesReducers from "./local-files";
 import * as planningReducers from "./planning";
 import * as locationReducers from "./location";
 
-export default combineReducers(Object.assign(navigationReducers, authReducers, deviceStatusReducers, liveDataReducers, networkConfigurationReducers, timersReducers, moduleReplyReducers, downloadReducers, progressReducers, localFilesReducers, planningReducers, locationReducers, pluginManager.getReducers()));
+function __state__() {
+    return true;
+}
+
+export default combineReducers(Object.assign(navigationReducers, authReducers, deviceStatusReducers, liveDataReducers, networkConfigurationReducers, timersReducers, moduleReplyReducers, downloadReducers, progressReducers, localFilesReducers, planningReducers, locationReducers, { __state__ }, pluginManager.getReducers()));

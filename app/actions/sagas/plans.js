@@ -9,7 +9,7 @@ import { Toasts } from "../../lib/toasts";
 import * as Types from "../types";
 
 import { queryCapabilities } from "../device-status";
-import { queryFiles, queryDeviceMetadata, queryDownloadFile } from "../device-data";
+import { queryFiles, queryDeviceMetadata, queryDownloadFile, deleteFile } from "../device-data";
 import { archiveLocalFile, touchLocalFile } from "../local-files";
 
 import { uploadFile } from "../../lib/uploading";
@@ -119,12 +119,22 @@ export function* executePlans() {
 
                         break;
                     }
+                    case "delete": {
+                        yield call(deviceCall, deleteFile(details.id, details.address));
+
+                        break;
+                    }
                     case "archive": {
                         yield call(archiveLocalFile(details.file));
 
                         if (_.isString(details.touch)) {
                             yield call(touchLocalFile(details.touch));
                         }
+
+                        break;
+                    }
+                    case "backup": {
+                        yield call(archiveLocalFile(details.file));
 
                         break;
                     }

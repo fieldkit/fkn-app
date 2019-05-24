@@ -29,7 +29,7 @@ export class FileMenu extends React.Component {
                 <MenuButtonContainer>
                     <MenuButton title="Open" onPress={() => onOpen(file, parentEntry)} />
                     <MenuButton title="Upload" onPress={() => onUpload(file, parentEntry)} />
-                    <MenuButton title="Map Data" onPress={() => onOpenDataMap(file, parentEntry)} />
+                    {false && <MenuButton title="Map Data" onPress={() => onOpenDataMap(file, parentEntry)} />}
                     <MenuButton title="Delete" onPress={() => onDelete(file, parentEntry)} color="#E74C3C" />
                 </MenuButtonContainer>
             </View>
