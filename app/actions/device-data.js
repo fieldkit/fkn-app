@@ -2,6 +2,7 @@ import { CALL_DEVICE_API, cancelPendingDeviceCalls } from "../middleware/device-
 
 import { QueryType } from "../lib/protocol";
 import { openWriter } from "../lib/downloading";
+import { AsyncStorage } from "react-native";
 
 import * as Types from "./types";
 

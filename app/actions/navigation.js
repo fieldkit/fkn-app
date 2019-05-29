@@ -74,7 +74,17 @@ export function navigateOpenFile(path) {
 }
 
 export function navigateEasyModeWelcome() {
-    return NavigationActions.navigate({ routeName: "EasyModeWelcome" });
+    return NavigationActions.navigate({
+        routeName: "EasyModeWelcome"
+    });
+}
+
+//pass in device ID
+export function navigateEditDeviceName(deviceId) {
+    return NavigationActions.navigate({
+        routeName: "EditDeviceName",
+        params: { deviceId: deviceId }
+    });
 }
 
 export function navigateLiveData() {

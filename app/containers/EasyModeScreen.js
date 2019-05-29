@@ -3,19 +3,21 @@ import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Button, TextInput, ScrollView, AsyncStorage } from "react-native";
 
 import KeepAwake from "react-native-keep-awake";
 
 import RNLanguages from "react-native-languages";
 import i18n from "../internationalization/i18n";
 
+import { hexArrayBuffer, arrayBufferToBase64 } from "../lib/base64";
+
 import * as Files from "../lib/files";
 import { AppPermissions } from "../lib/permissions";
 
-import { AppScreen, Button } from "../components";
+import { AppScreen } from "../components";
 
-import { navigateWelcome, deviceStartConnect, findAllFiles, executePlan, deleteAllLocalFiles, archiveAllLocalFiles } from "../actions";
+import { navigateWelcome, navigateEditDeviceName, deviceStartConnect, findAllFiles, executePlan, deleteAllLocalFiles, archiveAllLocalFiles } from "../actions";
 
 import styles from "../styles";
 
@@ -99,6 +101,38 @@ class UploadQueueOptions extends React.Component {
 }
 
 class DeviceOptions extends React.Component {
+    state = {
+        recognizedDevice: ""
+    };
+
+    componentDidMount = async () => {
+        const easyMode = this.props;
+        if (easyMode.devices && _.size(easyMode.devices) == 1) {
+            try {
+                const value = await AsyncStorage.getItem(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId));
+                this.setState({ recognizedDevice: value });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
+    componentWillUpdate = async (nextProps, nextState) => {
+        const { easyMode: easyModeBefore } = this.props;
+        const { easyMode: easyModeAfter } = nextProps;
+        const { deviceName: deviceNameBefore } = this.state;
+        const { deviceName: deviceNameAfter } = nextState;
+
+        if (easyModeAfter.devices != easyModeBefore.devices && _.size(easyModeAfter.devices) == 1) {
+            try {
+                const value = await AsyncStorage.getItem(hexArrayBuffer(easyModeAfter.devices[_.first(_.keys(easyModeAfter.devices))].capabilities.deviceId));
+                this.setState({ recognizedDevice: value });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
     onSync() {
         const { easyMode, executePlan } = this.props;
         const { downloads } = easyMode.plans;
@@ -112,9 +146,8 @@ class DeviceOptions extends React.Component {
     }
 
     render() {
-        const { easyMode } = this.props;
+        const { easyMode, navigateEditDeviceName } = this.props;
         const { downloads } = easyMode.plans;
-
         const numberOfDevices = _.size(easyMode.devices);
         const estimatedDownload = _(downloads)
             .map(d => d.plan)
@@ -122,7 +155,6 @@ class DeviceOptions extends React.Component {
             .filter(p => p.download)
             .map(p => p.download.downloading)
             .sum();
-
         if (numberOfDevices == 0 || !_.isArray(downloads) || downloads.length == 0) {
             if (!easyMode.networkConfiguration.deviceAp) {
                 return (
@@ -139,17 +171,24 @@ class DeviceOptions extends React.Component {
             }
         }
 
+        if (numberOfDevices == 1 && this.state.recognizedDevice != "") {
+            return (
+                <View>
+                    <Text style={textPanelStyle}>{this.state.recognizedDevice} was found.</Text>
+                    <Button title="Edit Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId))} />
+                </View>
+            );
+        }
+
         return (
             <View>
-                <View>
+                <View style={{ padding: 10 }}>
                     <Text style={textPanelStyle}>
                         {i18n.t("easyMode.devicesFound", {
                             numberOfDevices: numberOfDevices,
                             estimatedDownload: estimatedDownload
                         })}
                     </Text>
-                </View>
-                <View style={{ padding: 10 }}>
                     <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                 </View>
             </View>
@@ -188,26 +227,32 @@ class EasyModeScreen extends React.Component {
     }
 
     renderMenu() {
-        const { easyMode, executePlan, navigateWelcome } = this.props;
-
+        const { easyMode, executePlan, navigateWelcome, navigateEditDeviceName } = this.props;
         return (
-            <View style={{ flex: 1, alignSelf: "stretch" }}>
-                <DeviceOptions easyMode={easyMode} executePlan={executePlan} />
+            <ScrollView style={{ flex: 1, alignSelf: "stretch" }}>
+                <DeviceOptions easyMode={easyMode} executePlan={executePlan} navigateEditDeviceName={navigateEditDeviceName} />
 
                 <UploadQueueOptions easyMode={easyMode} executePlan={executePlan} />
 
                 <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: 20 }}>
-                    <View style={{ bottom: 0, position: "absolute", paddingLeft: 10, paddingRight: 10, width: "100%" }}>
+                    <View
+                        style={{
+                            bottom: 0,
+                            position: "absolute",
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            width: "100%"
+                        }}
+                    >
                         <Button title={i18n.t("easyMode.advanced")} onPress={() => navigateWelcome()} />
                     </View>
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 
     render() {
         const { easyMode } = this.props;
-
         return (
             <AppScreen backgroundStyle={{ height: "100%" }}>
                 <Image
@@ -250,6 +295,7 @@ export default connect(
         deviceStartConnect,
         deleteAllLocalFiles,
         archiveAllLocalFiles,
-        navigateWelcome
+        navigateWelcome,
+        navigateEditDeviceName
     }
 )(EasyModeScreen);
