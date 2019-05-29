@@ -36,10 +36,10 @@ class EditDeviceName extends React.Component {
     _addData = async (deviceId, text) => {
         try {
             await AsyncStorage.setItem(deviceId, text);
+            this.setState({ modalVisible: true });
         } catch (error) {
             console.log("error adding data", error);
         }
-        this.setState({ modalVisible: true });
     };
 
     render() {

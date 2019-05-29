@@ -75,7 +75,7 @@ class UploadQueueOptions extends React.Component {
                         {i18n.t("easyMode.pendingFiles", {
                             numberOfFiles: numberOfFiles,
                             estimatedUpload: estimatedUpload
-                        })}
+                        })}{" "}
                         {i18n.t("easyMode.offline")}
                     </Text>
                 </View>
@@ -175,7 +175,7 @@ class DeviceOptions extends React.Component {
             return (
                 <View>
                     <Text style={textPanelStyle}>{this.state.recognizedDevice} was found.</Text>
-                    <Button title="EditDeviceName" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId))} />
+                    <Button title="Edit Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId))} />
                 </View>
             );
         }
@@ -253,7 +253,6 @@ class EasyModeScreen extends React.Component {
 
     render() {
         const { easyMode } = this.props;
-        console.log("THIS IS EASY MODE", easyMode);
         return (
             <AppScreen backgroundStyle={{ height: "100%" }}>
                 <Image
