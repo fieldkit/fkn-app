@@ -13,6 +13,7 @@ import EasyModeScreen from "../containers/EasyModeScreen";
 import DataTableScreen from "../containers/DataTableScreen";
 import MapScreen from "../containers/MapScreen";
 import DataMapScreen from "../containers/DataMapScreen";
+import EditDeviceName from "../containers/EditDeviceNameScreen";
 
 export class ApplicationRoutesManager {
     constructor() {
@@ -56,6 +57,10 @@ export class ApplicationRoutesManager {
             EasyModeWelcome: {
                 path: "/easy-mode",
                 screen: EasyModeScreen
+            },
+            EditDeviceName: {
+                path: "/edit-device-name",
+                screen: EditDeviceName
             },
             Browser: {
                 path: "/browser",
