@@ -237,7 +237,7 @@ class DeviceOptions extends React.Component {
             }
         }
 
-        if (this.state.recognizedDevice != "") {
+        if (numberofDevices == 1 && this.state.recognizedDevice != "") {
             console.log(hexArrayBuffer(easyMode.devices["192.168.2.1"].capabilities.deviceId));
             return (
                 <View>

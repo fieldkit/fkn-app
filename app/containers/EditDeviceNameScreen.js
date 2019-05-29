@@ -3,7 +3,7 @@ import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { View, Text, Image, Button, TextInput, ScrollView, AsyncStorage } from "react-native";
+import { View, Text, Image, Button, TextInput, ScrollView, AsyncStorage, Modal } from "react-native";
 
 import { StackNavigator, addNavigationHelpers } from "react-navigation";
 
@@ -26,8 +26,13 @@ class EditDeviceName extends React.Component {
 
     state = {
         deviceName: "",
-        recognizedDevice: ""
+        recognizedDevice: "",
+        modalVisible: false
     };
+
+    setModalVisible(visible) {
+        this.setState({ modalVisible: visible });
+    }
 
     _addData = async (deviceId, text) => {
         console.log("THIS IS NAVIGAION", deviceId);
@@ -37,11 +42,7 @@ class EditDeviceName extends React.Component {
         } catch (error) {
             console.log("error adding data", error);
         }
-        return (
-            <View>
-                <Text>New device name saved.</Text>
-            </View>
-        );
+        this.setState({ modalVisible: true });
     };
 
     render() {
@@ -49,6 +50,19 @@ class EditDeviceName extends React.Component {
         console.log("THIS IS NAVIGAION", deviceId);
         return (
             <View>
+                <Modal animationType="slide" transparent={false} visible={this.state.modalVisible} onRequestClose={() => navigateEasyModeWelcome()}>
+                    <View style={{ marginTop: 30 }}>
+                        <View>
+                            <Text> Device name has been saved! </Text>
+                            <Button
+                                title="Exit"
+                                onPress={() => {
+                                    this.setModalVisible(!this.state.modalVisible);
+                                }}
+                            />
+                        </View>
+                    </View>
+                </Modal>
                 <TextInput style={{ height: 40, borderColor: "gray", borderWidth: 1 }} placeholder={"Device Name"} onChangeText={text => this.setState({ deviceName: text })} value={this.props.recognizedDevice} />
                 <Button title="Save" onPress={() => this._addData(deviceId, this.state.deviceName)} />
                 <Button title="Cancel" onPress={() => navigateEasyModeWelcome()} />
