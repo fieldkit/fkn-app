@@ -1,7 +1,6 @@
 import _ from "lodash";
 
-import { delay } from "redux-saga";
-import { put, take, takeLatest, takeEvery, select, all, race, call } from "redux-saga/effects";
+import { put, take, takeLatest, takeEvery, select, all, race, call, delay } from "redux-saga/effects";
 
 import { QueryType } from "../../lib/protocol";
 import { Toasts } from "../../lib/toasts";

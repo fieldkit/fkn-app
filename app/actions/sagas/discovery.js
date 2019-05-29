@@ -1,6 +1,5 @@
 import _ from "lodash";
-import { takeLatest, all, put, call } from "redux-saga/effects";
-import { delay } from "redux-saga";
+import { takeLatest, all, put, call, delay } from "redux-saga/effects";
 
 import { Platform } from "react-native";
 import dgram from "react-native-udp";
@@ -124,27 +123,21 @@ export function wifiSsidChanged(ssid) {
 }
 
 function* monitorWifi() {
-    const channel = createChannel("Wifi");
-
     let currentSsid = null;
     while (true) {
-        WifiManager.getCurrentWifiSSID().then(
-            ssid => {
+        try {
+            const ssid = yield call(WifiManager.getCurrentWifiSSID);
+            if (currentSsid != ssid) {
+                yield put(wifiSsidChanged(ssid));
+                currentSsid = ssid;
                 console.log("SSID", ssid);
-                channel.put(ssid);
-            },
-            err => {
-                console.log("WiFi SSID:", err);
             }
-        );
-
-        const ssid = yield call(channel.take);
-        if (currentSsid != ssid) {
-            yield put(wifiSsidChanged(ssid));
-            currentSsid = ssid;
+            yield delay(1000);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            yield delay(1000);
         }
-
-        yield delay(1000);
     }
 }
 
