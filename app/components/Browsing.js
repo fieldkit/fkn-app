@@ -63,11 +63,7 @@ export class DirectoryListing extends React.Component {
 
                 {parent && <DirectoryEntry style={styles.browser.listing.back} entry={parent} onSelect={onSelectEntry} />}
 
-                <FlatList style={{ marginBottom: 100 }}
-                          data={listing}
-                          keyExtractor={(entry, index) => index.toString()}
-                          renderItem={({ item }) => <DirectoryEntry style={styles.browser.listing.entry} entry={item} onSelect={onSelectEntry} />}
-                />
+                <FlatList style={{ marginBottom: 100 }} data={listing} keyExtractor={(entry, index) => index.toString()} renderItem={({ item }) => <DirectoryEntry style={styles.browser.listing.entry} entry={item} onSelect={onSelectEntry} />} />
             </View>
         );
     }

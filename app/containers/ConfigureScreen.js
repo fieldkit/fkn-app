@@ -42,8 +42,8 @@ class ConfigureScreen extends React.Component {
             <AppScreen>
                 <DeviceInfo info={deviceInfo} />
                 <MenuButtonContainer>
-                    <MenuButton title={i18n.js("configure.network")} onPress={() => this.props.navigateNetwork()} />
-                    <MenuButton title={(i18n, js("configure.reset"))} onPress={() => this.onReset(true)} />
+                    <MenuButton title={i18n.t("configure.network")} onPress={() => this.props.navigateNetwork()} />
+                    <MenuButton title={i18n.t("configure.reset")} onPress={() => this.onReset(true)} />
                 </MenuButtonContainer>
                 <ConfirmationModal visible={this.state.confirming} onYes={() => this.onReset(false)} onNo={() => this.setState({ confirming: false })} />
             </AppScreen>
