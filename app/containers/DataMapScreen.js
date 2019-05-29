@@ -19,7 +19,7 @@ import { navigateBack, openDataMap, navigateWelcome, location } from "../actions
 import { StyleSheet } from "react-native";
 
 import Mapbox from "@mapbox/react-native-mapbox-gl";
-import { MAPBOX_ACCESS_TOKEN, MAPBOX_STYLE } from "../../secrets";
+import { MAPBOX_ACCESS_TOKEN, MAPBOX_STYLE } from "../secrets";
 
 const styles = StyleSheet.create({
     container: {

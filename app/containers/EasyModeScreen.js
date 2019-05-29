@@ -9,7 +9,6 @@ import KeepAwake from "react-native-keep-awake";
 
 import RNLanguages from "react-native-languages";
 import i18n from "../internationalization/i18n";
-import EditDeviceName from "./EditDeviceNameScreen";
 
 import { hexArrayBuffer, arrayBufferToBase64 } from "../lib/base64";
 
@@ -32,32 +31,6 @@ const textStyle = {
     padding: 10,
     textAlign: "center"
 };
-
-// //{" "}
-// <TextInput
-//   style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
-//   placeholder={easyMode.devices.key}
-//   onChangeText={text => this.setState({ deviceName: text })}
-//   value={this.state.deviceName}
-// />
-// //{" "}
-// <Button
-//   title="Set Device Name"
-//   onPress={() => this._addData(this.state.deviceName)}
-// />
-
-// //{" "}
-// <TextInput
-//   style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
-//   placeholder={easyMode.devices.key}
-//   onChangeText={text => this.setState({ deviceName: text })}
-//   value={this.state.deviceName}
-// />
-// //{" "}
-// <Button
-//   title="Set Device Name"
-//   onPress={() => this._addData(this.state.deviceName)}
-// />
 
 class UploadQueueOptions extends React.Component {
     onSync() {
@@ -102,7 +75,7 @@ class UploadQueueOptions extends React.Component {
                         {i18n.t("easyMode.pendingFiles", {
                             numberOfFiles: numberOfFiles,
                             estimatedUpload: estimatedUpload
-                        })}{" "}
+                        })}
                         {i18n.t("easyMode.offline")}
                     </Text>
                 </View>
@@ -133,13 +106,10 @@ class DeviceOptions extends React.Component {
     };
 
     componentDidMount = async () => {
-        console.log("mounting");
         const easyMode = this.props;
-        if (easyMode.devices) {
-            console.log("passed");
+        if (easyMode.devices && _.size(easyMode.devices) == 1) {
             try {
-                const value = await AsyncStorage.getItem(hexArrayBuffer(easyMode.devices["192.168.2.1"].capabilities.deviceId));
-                console.log("THIS IS VALUE", value);
+                const value = await AsyncStorage.getItem(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId));
                 this.setState({ recognizedDevice: value });
             } catch (error) {
                 console.log(error);
@@ -148,28 +118,18 @@ class DeviceOptions extends React.Component {
     };
 
     componentWillUpdate = async (nextProps, nextState) => {
-        console.log("updating in device options");
         const { easyMode: easyModeBefore } = this.props;
         const { easyMode: easyModeAfter } = nextProps;
         const { deviceName: deviceNameBefore } = this.state;
         const { deviceName: deviceNameAfter } = nextState;
 
-        if (easyModeAfter.devices != easyModeBefore.devices) {
+        if (easyModeAfter.devices != easyModeBefore.devices && _.size(easyModeAfter.devices) == 1) {
             try {
-                const value = await AsyncStorage.getItem(hexArrayBuffer(easyModeAfter.devices["192.168.2.1"].capabilities.deviceId));
-                console.log("THIS IS VALUE PT 2", value);
+                const value = await AsyncStorage.getItem(hexArrayBuffer(easyModeAfter.devices[_.first(_.keys(easyModeAfter.devices))].capabilities.deviceId));
                 this.setState({ recognizedDevice: value });
             } catch (error) {
                 console.log(error);
             }
-        }
-
-        if (deviceNameBefore != deviceNameAfter) {
-            return (
-                <View>
-                    <Text style={textPanelStyle}>{this.state.recognizedDevice} was found.</Text>
-                </View>
-            );
         }
     };
 
@@ -185,36 +145,10 @@ class DeviceOptions extends React.Component {
         );
     }
 
-    // _addData = async text => {
-    //   const { easyMode } = this.props;
-    //   const value = hexArrayBuffer(
-    //     easyMode.devices["192.168.2.1"].capabilities.deviceId
-    //   );
-    //   try {
-    //     await AsyncStorage.setItem(value, this.state.deviceName);
-    //     // console.log("no error adding data");
-    //   } catch (error) {
-    //     console.log("error adding data", error);
-    //   }
-    // };
-
-    // setDeviceName() {
-    //   const { easyMode } = this.props;
-    //   <View>
-    //     <TextInput
-    //       style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
-    //       placeholder={easyMode.devices.key}
-    //       onChangeText={text => this.setState({ deviceName })}
-    //       value={this.state.deviceName}
-    //     />
-    //   </View>;
-    // }
-
     render() {
         const { easyMode, navigateEditDeviceName } = this.props;
         const { downloads } = easyMode.plans;
         const numberOfDevices = _.size(easyMode.devices);
-        //console.log("THIS IS EASYMODE.DEVICES", easyMode.devices);
         const estimatedDownload = _(downloads)
             .map(d => d.plan)
             .flatten()
@@ -237,12 +171,11 @@ class DeviceOptions extends React.Component {
             }
         }
 
-        if (numberofDevices == 1 && this.state.recognizedDevice != "") {
-            console.log(hexArrayBuffer(easyMode.devices["192.168.2.1"].capabilities.deviceId));
+        if (numberOfDevices == 1 && this.state.recognizedDevice != "") {
             return (
                 <View>
                     <Text style={textPanelStyle}>{this.state.recognizedDevice} was found.</Text>
-                    <Button title="EditDeviceName" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices["192.168.2.1"].capabilities.deviceId))} />
+                    <Button title="EditDeviceName" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId))} />
                 </View>
             );
         }
@@ -320,7 +253,7 @@ class EasyModeScreen extends React.Component {
 
     render() {
         const { easyMode } = this.props;
-
+        console.log("THIS IS EASY MODE", easyMode);
         return (
             <AppScreen backgroundStyle={{ height: "100%" }}>
                 <Image

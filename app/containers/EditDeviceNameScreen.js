@@ -26,7 +26,6 @@ class EditDeviceName extends React.Component {
 
     state = {
         deviceName: "",
-        recognizedDevice: "",
         modalVisible: false
     };
 
@@ -35,10 +34,8 @@ class EditDeviceName extends React.Component {
     }
 
     _addData = async (deviceId, text) => {
-        console.log("THIS IS NAVIGAION", deviceId);
         try {
-            await AsyncStorage.setItem(deviceId, this.state.deviceName);
-            console.log("no error adding data");
+            await AsyncStorage.setItem(deviceId, text);
         } catch (error) {
             console.log("error adding data", error);
         }
@@ -47,7 +44,6 @@ class EditDeviceName extends React.Component {
 
     render() {
         const { deviceId, navigateEasyModeWelcome } = this.props;
-        console.log("THIS IS NAVIGAION", deviceId);
         return (
             <View>
                 <Modal animationType="slide" transparent={false} visible={this.state.modalVisible} onRequestClose={() => navigateEasyModeWelcome()}>
@@ -63,7 +59,7 @@ class EditDeviceName extends React.Component {
                         </View>
                     </View>
                 </Modal>
-                <TextInput style={{ height: 40, borderColor: "gray", borderWidth: 1 }} placeholder={"Device Name"} onChangeText={text => this.setState({ deviceName: text })} value={this.props.recognizedDevice} />
+                <TextInput style={{ height: 40, borderColor: "gray", borderWidth: 1 }} placeholder={"Device Name"} onChangeText={text => this.setState({ deviceName: text })} />
                 <Button title="Save" onPress={() => this._addData(deviceId, this.state.deviceName)} />
                 <Button title="Cancel" onPress={() => navigateEasyModeWelcome()} />
             </View>
@@ -72,12 +68,12 @@ class EditDeviceName extends React.Component {
 }
 
 EditDeviceName.propTypes = {
-    deviceId: PropTypes.string.isRequired
+    deviceId: PropTypes.string.isRequired,
+    navigateEasyModeWelcome: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
     const route = state.nav.routes[state.nav.index];
-    console.log("Route", route);
     return {
         deviceId: route.params ? route.params.deviceId : ""
     };
