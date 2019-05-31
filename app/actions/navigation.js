@@ -80,10 +80,10 @@ export function navigateEasyModeWelcome() {
 }
 
 //pass in device ID
-export function navigateEditDeviceName(deviceId) {
+export function navigateEditDeviceName(deviceId, address) {
     return NavigationActions.navigate({
         routeName: "EditDeviceName",
-        params: { deviceId: deviceId }
+        params: { deviceId: deviceId, address: address }
     });
 }
 
