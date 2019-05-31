@@ -1,0 +1,162 @@
+{
+  "local": {
+    "files": [
+      {
+        "name": "logs-a.fklog",
+        "path": "/data/user/0/com.fieldkit/files/Data/0004a30b0023308d/2_000002_offset_2441_logs-a.fklog",
+        "relativePath": "/0004a30b0023308d/2_000002_offset_2441_logs-a.fklog",
+        "size": 0,
+        "created": null,
+        "modified": "2019-05-31T16:52:48.000Z",
+        "modifiedPretty": "May 31 2019 9:52:48",
+        "directory": false
+      },
+      {
+        "name": "archive",
+        "path": "/data/user/0/com.fieldkit/files/Data/0004a30b0023308d/archive",
+        "relativePath": "/0004a30b0023308d/archive",
+        "size": 4096,
+        "created": null,
+        "modified": "2019-05-31T16:52:48.000Z",
+        "modifiedPretty": "May 31 2019 9:52:48",
+        "directory": true
+      },
+      {
+        "name": "logs-a.fklog",
+        "path": "/data/user/0/com.fieldkit/files/Data/0004a30b0023308d/2_000002_headers_logs-a.fklog",
+        "relativePath": "/0004a30b0023308d/2_000002_headers_logs-a.fklog",
+        "size": 12,
+        "created": null,
+        "modified": "2019-05-31T16:48:42.000Z",
+        "modifiedPretty": "May 31 2019 9:48:42",
+        "directory": false
+      },
+      {
+        "name": "data.fk",
+        "path": "/data/user/0/com.fieldkit/files/Data/0004a30b0023308d/4_000001_headers_data.fk",
+        "relativePath": "/0004a30b0023308d/4_000001_headers_data.fk",
+        "size": 90,
+        "created": null,
+        "modified": "2019-05-31T16:48:41.000Z",
+        "modifiedPretty": "May 31 2019 9:48:41",
+        "directory": false
+      },
+      {
+        "name": "metadata.fkpb",
+        "path": "/data/user/0/com.fieldkit/files/Data/0004a30b0023308d/metadata.fkpb",
+        "relativePath": "/0004a30b0023308d/metadata.fkpb",
+        "size": 7606,
+        "created": null,
+        "modified": "2019-05-31T16:48:41.000Z",
+        "modifiedPretty": "May 31 2019 9:48:41",
+        "directory": false
+      },
+      {
+        "name": "logs-a.fklog",
+        "path": "/data/user/0/com.fieldkit/files/Data/0004a30b0023308d/2_000001_headers_logs-a.fklog",
+        "relativePath": "/0004a30b0023308d/2_000001_headers_logs-a.fklog",
+        "size": 128,
+        "created": null,
+        "modified": "2019-05-31T16:48:30.000Z",
+        "modifiedPretty": "May 31 2019 9:48:30",
+        "directory": false
+      },
+      {
+        "name": "data.fk",
+        "path": "/data/user/0/com.fieldkit/files/Data/0004a30b0023308d/4_000001_offset_646042_data.fk",
+        "relativePath": "/0004a30b0023308d/4_000001_offset_646042_data.fk",
+        "size": 0,
+        "created": null,
+        "modified": "2019-05-29T23:37:17.000Z",
+        "modifiedPretty": "May 29 2019 4:37:17",
+        "directory": false
+      },
+      {
+        "name": "logs-a.fklog",
+        "path": "/data/user/0/com.fieldkit/files/Data/0004a30b0023308d/2_000001_offset_789045_logs-a.fklog",
+        "relativePath": "/0004a30b0023308d/2_000001_offset_789045_logs-a.fklog",
+        "size": 0,
+        "created": null,
+        "modified": "2019-05-14T18:34:20.000Z",
+        "modifiedPretty": "May 14 2019 11:34:20",
+        "directory": false
+      },
+      {
+        "name": "data.fk",
+        "path": "/data/user/0/com.fieldkit/files/Data/0004a30b0023308d/4_000001_offset_108855_data.fk",
+        "relativePath": "/0004a30b0023308d/4_000001_offset_108855_data.fk",
+        "size": 0,
+        "created": null,
+        "modified": "2019-05-14T18:34:18.000Z",
+        "modifiedPretty": "May 14 2019 11:34:18",
+        "directory": false
+      },
+      {
+        "name": "logs-a.fklog",
+        "path": "/data/user/0/com.fieldkit/files/Data/0004a30b0023308d/2_000001_offset_4511439_logs-a.fklog",
+        "relativePath": "/0004a30b0023308d/2_000001_offset_4511439_logs-a.fklog",
+        "size": 0,
+        "created": null,
+        "modified": "2019-05-14T18:34:17.000Z",
+        "modifiedPretty": "May 14 2019 11:34:17",
+        "directory": false
+      },
+      {
+        "name": "emergency.fklog",
+        "path": "/data/user/0/com.fieldkit/files/Data/0004a30b0023308d/1_000001_headers_emergency.fklog",
+        "relativePath": "/0004a30b0023308d/1_000001_headers_emergency.fklog",
+        "size": 9,
+        "created": null,
+        "modified": "2019-05-09T23:00:40.000Z",
+        "modifiedPretty": "May 9 2019 4:00:40",
+        "directory": false
+      },
+      {
+        "name": "emergency.fklog",
+        "path": "/data/user/0/com.fieldkit/files/Data/0004a30b0023308d/1_000001_offset_0_emergency.fklog",
+        "relativePath": "/0004a30b0023308d/1_000001_offset_0_emergency.fklog",
+        "size": 0,
+        "created": null,
+        "modified": "2019-05-09T23:00:39.000Z",
+        "modifiedPretty": "May 9 2019 4:00:39",
+        "directory": false
+      }
+    ]
+  },
+  "remote": {
+    "deviceId": "0004a30b0023308d",
+    "address": {
+      "host": "192.168.2.1",
+      "port": 54321,
+      "key": "192.168.2.1",
+      "valid": true
+    },
+    "files": [
+      {
+        "id": 1,
+        "version": 1,
+        "name": "emergency.fklog",
+        "maximum": "100"
+      },
+      {
+        "id": 2,
+        "size": "154905",
+        "version": 3,
+        "name": "logs-a.fklog",
+        "maximum": "2048"
+      },
+      {
+        "id": 3,
+        "version": 1,
+        "name": "logs-b.fklog",
+        "maximum": "2048"
+      },
+      {
+        "id": 4,
+        "size": "253350",
+        "version": 1,
+        "name": "data.fk"
+      }
+    ]
+  }
+}
