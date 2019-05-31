@@ -17,7 +17,7 @@ import { AppPermissions } from "../lib/permissions";
 
 import { AppScreen } from "../components";
 
-import { navigateWelcome, navigateEditDeviceName, deviceStartConnect, findAllFiles, executePlan, deleteAllLocalFiles, archiveAllLocalFiles } from "../actions";
+import { navigateWelcome, navigateEditDeviceName, deviceStartConnect, findAllFiles, executePlan, deleteAllLocalFiles, archiveAllLocalFiles, configureName } from "../actions";
 
 import styles from "../styles";
 
@@ -130,6 +130,11 @@ class DeviceOptions extends React.Component {
             } catch (error) {
                 console.log(error);
             }
+
+            const { configureName } = this.props;
+            if (_.isObject(easyModeAfter.singleDevice)) {
+                // configureName(easyModeAfter.singleDevice.address, "New Name");
+            }
         }
     };
 
@@ -227,10 +232,10 @@ class EasyModeScreen extends React.Component {
     }
 
     renderMenu() {
-        const { easyMode, executePlan, navigateWelcome, navigateEditDeviceName } = this.props;
+        const { easyMode, executePlan, navigateWelcome, navigateEditDeviceName, configureName } = this.props;
         return (
             <ScrollView style={{ flex: 1, alignSelf: "stretch" }}>
-                <DeviceOptions easyMode={easyMode} executePlan={executePlan} navigateEditDeviceName={navigateEditDeviceName} />
+                <DeviceOptions easyMode={easyMode} executePlan={executePlan} navigateEditDeviceName={navigateEditDeviceName} configureName={configureName} />
 
                 <UploadQueueOptions easyMode={easyMode} executePlan={executePlan} />
 
@@ -275,7 +280,8 @@ EasyModeScreen.propTypes = {
     executePlan: PropTypes.func.isRequired,
     findAllFiles: PropTypes.func.isRequired,
     deleteAllLocalFiles: PropTypes.func.isRequired,
-    archiveAllLocalFiles: PropTypes.func.isRequired
+    archiveAllLocalFiles: PropTypes.func.isRequired,
+    configureName: PropTypes.func.isRequired
 };
 
 function getSingleDevice(state) {
@@ -308,6 +314,7 @@ export default connect(
         deleteAllLocalFiles,
         archiveAllLocalFiles,
         navigateWelcome,
-        navigateEditDeviceName
+        navigateEditDeviceName,
+        configureName
     }
 )(EasyModeScreen);
