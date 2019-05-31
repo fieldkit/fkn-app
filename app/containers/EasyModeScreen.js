@@ -17,6 +17,8 @@ import { AppPermissions } from "../lib/permissions";
 
 import { AppScreen } from "../components";
 
+import Config from "../config";
+
 import { navigateWelcome, navigateEditDeviceName, deviceStartConnect, findAllFiles, executePlan, deleteAllLocalFiles, archiveAllLocalFiles } from "../actions";
 
 import styles from "../styles";
@@ -43,12 +45,11 @@ class UploadQueueOptions extends React.Component {
                 .flatten()
                 .value()
         );
-
         try {
             AsyncStorage.getAllKeys((err, keys) => {
                 AsyncStorage.multiGet(keys, (err, stores) => {
                     stores.map((result, i, store) => {
-                        fetch("https://api.fkdev.org/devices/" + store[i][0], {
+                        fetch(Config.baseUri + "/devices/" + store[i][0], {
                             method: "POST",
                             headers: {
                                 Accept: "application/json",
