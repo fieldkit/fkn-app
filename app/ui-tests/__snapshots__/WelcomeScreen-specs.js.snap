@@ -35,6 +35,10 @@ exports[`<WelcomeScreen/> render() renders the component 1`] = `
       onPress={[Function]}
       title="Browser"
     />
+    <MenuButton
+      onPress={[Function]}
+      title="Upload Logs"
+    />
   </MenuButtonContainer>
 </AppScreen>
 `;
