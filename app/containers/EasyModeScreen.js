@@ -278,14 +278,26 @@ EasyModeScreen.propTypes = {
     archiveAllLocalFiles: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-    easyMode: {
-        busy: !state.progress.task.done,
-        networkConfiguration: state.networkConfiguration,
-        devices: state.devices,
-        plans: state.planning.plans
+function getSingleDevice(state) {
+    const devices = state.devices;
+    const keys = _.keys(devices);
+    if (keys.length != 1) {
+        return null;
     }
-});
+    return devices[keys[0]];
+}
+
+const mapStateToProps = state => {
+    return {
+        easyMode: {
+            busy: !state.progress.task.done,
+            networkConfiguration: state.networkConfiguration,
+            devices: state.devices,
+            plans: state.planning.plans,
+            singleDevice: getSingleDevice(state)
+        }
+    };
+};
 
 export default connect(
     mapStateToProps,
