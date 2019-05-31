@@ -37,17 +37,6 @@ class EditDeviceName extends React.Component {
         try {
             await AsyncStorage.setItem(deviceId, text);
             this.setState({ modalVisible: true });
-            fetch("https://api.fkdev.org/devices/0004a30b00232b9b", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    deviceId: deviceId,
-                    name: text
-                })
-            });
         } catch (error) {
             console.log("error adding data", error);
         }

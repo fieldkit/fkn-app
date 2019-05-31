@@ -48,7 +48,7 @@ class UploadQueueOptions extends React.Component {
             AsyncStorage.getAllKeys((err, keys) => {
                 AsyncStorage.multiGet(keys, (err, stores) => {
                     stores.map((result, i, store) => {
-                        fetch("https://api.fkdev.org/devices/0004a30b00232b9b", {
+                        fetch("https://api.fkdev.org/devices/" + store[i][0], {
                             method: "POST",
                             headers: {
                                 Accept: "application/json",
@@ -193,7 +193,7 @@ class DeviceOptions extends React.Component {
             }
         }
 
-        if (numberOfDevices == 1 && this.state.recognizedDevice != null) {
+        if (numberOfDevices == 1 && _.toString(this.state.recognizedDevice) != "") {
             return (
                 <View>
                     <Text style={textPanelStyle}>{this.state.recognizedDevice} was found.</Text>
@@ -208,12 +208,21 @@ class DeviceOptions extends React.Component {
                         <Button title="Edit Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId))} />
                     </View>
                     <Text style={textPanelStyle}>Syncing will download {estimatedDownload} bytes.</Text>
-                    <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
+                    <View
+                        style={{
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            paddingBottom: 10,
+                            width: "100%"
+                        }}
+                    >
+                        <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
+                    </View>
                 </View>
             );
         }
 
-        if (numberOfDevices == 1 && this.state.recognizedDevice == "") {
+        if (numberOfDevices == 1 && _.toString(this.state.recognizedDevice) == "") {
             return (
                 <View>
                     <Text style={textPanelStyle}>
@@ -231,8 +240,8 @@ class DeviceOptions extends React.Component {
                         }}
                     >
                         <Button title="Set Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId))} />
+                        <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                     </View>
-                    <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                 </View>
             );
         }
