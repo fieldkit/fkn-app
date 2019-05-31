@@ -194,17 +194,46 @@ class DeviceOptions extends React.Component {
             }
         }
 
-        if (numberOfDevices == 1 && this.state.recognizedDevice != "") {
+        if (numberOfDevices == 1 && this.state.recognizedDevice != null) {
+            console.log("went through and this is device name", this.state.recognizedDevice);
             return (
-                <View style={{ padding: 10 }}>
+                <View>
                     <Text style={textPanelStyle}>{this.state.recognizedDevice} was found.</Text>
-                    <Button title="Edit Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId))} />
+                    <View
+                        style={{
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            paddingBottom: 10,
+                            width: "100%"
+                        }}
+                    >
+                        <Button title="Edit Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId))} />
+                    </View>
+                    <Text style={textPanelStyle}>Syncing will download {estimatedDownload} bytes.</Text>
+                    <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
+                </View>
+            );
+        }
+
+        if (numberOfDevices == 1 && this.state.recognizedDevice == "") {
+            return (
+                <View>
                     <Text style={textPanelStyle}>
                         {i18n.t("easyMode.devicesFound", {
                             numberOfDevices: numberOfDevices,
                             estimatedDownload: estimatedDownload
                         })}
                     </Text>
+                    <View
+                        style={{
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            paddingBottom: 10,
+                            width: "100%"
+                        }}
+                    >
+                        <Button title="Set Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId))} />
+                    </View>
                     <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                 </View>
             );
@@ -212,13 +241,20 @@ class DeviceOptions extends React.Component {
 
         return (
             <View>
-                <View style={{ padding: 10 }}>
-                    <Text style={textPanelStyle}>
-                        {i18n.t("easyMode.devicesFound", {
-                            numberOfDevices: numberOfDevices,
-                            estimatedDownload: estimatedDownload
-                        })}
-                    </Text>
+                <Text style={textPanelStyle}>
+                    {i18n.t("easyMode.devicesFound", {
+                        numberOfDevices: numberOfDevices,
+                        estimatedDownload: estimatedDownload
+                    })}
+                </Text>
+                <View
+                    style={{
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        paddingBottom: 10,
+                        width: "100%"
+                    }}
+                >
                     <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                 </View>
             </View>
