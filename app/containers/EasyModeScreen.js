@@ -199,25 +199,11 @@ class DeviceOptions extends React.Component {
             return (
                 <View>
                     <Text style={textPanelStyle}>{this.state.recognizedDevice} was found.</Text>
-                    <View
-                        style={{
-                            paddingLeft: 10,
-                            paddingRight: 10,
-                            paddingBottom: 10,
-                            width: "100%"
-                        }}
-                    >
+                    <View style={{ paddingLeft: 10, padding: 10, width: "100%" }}>
                         <Button title="Edit Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
                     </View>
                     <Text style={textPanelStyle}>Syncing will download {estimatedDownload} bytes.</Text>
-                    <View
-                        style={{
-                            paddingLeft: 10,
-                            paddingRight: 10,
-                            paddingBottom: 10,
-                            width: "100%"
-                        }}
-                    >
+                    <View style={{ padding: 10, width: "100%" }}>
                         <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                     </View>
                 </View>
@@ -233,14 +219,7 @@ class DeviceOptions extends React.Component {
                             estimatedDownload: estimatedDownload
                         })}
                     </Text>
-                    <View
-                        style={{
-                            paddingLeft: 10,
-                            paddingRight: 10,
-                            paddingBottom: 10,
-                            width: "100%"
-                        }}
-                    >
+                    <View style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 10, width: "100%" }}>
                         <Button title="Set Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
                         <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                     </View>
@@ -256,14 +235,7 @@ class DeviceOptions extends React.Component {
                         estimatedDownload: estimatedDownload
                     })}
                 </Text>
-                <View
-                    style={{
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                        paddingBottom: 10,
-                        width: "100%"
-                    }}
-                >
+                <View style={{ padding: 10, width: "100%" }}>
                     <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                 </View>
             </View>
@@ -304,7 +276,7 @@ class EasyModeScreen extends React.Component {
     renderMenu() {
         const { easyMode, executePlan, navigateWelcome, navigateEditDeviceName, configureName } = this.props;
         return (
-            <ScrollView style={{ flex: 1, alignSelf: "stretch" }}>
+            <View style={{ flex: 1, alignSelf: "stretch" }}>
                 <DeviceOptions easyMode={easyMode} executePlan={executePlan} navigateEditDeviceName={navigateEditDeviceName} configureName={configureName} />
 
                 <UploadQueueOptions easyMode={easyMode} executePlan={executePlan} />
@@ -321,7 +293,7 @@ class EasyModeScreen extends React.Component {
                         <Button title={i18n.t("easyMode.advanced")} onPress={() => navigateWelcome()} />
                     </View>
                 </View>
-            </ScrollView>
+            </View>
         );
     }
 
@@ -330,11 +302,11 @@ class EasyModeScreen extends React.Component {
         return (
             <AppScreen backgroundStyle={{ height: "100%" }}>
                 <Image
-                    source={require("../../assets/fk-header.png")}
+                    source={require("../../assets/fk-header-red.png")}
                     style={{
                         resizeMode: "contain",
                         width: "100%",
-                        height: 200
+                        height: 100
                     }}
                 />
 
