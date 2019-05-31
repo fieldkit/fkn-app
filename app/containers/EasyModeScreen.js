@@ -43,6 +43,29 @@ class UploadQueueOptions extends React.Component {
                 .flatten()
                 .value()
         );
+
+        try {
+            AsyncStorage.getAllKeys((err, keys) => {
+                AsyncStorage.multiGet(keys, (err, stores) => {
+                    stores.map((result, i, store) => {
+                        fetch("https://api.fkdev.org/devices/0004a30b00232b9b", {
+                            method: "POST",
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                deviceId: store[i][0],
+                                name: store[i][1]
+                            })
+                        });
+                    });
+                });
+            });
+            console.log("SUCCESS");
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     render() {
@@ -173,9 +196,16 @@ class DeviceOptions extends React.Component {
 
         if (numberOfDevices == 1 && this.state.recognizedDevice != "") {
             return (
-                <View>
+                <View style={{ padding: 10 }}>
                     <Text style={textPanelStyle}>{this.state.recognizedDevice} was found.</Text>
                     <Button title="Edit Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId))} />
+                    <Text style={textPanelStyle}>
+                        {i18n.t("easyMode.devicesFound", {
+                            numberOfDevices: numberOfDevices,
+                            estimatedDownload: estimatedDownload
+                        })}
+                    </Text>
+                    <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                 </View>
             );
         }
@@ -238,7 +268,6 @@ class EasyModeScreen extends React.Component {
                     <View
                         style={{
                             bottom: 0,
-                            position: "absolute",
                             paddingLeft: 10,
                             paddingRight: 10,
                             width: "100%"
