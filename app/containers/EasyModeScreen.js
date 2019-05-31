@@ -62,7 +62,6 @@ class UploadQueueOptions extends React.Component {
                     });
                 });
             });
-            console.log("SUCCESS");
         } catch (error) {
             console.log(error);
         }
@@ -195,7 +194,6 @@ class DeviceOptions extends React.Component {
         }
 
         if (numberOfDevices == 1 && this.state.recognizedDevice != null) {
-            console.log("went through and this is device name", this.state.recognizedDevice);
             return (
                 <View>
                     <Text style={textPanelStyle}>{this.state.recognizedDevice} was found.</Text>
