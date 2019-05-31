@@ -220,7 +220,7 @@ export function uploadLogs() {
     return dispatch => {
         function getHeaders(fileInfo) {
             return {
-                fileId: "5",
+                fileId: "6",
                 deviceId: Config.logsDeviceId,
                 fileName: "app-logs.fkpb",
                 uploadName: fileInfo.name
