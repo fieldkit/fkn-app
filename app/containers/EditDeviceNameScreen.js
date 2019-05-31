@@ -15,7 +15,7 @@ import { hexArrayBuffer, arrayBufferToBase64 } from "../lib/base64";
 import * as Files from "../lib/files";
 import { AppScreen } from "../components";
 
-import { navigateEasyModeWelcome, deviceStartConnect, findAllFiles, executePlan } from "../actions";
+import { navigateEasyModeWelcome, findAllFiles, executePlan, deviceStartConnect, deleteAllLocalFiles, archiveAllLocalFiles, navigateWelcome, configureName } from "../actions";
 
 import styles from "../styles";
 
@@ -33,9 +33,11 @@ class EditDeviceName extends React.Component {
         this.setState({ modalVisible: visible });
     }
 
-    _addData = async (deviceId, text) => {
+    _addData = async (deviceId, text, address) => {
+        const { configureName } = this.props;
         try {
             await AsyncStorage.setItem(deviceId, text);
+            configureName(address, text);
             this.setState({ modalVisible: true });
         } catch (error) {
             console.log("error adding data", error);
@@ -43,7 +45,7 @@ class EditDeviceName extends React.Component {
     };
 
     render() {
-        const { deviceId, navigateEasyModeWelcome } = this.props;
+        const { deviceId, navigateEasyModeWelcome, address } = this.props;
         return (
             <View>
                 <Modal animationType="slide" transparent={false} visible={this.state.modalVisible} onRequestClose={() => navigateEasyModeWelcome()}>
@@ -60,7 +62,7 @@ class EditDeviceName extends React.Component {
                     </View>
                 </Modal>
                 <TextInput style={{ height: 40, borderColor: "gray", borderWidth: 1 }} placeholder={"Device Name"} onChangeText={text => this.setState({ deviceName: text })} />
-                <Button title="Save" onPress={() => this._addData(deviceId, this.state.deviceName)} />
+                <Button title="Save" onPress={() => this._addData(deviceId, this.state.deviceName, address)} />
                 <Button title="Cancel" onPress={() => navigateEasyModeWelcome()} />
             </View>
         );
@@ -69,19 +71,22 @@ class EditDeviceName extends React.Component {
 
 EditDeviceName.propTypes = {
     deviceId: PropTypes.string.isRequired,
-    navigateEasyModeWelcome: PropTypes.func.isRequired
+    navigateEasyModeWelcome: PropTypes.func.isRequired,
+    configureName: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
     const route = state.nav.routes[state.nav.index];
     return {
-        deviceId: route.params ? route.params.deviceId : ""
+        deviceId: route.params ? route.params.deviceId : "",
+        address: route.params ? route.params.address : null
     };
 };
 
 export default connect(
     mapStateToProps,
     {
-        navigateEasyModeWelcome
+        navigateEasyModeWelcome,
+        configureName
     }
 )(EditDeviceName);

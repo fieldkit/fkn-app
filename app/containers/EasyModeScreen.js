@@ -153,11 +153,6 @@ class DeviceOptions extends React.Component {
             } catch (error) {
                 console.log(error);
             }
-
-            const { configureName } = this.props;
-            if (_.isObject(easyModeAfter.singleDevice)) {
-                // configureName(easyModeAfter.singleDevice.address, "New Name");
-            }
         }
     };
 
@@ -177,6 +172,7 @@ class DeviceOptions extends React.Component {
         const { easyMode, navigateEditDeviceName } = this.props;
         const { downloads } = easyMode.plans;
         const numberOfDevices = _.size(easyMode.devices);
+        const { configureName } = this.props;
         const estimatedDownload = _(downloads)
             .map(d => d.plan)
             .flatten()
@@ -211,7 +207,7 @@ class DeviceOptions extends React.Component {
                             width: "100%"
                         }}
                     >
-                        <Button title="Edit Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId))} />
+                        <Button title="Edit Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
                     </View>
                     <Text style={textPanelStyle}>Syncing will download {estimatedDownload} bytes.</Text>
                     <View
@@ -245,7 +241,7 @@ class DeviceOptions extends React.Component {
                             width: "100%"
                         }}
                     >
-                        <Button title="Set Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId))} />
+                        <Button title="Set Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
                         <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                     </View>
                 </View>
