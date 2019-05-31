@@ -75,15 +75,6 @@ EditDeviceName.propTypes = {
     configureName: PropTypes.func.isRequired
 };
 
-function getSingleDevice(state) {
-    const devices = state.devices;
-    const keys = _.keys(devices);
-    if (keys.length != 1) {
-        return null;
-    }
-    return devices[keys[0]];
-}
-
 const mapStateToProps = state => {
     const route = state.nav.routes[state.nav.index];
     return {
