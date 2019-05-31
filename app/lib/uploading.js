@@ -71,7 +71,8 @@ export function uploadFile(relativePath, userHeaders, progress) {
                         bytesRead: bytesRead,
                         progress: bytesRead / bytesTotal,
                         started: started,
-                        elapsed: now - started
+                        elapsed: now - started,
+                        relativePath: relativePath
                     }
                 });
             }
@@ -80,16 +81,18 @@ export function uploadFile(relativePath, userHeaders, progress) {
         return RNFS.uploadFiles(options)
             .promise.then(response => {
                 const now = new Date();
+
+                throttledProgress.cancel();
+
                 progress({
                     type: Types.DOWNLOAD_FILE_DONE,
                     download: {
                         done: true,
                         cancelable: false,
-                        bytesTotal: 0,
-                        bytesRead: 0,
                         progress: 1.0,
                         started: started,
-                        elapsed: now - started
+                        elapsed: now - started,
+                        relativePath: relativePath
                     }
                 });
 
