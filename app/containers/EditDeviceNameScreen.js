@@ -10,6 +10,8 @@ import { StackNavigator, addNavigationHelpers } from "react-navigation";
 import RNLanguages from "react-native-languages";
 import i18n from "../internationalization/i18n";
 
+import { Toasts } from "../lib/toasts";
+
 import { hexArrayBuffer, arrayBufferToBase64 } from "../lib/base64";
 
 import * as Files from "../lib/files";
@@ -25,22 +27,21 @@ class EditDeviceName extends React.Component {
     };
 
     state = {
-        deviceName: "",
-        modalVisible: false
+        deviceName: ""
     };
 
-    setModalVisible(visible) {
-        this.setState({ modalVisible: visible });
-    }
-
     _addData = async (deviceId, text, address) => {
-        const { configureName } = this.props;
-        try {
-            await AsyncStorage.setItem(deviceId, text);
-            configureName(address, text);
-            this.setState({ modalVisible: true });
-        } catch (error) {
-            console.log("error adding data", error);
+        if (text == "") {
+            Toasts.show("Must input a name");
+        } else {
+            const { configureName } = this.props;
+            try {
+                await AsyncStorage.setItem(deviceId, text);
+                configureName(address, text);
+                Toasts.show("Your device name has been saved");
+            } catch (error) {
+                console.log("error adding data", error);
+            }
         }
     };
 
@@ -48,22 +49,15 @@ class EditDeviceName extends React.Component {
         const { deviceId, navigateEasyModeWelcome, address } = this.props;
         return (
             <View>
-                <Modal animationType="slide" transparent={false} visible={this.state.modalVisible} onRequestClose={() => navigateEasyModeWelcome()}>
-                    <View style={{ marginTop: 30 }}>
-                        <View>
-                            <Text> Device name has been saved! </Text>
-                            <Button
-                                title="Exit"
-                                onPress={() => {
-                                    this.setModalVisible(!this.state.modalVisible);
-                                }}
-                            />
-                        </View>
-                    </View>
-                </Modal>
-                <TextInput style={{ height: 40, borderColor: "gray", borderWidth: 1 }} placeholder={"Device Name"} onChangeText={text => this.setState({ deviceName: text })} />
-                <Button title="Save" onPress={() => this._addData(deviceId, this.state.deviceName, address)} />
-                <Button title="Cancel" onPress={() => navigateEasyModeWelcome()} />
+                <View style={{ paddingTop: 20, paddingBottom: 10 }}>
+                    <TextInput style={{ height: 40, borderColor: "gray", borderWidth: 1 }} placeholder={"Device Name"} onChangeText={text => this.setState({ deviceName: text })} />
+                </View>
+                <View style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 10 }}>
+                    <Button title="Save" onPress={() => this._addData(deviceId, this.state.deviceName, address)} />
+                </View>
+                <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+                    <Button title="Cancel" onPress={() => navigateEasyModeWelcome()} />
+                </View>
             </View>
         );
     }
