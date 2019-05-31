@@ -29,8 +29,6 @@ export function uploadFile(relativePath, userHeaders, progress) {
     const mimeType = "application/vnd.fk.data+binary";
     const throttledProgress = _.throttle(progress, 100, { leading: true });
 
-    console.log("UserHeaders", userHeaders);
-
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
         const path = dataDirectoryPath + relativePath;
         const url = baseUri + uploadPath;
@@ -44,7 +42,12 @@ export function uploadFile(relativePath, userHeaders, progress) {
             }
         ];
 
-        console.log("Uploading", url, files, headers);
+        console.groupCollapsed("File Upload");
+        console.log("Path", path, "URL", url);
+        console.log("Files", files);
+        console.log("UserHeaders", userHeaders);
+        console.log("FinalHeaders", headers);
+        console.groupEnd();
 
         const options = {
             toUrl: url,
@@ -74,8 +77,8 @@ export function uploadFile(relativePath, userHeaders, progress) {
             }
         };
 
-        return RNFS.uploadFiles(options).promise
-            .then(response => {
+        return RNFS.uploadFiles(options)
+            .promise.then(response => {
                 const now = new Date();
                 progress({
                     type: Types.DOWNLOAD_FILE_DONE,

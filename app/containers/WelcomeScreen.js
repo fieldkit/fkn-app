@@ -8,7 +8,7 @@ import i18n from "../internationalization/i18n";
 
 import { AppScreen, MenuButtonContainer, MenuButton } from "../components";
 
-import { initialize, navigateConnecting, browseDirectory, navigateBrowser, navigateEasyModeWelcome, navigateAbout, navigateMap, deviceStartConnect, deviceStopConnect, deleteAllLocalFiles, archiveAllLocalFiles } from "../actions";
+import { initialize, navigateConnecting, browseDirectory, navigateBrowser, navigateEasyModeWelcome, navigateAbout, navigateMap, deviceStartConnect, deviceStopConnect, deleteAllLocalFiles, archiveAllLocalFiles, uploadLogs } from "../actions";
 
 import styles from "../styles";
 
@@ -23,7 +23,7 @@ class WelcomeScreen extends React.Component {
     }
 
     render() {
-        const { navigateConnecting, browseDirectory, navigateEasyModeWelcome, navigateMap, navigateAbout, deleteAllLocalFiles, archiveAllLocalFiles } = this.props;
+        const { navigateConnecting, browseDirectory, navigateEasyModeWelcome, navigateMap, navigateAbout, deleteAllLocalFiles, archiveAllLocalFiles, uploadLogs } = this.props;
 
         return (
             <AppScreen backgroundStyle={{ height: "100%" }}>
@@ -39,6 +39,7 @@ class WelcomeScreen extends React.Component {
                     <MenuButton title={i18n.t("welcome.mode")} onPress={() => navigateEasyModeWelcome()} />
                     <MenuButton title={i18n.t("welcome.connect")} onPress={() => navigateConnecting()} />
                     <MenuButton title={i18n.t("welcome.browser")} onPress={() => browseDirectory("/")} />
+                    <MenuButton title={i18n.t("welcome.uploadLogs")} onPress={() => uploadLogs()} />
                     {false && <MenuButton title={i18n.t("welcome.map")} onPress={() => navigateMap()} />}
                     {false && <MenuButton title={i18n.t("welcome.deleteAll")} onPress={() => deleteAllLocalFiles()} />}
                     {false && <MenuButton title={i18n.t("welcome.archiveAll")} onPress={() => archiveAllLocalFiles()} />}
@@ -56,7 +57,8 @@ WelcomeScreen.propTypes = {
     navigateEasyModeWelcome: PropTypes.func.isRequired,
     navigateAbout: PropTypes.func.isRequired,
     navigateMap: PropTypes.func.isRequired,
-    deviceStartConnect: PropTypes.func.isRequired
+    deviceStartConnect: PropTypes.func.isRequired,
+    uploadLogs: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({});
@@ -72,6 +74,7 @@ export default connect(
         browseDirectory,
         deviceStartConnect,
         deleteAllLocalFiles,
-        archiveAllLocalFiles
+        archiveAllLocalFiles,
+        uploadLogs
     }
 )(WelcomeScreen);

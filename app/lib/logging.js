@@ -9,57 +9,71 @@ import { DataRecord } from "./protocol";
 
 import { hexArrayBuffer, arrayBufferToBase64 } from "./base64";
 
-import { resolveDataDirectoryPath } from "./downloading";
+import { getDirectory, resolveDataDirectoryPath } from "./downloading";
 
 const logs = [];
 
 function activePath() {
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
-        return dataDirectoryPath + "/app-logs.txt";
+        return dataDirectoryPath + "/app-logs.fkpb";
     });
 }
 
 function rolloverPath() {
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
         const stamp = moment(new Date()).format("YYYYMMDD_HHmmss");
-        return dataDirectoryPath + "/app-logs." + stamp + ".txt";
+        return dataDirectoryPath + "/app-logs." + stamp + ".fkpb";
     });
 }
 
-function rollover(fileInfo) {
+export function getArchivedLogs() {
+    return getDirectory("/").then(dir => {
+        return _(dir.listing)
+            .filter(fe => {
+                const re = /^(app-logs)\.(\d+_\d+)\.fkpb$/;
+                const m = fe.name.match(re);
+                return m != null;
+            })
+            .sortBy(fe => fe.mtime)
+            .reverse()
+            .value();
+    });
+}
+
+function deleteFiles(files) {
+    return _(files).reduce((promise, file) => {
+        return promise.then(values => {
+            console.log("Deleting", file.path);
+            return RNFS.unlink(file.path).then(value => {
+                return [...values, ...[file]];
+            });
+        });
+    }, Promise.resolve([]));
+}
+
+export function deleteArchivedLogs() {
+    return getArchivedLogs().then(files => deleteFiles(files));
+}
+
+export function rollover(deleteOld) {
     return activePath().then(activePath => {
         return rolloverPath()
             .then(rolloverPath => {
-                console.log("Rolling Over", activePath, rolloverPath, fileInfo.size);
+                console.log("Rolling Over", activePath, rolloverPath);
                 return RNFS.moveFile(activePath, rolloverPath);
             })
             .then(() => {
-                return resolveDataDirectoryPath();
+                return getArchivedLogs();
             })
-            .then(dataDirectoryPath => {
-                return RNFS.readDir(dataDirectoryPath);
-            })
-            .then(dir => {
-                return _(dir)
-                    .filter(fe => {
-                        const re = /^(.+)\.(\d+_\d+)\.txt$/;
-                        const m = fe.name.match(re);
-                        return m != null;
-                    })
-                    .sortBy(fe => fe.mtime)
-                    .reverse()
-                    .drop(10)
-                    .reduce((promise, file) => {
-                        return promise.then(values => {
-                            return RNFS.unlink(file.path).then(value => {
-                                return [...values, ...[file]];
-                            });
-                        });
-                    }, Promise.resolve([]));
-            })
-            .then(deleted => {
-                console.log("Deleted", deleted);
-                return deleted;
+            .then(files => {
+                if (deleteOld === false) {
+                    return [];
+                }
+                return deleteFiles(
+                    _(files)
+                        .drop(10)
+                        .value()
+                );
             });
     });
 }
@@ -94,10 +108,7 @@ function flush() {
                     })
                     .then(fileInfo => {
                         if (fileInfo.size > 1 * 1024 * 1024) {
-                            return rollover(fileInfo);
-                        }
-                        if (false && fileInfo.size > 10 * 1024) {
-                            return rollover(fileInfo);
+                            return rollover(true);
                         }
                         return Promise.resolve();
                     });

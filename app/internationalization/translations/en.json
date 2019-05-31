@@ -5,6 +5,7 @@
         "connect": "Connect",
         "browser": "Browser",
         "mode": "Easy Mode",
+        "uploadLogs": "Upload Logs",
         "map": "Map",
         "deleteAll": "Delete All",
         "archiveAll": "Archive All",

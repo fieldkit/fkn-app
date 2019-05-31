@@ -34,6 +34,75 @@ export function resolveDataDirectoryPath() {
     return createDataDirectoryPath();
 }
 
+function toDisplayModel(entry) {
+    if (entry.directory) {
+        return entry;
+    }
+
+    const info = Files.getFileInformation(entry);
+    if (!_.isObject(info)) {
+        return entry;
+    }
+
+    return {
+        name: info.name,
+        path: entry.path,
+        relativePath: entry.relativePath,
+        size: entry.size,
+        created: entry.created,
+        modified: entry.modified,
+        modifiedPretty: entry.modifiedPretty,
+        directory: entry.directory
+    };
+}
+
+export function getDirectory(relativePath) {
+    return resolveDataDirectoryPath().then(dataDirectoryPath => {
+        const path = dataDirectoryPath + relativePath;
+        const actual = path.replace(/\/$/, "");
+
+        return RNFS.stat(actual).then(info => {
+            if (info.isFile()) {
+                return {
+                    type: Types.NOOP,
+                    path: path
+                };
+            }
+
+            function toEntry(e) {
+                const modifiedPretty = moment(e.mtime).format("MMM D YYYY h:mm:ss");
+
+                return {
+                    name: e.name,
+                    path: e.path,
+                    relativePath: e.path.replace(dataDirectoryPath, ""),
+                    size: e.size,
+                    created: e.ctime,
+                    modified: e.mtime,
+                    modifiedPretty: modifiedPretty,
+                    directory: e.isDirectory()
+                };
+            }
+
+            return RNFS.readDir(actual).then(res => {
+                const listing = _(res)
+                    .map(toEntry)
+                    .map(toDisplayModel)
+                    .sortBy(o => o.modified)
+                    .reverse()
+                    .value();
+
+                return {
+                    type: Types.LOCAL_FILES_BROWSE,
+                    relativePath: relativePath,
+                    path: path,
+                    listing: listing
+                };
+            });
+        });
+    });
+}
+
 export function openWriter(device, file, settings, dispatch) {
     return resolveDataDirectoryPath().then(dataDirectoryPath => {
         return Promise.resolve(new DownloadWriter(dataDirectoryPath, device, file, settings, dispatch)).then(writer => {
