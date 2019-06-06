@@ -303,6 +303,7 @@ class EasyModeScreen extends React.Component {
 
     renderMenu() {
         const { easyMode, executePlan, navigateWelcome, navigateEditDeviceName, configureName } = this.props;
+        console.log(easyMode);
         return (
             <ScrollView style={{ flex: 1, alignSelf: "stretch" }}>
                 <DeviceOptions easyMode={easyMode} executePlan={executePlan} navigateEditDeviceName={navigateEditDeviceName} configureName={configureName} />

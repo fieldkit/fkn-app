@@ -47,6 +47,8 @@ class EditDeviceName extends React.Component {
 
     render() {
         const { deviceId, navigateEasyModeWelcome, address } = this.props;
+        console.log(deviceId);
+        console.log(address);
         return (
             <View>
                 <View style={{ paddingTop: 20, paddingBottom: 10 }}>
@@ -71,6 +73,7 @@ EditDeviceName.propTypes = {
 
 const mapStateToProps = state => {
     const route = state.nav.routes[state.nav.index];
+    console.log("this is state.nav", state.nav);
     return {
         deviceId: route.params ? route.params.deviceId : "",
         address: route.params ? route.params.address : null
