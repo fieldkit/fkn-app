@@ -16,6 +16,12 @@ function keyMirror(keys) {
 // You are trying to `import` a file after the Jest environment has been torn down.
 jest.useFakeTimers();
 
+NativeModules.ReactNativePermissions = {
+    getPermissionStatus: () => {
+        return Promise.resolve({});
+    }
+};
+
 NativeModules.RNLanguages = {
     language: null,
     languages: null

@@ -364,6 +364,7 @@ function getSingleDevice(state) {
 }
 
 const mapStateToProps = state => {
+    console.log("easy mode state", state);
     return {
         easyMode: {
             busy: !state.progress.task.done,

@@ -26,9 +26,12 @@ class EditDeviceName extends React.Component {
         return { title: "Edit Device Name" };
     };
 
-    state = {
-        deviceName: ""
-    };
+    constructor() {
+        super();
+        this.state = {
+            deviceName: ""
+        };
+    }
 
     _addData = async (deviceId, text, address) => {
         if (text == "") {
@@ -72,8 +75,8 @@ EditDeviceName.propTypes = {
 };
 
 const mapStateToProps = state => {
+    console.log("this is state for device options", state);
     const route = state.nav.routes[state.nav.index];
-    console.log("this is state.nav", state.nav);
     return {
         deviceId: route.params ? route.params.deviceId : "",
         address: route.params ? route.params.address : null
