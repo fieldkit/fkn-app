@@ -37,7 +37,7 @@ describe("<EditDeviceName/>", () => {
         test("renders the component", () => {
             const wrapper = shallow(<EditDeviceName store={store} />);
             const component = wrapper.dive();
-            //expect(toJson(component)).toMatchSnapshot();
+            expect(toJson(component)).toMatchSnapshot();
         });
     });
 });

@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EditDeviceName/> render() renders the component 1`] = `
+<Component>
+  <Component
+    style={
+      Object {
+        "paddingBottom": 10,
+        "paddingTop": 20,
+      }
+    }
+  >
+    <TextInput
+      allowFontScaling={true}
+      onChangeText={[Function]}
+      placeholder="Device Name"
+      style={
+        Object {
+          "borderColor": "gray",
+          "borderWidth": 1,
+          "height": 40,
+        }
+      }
+      underlineColorAndroid="transparent"
+    />
+  </Component>
+  <Component
+    style={
+      Object {
+        "paddingBottom": 10,
+        "paddingLeft": 10,
+        "paddingRight": 10,
+      }
+    }
+  >
+    <Button
+      onPress={[Function]}
+      title="Save"
+    />
+  </Component>
+  <Component
+    style={
+      Object {
+        "paddingLeft": 10,
+        "paddingRight": 10,
+      }
+    }
+  >
+    <Button
+      onPress={[Function]}
+      title="Cancel"
+    />
+  </Component>
+</Component>
+`;
