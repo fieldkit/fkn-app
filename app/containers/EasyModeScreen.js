@@ -3,7 +3,7 @@ import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { View, Text, Image, Button, TextInput, ScrollView, AsyncStorage } from "react-native";
+import { View, Text, Image, TextInput, ScrollView, AsyncStorage } from "react-native";
 
 import KeepAwake from "react-native-keep-awake";
 
@@ -15,7 +15,7 @@ import { hexArrayBuffer, arrayBufferToBase64 } from "../lib/base64";
 import * as Files from "../lib/files";
 import { AppPermissions } from "../lib/permissions";
 
-import { AppScreen } from "../components";
+import { AppScreen, Button } from "../components";
 
 import { navigateWelcome, navigateEditDeviceName, deviceStartConnect, findAllFiles, executePlan, deleteAllLocalFiles, archiveAllLocalFiles, configureName } from "../actions";
 
@@ -25,8 +25,7 @@ import styles from "../styles";
 
 const textPanelStyle = {
     padding: 10,
-    textAlign: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.7)"
+    textAlign: "center"
 };
 
 const textStyle = {
@@ -85,7 +84,7 @@ class UploadQueueOptions extends React.Component {
 
         if (numberOfFiles == 0) {
             return (
-                <View style={textPanelStyle}>
+                <View>
                     <Text style={textStyle}>{i18n.t("easyMode.noPendingFiles")}</Text>
                 </View>
             );
@@ -107,7 +106,7 @@ class UploadQueueOptions extends React.Component {
 
         return (
             <View>
-                <View style={textPanelStyle}>
+                <View>
                     <Text style={textStyle}>
                         {i18n.t("easyMode.pendingFiles", {
                             numberOfFiles: numberOfFiles,
@@ -194,6 +193,7 @@ class DeviceOptions extends React.Component {
                 );
             }
         }
+        console.log(numberOfDevices);
 
         if (numberOfDevices == 1 && _.toString(this.state.recognizedDevice) != "") {
             return (
@@ -256,6 +256,11 @@ class DeviceOptions extends React.Component {
                         estimatedDownload: estimatedDownload
                     })}
                 </Text>
+                <View style={textPanelStyle}>
+                    <Text style={{ textAlign: "center" }}>1. Press button on device</Text>
+                    <Text style={{ textAlign: "center" }}>2. Go to your Wifi settings on your phone</Text>
+                    <Text style={{ textAlign: "center" }}>3. Select your FieldKit device to connect</Text>
+                </View>
                 <View
                     style={{
                         paddingLeft: 10,

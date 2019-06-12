@@ -6,11 +6,14 @@ import RNLanguages from "react-native-languages";
 
 import i18n from "../internationalization/i18n";
 
-import { BackgroundView } from "./BackgroundView";
+// import { BackgroundView } from "./BackgroundView";
 
 import ProgressHeader from "../containers/ProgressHeader";
 
 import styles from "../styles";
+
+//<View style={[styles.mainView, style]}>
+//const { style, background, backgroundStyle } = this.props;
 
 export class AppScreen extends React.Component {
     componentWillMount() {
@@ -40,10 +43,8 @@ export class AppScreen extends React.Component {
 
         return (
             <View style={styles.mainView}>
-                <BackgroundView style={backgroundStyle}>
-                    <ProgressHeader />
-                    {children}
-                </BackgroundView>
+                <ProgressHeader />
+                {children}
             </View>
         );
     }

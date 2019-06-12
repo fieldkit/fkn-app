@@ -12,6 +12,15 @@ import { initialize, navigateConnecting, browseDirectory, navigateBrowser, navig
 
 import styles from "../styles";
 
+const buttonStyle = {
+    backgroundColor: "#CE596B",
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 5
+    // flex: 1,
+    // justifyContent: "flex-end"
+};
+
 class WelcomeScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return { title: i18n.t("welcome.title") };

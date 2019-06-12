@@ -3,7 +3,7 @@ import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { View, Text, Image, Button, TextInput, ScrollView, AsyncStorage, Modal } from "react-native";
+import { View, Text, Image, TextInput, ScrollView, AsyncStorage, Modal } from "react-native";
 
 import { StackNavigator, addNavigationHelpers } from "react-navigation";
 
@@ -15,7 +15,7 @@ import { Toasts } from "../lib/toasts";
 import { hexArrayBuffer, arrayBufferToBase64 } from "../lib/base64";
 
 import * as Files from "../lib/files";
-import { AppScreen } from "../components";
+import { AppScreen, Button } from "../components";
 
 import { navigateEasyModeWelcome, findAllFiles, executePlan, deviceStartConnect, deleteAllLocalFiles, archiveAllLocalFiles, navigateWelcome, configureName } from "../actions";
 

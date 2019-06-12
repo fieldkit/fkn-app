@@ -1,6 +1,5 @@
 const colors = {
-    defaultBackground: "#efefef",
-    secondaryButton: "darkblue"
+    defaultBackground: "#ffffff"
 };
 
 export const Colors = colors;
@@ -21,6 +20,9 @@ export default {
     },
     menuButton: {
         height: 75
+    },
+    menuButton: {
+        color: "#000000"
     },
     connecting: {
         cancel: {},

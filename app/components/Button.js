@@ -170,10 +170,10 @@ const styles = StyleSheet.create({
             borderRadius: 2
         },
         android: {
-            elevation: 4,
-            // Material design blue from https://material.google.com/style/color.html#color-color-palette
-            backgroundColor: "#2196F3",
-            borderRadius: 2
+            backgroundColor: "#CE596B",
+            alignItems: "center",
+            borderRadius: 5,
+            margin: 10
         }
     }),
     text: {
