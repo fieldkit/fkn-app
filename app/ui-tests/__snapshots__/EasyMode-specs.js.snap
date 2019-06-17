@@ -9,19 +9,28 @@ exports[`<DeviceOptions/> render() renders the component 1`] = `
   }
 >
   <Component
-    source={
-      Object {
-        "testUri": "../../../assets/fk-header.png",
-      }
-    }
     style={
       Object {
-        "height": 200,
-        "resizeMode": "contain",
-        "width": "100%",
+        "alignItems": "center",
+        "justifyContent": "center",
       }
     }
-  />
+  >
+    <Component
+      source={
+        Object {
+          "testUri": "../../../assets/FieldKit_Logo_blue.png",
+        }
+      }
+      style={
+        Object {
+          "height": 100,
+          "resizeMode": "contain",
+          "width": "50%",
+        }
+      }
+    />
+  </Component>
   <ScrollView
     style={
       Object {
@@ -30,13 +39,67 @@ exports[`<DeviceOptions/> render() renders the component 1`] = `
       }
     }
   >
-    <DeviceOptions
-      configureName={[Function]}
-      easyMode={
+    <Component
+      style={
         Object {
-          "busy": false,
-          "devices": Object {
-            "192.168.2.1": Object {
+          "shadowColor": "DidFinishRenderingFrameFully",
+          "shadowOpacity": 0.5,
+          "shadowRadius": 20,
+        }
+      }
+    >
+      <DeviceOptions
+        configureName={[Function]}
+        easyMode={
+          Object {
+            "busy": false,
+            "devices": Object {
+              "192.168.2.1": Object {
+                "address": Object {
+                  "host": "",
+                  "key": "",
+                  "port": 54321,
+                  "valid": true,
+                },
+                "capabilities": Object {
+                  "deviceId": Array [
+                    0,
+                    4,
+                    163,
+                    11,
+                    0,
+                    35,
+                    48,
+                    141,
+                  ],
+                  "modules": Array [
+                    Object {
+                      "name": "FkNat",
+                    },
+                  ],
+                },
+              },
+            },
+            "networkConfiguration": Object {
+              "internet": Object {
+                "info": Object {
+                  "effectiveType": "unknown",
+                  "type": "wifi",
+                },
+                "online": true,
+                "timestamp": "Mon Jun 10 2019 13:40:41 GMT-0700 (Pacific Daylight Time)",
+                "type": "INTERNET_ONLINE",
+              },
+              "network": Object {
+                "deviceAp": false,
+                "ssid": "FK-AASjCwAjMI0",
+              },
+            },
+            "plans": Object {
+              "download": Array [],
+              "upload": Array [],
+            },
+            "singleDevice": Object {
               "address": Object {
                 "host": "",
                 "key": "",
@@ -61,56 +124,12 @@ exports[`<DeviceOptions/> render() renders the component 1`] = `
                 ],
               },
             },
-          },
-          "networkConfiguration": Object {
-            "internet": Object {
-              "info": Object {
-                "effectiveType": "unknown",
-                "type": "wifi",
-              },
-              "online": true,
-              "timestamp": "Mon Jun 10 2019 13:40:41 GMT-0700 (Pacific Daylight Time)",
-              "type": "INTERNET_ONLINE",
-            },
-            "network": Object {
-              "deviceAp": false,
-              "ssid": "FK-AASjCwAjMI0",
-            },
-          },
-          "plans": Object {
-            "download": Array [],
-            "upload": Array [],
-          },
-          "singleDevice": Object {
-            "address": Object {
-              "host": "",
-              "key": "",
-              "port": 54321,
-              "valid": true,
-            },
-            "capabilities": Object {
-              "deviceId": Array [
-                0,
-                4,
-                163,
-                11,
-                0,
-                35,
-                48,
-                141,
-              ],
-              "modules": Array [
-                Object {
-                  "name": "FkNat",
-                },
-              ],
-            },
-          },
+          }
         }
-      }
-      executePlan={[Function]}
-      navigateEditDeviceName={[Function]}
-    />
+        executePlan={[Function]}
+        navigateEditDeviceName={[Function]}
+      />
+    </Component>
     <UploadQueueOptions
       easyMode={
         Object {
@@ -190,31 +209,6 @@ exports[`<DeviceOptions/> render() renders the component 1`] = `
       }
       executePlan={[Function]}
     />
-    <Component
-      style={
-        Object {
-          "flex": 1,
-          "justifyContent": "flex-end",
-          "marginBottom": 20,
-        }
-      }
-    >
-      <Component
-        style={
-          Object {
-            "bottom": 0,
-            "paddingLeft": 10,
-            "paddingRight": 10,
-            "width": "100%",
-          }
-        }
-      >
-        <Button
-          onPress={[Function]}
-          title="Advanced Options"
-        />
-      </Component>
-    </Component>
   </ScrollView>
 </AppScreen>
 `;

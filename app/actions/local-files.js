@@ -16,6 +16,8 @@ import { navigateBrowser, navigateLocalFile, navigateOpenFile, navigateDataMap }
 
 import { rollover, getArchivedLogs, deleteArchivedLogs } from "../lib/logging";
 
+import Config from "../config";
+
 function walkDirectory(relativePath, dispatch, callback) {
     return getDirectory(relativePath).then(action => {
         return callback(action.listing).then(() => {
@@ -203,14 +205,11 @@ export function uploadLocalFile(relativePath) {
             dispatch(action);
         }
 
-        console.log("Uploading", relativePath);
         return getDirectory(Files.getParentPath(relativePath)).then(files => {
             const fileEntry = _(files.listing)
                 .filter(entry => entry.relativePath === relativePath)
                 .first();
-            console.log("FileEntry", fileEntry);
             const fileInfo = Files.getFileInformation(fileEntry);
-            console.log("FileInfo", fileInfo);
             const headers = getHeaders(fileInfo);
             return uploadFile(relativePath, headers, progress);
         });
@@ -221,29 +220,72 @@ export function uploadLogs() {
     return dispatch => {
         function getHeaders(fileInfo) {
             return {
-                deviceId: "f0b18e27-b22c-4efd-aa4f-fc6ebb6e13b3",
+                fileId: "6",
+                deviceId: Config.logsDeviceId,
                 fileName: "app-logs.fkpb",
                 uploadName: fileInfo.name
             };
         }
 
-        function progress(action) {
-            dispatch(action);
+        function progress(files, action) {
+            const active = _(files)
+                .filter(f => f.relativePath == action.download.relativePath)
+                .first();
+
+            if (action.download.done) {
+                active.progress = {
+                    bytesRead: active.size
+                };
+            } else {
+                active.progress = {
+                    bytesRead: action.download.bytesRead
+                };
+            }
+
+            const total = _(files)
+                .map(f => f.size)
+                .sum();
+            const uploaded = _(files)
+                .map(f => f.progress || { bytesRead: 0 })
+                .map(f => f.bytesRead)
+                .sum();
+
+            dispatch({
+                type: total === uploaded ? Types.DOWNLOAD_FILE_DONE : Types.DOWNLOAD_FILE_PROGRESS,
+                download: {
+                    done: false,
+                    cancelable: false,
+                    bytesTotal: total,
+                    bytesRead: uploaded,
+                    progress: uploaded / total,
+                    started: 0,
+                    elapsed: 0
+                }
+            });
         }
 
         return rollover()
             .then(() => getArchivedLogs())
             .then(files => {
-                return _(files)
-                    .reverse()
-                    .reduce((promise, file) => {
-                        return promise.then(values => {
-                            return uploadFile(file.relativePath, getHeaders(file), progress).then(value => {
-                                return [...values, ...[file]];
-                            });
+                return _(files).reduce((promise, file) => {
+                    return promise.then(values => {
+                        return uploadFile(file.relativePath, getHeaders(file), update => progress(files, update)).then(value => {
+                            return [...values, ...[file]];
                         });
-                    }, Promise.resolve([]));
+                    });
+                }, Promise.resolve([]));
             })
-            .then(files => console.log(files));
+            .then(files => console.log(files))
+            .then(() => {
+                console.log("DONE");
+                dispatch({
+                    type: Types.DOWNLOAD_FILE_DONE,
+                    download: {
+                        done: true,
+                        progress: 1.0,
+                        cancelable: false
+                    }
+                });
+            });
     };
 }

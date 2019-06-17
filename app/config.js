@@ -25,6 +25,7 @@ const configs = {
         deviceHandshakeInterval: 40 * 1000,
         deviceExpireInterval: 5 * 1000,
         pingDeviceInterval: 500,
+        logsDeviceId: "f0b18e27-b22c-4efd-aa4f-fc6ebb6e13b3",
         deviceFilter: device => {
             return true;
         }
@@ -41,6 +42,7 @@ const configs = {
         deviceHandshakeInterval: 40 * 1000,
         deviceExpireInterval: 21 * 1000,
         pingDeviceInterval: 10 * 1000,
+        logsDeviceId: "f0b18e27-b22c-4efd-aa4f-fc6ebb6e13b3",
         deviceFilter: device => {
             return true;
         }
@@ -57,6 +59,7 @@ const configs = {
         deviceHandshakeInterval: 40 * 1000,
         deviceExpireInterval: 21 * 1000,
         pingDeviceInterval: 10 * 1000,
+        logsDeviceId: "35c96e02-3879-434d-855d-50bb9300ff77",
         deviceFilter: device => {
             return true;
         }
@@ -73,6 +76,7 @@ const configs = {
         deviceHandshakeInterval: 40 * 1000,
         deviceExpireInterval: 21 * 1000,
         pingDeviceInterval: 10 * 1000,
+        logsDeviceId: "f0b18e27-b22c-4efd-aa4f-fc6ebb6e13b3",
         deviceFilter: device => {
             return true;
         }
