@@ -55,27 +55,28 @@ class UploadQueueOptions extends React.Component {
                 .flatten()
                 .value()
         );
-        try {
-            AsyncStorage.getAllKeys((err, keys) => {
-                AsyncStorage.multiGet(keys, (err, stores) => {
-                    stores.map((result, i, store) => {
-                        fetch(Config.baseUri + "/devices/" + store[i][0], {
-                            method: "POST",
-                            headers: {
-                                Accept: "application/json",
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                deviceId: store[i][0],
-                                name: store[i][1]
-                            })
+        if (false)
+            try {
+                AsyncStorage.getAllKeys((err, keys) => {
+                    AsyncStorage.multiGet(keys, (err, stores) => {
+                        stores.map((result, i, store) => {
+                            fetch(Config.baseUri + "/devices/" + store[i][0], {
+                                method: "POST",
+                                headers: {
+                                    Accept: "application/json",
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    deviceId: store[i][0],
+                                    name: store[i][1]
+                                })
+                            });
                         });
                     });
                 });
-            });
-        } catch (error) {
-            console.log(error);
-        }
+            } catch (error) {
+                console.log(error);
+            }
     }
 
     render() {
@@ -180,7 +181,6 @@ class DeviceOptions extends React.Component {
     }
 
     render() {
-        console.log(this.state.modalVisible);
         const { easyMode, navigateEditDeviceName } = this.props;
         const { downloads } = easyMode.plans;
         const numberOfDevices = _.size(easyMode.devices);

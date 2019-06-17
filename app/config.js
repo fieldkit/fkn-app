@@ -15,7 +15,7 @@ const build = {
 const configs = {
     test: {
         build: build,
-        baseUri: "http://api.fkdev.org",
+        baseUri: "https://api.fkdev.org",
         welcomeRoute: "/",
         serviceDiscoveryOnStartup: false,
         discoveryQueryFilesAndStatus: false,
@@ -32,7 +32,7 @@ const configs = {
     },
     dev: {
         build: build,
-        baseUri: "http://api.fkdev.org",
+        baseUri: "https://api.fkdev.org",
         welcomeRoute: "/easy-mode",
         serviceDiscoveryOnStartup: true,
         discoveryQueryFilesAndStatus: true,
@@ -49,7 +49,7 @@ const configs = {
     },
     release: {
         build: build,
-        baseUri: "http://api.fkdev.org",
+        baseUri: "https://api.fkdev.org",
         welcomeRoute: "/easy-mode",
         serviceDiscoveryOnStartup: true,
         discoveryQueryFilesAndStatus: false,
@@ -66,7 +66,7 @@ const configs = {
     },
     easyMode: {
         build: build,
-        baseUri: "http://api.fkdev.org",
+        baseUri: "https://api.fkdev.org",
         welcomeRoute: "/easy-mode",
         serviceDiscoveryOnStartup: true,
         discoveryQueryFilesAndStatus: true,
