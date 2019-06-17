@@ -3,7 +3,7 @@ import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { View, Text, Image, TextInput, ScrollView, AsyncStorage } from "react-native";
+import { View, Text, Image, TextInput, ScrollView, AsyncStorage, Modal } from "react-native";
 
 import KeepAwake from "react-native-keep-awake";
 
@@ -23,13 +23,24 @@ import Config from "../config";
 
 import styles from "../styles";
 
+// <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: 20 }}>
+//   <View>
+//     <Button
+//       title={i18n.t("easyMode.advanced")}
+//       onPress={() => navigateWelcome()}
+//     />
+//   </View>
+// </View>
+
 const textPanelStyle = {
-    padding: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
     textAlign: "center"
 };
 
 const textStyle = {
     padding: 10,
+    fontSize: 15,
     textAlign: "center"
 };
 
@@ -124,7 +135,8 @@ class UploadQueueOptions extends React.Component {
 
 class DeviceOptions extends React.Component {
     state = {
-        recognizedDevice: ""
+        recognizedDevice: "",
+        modalVisible: false
     };
 
     componentDidMount = async () => {
@@ -168,6 +180,7 @@ class DeviceOptions extends React.Component {
     }
 
     render() {
+        console.log(this.state.modalVisible);
         const { easyMode, navigateEditDeviceName } = this.props;
         const { downloads } = easyMode.plans;
         const numberOfDevices = _.size(easyMode.devices);
@@ -181,8 +194,80 @@ class DeviceOptions extends React.Component {
         if (numberOfDevices == 0 || !_.isArray(downloads) || downloads.length == 0) {
             if (!easyMode.networkConfiguration.deviceAp) {
                 return (
-                    <View style={textPanelStyle}>
-                        <Text style={textStyle}>{i18n.t("easyMode.noDevicesConnect")}</Text>
+                    <View>
+                        <View style={{ justifyContent: "center", alignItems: "center" }} />
+                        <Image
+                            source={require("../../assets/fogg-no-comments.png")}
+                            style={{
+                                resizeMode: "contain",
+                                width: "100%",
+                                height: 250
+                            }}
+                        />
+                        <View style={textPanelStyle}>
+                            <Text style={textStyle}>{i18n.t("easyMode.noDevicesConnect")}</Text>
+                        </View>
+                        <Button
+                            onPress={() => {
+                                this.setState({ modalVisible: !this.state.modalVisible });
+                            }}
+                            title="Connect Device Guide"
+                        />
+                        <Modal
+                            animationType="slide"
+                            transparent={false}
+                            visible={this.state.modalVisible}
+                            onRequestClose={() => {
+                                Alert.alert("Modal has been closed.");
+                            }}
+                        >
+                            <View style={textPanelStyle}>
+                                <Text
+                                    style={{
+                                        paddingTop: 20,
+                                        paddingLeft: 10,
+                                        paddingBottom: 20,
+                                        fontSize: 30,
+                                        fontWeight: "bold"
+                                    }}
+                                >
+                                    Connect to Your Fieldkit
+                                </Text>
+                                <Text
+                                    style={{
+                                        fontSize: 18,
+                                        paddingLeft: 10,
+                                        paddingBottom: 20
+                                    }}
+                                >
+                                    1. Press button on device
+                                </Text>
+                                <Text
+                                    style={{
+                                        fontSize: 18,
+                                        paddingLeft: 10,
+                                        paddingBottom: 20
+                                    }}
+                                >
+                                    2. Go to your Wifi settings on your phone
+                                </Text>
+                                <Text
+                                    style={{
+                                        fontSize: 18,
+                                        paddingLeft: 10,
+                                        paddingBottom: 40
+                                    }}
+                                >
+                                    3. Select your FieldKit device to connect
+                                </Text>
+                                <Button
+                                    onPress={() => {
+                                        this.setState({ modalVisible: !this.state.modalVisible });
+                                    }}
+                                    title="Done"
+                                />
+                            </View>
+                        </Modal>
                     </View>
                 );
             } else {
@@ -193,7 +278,6 @@ class DeviceOptions extends React.Component {
                 );
             }
         }
-        console.log(numberOfDevices);
 
         if (numberOfDevices == 1 && _.toString(this.state.recognizedDevice) != "") {
             return (
@@ -277,8 +361,8 @@ class DeviceOptions extends React.Component {
 }
 
 class EasyModeScreen extends React.Component {
-    static navigationOptions = ({ navigation }) => {
-        return { title: i18n.t("easyMode.title") };
+    static navigationOptions = {
+        header: null
     };
 
     componentDidMount() {
@@ -308,24 +392,19 @@ class EasyModeScreen extends React.Component {
 
     renderMenu() {
         const { easyMode, executePlan, navigateWelcome, navigateEditDeviceName, configureName } = this.props;
+
+        const shadowStyle = {
+            shadowOpacity: 0.5,
+            shadowRadius: 20,
+            shadowColor: "DidFinishRenderingFrameFully"
+        };
         return (
             <ScrollView style={{ flex: 1, alignSelf: "stretch" }}>
-                <DeviceOptions easyMode={easyMode} executePlan={executePlan} navigateEditDeviceName={navigateEditDeviceName} configureName={configureName} />
+                <View style={shadowStyle}>
+                    <DeviceOptions easyMode={easyMode} executePlan={executePlan} navigateEditDeviceName={navigateEditDeviceName} configureName={configureName} />
+                </View>
 
                 <UploadQueueOptions easyMode={easyMode} executePlan={executePlan} />
-
-                <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: 20 }}>
-                    <View
-                        style={{
-                            bottom: 0,
-                            paddingLeft: 10,
-                            paddingRight: 10,
-                            width: "100%"
-                        }}
-                    >
-                        <Button title={i18n.t("easyMode.advanced")} onPress={() => navigateWelcome()} />
-                    </View>
-                </View>
             </ScrollView>
         );
     }
@@ -334,14 +413,16 @@ class EasyModeScreen extends React.Component {
         const { easyMode } = this.props;
         return (
             <AppScreen backgroundStyle={{ height: "100%" }}>
-                <Image
-                    source={require("../../assets/fk-header.png")}
-                    style={{
-                        resizeMode: "contain",
-                        width: "100%",
-                        height: 200
-                    }}
-                />
+                <View style={{ justifyContent: "center", alignItems: "center" }}>
+                    <Image
+                        source={require("../../assets/FieldKit_Logo_blue.png")}
+                        style={{
+                            resizeMode: "contain",
+                            width: "50%",
+                            height: 100
+                        }}
+                    />
+                </View>
 
                 {easyMode.busy ? this.renderBusy() : this.renderMenu()}
             </AppScreen>

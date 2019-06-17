@@ -9,38 +9,56 @@ import Config from "../config";
 
 import { View, Text, Image } from "react-native";
 
-import { AppScreen, MenuButtonContainer, MenuButton } from "../components";
+import { AppScreen, MenuButtonContainer, Button } from "../components";
 
-import { navigateWelcome } from "../actions";
+import { navigateWelcome, uploadLogs } from "../actions";
+
+const textStyle = {
+    padding: 10,
+    textAlign: "center"
+};
 
 class AboutScreen extends React.Component {
-    static navigationOptions = ({ navigation }) => {
-        return { title: i18n.t("about.title") };
-    };
+    static navigationOptions = { header: null };
 
     render() {
         const { navigateWelcome } = this.props;
         return (
             <AppScreen>
-                <Image
-                    source={require("../../assets/fk-header.png")}
-                    style={{
-                        resizeMode: "contain",
-                        width: "100%",
-                        height: 200
-                    }}
-                />
-                <MenuButtonContainer>
-                    <MenuButton title={i18n.t("about.welcome")} onPress={() => navigateWelcome()} />
+                <View style={{ height: "91%" }}>
+                    <Text
+                        style={{
+                            fontSize: 30,
+                            fontWeight: "bold",
+                            paddingTop: 30,
+                            paddingBottom: 20,
+                            paddingLeft: 15
+                        }}
+                    >
+                        Monitor the world
+                    </Text>
+                    <Image
+                        source={require("../../assets/FieldkitAbout.jpg")}
+                        style={{
+                            resizeMode: "contain",
+                            width: "100%",
+                            height: 280
+                        }}
+                    />
                     <View>
-                        <Text style={{ fontWeight: "bold" }}>{i18n.t("about.commit")}</Text>
-                        <Text>{Config.build.gitCommit || "NA"}</Text>
-                        <Text style={{ fontWeight: "bold" }}>{i18n.t("about.tag")}</Text>
-                        <Text>{Config.build.buildTag || "NA"}</Text>
-                        <Text style={{ fontWeight: "bold" }}>{i18n.t("about.time")}</Text>
-                        <Text>{Config.build.buildTime || "NA"}</Text>
+                        <Text
+                            style={{
+                                fontSize: 15,
+                                paddingLeft: 15,
+                                paddingRight: 15,
+                                textAlign: "center"
+                            }}
+                        >
+                            Use Fieldkit's low-cost, reliable sensors and compatible tools to tell compelling stories with data.
+                        </Text>
+                        <Button title="Upload Logs" onPress={() => uploadLogs()} />
                     </View>
-                </MenuButtonContainer>
+                </View>
             </AppScreen>
         );
     }
@@ -55,6 +73,7 @@ const mapStateToProps = state => ({});
 export default connect(
     mapStateToProps,
     {
-        navigateWelcome
+        navigateWelcome,
+        uploadLogs
     }
 )(AboutScreen);

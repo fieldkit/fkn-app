@@ -1,6 +1,7 @@
 import _ from "lodash";
 
 import React from "react";
+import { View, Text } from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -12,8 +13,8 @@ import { AppScreen, DirectoryBrowser } from "../components";
 import { navigateBrowser, browseDirectory, browseFile } from "../actions";
 
 class BrowserScreen extends React.Component {
-    static navigationOptions = ({ navigation }) => {
-        return { title: i18n.t("browser.title") };
+    static navigationOptions = {
+        header: null
     };
 
     onSelectEntry(entry) {
@@ -29,7 +30,20 @@ class BrowserScreen extends React.Component {
 
         return (
             <AppScreen background={false}>
-                <DirectoryBrowser path={path} localFiles={localFiles} onSelectEntry={this.onSelectEntry.bind(this)} />
+                <View style={{ height: "91%" }}>
+                    <Text
+                        style={{
+                            fontSize: 30,
+                            fontWeight: "bold",
+                            paddingTop: 30,
+                            paddingBottom: 20,
+                            paddingLeft: 15
+                        }}
+                    >
+                        Browser
+                    </Text>
+                    <DirectoryBrowser path={path} localFiles={localFiles} onSelectEntry={this.onSelectEntry.bind(this)} />
+                </View>
             </AppScreen>
         );
     }

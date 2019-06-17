@@ -5,6 +5,7 @@ import { View } from "react-native";
 import RNLanguages from "react-native-languages";
 
 import i18n from "../internationalization/i18n";
+import Tab from "./tab-navigation";
 
 // import { BackgroundView } from "./BackgroundView";
 
@@ -32,19 +33,25 @@ export class AppScreen extends React.Component {
         const { style, background, backgroundStyle } = this.props;
         const { children } = this.props;
 
-        if (background === false) {
-            return (
-                <View style={[styles.mainView, style]}>
-                    <ProgressHeader />
-                    {children}
-                </View>
-            );
-        }
+        // if (background === false) {
+        //   return (
+        //     <View>
+        //       <View style={[styles.mainView, style]}>
+        //         <ProgressHeader />
+        //         {children}
+        //       </View>
+        //       <View style={{ justifyContent: "flex-end" }}>
+        //         <Tab />
+        //       </View>
+        //     </View>
+        //   );
+        // }
 
         return (
             <View style={styles.mainView}>
                 <ProgressHeader />
                 {children}
+                <Tab />
             </View>
         );
     }
