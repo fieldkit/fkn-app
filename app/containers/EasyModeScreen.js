@@ -44,7 +44,7 @@ const textStyle = {
     textAlign: "center"
 };
 
-class UploadQueueOptions extends React.Component {
+export class UploadQueueOptions extends React.Component {
     onSync() {
         const { easyMode, executePlan } = this.props;
         const { uploads } = easyMode.plans;
@@ -134,7 +134,7 @@ class UploadQueueOptions extends React.Component {
     }
 }
 
-class DeviceOptions extends React.Component {
+export class DeviceOptions extends React.Component {
     state = {
         recognizedDevice: "",
         modalVisible: false
