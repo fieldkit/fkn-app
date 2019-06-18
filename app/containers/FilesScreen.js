@@ -54,7 +54,7 @@ class FilesScreen extends React.Component {
                 <Text style={styles.file.details}>Size: {file.size}</Text>
                 <View style={{ flexDirection: "row" }}>
                     <SmallButton title={i18n.t("files.download")} onPress={() => startDownloadFile(file.id)} />
-                    <SmallButton title={i18n.t("files.delete")} onPress={() => deleteFile(file.id)} color="#E74C3C" />
+                    <SmallButton title={i18n.t("files.delete")} onPress={() => deleteFile(file.id)} />
                 </View>
             </View>
         );

@@ -1,5 +1,41 @@
+export const textStyle = {
+    textAlign: "center",
+    color: "#6B6D6F",
+    paddingLeft: 20,
+    paddingRight: 20,
+    fontSize: 15
+};
+
+export const title = {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#1B80C9",
+    paddingTop: 30,
+    paddingLeft: 20
+};
+export const subtitle = {
+    fontSize: 18,
+    color: "#1B80C9",
+    paddingBottom: 10,
+    fontWeight: "bold",
+    textAlign: "center"
+};
+
+export const cardWrapper = {
+    alignItems: "center",
+    paddingTop: 15,
+    boxShadow: "10px 10px grey"
+};
+export const cardStyle = {
+    backgroundColor: "white",
+    width: "90%",
+    padding: 20,
+    borderRadius: 10,
+    elevation: 7
+};
+
 const colors = {
-    defaultBackground: "#ffffff"
+    defaultBackground: "#F4F5F7"
 };
 
 export const Colors = colors;
@@ -22,7 +58,7 @@ export default {
         height: 75
     },
     menuButton: {
-        color: "#000000"
+        paddingBottom: 20
     },
     connecting: {
         cancel: {},
@@ -47,7 +83,7 @@ export default {
                 text: {
                     height: 40,
                     fontSize: 18,
-                    color: "black"
+                    color: "#6B6D6F"
                 }
             },
             path: {
@@ -61,18 +97,19 @@ export default {
                 text: {
                     fontSize: 20,
                     fontWeight: "bold",
-                    color: "black"
+                    color: "#1B80C9"
                 }
             },
             entry: {
                 container: {
                     paddingTop: 10,
                     paddingLeft: 20,
-                    paddingRight: 20
+                    paddingRight: 20,
+                    backgroundColor: "ffffff"
                 },
                 text: {
-                    fontSize: 18,
-                    color: "black"
+                    fontSize: 20,
+                    color: "#6B6D6F"
                 }
             }
         },

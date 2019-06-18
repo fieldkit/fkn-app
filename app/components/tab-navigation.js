@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import EasyModeScreen from "../containers/EasyModeScreen";
 import BrowserScreen from "../containers/BrowserScreen";
 import PropTypes from "prop-types";
@@ -7,23 +7,16 @@ import { connect } from "react-redux";
 
 import { navigateEasyModeWelcome, browseDirectory, navigateBrowser, navigateAbout } from "../actions";
 
-// Dummy Icon
-class Icon extends React.Component {
-    render() {
-        return <View />;
-    }
-}
-
 class Tab extends React.Component {
     render() {
         const { navigateEasyModeWelcome, browseDirectory, navigateAbout } = this.props;
         return (
             <View
                 style={{
+                    flex: 1,
                     justifyContent: "flex-end",
-                    paddingBottom: 2,
-                    paddingTop: 5,
-                    backgroundColor: "white"
+                    backgroundColor: "white",
+                    elevation: 4
                 }}
             >
                 <View
@@ -38,8 +31,15 @@ class Tab extends React.Component {
                                 navigateEasyModeWelcome();
                             }}
                         >
-                            <Icon name="home" />
-                            <Text> Sync </Text>
+                            <Image
+                                source={require("../../assets/Icon_sync_active3x.png")}
+                                style={{
+                                    resizeMode: "contain",
+                                    width: "100%",
+                                    height: 20
+                                }}
+                            />
+                            <Text style={{ color: "#6B6D6F" }}> Sync </Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: "column" }}>
@@ -48,8 +48,15 @@ class Tab extends React.Component {
                                 browseDirectory("/");
                             }}
                         >
-                            <Icon name="description" />
-                            <Text> Browser </Text>
+                            <Image
+                                source={require("../../assets/Icon_files_active3x.png")}
+                                style={{
+                                    resizeMode: "contain",
+                                    width: "100%",
+                                    height: 20
+                                }}
+                            />
+                            <Text style={{ color: "#6B6D6F" }}> Browser </Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: "column" }}>
@@ -58,8 +65,15 @@ class Tab extends React.Component {
                                 navigateAbout();
                             }}
                         >
-                            <Icon name="info" />
-                            <Text> About </Text>
+                            <Image
+                                source={require("../../assets/Icon_About_active3x.png")}
+                                style={{
+                                    resizeMode: "contain",
+                                    width: "100%",
+                                    height: 20
+                                }}
+                            />
+                            <Text style={{ color: "#6B6D6F" }}> About </Text>
                         </TouchableOpacity>
                     </View>
                 </View>

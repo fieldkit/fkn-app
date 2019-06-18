@@ -8,12 +8,12 @@ import RNLanguages from "react-native-languages";
 import i18n from "../internationalization/i18n";
 
 import * as Files from "../lib/files";
-import { Icon } from "react-native-elements";
 
-import { Text, View, TouchableOpacity, Row } from "react-native";
+import { Image, Text, View, TouchableOpacity, Row } from "react-native";
 import { AppScreen, Loading, FileMenu, MenuButton } from "../components";
 
 import { browseDirectory, openLocalFile, uploadLocalFile, deleteLocalFile, openDataMap, navigateBack } from "../actions";
+import { title } from "../styles";
 
 class LocalFileScreen extends React.Component {
     static navigationOptions = {
@@ -47,7 +47,7 @@ class LocalFileScreen extends React.Component {
         }
 
         return (
-            <AppScreen background={false}>
+            <AppScreen>
                 <View style={{ height: "90%" }}>
                     <View
                         style={{
@@ -61,7 +61,7 @@ class LocalFileScreen extends React.Component {
                                 browseDirectory("/");
                             }}
                         >
-                            <Icon name="arrow-back" />
+                            <Text style={{ color: "#1B80C9" }}> Back</Text>
                         </TouchableOpacity>
                     </View>
                     <FileMenu file={file} onOpenDataMap={this.onOpenDataMap.bind(this)} onOpen={this.onOpen.bind(this)} onUpload={this.onUpload.bind(this)} onDelete={this.onDelete.bind(this)} />

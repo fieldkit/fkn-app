@@ -10,6 +10,8 @@ import * as Files from "../lib/files";
 import { Loading } from "./Loading";
 import { MenuButtonContainer, MenuButton } from "./MenuButtons";
 
+import { textStyle, title, subtitle, cardWrapper, cardStyle } from "../styles";
+
 import styles from "../styles";
 
 export class DirectoryEntry extends React.Component {

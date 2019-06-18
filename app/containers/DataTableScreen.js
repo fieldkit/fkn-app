@@ -15,6 +15,7 @@ import { SmallButton, AppScreen, Loading } from "../components";
 import { navigateBack, queryFiles, deleteFile } from "../actions";
 
 import styles from "../styles";
+import { textStyle, title, subtitle, cardWrapper, cardStyle } from "../styles";
 
 //THIS IS THE FILE THAT TAKES DATA FROM THE DEVICE
 class DataRecordRow extends React.Component {
@@ -143,8 +144,8 @@ DataRecordListing.propTypes = {
 };
 
 class DataTableScreen extends React.Component {
-    static navigationOptions = ({ navigation }) => {
-        return { title: i18n.t("dataTable.title") };
+    static navigationOptions = {
+        header: null
     };
 
     render() {
@@ -152,6 +153,7 @@ class DataTableScreen extends React.Component {
 
         return (
             <AppScreen background={false}>
+                <Text style={title}>Data Table</Text>
                 <DataRecordListing records={records} />
             </AppScreen>
         );
