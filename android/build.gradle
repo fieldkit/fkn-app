@@ -31,7 +31,6 @@ allprojects {
     }
 }
 
-/*
 subprojects {
     afterEvaluate { project ->
         if (project.hasProperty("android")) {
@@ -42,14 +41,13 @@ subprojects {
         }
     }
 }
-*/
 
 allprojects {
     repositories {
         configurations.all {
             resolutionStrategy {
                 force "com.squareup.okhttp3:okhttp:3.9.1"
-                force "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+                force 'com.android.support:appcompat-v7:26.1.0'
                 force "com.squareup.okio:okio:1.15.0"
             }
         }
