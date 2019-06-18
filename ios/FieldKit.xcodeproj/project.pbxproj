@@ -36,7 +36,6 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* FieldKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FieldKitTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
-		3C2BDC4CE8DE4DCE85EB9534 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BA9AC254D14E9883A1BCC7 /* libRNDeviceInfo-tvOS.a */; };
 		41DE13D0A7924E0D97D0BA04 /* libLRDRCTSimpleToast.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE67DE6F59F4F348D7398E1 /* libLRDRCTSimpleToast.a */; };
 		45E0F2CDB798472AA31DDBC1 /* libRNLanguages.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8B69340EA46440290ED10A4 /* libRNLanguages.a */; };
 		7ECDEFB4E4E0420CB6DEABD1 /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A382F6B2F445A3BE63172C /* libRNSVG-tvOS.a */; };
@@ -53,7 +52,6 @@
 		B502B58D7BA6436884F59A53 /* libRNCNetInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91B012B746E84624ACE2FB40 /* libRNCNetInfo.a */; };
 		B541B1CC799D4482BCB7C183 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9844568AFF234B72AB45D859 /* libRNFS.a */; };
 		B7985ACBD3B44E599B590952 /* libUdpSockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44566F10B74243E28E86F599 /* libUdpSockets.a */; };
-		E2517A6C3A894350B4A5F82A /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7733551DD9E249F783E16F2A /* libRNDeviceInfo.a */; };
 		E992AFBE85004F168492D934 /* libRNMail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0E40BCD4CA3447A9B440B82 /* libRNMail.a */; };
 		ED756746C4B84FF59974FEEB /* libRNCNetInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 696C8208593A4EF08737218E /* libRNCNetInfo-tvOS.a */; };
 		F7E60DB78F61499CBCA7269D /* libKCKeepAwake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 39907E68D58F48F9B1058638 /* libKCKeepAwake.a */; };
@@ -354,20 +352,6 @@
 			remoteGlobalIDString = 15209BEF1D250F63000D0F44;
 			remoteInfo = LRDRCTSimpleToast;
 		};
-		8AB3A73D21C83630001C9A37 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8478FA7544D746408E95965C /* RNDeviceInfo.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DA5891D81BA9A9FC002B4DB2;
-			remoteInfo = RNDeviceInfo;
-		};
-		8AB3A73F21C83630001C9A37 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8478FA7544D746408E95965C /* RNDeviceInfo.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E72EC1401F7ABB5A0001BC90;
-			remoteInfo = "RNDeviceInfo-tvOS";
-		};
 		8AB3A74321C83630001C9A37 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E1D5E883B58146F9B8BA8925 /* RNMail.xcodeproj */;
@@ -516,10 +500,8 @@
 		68440EE48C144F648D4DA231 /* RNWifi.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNWifi.xcodeproj; path = "../node_modules/react-native-wifi/ios/RNWifi.xcodeproj"; sourceTree = "<group>"; };
 		68B843F0B7174CA1895A056C /* TcpSockets.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = TcpSockets.xcodeproj; path = "../node_modules/react-native-tcp/ios/TcpSockets.xcodeproj"; sourceTree = "<group>"; };
 		696C8208593A4EF08737218E /* libRNCNetInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNCNetInfo-tvOS.a"; sourceTree = "<group>"; };
-		7733551DD9E249F783E16F2A /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		8478FA7544D746408E95965C /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		8A93AC70228CAF10004FCF7C /* FieldKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FieldKit.entitlements; path = FieldKit/FieldKit.entitlements; sourceTree = "<group>"; };
 		8AE231F22289E74500E141BF /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = "../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework"; sourceTree = "<group>"; };
 		8AE231F62289E76600E141BF /* RCTMGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTMGL.xcodeproj; path = "../node_modules/@mapbox/react-native-mapbox-gl/ios/RCTMGL.xcodeproj"; sourceTree = "<group>"; };
@@ -535,7 +517,6 @@
 		B085CCABD9A24539B92AC856 /* libRNWifi.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNWifi.a; sourceTree = "<group>"; };
 		BAB8ACC9132A4ACDAC2CDB88 /* libTcpSockets.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libTcpSockets.a; sourceTree = "<group>"; };
 		D4A382F6B2F445A3BE63172C /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; };
-		D6BA9AC254D14E9883A1BCC7 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
 		DDE67DE6F59F4F348D7398E1 /* libLRDRCTSimpleToast.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libLRDRCTSimpleToast.a; sourceTree = "<group>"; };
 		E1D5E883B58146F9B8BA8925 /* RNMail.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNMail.xcodeproj; path = "../node_modules/react-native-mail/RNMail.xcodeproj"; sourceTree = "<group>"; };
 		F3EAE5D6FFC04CBDB61C897A /* RNCNetInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCNetInfo.xcodeproj; path = "../node_modules/@react-native-community/netinfo/ios/RNCNetInfo.xcodeproj"; sourceTree = "<group>"; };
@@ -574,7 +555,6 @@
 				9DED415B29824C95A7B1835B /* libTcpSockets.a in Frameworks */,
 				B7985ACBD3B44E599B590952 /* libUdpSockets.a in Frameworks */,
 				E992AFBE85004F168492D934 /* libRNMail.a in Frameworks */,
-				E2517A6C3A894350B4A5F82A /* libRNDeviceInfo.a in Frameworks */,
 				878E225F16744D2FBDD7F192 /* libRNWifi.a in Frameworks */,
 				81D50C1053524EC5AFD78E71 /* libRNSVG.a in Frameworks */,
 				41DE13D0A7924E0D97D0BA04 /* libLRDRCTSimpleToast.a in Frameworks */,
@@ -782,7 +762,6 @@
 				68B843F0B7174CA1895A056C /* TcpSockets.xcodeproj */,
 				A7825182414340B99CB0E814 /* UdpSockets.xcodeproj */,
 				E1D5E883B58146F9B8BA8925 /* RNMail.xcodeproj */,
-				8478FA7544D746408E95965C /* RNDeviceInfo.xcodeproj */,
 				68440EE48C144F648D4DA231 /* RNWifi.xcodeproj */,
 				909033B72ED04AD4B17BDA63 /* RNSVG.xcodeproj */,
 				0C8A0A85329B4B359345AF6C /* LRDRCTSimpleToast.xcodeproj */,
@@ -869,15 +848,6 @@
 				696C8208593A4EF08737218E /* libRNCNetInfo-tvOS.a */,
 			);
 			name = "Recovered References";
-			sourceTree = "<group>";
-		};
-		8AB3A72E21C8362F001C9A37 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8AB3A73E21C83630001C9A37 /* libRNDeviceInfo.a */,
-				8AB3A74021C83630001C9A37 /* libRNDeviceInfo-tvOS.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		8AB3A73021C8362F001C9A37 /* Products */ = {
@@ -1176,10 +1146,6 @@
 				{
 					ProductGroup = 8ABC7B70228CD16C00B4262E /* Products */;
 					ProjectRef = F3EAE5D6FFC04CBDB61C897A /* RNCNetInfo.xcodeproj */;
-				},
-				{
-					ProductGroup = 8AB3A72E21C8362F001C9A37 /* Products */;
-					ProjectRef = 8478FA7544D746408E95965C /* RNDeviceInfo.xcodeproj */;
 				},
 				{
 					ProductGroup = 8AB3A75A21C83630001C9A37 /* Products */;
@@ -1501,13 +1467,6 @@
 			remoteRef = 8AB3A73921C83630001C9A37 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8AB3A73E21C83630001C9A37 /* libRNDeviceInfo.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNDeviceInfo.a;
-			remoteRef = 8AB3A73D21C83630001C9A37 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		8AB3A74021C83630001C9A37 /* libRNDeviceInfo-tvOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1777,7 +1736,6 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-mail/RNMail",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-wifi/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
@@ -1817,7 +1775,6 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-mail/RNMail",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-wifi/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
@@ -1860,7 +1817,6 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-mail/RNMail",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-wifi/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
@@ -1899,7 +1855,6 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-mail/RNMail",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-wifi/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
@@ -1940,7 +1895,6 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-mail/RNMail",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-wifi/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
@@ -1984,7 +1938,6 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-mail/RNMail",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-wifi/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
@@ -2027,7 +1980,6 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-mail/RNMail",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-wifi/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
@@ -2070,7 +2022,6 @@
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-mail/RNMail",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-wifi/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",

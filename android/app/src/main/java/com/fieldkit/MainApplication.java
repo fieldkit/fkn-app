@@ -8,7 +8,6 @@ import com.corbt.keepawake.KCKeepAwakePackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.horcrux.svg.SvgPackage;
 import com.reactlibrary.RNWifiPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.chirag.RNMail.RNMail;
 import com.tradle.react.UdpSocketsModule;
 import com.peel.react.TcpSocketsModule;
@@ -40,7 +39,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RNI18nPackage(),
             new SvgPackage(),
             new RNWifiPackage(),
-            new RNDeviceInfo(),
             new RNMail(),
             new UdpSocketsModule(),
             new TcpSocketsModule(),
