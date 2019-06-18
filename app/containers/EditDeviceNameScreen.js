@@ -3,23 +3,18 @@ import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { View, Text, Image, TextInput, ScrollView, Modal } from "react-native";
+import { View, Text, Image, TextInput, Modal } from "react-native";
 
-import AsyncStorage from '@react-native-community/async-storage';
-
-import { StackNavigator, addNavigationHelpers } from "react-navigation";
+import AsyncStorage from "@react-native-community/async-storage";
 
 import RNLanguages from "react-native-languages";
 import i18n from "../internationalization/i18n";
 
 import { Toasts } from "../lib/toasts";
 
-import { hexArrayBuffer, arrayBufferToBase64 } from "../lib/base64";
-
-import * as Files from "../lib/files";
 import { AppScreen, Button } from "../components";
 
-import { navigateEasyModeWelcome, findAllFiles, executePlan, deviceStartConnect, deleteAllLocalFiles, archiveAllLocalFiles, navigateWelcome, configureName } from "../actions";
+import { navigateBack, configureName } from "../actions";
 
 import styles from "../styles";
 
@@ -31,8 +26,15 @@ class EditDeviceName extends React.Component {
     constructor() {
         super();
         this.state = {
-            deviceName: ""
+            name: ""
         };
+    }
+
+    async componentWillMount() {
+        const name = await AsyncStorage.getItem(this.props.deviceId);
+        this.setState({
+            name: name
+        });
     }
 
     _addData = async (deviceId, text, address) => {
@@ -43,7 +45,8 @@ class EditDeviceName extends React.Component {
             try {
                 await AsyncStorage.setItem(deviceId, text);
                 configureName(address, text);
-                Toasts.show("Your device name has been saved");
+                Toasts.show("Your device name has been saved!");
+                this.props.navigateBack();
             } catch (error) {
                 console.log("error adding data", error);
             }
@@ -51,17 +54,17 @@ class EditDeviceName extends React.Component {
     };
 
     render() {
-        const { deviceId, navigateEasyModeWelcome, address } = this.props;
+        const { deviceId, navigateBack, address } = this.props;
         return (
             <View>
                 <View style={{ paddingTop: 20, paddingBottom: 10 }}>
-                    <TextInput style={{ height: 40, borderColor: "gray", borderWidth: 1 }} placeholder={"Device Name"} onChangeText={text => this.setState({ deviceName: text })} />
+                    <TextInput style={{ height: 40, borderColor: "gray", borderWidth: 1 }} placeholder={"Device Name"} onChangeText={text => this.setState({ name: text })} value={this.state.name} />
                 </View>
                 <View style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 10 }}>
-                    <Button title="Save" onPress={() => this._addData(deviceId, this.state.deviceName, address)} />
+                    <Button title="Save" onPress={() => this._addData(deviceId, this.state.name, address)} />
                 </View>
                 <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-                    <Button title="Cancel" onPress={() => navigateEasyModeWelcome()} />
+                    <Button title="Cancel" onPress={() => navigateBack()} />
                 </View>
             </View>
         );
@@ -70,7 +73,7 @@ class EditDeviceName extends React.Component {
 
 EditDeviceName.propTypes = {
     deviceId: PropTypes.string.isRequired,
-    navigateEasyModeWelcome: PropTypes.func.isRequired,
+    navigateBack: PropTypes.func.isRequired,
     configureName: PropTypes.func.isRequired
 };
 
@@ -85,7 +88,7 @@ const mapStateToProps = state => {
 export default connect(
     mapStateToProps,
     {
-        navigateEasyModeWelcome,
+        navigateBack,
         configureName
     }
 )(EditDeviceName);

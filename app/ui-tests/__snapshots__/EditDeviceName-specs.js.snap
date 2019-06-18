@@ -23,6 +23,7 @@ exports[`<EditDeviceName/> render() renders the component 1`] = `
         }
       }
       underlineColorAndroid="transparent"
+      value=""
     />
   </View>
   <View
