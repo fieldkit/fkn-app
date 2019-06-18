@@ -4,9 +4,15 @@ import EasyModeScreen from "../containers/EasyModeScreen";
 import BrowserScreen from "../containers/BrowserScreen";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Icon } from "react-native-elements";
 
 import { navigateEasyModeWelcome, browseDirectory, navigateBrowser, navigateAbout } from "../actions";
+
+// Dummy Icon
+class Icon extends React.Component {
+    render() {
+        return <View />;
+    }
+}
 
 class Tab extends React.Component {
     render() {
