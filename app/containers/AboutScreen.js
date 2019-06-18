@@ -26,25 +26,16 @@ class AboutScreen extends React.Component {
         return (
             <AppScreen>
                 <View style={{ height: "91%" }}>
-                    <Text
-                        style={{
-                            fontSize: 30,
-                            fontWeight: "bold",
-                            paddingTop: 30,
-                            paddingBottom: 20,
-                            paddingLeft: 15
-                        }}
-                    >
-                        Monitor the world
-                    </Text>
-                    <Image
-                        source={require("../../assets/FieldkitAbout.jpg")}
-                        style={{
-                            resizeMode: "contain",
-                            width: "100%",
-                            height: 280
-                        }}
-                    />
+                    <View style={{ paddingTop: 50, paddingBottom: 20 }}>
+                        <Image
+                            source={require("../../assets/FieldkitAbout.jpg")}
+                            style={{
+                                resizeMode: "contain",
+                                width: "100%",
+                                height: 280
+                            }}
+                        />
+                    </View>
                     <View>
                         <Text
                             style={{

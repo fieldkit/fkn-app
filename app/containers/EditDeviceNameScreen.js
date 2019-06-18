@@ -21,6 +21,8 @@ import { navigateEasyModeWelcome, findAllFiles, executePlan, deviceStartConnect,
 
 import styles from "../styles";
 
+//add a prefix device name
+
 class EditDeviceName extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return { title: "Edit Device Name" };

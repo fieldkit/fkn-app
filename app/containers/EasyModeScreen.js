@@ -143,7 +143,7 @@ class DeviceOptions extends React.Component {
         const easyMode = this.props;
         if (easyMode.devices && _.size(easyMode.devices) == 1) {
             try {
-                const value = await AsyncStorage.getItem(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId));
+                const value = await AsyncStorage.getItem("deviceName" + hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId));
                 this.setState({ recognizedDevice: value });
             } catch (error) {
                 console.log(error);
@@ -180,7 +180,6 @@ class DeviceOptions extends React.Component {
     }
 
     render() {
-        console.log(this.state.modalVisible);
         const { easyMode, navigateEditDeviceName } = this.props;
         const { downloads } = easyMode.plans;
         const numberOfDevices = _.size(easyMode.devices);
@@ -191,6 +190,8 @@ class DeviceOptions extends React.Component {
             .filter(p => p.download)
             .map(p => p.download.downloading)
             .sum();
+
+        console.log(numberOfDevices);
         if (numberOfDevices == 0 || !_.isArray(downloads) || downloads.length == 0) {
             if (!easyMode.networkConfiguration.deviceAp) {
                 return (
@@ -282,6 +283,14 @@ class DeviceOptions extends React.Component {
         if (numberOfDevices == 1 && _.toString(this.state.recognizedDevice) != "") {
             return (
                 <View>
+                    <Image
+                        source={require("../../assets/fieldkit_river.jpg")}
+                        style={{
+                            resizeMode: "contain",
+                            width: "100%",
+                            height: 250
+                        }}
+                    />
                     <Text style={textPanelStyle}>{this.state.recognizedDevice} was found.</Text>
                     <View
                         style={{
@@ -291,7 +300,7 @@ class DeviceOptions extends React.Component {
                             width: "100%"
                         }}
                     >
-                        <Button title="Edit Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
+                        <Button title="Edit Device Name" onPress={() => navigateEditDeviceName("deviceName" + hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
                     </View>
                     <Text style={textPanelStyle}>Syncing will download {estimatedDownload} bytes.</Text>
                     <View
@@ -311,6 +320,14 @@ class DeviceOptions extends React.Component {
         if (numberOfDevices == 1 && _.toString(this.state.recognizedDevice) == "") {
             return (
                 <View>
+                    <Image
+                        source={require("../../assets/fieldkit_river.jpg")}
+                        style={{
+                            resizeMode: "contain",
+                            width: "100%",
+                            height: 250
+                        }}
+                    />
                     <Text style={textPanelStyle}>
                         {i18n.t("easyMode.devicesFound", {
                             numberOfDevices: numberOfDevices,
@@ -413,13 +430,19 @@ class EasyModeScreen extends React.Component {
         const { easyMode } = this.props;
         return (
             <AppScreen backgroundStyle={{ height: "100%" }}>
-                <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        paddingTop: 30
+                    }}
+                >
                     <Image
                         source={require("../../assets/FieldKit_Logo_blue.png")}
                         style={{
                             resizeMode: "contain",
-                            width: "50%",
-                            height: 100
+                            width: "100%",
+                            height: 50
                         }}
                     />
                 </View>

@@ -42,7 +42,7 @@ class Tab extends React.Component {
                                 browseDirectory("/");
                             }}
                         >
-                            <Icon name="rowing" />
+                            <Icon name="description" />
                             <Text> Browser </Text>
                         </TouchableOpacity>
                     </View>
