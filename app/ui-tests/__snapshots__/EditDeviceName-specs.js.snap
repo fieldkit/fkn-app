@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<EditDeviceName/> render() renders the component 1`] = `
-<Component>
-  <Component
+<View>
+  <View
     style={
       Object {
         "paddingBottom": 10,
@@ -14,6 +14,7 @@ exports[`<EditDeviceName/> render() renders the component 1`] = `
       allowFontScaling={true}
       onChangeText={[Function]}
       placeholder="Device Name"
+      rejectResponderTermination={true}
       style={
         Object {
           "borderColor": "gray",
@@ -23,8 +24,8 @@ exports[`<EditDeviceName/> render() renders the component 1`] = `
       }
       underlineColorAndroid="transparent"
     />
-  </Component>
-  <Component
+  </View>
+  <View
     style={
       Object {
         "paddingBottom": 10,
@@ -37,8 +38,8 @@ exports[`<EditDeviceName/> render() renders the component 1`] = `
       onPress={[Function]}
       title="Save"
     />
-  </Component>
-  <Component
+  </View>
+  <View
     style={
       Object {
         "paddingLeft": 10,
@@ -50,6 +51,6 @@ exports[`<EditDeviceName/> render() renders the component 1`] = `
       onPress={[Function]}
       title="Cancel"
     />
-  </Component>
-</Component>
+  </View>
+</View>
 `;

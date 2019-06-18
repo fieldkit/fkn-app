@@ -8,7 +8,7 @@ exports[`<WelcomeScreen/> render() renders the component 1`] = `
     }
   }
 >
-  <Component
+  <Image
     source={
       Object {
         "testUri": "../../../assets/fk-header.png",
