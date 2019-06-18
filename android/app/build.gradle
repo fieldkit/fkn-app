@@ -149,15 +149,11 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-vector-icons')
-    compile project(':react-native-gesture-handler')
-    compile project(':react-native-reanimated')
     compile project(':@react-native-community_netinfo')
     compile project(':react-native-keep-awake')
     compile project(':react-native-i18n')
     compile project(':react-native-svg')
     compile project(':react-native-wifi')
-    compile project(':react-native-device-info')
     compile project(':react-native-mail')
     compile project(':react-native-udp')
     compile project(':react-native-tcp')
