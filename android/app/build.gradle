@@ -148,6 +148,7 @@ android {
 }
 
 dependencies {
+    implementation project(':@react-native-community_async-storage')
     compile (project(':mapbox-react-native-mapbox-gl')) {
         compile ('com.squareup.okhttp3:okhttp:3.6.0') {
             force = true
