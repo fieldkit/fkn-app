@@ -44,7 +44,7 @@ const textStyle = {
     textAlign: "center"
 };
 
-class UploadQueueOptions extends React.Component {
+export class UploadQueueOptions extends React.Component {
     onSync() {
         const { easyMode, executePlan } = this.props;
         const { uploads } = easyMode.plans;
@@ -55,27 +55,28 @@ class UploadQueueOptions extends React.Component {
                 .flatten()
                 .value()
         );
-        try {
-            AsyncStorage.getAllKeys((err, keys) => {
-                AsyncStorage.multiGet(keys, (err, stores) => {
-                    stores.map((result, i, store) => {
-                        fetch(Config.baseUri + "/devices/" + store[i][0], {
-                            method: "POST",
-                            headers: {
-                                Accept: "application/json",
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                deviceId: store[i][0],
-                                name: store[i][1]
-                            })
+        if (false)
+            try {
+                AsyncStorage.getAllKeys((err, keys) => {
+                    AsyncStorage.multiGet(keys, (err, stores) => {
+                        stores.map((result, i, store) => {
+                            fetch(Config.baseUri + "/devices/" + store[i][0], {
+                                method: "POST",
+                                headers: {
+                                    Accept: "application/json",
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    deviceId: store[i][0],
+                                    name: store[i][1]
+                                })
+                            });
                         });
                     });
                 });
-            });
-        } catch (error) {
-            console.log(error);
-        }
+            } catch (error) {
+                console.log(error);
+            }
     }
 
     render() {
@@ -133,7 +134,7 @@ class UploadQueueOptions extends React.Component {
     }
 }
 
-class DeviceOptions extends React.Component {
+export class DeviceOptions extends React.Component {
     state = {
         recognizedDevice: "",
         modalVisible: false
