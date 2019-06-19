@@ -14,6 +14,7 @@ import DataTableScreen from "../containers/DataTableScreen";
 import MapScreen from "../containers/MapScreen";
 import DataMapScreen from "../containers/DataMapScreen";
 import EditDeviceName from "../containers/EditDeviceNameScreen";
+import UploadScreen from "../containers/UploadScreen";
 
 export class ApplicationRoutesManager {
     constructor() {
@@ -81,6 +82,10 @@ export class ApplicationRoutesManager {
             DataMap: {
                 path: "/data-map",
                 screen: DataMapScreen
+            },
+            Upload: {
+                path: "/upload",
+                screen: UploadScreen
             }
         };
     }

@@ -25,9 +25,9 @@ import Config from "../config";
 
 import { textStyle, title, subtitle, cardWrapper, cardStyle } from "../styles";
 
-import { DeviceOptions } from "../components/DeviceOptions";
+import { UploadQueueOptions } from "../components/UploadQueueOptions";
 
-class EasyModeScreen extends React.Component {
+class UploadScreen extends React.Component {
     static navigationOptions = {
         header: null
     };
@@ -64,7 +64,7 @@ class EasyModeScreen extends React.Component {
 
         return (
             <View>
-                <DeviceOptions easyMode={easyMode} executePlan={executePlan} navigateEditDeviceName={navigateEditDeviceName} configureName={configureName} />
+                <UploadQueueOptions easyMode={easyMode} executePlan={executePlan} />
             </View>
         );
     }
@@ -74,17 +74,7 @@ class EasyModeScreen extends React.Component {
         return (
             <AppScreen>
                 <View style={{ height: "92%" }}>
-                    <Text
-                        style={{
-                            fontSize: 40,
-                            fontWeight: "bold",
-                            color: "#1B80C9",
-                            paddingTop: 30,
-                            paddingLeft: 20
-                        }}
-                    >
-                        FieldKit{" "}
-                    </Text>
+                    <Text style={title}>Upload Data</Text>
 
                     {easyMode.busy ? this.renderBusy() : this.renderMenu()}
                 </View>
@@ -93,7 +83,7 @@ class EasyModeScreen extends React.Component {
     }
 }
 
-EasyModeScreen.propTypes = {
+UploadScreen.propTypes = {
     deviceStartConnect: PropTypes.func.isRequired,
     executePlan: PropTypes.func.isRequired,
     findAllFiles: PropTypes.func.isRequired,
@@ -135,4 +125,4 @@ export default connect(
         navigateEditDeviceName,
         configureName
     }
-)(EasyModeScreen);
+)(UploadScreen);
