@@ -207,7 +207,7 @@ class DownloadPlanGenerator {
                     const offset = sizeOfExisting + existingLocalFile.offset;
                     const download = {
                         address: this.address,
-                        file: makeFilename(directory, config.fileId, remote.version, existingLocalFile.offset, remote.name),
+                        file: makeFilename(directory, config.fileId, remote.version, offset, remote.name),
                         headers: makeHeadersFilename(directory, config.fileId, remote.version, remote.name),
                         downloading: remote.size - offset,
                         id: config.fileId,

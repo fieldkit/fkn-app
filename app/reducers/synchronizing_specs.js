@@ -265,7 +265,7 @@ describe("synchronizing", () => {
                         download: {
                             address: DeviceAddress,
                             id: 4,
-                            file: "/.staging/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            file: "/.staging/0004a30b001cc468/4_000001_offset_15000_data.fk",
                             headers: "/.staging/0004a30b001cc468/4_000001_headers_data.fk",
                             downloading: 15000,
                             offset: 15000,
@@ -338,7 +338,7 @@ describe("synchronizing", () => {
                         download: {
                             address: DeviceAddress,
                             id: 4,
-                            file: "/.staging/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            file: "/.staging/0004a30b001cc468/4_000001_offset_15000_data.fk",
                             headers: "/.staging/0004a30b001cc468/4_000001_headers_data.fk",
                             downloading: 15000,
                             offset: 15000,
@@ -981,7 +981,7 @@ describe("synchronizing", () => {
                             download: {
                                 address: DeviceAddress,
                                 id: 1,
-                                file: "/.staging/0004a30b001cc468/1_000001_offset_5000000_logs-a.fklog",
+                                file: "/.staging/0004a30b001cc468/1_000001_offset_6000000_logs-a.fklog",
                                 headers: "/.staging/0004a30b001cc468/1_000001_headers_logs-a.fklog",
                                 downloading: 2200000,
                                 offset: 6000000,
@@ -1098,7 +1098,7 @@ describe("synchronizing", () => {
                             download: {
                                 address: DeviceAddress,
                                 id: 1,
-                                file: "/.staging/0004a30b001cc468/1_000002_offset_0_logs-a.fklog",
+                                file: "/.staging/0004a30b001cc468/1_000002_offset_20000_logs-a.fklog",
                                 headers: "/.staging/0004a30b001cc468/1_000002_headers_logs-a.fklog",
                                 downloading: 10000,
                                 offset: 20000,
