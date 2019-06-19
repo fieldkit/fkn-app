@@ -15,6 +15,10 @@ function tryParseDeviceIdPath(path) {
     return match[1];
 }
 
+function isStagingPath(path) {
+    return path.match(/.staging/);
+}
+
 function isArchivePath(path) {
     return path.match(/archive/);
 }
@@ -103,7 +107,9 @@ function mergeLocalFiles(state, action) {
     if (deviceId === null) {
         return state;
     }
-
+    if (isStagingPath(action.relativePath)) {
+        return state;
+    }
     if (isArchivePath(action.relativePath)) {
         return state;
     }
