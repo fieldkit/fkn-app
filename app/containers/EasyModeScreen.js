@@ -28,6 +28,8 @@ import { textStyle, title, subtitle, cardWrapper, cardStyle } from "../styles";
 import { DeviceOptions } from "../components/DeviceOptions";
 import { UploadQueueOptions } from "../components/UploadQueueOptions";
 
+import ProgressHeader from "./ProgressHeader";
+
 class EasyModeScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -55,6 +57,7 @@ class EasyModeScreen extends React.Component {
                 <View style={cardStyle}>
                     <Text style={textStyle}>{i18n.t("easyMode.busy")}</Text>
                     <KeepAwake />
+                    <ProgressHeader />
                 </View>
             </View>
         );
