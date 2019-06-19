@@ -2,36 +2,57 @@
 
 exports[`<EditDeviceName/> render() renders the component 1`] = `
 <View>
-  <View
+  <Text
     style={
       Object {
-        "paddingBottom": 10,
-        "paddingTop": 20,
+        "color": "#1B80C9",
+        "fontSize": 30,
+        "fontWeight": "bold",
+        "paddingLeft": 20,
+        "paddingTop": 30,
       }
     }
   >
-    <TextInput
-      allowFontScaling={true}
-      onChangeText={[Function]}
-      placeholder="Device Name"
-      rejectResponderTermination={true}
+    Edit Device Name 
+  </Text>
+  <View
+    style={
+      Object {
+        "paddingBottom": 40,
+        "paddingTop": 60,
+      }
+    }
+  >
+    <View
       style={
         Object {
-          "borderColor": "gray",
-          "borderWidth": 1,
-          "height": 40,
+          "paddingLeft": 20,
+          "paddingRight": 20,
         }
       }
-      underlineColorAndroid="transparent"
-      value=""
-    />
+    >
+      <TextInput
+        allowFontScaling={true}
+        onChangeText={[Function]}
+        placeholder="Device Name"
+        rejectResponderTermination={true}
+        style={
+          Object {
+            "borderColor": "gray",
+            "borderRadius": 5,
+            "borderWidth": 1,
+            "height": 40,
+          }
+        }
+        underlineColorAndroid="transparent"
+      />
+    </View>
   </View>
   <View
     style={
       Object {
         "paddingBottom": 10,
-        "paddingLeft": 10,
-        "paddingRight": 10,
+        "paddingLeft": 20,
       }
     }
   >
@@ -43,8 +64,7 @@ exports[`<EditDeviceName/> render() renders the component 1`] = `
   <View
     style={
       Object {
-        "paddingLeft": 10,
-        "paddingRight": 10,
+        "paddingLeft": 20,
       }
     }
   >
