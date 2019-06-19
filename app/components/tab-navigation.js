@@ -60,15 +60,8 @@ class Tab extends React.Component {
                                 navigateEasyModeWelcome();
                             }}
                         >
-                            <Image
-                                source={require("../../assets/icon_connect_active3x.png")}
-                                style={{
-                                    resizeMode: "contain",
-                                    width: "100%",
-                                    height: 20
-                                }}
-                            />
-                            <Text style={{ color: "#6B6D6F" }}> Connect </Text>
+                            <Image source={require("../../assets/icon_connect_active3x.png")} style={imageSize} />
+                            <Text style={subtext}> Connect </Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: "column" }}>
@@ -77,15 +70,8 @@ class Tab extends React.Component {
                                 navigateUpload();
                             }}
                         >
-                            <Image
-                                source={require("../../assets/icon_upload_active3x.png")}
-                                style={{
-                                    resizeMode: "contain",
-                                    width: "100%",
-                                    height: 20
-                                }}
-                            />
-                            <Text style={{ color: "#6B6D6F" }}> Upload </Text>
+                            <Image source={require("../../assets/icon_upload_active3x.png")} style={imageSize} />
+                            <Text style={subtext}> Upload </Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: "column" }}>
@@ -94,15 +80,8 @@ class Tab extends React.Component {
                                 browseDirectory("/");
                             }}
                         >
-                            <Image
-                                source={require("../../assets/icon_files_active3x.png")}
-                                style={{
-                                    resizeMode: "contain",
-                                    width: "100%",
-                                    height: 20
-                                }}
-                            />
-                            <Text style={{ color: "#6B6D6F" }}> Browser </Text>
+                            <Image source={require("../../assets/icon_files_active3x.png")} style={imageSize} />
+                            <Text style={subtext}> Browser </Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: "column" }}>
