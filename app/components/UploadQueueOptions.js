@@ -36,6 +36,7 @@ export class UploadQueueOptions extends React.Component {
                 .flatten()
                 .value()
         );
+
         if (false)
             try {
                 AsyncStorage.getAllKeys((err, keys) => {
@@ -60,54 +61,24 @@ export class UploadQueueOptions extends React.Component {
             }
     }
 
-    render() {
-        const { easyMode } = this.props;
-        const { uploads } = easyMode.plans;
-        const { networkConfiguration } = easyMode;
-
-        const numberOfFiles = _(uploads)
-            .map(r => r.numberOfFiles)
-            .sum();
-        const estimatedUpload = _(uploads)
-            .map(d => d.plan)
-            .flatten()
-            .filter(p => p.upload)
-            .map(p => p.upload.uploading)
-            .sum();
-
-        if (numberOfFiles == 0) {
-            return (
-                <View style={cardWrapper}>
-                    <View style={cardStyle}>
-                        <Text style={textStyle}>{i18n.t("easyMode.noPendingFiles")}</Text>
-                    </View>
+    renderNothingToUpload() {
+        return (
+            <View style={cardWrapper}>
+                <View style={cardStyle}>
+                    <Text style={textStyle}>{i18n.t("easyMode.noPendingFiles")}</Text>
                 </View>
-            );
-        }
+            </View>
+        );
+    }
 
-        if (!networkConfiguration.internet.online) {
-            return (
-                <View style={cardWrapper}>
-                    <View style={cardStyle}>
-                        <Text style={subtitle}>
-                            {i18n.t("easyMode.pendingFiles", {
-                                numberOfFiles: numberOfFiles,
-                                estimatedUpload: estimatedUpload
-                            })}{" "}
-                            {i18n.t("easyMode.offline")}
-                        </Text>
-                    </View>
-                </View>
-            );
-        }
-
+    renderOffline(pending) {
         return (
             <View>
                 <View>
                     <Text style={textStyle}>
                         {i18n.t("easyMode.pendingFiles", {
-                            numberOfFiles: numberOfFiles,
-                            estimatedUpload: estimatedUpload
+                            numberOfFiles: pending.numberOfFiles,
+                            estimatedUpload: pending.estimatedUpload
                         })}
                     </Text>
                 </View>
@@ -116,5 +87,53 @@ export class UploadQueueOptions extends React.Component {
                 </View>
             </View>
         );
+    }
+
+    renderOnline(pending) {
+        return (
+            <View style={cardWrapper}>
+                <View style={cardStyle}>
+                    <Text style={subtitle}>
+                        {i18n.t("easyMode.pendingFiles", {
+                            numberOfFiles: pending.numberOfFiles,
+                            estimatedUpload: pending.estimatedUpload
+                        })}{" "}
+                        {i18n.t("easyMode.offline")}
+                    </Text>
+                </View>
+            </View>
+        );
+    }
+
+    render() {
+        const { easyMode } = this.props;
+        const { uploads } = easyMode.plans;
+        const { networkConfiguration } = easyMode;
+
+        const numberOfFiles = _(uploads)
+            .map(r => r.numberOfFiles)
+            .sum();
+
+        const estimatedUpload = _(uploads)
+            .map(d => d.plan)
+            .flatten()
+            .filter(p => p.upload)
+            .map(p => p.upload.uploading)
+            .sum();
+
+        const pending = {
+            numberOfFiles,
+            estimatedUpload
+        };
+
+        if (numberOfFiles >= 0) {
+            if (networkConfiguration.internet.online) {
+                return this.renderOnline(pending);
+            }
+
+            return this.renderOffline(pending);
+        }
+
+        return this.renderNothingToUpload();
     }
 }

@@ -71,111 +71,102 @@ export class DeviceOptions extends React.Component {
         );
     }
 
-    render() {
-        const { easyMode, navigateEditDeviceName } = this.props;
-        const { downloads } = easyMode.plans;
-        const numberOfDevices = _.size(easyMode.devices);
-        const { configureName } = this.props;
-        const estimatedDownload = _(downloads)
-            .map(d => d.plan)
-            .flatten()
-            .filter(p => p.download)
-            .map(p => p.download.downloading)
-            .sum();
-
-        if (numberOfDevices == 0 || !_.isArray(downloads) || downloads.length == 0) {
-            if (!easyMode.networkConfiguration.deviceAp) {
-                return (
-                    <View>
-                        <View style={cardWrapper}>
-                            <View style={cardStyle}>
-                                <Image
-                                    source={require("../../assets/fogg-no-comments.png")}
-                                    style={{
-                                        resizeMode: "contain",
-                                        width: "100%",
-                                        height: 180
-                                    }}
-                                />
-                                <Text style={subtitle}>No Devices Found</Text>
-                                <Text style={textStyle}>Please connect to a FieldKit WiFi access point.</Text>
-                                <View style={{ alignItems: "center", paddingTop: 5 }}>
-                                    <Button
-                                        onPress={() => {
-                                            this.setState({ modalVisible: !this.state.modalVisible });
-                                        }}
-                                        title="Connect Device Guide"
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                        <Modal
-                            animationType="slide"
-                            transparent={false}
-                            visible={this.state.modalVisible}
-                            onRequestClose={() => {
-                                Alert.alert("Modal has been closed.");
-                            }}
-                        >
-                            <View style={textPanelStyle}>
-                                <Text
-                                    style={{
-                                        paddingTop: 20,
-                                        paddingLeft: 10,
-                                        paddingBottom: 20,
-                                        fontSize: 30,
-                                        fontWeight: "bold"
-                                    }}
-                                >
-                                    Connect to Your Fieldkit
-                                </Text>
-                                <Text
-                                    style={{
-                                        fontSize: 18,
-                                        paddingLeft: 10,
-                                        paddingBottom: 20
-                                    }}
-                                >
-                                    1. Press button on device
-                                </Text>
-                                <Text
-                                    style={{
-                                        fontSize: 18,
-                                        paddingLeft: 10,
-                                        paddingBottom: 20
-                                    }}
-                                >
-                                    2. Go to your Wifi settings on your phone
-                                </Text>
-                                <Text
-                                    style={{
-                                        fontSize: 18,
-                                        paddingLeft: 10,
-                                        paddingBottom: 40
-                                    }}
-                                >
-                                    3. Select your FieldKit device to connect
-                                </Text>
+    renderNoDevices(easyMode, summary) {
+        if (!easyMode.networkConfiguration.deviceAp) {
+            return (
+                <View>
+                    <View style={cardWrapper}>
+                        <View style={cardStyle}>
+                            <Image
+                                source={require("../../assets/fogg-no-comments.png")}
+                                style={{
+                                    resizeMode: "contain",
+                                    width: "100%",
+                                    height: 180
+                                }}
+                            />
+                            <Text style={subtitle}>No Devices Found</Text>
+                            <Text style={textStyle}>Please connect to a FieldKit WiFi access point.</Text>
+                            <View style={{ alignItems: "center", paddingTop: 5 }}>
                                 <Button
                                     onPress={() => {
                                         this.setState({ modalVisible: !this.state.modalVisible });
                                     }}
-                                    title="Done"
+                                    title="Connect Device Guide"
                                 />
                             </View>
-                        </Modal>
+                        </View>
                     </View>
-                );
-            } else {
-                return (
-                    <View style={textPanelStyle}>
-                        <Text style={textStyle}>{i18n.t("easyMode.noDevices")}</Text>
-                    </View>
-                );
-            }
+                    <Modal
+                        animationType="slide"
+                        transparent={false}
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => {
+                            Alert.alert("Modal has been closed.");
+                        }}
+                    >
+                        <View style={textPanelStyle}>
+                            <Text
+                                style={{
+                                    paddingTop: 20,
+                                    paddingLeft: 10,
+                                    paddingBottom: 20,
+                                    fontSize: 30,
+                                    fontWeight: "bold"
+                                }}
+                            >
+                                Connect to Your Fieldkit
+                            </Text>
+                            <Text
+                                style={{
+                                    fontSize: 18,
+                                    paddingLeft: 10,
+                                    paddingBottom: 20
+                                }}
+                            >
+                                1. Press button on device
+                            </Text>
+                            <Text
+                                style={{
+                                    fontSize: 18,
+                                    paddingLeft: 10,
+                                    paddingBottom: 20
+                                }}
+                            >
+                                2. Go to your Wifi settings on your phone
+                            </Text>
+                            <Text
+                                style={{
+                                    fontSize: 18,
+                                    paddingLeft: 10,
+                                    paddingBottom: 40
+                                }}
+                            >
+                                3. Select your FieldKit device to connect
+                            </Text>
+                            <Button
+                                onPress={() => {
+                                    this.setState({ modalVisible: !this.state.modalVisible });
+                                }}
+                                title="Done"
+                            />
+                        </View>
+                    </Modal>
+                </View>
+            );
         }
 
-        if (numberOfDevices == 1 && _.toString(this.state.recognizedDevice) != "") {
+        return (
+            <View style={textPanelStyle}>
+                <Text style={textStyle}>{i18n.t("easyMode.noDevices")}</Text>
+            </View>
+        );
+    }
+
+    renderOneConnectedDevice(easyMode, summary) {
+        const { configureName, navigateEditDeviceName } = this.props;
+
+        if (_.toString(this.state.recognizedDevice) != "") {
             return (
                 <View>
                     <View style={cardWrapper}>
@@ -200,7 +191,7 @@ export class DeviceOptions extends React.Component {
                     </View>
                     <View style={cardWrapper}>
                         <View style={cardStyle}>
-                            <Text style={textStyle}>There's {estimatedDownload} bytes waiting.</Text>
+                            <Text style={textStyle}>There's {summary.estimatedDownload} bytes waiting.</Text>
                             <View
                                 style={{
                                     alignItems: "center"
@@ -214,45 +205,35 @@ export class DeviceOptions extends React.Component {
             );
         }
 
-        if (numberOfDevices == 1 && _.toString(this.state.recognizedDevice) == "") {
-            return (
-                <View style={cardWrapper}>
-                    <View style={cardStyle}>
-                        <Image
-                            source={require("../../assets/fieldkit_river.jpg")}
-                            style={{
-                                resizeMode: "contain",
-                                width: "100%",
-                                height: 200
-                            }}
-                        />
-                        <Text style={subtitle}>
-                            {i18n.t("easyMode.devicesFound", {
-                                numberOfDevices: numberOfDevices,
-                                estimatedDownload: estimatedDownload
-                            })}
-                        </Text>
-                        <View
-                            style={{
-                                alignItems: "center"
-                            }}
-                        >
-                            <Button title="Set Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
-                            <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
-                        </View>
+        return (
+            <View style={cardWrapper}>
+                <View style={cardStyle}>
+                    <Image
+                        source={require("../../assets/fieldkit_river.jpg")}
+                        style={{
+                            resizeMode: "contain",
+                            width: "100%",
+                            height: 200
+                        }}
+                    />
+                    <Text style={subtitle}>{i18n.t("easyMode.devicesFound", summary)}</Text>
+                    <View
+                        style={{
+                            alignItems: "center"
+                        }}
+                    >
+                        <Button title="Set Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
+                        <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                     </View>
                 </View>
-            );
-        }
+            </View>
+        );
+    }
 
+    renderMultipleConnectedDevices(easyMode, summary) {
         return (
             <View>
-                <Text style={textPanelStyle}>
-                    {i18n.t("easyMode.devicesFound", {
-                        numberOfDevices: numberOfDevices,
-                        estimatedDownload: estimatedDownload
-                    })}
-                </Text>
+                <Text style={textPanelStyle}>{i18n.t("easyMode.devicesFound", summary)}</Text>
                 <View style={textPanelStyle}>
                     <Text style={{ textAlign: "center" }}>1. Press button on device</Text>
                     <Text style={{ textAlign: "center" }}>2. Go to your Wifi settings on your phone</Text>
@@ -270,5 +251,30 @@ export class DeviceOptions extends React.Component {
                 </View>
             </View>
         );
+    }
+
+    render() {
+        const { easyMode } = this.props;
+        const numberOfDevices = _.size(easyMode.devices);
+        const estimatedDownload = _(easyMode.plans.downloads)
+            .map(d => d.plan)
+            .flatten()
+            .filter(p => p.download)
+            .map(p => p.download.downloading)
+            .sum();
+
+        const summary = {
+            numberOfDevices,
+            estimatedDownload
+        };
+
+        if (numberOfDevices > 0) {
+            if (numberOfDevices == 1) {
+                return this.renderOneConnectedDevice(easyMode, summary);
+            }
+            return this.renderMultipleConnectedDevices(easyMode, summary);
+        }
+
+        return this.renderNoDevices(easyMode, summary);
     }
 }
