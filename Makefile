@@ -17,6 +17,11 @@ node_modules:
 	git config core.hooksPath .githooks
 	rm -rf node_modules/*/.git
 
+android-release:
+	echo You may need to purge random symlinks from node_modules.
+	cd android && ./gradlew bundleRelease
+	echo Done, upload the aab to Google and good luck.
+
 clean:
 
 veryclean:
