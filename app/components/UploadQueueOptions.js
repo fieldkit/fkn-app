@@ -23,9 +23,9 @@ import { navigateWelcome, navigateEditDeviceName, deviceStartConnect, findAllFil
 
 import Config from "../config";
 
-import { textStyle, textPanelStyle, title, subtitle, cardWrapper, cardStyle } from "../styles";
-
 import { isDeviceNameKey, getDeviceIdFromKey } from "./DeviceOptions";
+
+import { textStyle, title, subtitle, cardWrapper, cardStyle } from "../styles";
 
 export class UploadQueueOptions extends React.Component {
     setNamesOnServer() {
@@ -88,17 +88,27 @@ export class UploadQueueOptions extends React.Component {
 
     renderOnline(pending) {
         return (
-            <View>
-                <View>
-                    <Text style={textStyle}>
-                        {i18n.t("easyMode.pendingFiles", {
-                            numberOfFiles: pending.numberOfFiles,
-                            estimatedUpload: pending.estimatedUpload
-                        })}
-                    </Text>
-                </View>
-                <View style={{ padding: 10 }}>
-                    <Button title={i18n.t("easyMode.syncServer")} onPress={() => this.onSync()} />
+            <View style={cardWrapper}>
+                <View style={cardStyle}>
+                    <Image
+                        source={require("../../assets/Fieldkit_Upload.jpg")}
+                        style={{
+                            resizeMode: "contain",
+                            width: "100%",
+                            height: 200
+                        }}
+                    />
+                    <View>
+                        <Text style={textStyle}>
+                            {i18n.t("easyMode.pendingFiles", {
+                                numberOfFiles: pending.numberOfFiles,
+                                estimatedUpload: pending.estimatedUpload
+                            })}
+                        </Text>
+                    </View>
+                    <View style={{ alignItems: "center", paddingTop: 10, paddingBottom: 10 }}>
+                        <Button title={i18n.t("easyMode.syncServer")} onPress={() => this.onSync()} />
+                    </View>
                 </View>
             </View>
         );
@@ -108,7 +118,15 @@ export class UploadQueueOptions extends React.Component {
         return (
             <View style={cardWrapper}>
                 <View style={cardStyle}>
-                    <Text style={subtitle}>
+                    <Image
+                        source={require("../../assets/Fieldkit_Upload.jpg")}
+                        style={{
+                            resizeMode: "contain",
+                            width: "100%",
+                            height: 180
+                        }}
+                    />
+                    <Text style={textStyle}>
                         {i18n.t("easyMode.pendingFiles", {
                             numberOfFiles: pending.numberOfFiles,
                             estimatedUpload: pending.estimatedUpload

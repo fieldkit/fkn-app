@@ -38,7 +38,7 @@ class BrowserScreen extends React.Component {
             <AppScreen>
                 <View style={{ height: "92%" }}>
                     <Text style={title}>Browser</Text>
-                    <View style={{ paddingTop: 15 }}>
+                    <View style={{ paddingTop: 20, paddingLeft: 20, paddingRight: 20 }}>
                         <DirectoryBrowser path={path} localFiles={localFiles} onSelectEntry={this.onSelectEntry.bind(this)} />
                     </View>
                 </View>

@@ -110,10 +110,7 @@ export default {
             },
             entry: {
                 container: {
-                    paddingTop: 10,
-                    paddingLeft: 20,
-                    paddingRight: 20,
-                    backgroundColor: "ffffff"
+                    paddingTop: 10
                 },
                 text: {
                     fontSize: 20,
