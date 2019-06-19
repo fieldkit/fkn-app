@@ -223,7 +223,9 @@ export class DeviceOptions extends React.Component {
                                     alignItems: "center"
                                 }}
                             >
-                                <Button title="Edit Device Name" onPress={() => navigateEditDeviceName("deviceName" + hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
+                                <View style={{ paddingBottome: 10 }}>
+                                    <Button title="Edit Device Name" onPress={() => navigateEditDeviceName("deviceName" + hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
+                                </View>
                                 <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                             </View>
                         </View>

@@ -32,14 +32,14 @@ class Tab extends React.Component {
                             }}
                         >
                             <Image
-                                source={require("../../assets/Icon_Device_active3x.png")}
+                                source={require("../../assets/icon_connect_active3x.png")}
                                 style={{
                                     resizeMode: "contain",
                                     width: "100%",
                                     height: 20
                                 }}
                             />
-                            <Text style={{ color: "#6B6D6F" }}> Device </Text>
+                            <Text style={{ color: "#6B6D6F" }}> Connect </Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: "column" }}>
@@ -49,7 +49,7 @@ class Tab extends React.Component {
                             }}
                         >
                             <Image
-                                source={require("../../assets/Icon_sync_active3x.png")}
+                                source={require("../../assets/icon_upload_active3x.png")}
                                 style={{
                                     resizeMode: "contain",
                                     width: "100%",
@@ -66,7 +66,7 @@ class Tab extends React.Component {
                             }}
                         >
                             <Image
-                                source={require("../../assets/Icon_files_active3x.png")}
+                                source={require("../../assets/icon_files_active3x.png")}
                                 style={{
                                     resizeMode: "contain",
                                     width: "100%",
