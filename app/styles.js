@@ -13,6 +13,7 @@ export const title = {
     paddingTop: 30,
     paddingLeft: 20
 };
+
 export const subtitle = {
     fontSize: 18,
     color: "#1B80C9",
@@ -26,12 +27,19 @@ export const cardWrapper = {
     paddingTop: 15,
     boxShadow: "10px 10px grey"
 };
+
 export const cardStyle = {
     backgroundColor: "white",
     width: "90%",
     padding: 20,
     borderRadius: 10,
     elevation: 7
+};
+
+export const textPanelStyle = {
+    paddingLeft: 15,
+    paddingRight: 15,
+    textAlign: "center"
 };
 
 const colors = {
