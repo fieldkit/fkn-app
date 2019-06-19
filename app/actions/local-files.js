@@ -119,6 +119,31 @@ export function touchLocalFile(relativePath) {
     };
 }
 
+export function renameLocalDirectory(fromPath, toPath) {
+    return dispatch => {
+        return resolveDataDirectoryPath().then(dataDirectoryPath => {
+            const oldPath = dataDirectoryPath + fromPath;
+
+            return RNFS.readDir(oldPath)
+                .then(oldFiles => {
+                    return Promise.all(
+                        _(oldFiles)
+                            .map(oldFile => {
+                                const newPath = dataDirectoryPath + toPath + "/" + oldFile.name;
+                                console.log("Moving", oldFile.path, newPath, oldFile.size);
+                                return RNFS.moveFile(oldFile.path, newPath);
+                            })
+                            .value()
+                    );
+                })
+                .then(() => {
+                    console.log("Renamed", fromPath, toPath);
+                    return browseDirectory(Files.getParentPath(toPath));
+                });
+        });
+    };
+}
+
 export function archiveLocalFile(relativePath) {
     return dispatch => {
         return resolveDataDirectoryPath().then(dataDirectoryPath => {
@@ -141,8 +166,13 @@ export function deleteLocalFile(relativePath) {
         return resolveDataDirectoryPath().then(dataDirectoryPath => {
             const path = dataDirectoryPath + relativePath;
             console.log("Deleting", path);
-            return RNFS.unlink(path).then(() => {
-                return browseDirectory(Files.getParentPath(path));
+            return RNFS.exists(path).then(e => {
+                if (e) {
+                    return RNFS.unlink(path).then(() => {
+                        return browseDirectory(Files.getParentPath(path));
+                    });
+                }
+                return false;
             });
         });
     };

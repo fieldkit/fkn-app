@@ -27,17 +27,8 @@ class ProgressHeader extends React.Component {
     render() {
         const { progress } = this.props;
 
-        if (progress.operations.length > 0) {
-            return <View>{progress.operations.map((p, i) => this.renderBar(i, p))}</View>;
-        }
-
         const bars = [];
         let cancelable = false;
-
-        if (!progress.task.done) {
-            bars.push(this.renderBar(0, progress.task));
-            cancelable = cancelable || progress.task.cancelable;
-        }
 
         if (!progress.download.done) {
             bars.push(this.renderBar(1, progress.download));
@@ -51,7 +42,7 @@ class ProgressHeader extends React.Component {
 
         if (bars.length > 0) {
             return (
-                <View>
+                <View style={{}}>
                     {bars}
                     {cancelable && this.renderCancel()}
                 </View>
@@ -63,7 +54,7 @@ class ProgressHeader extends React.Component {
 
     renderCancel() {
         return (
-            <View style={{}}>
+            <View style={{ paddingTop: 20, alignItems: "center" }}>
                 <Button title="Cancel" onPress={() => this.onCancel()} color="#F8C471" />
             </View>
         );
@@ -71,7 +62,7 @@ class ProgressHeader extends React.Component {
 
     renderBar(i, progress) {
         return (
-            <View key={i}>
+            <View key={i} style={{ paddingTop: 20 }}>
                 {progress.label ? (
                     <View>
                         <Text>{progress.label}</Text>

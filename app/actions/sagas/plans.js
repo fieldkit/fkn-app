@@ -9,7 +9,7 @@ import * as Types from "../types";
 
 import { queryCapabilities } from "../device-status";
 import { queryFiles, queryDeviceMetadata, queryDownloadFile, deleteFile } from "../device-data";
-import { archiveLocalFile, touchLocalFile } from "../local-files";
+import { deleteLocalFile, renameLocalDirectory, archiveLocalFile, touchLocalFile } from "../local-files";
 
 import { uploadFile } from "../../lib/uploading";
 import { writeDeviceMetadata } from "../../lib/downloading";
@@ -118,8 +118,17 @@ export function* executePlans() {
 
                         break;
                     }
+                    case "rename": {
+                        yield call(renameLocalDirectory(details.from, details.to));
+
+                        break;
+                    }
                     case "delete": {
-                        yield call(deviceCall, deleteFile(details.id, details.address));
+                        if (details.path) {
+                            yield call(deleteLocalFile(details.path));
+                        } else {
+                            yield call(deviceCall, deleteFile(details.id, details.address));
+                        }
 
                         break;
                     }

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, Platform, StyleSheet } from "react-native";
 import EasyModeScreen from "../containers/EasyModeScreen";
 import BrowserScreen from "../containers/BrowserScreen";
 import PropTypes from "prop-types";
@@ -7,9 +7,38 @@ import { connect } from "react-redux";
 
 import { navigateEasyModeWelcome, browseDirectory, navigateBrowser, navigateAbout, navigateUpload } from "../actions";
 
+const styles = StyleSheet.create({
+    subtext: Platform.select({
+        ios: {
+            // Material design blue from https://material.google.com/style/color.html#color-color-palette
+            color: "#6B6D6F",
+            paddingBottom: 5
+        },
+        android: {
+            color: "#6B6D6F"
+        }
+    }),
+    imageSize: Platform.select({
+        ios: {
+            // Material design blue from https://material.google.com/style/color.html#color-color-palette
+            resizeMode: "contain",
+            width: "100%",
+            height: 25
+        },
+        android: {
+            resizeMode: "contain",
+            width: "100%",
+            height: 20
+        }
+    })
+});
+
 class Tab extends React.Component {
+    const;
     render() {
         const { navigateEasyModeWelcome, browseDirectory, navigateAbout, navigateUpload } = this.props;
+        const imageSize = [styles.imageSize];
+        const subtext = [styles.subtext];
         return (
             <View
                 style={{
@@ -82,15 +111,8 @@ class Tab extends React.Component {
                                 navigateAbout();
                             }}
                         >
-                            <Image
-                                source={require("../../assets/Icon_About_active3x.png")}
-                                style={{
-                                    resizeMode: "contain",
-                                    width: "100%",
-                                    height: 20
-                                }}
-                            />
-                            <Text style={{ color: "#6B6D6F" }}> About </Text>
+                            <Image source={require("../../assets/Icon_About_active3x.png")} style={imageSize} />
+                            <Text style={subtext}> About </Text>
                         </TouchableOpacity>
                     </View>
                 </View>

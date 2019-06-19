@@ -30,6 +30,10 @@ class BrowserScreen extends React.Component {
     render() {
         const { path, localFiles } = this.props;
 
+        if (!path) {
+            return <View />;
+        }
+
         return (
             <AppScreen>
                 <View style={{ height: "92%" }}>
@@ -44,7 +48,7 @@ class BrowserScreen extends React.Component {
 }
 
 BrowserScreen.propTypes = {
-    path: PropTypes.string.isRequired,
+    path: PropTypes.string,
     navigateBrowser: PropTypes.func.isRequired,
     browseDirectory: PropTypes.func.isRequired,
     browseFile: PropTypes.func.isRequired

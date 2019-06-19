@@ -179,7 +179,7 @@ export class DeviceOptions extends React.Component {
                             >
                                 You may need to repeat these steps multiple times to get a successful connection. We apologize for the inconvenience but we're working to make the process easier!
                             </Text>
-                            <View style={{ paddingLeft: 10 }}>
+                            <View>
                                 <Button
                                     onPress={() => {
                                         this.setState({ modalVisible: !this.state.modalVisible });

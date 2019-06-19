@@ -84,12 +84,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download entire data file", () => {
-                    expect(this.plan.plan[0]).toEqual({
+                    expect(this.plan.plan[1]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 4,
-                            file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                            headers: "/0004a30b001cc468/4_000001_headers_data.fk",
+                            file: "/.staging/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            headers: "/.staging/0004a30b001cc468/4_000001_headers_data.fk",
                             downloading: 15000,
                             offset: 0,
                             length: 0
@@ -98,12 +98,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download last chunk of log", () => {
-                    expect(this.plan.plan[1]).toEqual({
+                    expect(this.plan.plan[2]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
-                            headers: "/0004a30b001cc468/1_000001_headers_startup.log",
+                            file: "/.staging/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            headers: "/.staging/0004a30b001cc468/1_000001_headers_startup.log",
                             downloading: 100000,
                             offset: 8000000,
                             length: 100000
@@ -143,12 +143,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should resume data file", () => {
-                    expect(this.plan.plan[0]).toEqual({
+                    expect(this.plan.plan[1]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 4,
-                            file: "/0004a30b001cc468/4_000001_offset_15000_data.fk",
-                            headers: "/0004a30b001cc468/4_000001_headers_data.fk",
+                            file: "/.staging/0004a30b001cc468/4_000001_offset_15000_data.fk",
+                            headers: "/.staging/0004a30b001cc468/4_000001_headers_data.fk",
                             downloading: 15000,
                             offset: 15000,
                             length: 0
@@ -157,12 +157,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download last chunk of log", () => {
-                    expect(this.plan.plan[1]).toEqual({
+                    expect(this.plan.plan[2]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
-                            headers: "/0004a30b001cc468/1_000001_headers_startup.log",
+                            file: "/.staging/0004a30b001cc468/1_000001_offset_7000000_startup.log",
+                            headers: "/.staging/0004a30b001cc468/1_000001_headers_startup.log",
                             downloading: 1000000,
                             offset: 7000000,
                             length: 1000000
@@ -202,12 +202,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download entire data file", () => {
-                    expect(this.plan.plan[0]).toEqual({
+                    expect(this.plan.plan[1]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 4,
-                            file: "/0004a30b001cc468/4_000002_offset_0_data.fk",
-                            headers: "/0004a30b001cc468/4_000002_headers_data.fk",
+                            file: "/.staging/0004a30b001cc468/4_000002_offset_0_data.fk",
+                            headers: "/.staging/0004a30b001cc468/4_000002_headers_data.fk",
                             downloading: 15000,
                             offset: 0,
                             length: 0
@@ -216,12 +216,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download last chunk of log", () => {
-                    expect(this.plan.plan[1]).toEqual({
+                    expect(this.plan.plan[2]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file: "/0004a30b001cc468/1_000002_offset_8000000_startup.log",
-                            headers: "/0004a30b001cc468/1_000002_headers_startup.log",
+                            file: "/.staging/0004a30b001cc468/1_000002_offset_8000000_startup.log",
+                            headers: "/.staging/0004a30b001cc468/1_000002_headers_startup.log",
                             downloading: 100000,
                             offset: 8000000,
                             length: 100000
@@ -261,12 +261,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should resume data file", () => {
-                    expect(this.plan.plan[0]).toEqual({
+                    expect(this.plan.plan[1]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 4,
-                            file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                            headers: "/0004a30b001cc468/4_000001_headers_data.fk",
+                            file: "/.staging/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            headers: "/.staging/0004a30b001cc468/4_000001_headers_data.fk",
                             downloading: 15000,
                             offset: 15000,
                             length: 0
@@ -275,12 +275,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should resume last chunk of log", () => {
-                    expect(this.plan.plan[1]).toEqual({
+                    expect(this.plan.plan[2]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file: "/0004a30b001cc468/1_000001_offset_8000000_startup.log",
-                            headers: "/0004a30b001cc468/1_000001_headers_startup.log",
+                            file: "/.staging/0004a30b001cc468/1_000001_offset_8000000_startup.log",
+                            headers: "/.staging/0004a30b001cc468/1_000001_headers_startup.log",
                             downloading: 100000,
                             offset: 8100000,
                             length: 100000
@@ -289,12 +289,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download next to last chunk of log", () => {
-                    expect(this.plan.plan[2]).toEqual({
+                    expect(this.plan.plan[3]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
-                            headers: "/0004a30b001cc468/1_000001_headers_startup.log",
+                            file: "/.staging/0004a30b001cc468/1_000001_offset_7000000_startup.log",
+                            headers: "/.staging/0004a30b001cc468/1_000001_headers_startup.log",
                             downloading: 1000000,
                             offset: 7000000,
                             length: 1000000
@@ -334,12 +334,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should resume data file", () => {
-                    expect(this.plan.plan[0]).toEqual({
+                    expect(this.plan.plan[1]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 4,
-                            file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                            headers: "/0004a30b001cc468/4_000001_headers_data.fk",
+                            file: "/.staging/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            headers: "/.staging/0004a30b001cc468/4_000001_headers_data.fk",
                             downloading: 15000,
                             offset: 15000,
                             length: 0
@@ -348,12 +348,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download next to last chunk of log", () => {
-                    expect(this.plan.plan[1]).toEqual({
+                    expect(this.plan.plan[2]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file: "/0004a30b001cc468/1_000001_offset_7000000_startup.log",
-                            headers: "/0004a30b001cc468/1_000001_headers_startup.log",
+                            file: "/.staging/0004a30b001cc468/1_000001_offset_7000000_startup.log",
+                            headers: "/.staging/0004a30b001cc468/1_000001_headers_startup.log",
                             downloading: 1000000,
                             offset: 7000000,
                             length: 1000000
@@ -396,12 +396,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download the chunk before", () => {
-                    expect(this.plan.plan[0]).toEqual({
+                    expect(this.plan.plan[1]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file: "/0004a30b001cc468/1_000001_offset_6000000_startup.log",
-                            headers: "/0004a30b001cc468/1_000001_headers_startup.log",
+                            file: "/.staging/0004a30b001cc468/1_000001_offset_6000000_startup.log",
+                            headers: "/.staging/0004a30b001cc468/1_000001_headers_startup.log",
                             downloading: 1000000,
                             offset: 6000000,
                             length: 1000000
@@ -439,7 +439,7 @@ describe("synchronizing", () => {
                 });
 
                 it("should archive backup local file", () => {
-                    expect(this.plan.plan[0]).toEqual({
+                    expect(this.plan.plan[1]).toEqual({
                         backup: {
                             file: "/0004a30b001cc468/4_000001_offset_0_data.fk"
                         }
@@ -447,12 +447,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download entire data file", () => {
-                    expect(this.plan.plan[1]).toEqual({
+                    expect(this.plan.plan[2]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 4,
-                            file: "/0004a30b001cc468/4_000001_offset_0_data.fk",
-                            headers: "/0004a30b001cc468/4_000001_headers_data.fk",
+                            file: "/.staging/0004a30b001cc468/4_000001_offset_0_data.fk",
+                            headers: "/.staging/0004a30b001cc468/4_000001_headers_data.fk",
                             downloading: 30000,
                             offset: 0,
                             length: 0
@@ -498,12 +498,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download tail of the file", () => {
-                    expect(this.plan.plan[0]).toEqual({
+                    expect(this.plan.plan[1]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file: "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
-                            headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                            file: "/.staging/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
+                            headers: "/.staging/0004a30b001cc468/1_000001_headers_logs-a.fklog",
                             downloading: 1000000,
                             offset: 7200000,
                             length: 1000000
@@ -574,12 +574,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download tail of the file", () => {
-                    expect(this.plan.plan[0]).toEqual({
+                    expect(this.plan.plan[1]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file: "/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
-                            headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                            file: "/.staging/0004a30b001cc468/1_000001_offset_7200000_logs-a.fklog",
+                            headers: "/.staging/0004a30b001cc468/1_000001_headers_logs-a.fklog",
                             downloading: 1000000,
                             offset: 7200000,
                             length: 1000000
@@ -659,12 +659,12 @@ describe("synchronizing", () => {
                     });
 
                     it("should download tail of non-empty file", () => {
-                        expect(this.plan.plan[0]).toEqual({
+                        expect(this.plan.plan[1]).toEqual({
                             download: {
                                 address: DeviceAddress,
                                 id: 2,
-                                file: "/0004a30b001cc468/2_000001_offset_4000000_logs-b.fklog",
-                                headers: "/0004a30b001cc468/2_000001_headers_logs-b.fklog",
+                                file: "/.staging/0004a30b001cc468/2_000001_offset_4000000_logs-b.fklog",
+                                headers: "/.staging/0004a30b001cc468/2_000001_headers_logs-b.fklog",
                                 downloading: 1000000,
                                 offset: 4000000,
                                 length: 1000000
@@ -696,12 +696,12 @@ describe("synchronizing", () => {
                     });
 
                     it("should download tail of smaller file", () => {
-                        expect(this.plan.plan[0]).toEqual({
+                        expect(this.plan.plan[1]).toEqual({
                             download: {
                                 address: DeviceAddress,
                                 id: 1,
-                                file: "/0004a30b001cc468/1_000001_offset_1000000_logs-a.fklog",
-                                headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                                file: "/.staging/0004a30b001cc468/1_000001_offset_1000000_logs-a.fklog",
+                                headers: "/.staging/0004a30b001cc468/1_000001_headers_logs-a.fklog",
                                 downloading: 1000000,
                                 offset: 1000000,
                                 length: 1000000
@@ -783,12 +783,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download tail of non-empty file", () => {
-                    expect(this.plan.plan[0]).toEqual({
+                    expect(this.plan.plan[1]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 2,
-                            file: "/0004a30b001cc468/2_000001_offset_4000000_logs-b.fklog",
-                            headers: "/0004a30b001cc468/2_000001_headers_logs-b.fklog",
+                            file: "/.staging/0004a30b001cc468/2_000001_offset_4000000_logs-b.fklog",
+                            headers: "/.staging/0004a30b001cc468/2_000001_headers_logs-b.fklog",
                             downloading: 1000000,
                             offset: 4000000,
                             length: 1000000
@@ -820,12 +820,12 @@ describe("synchronizing", () => {
                 });
 
                 it("should download tail of smaller file", () => {
-                    expect(this.plan.plan[0]).toEqual({
+                    expect(this.plan.plan[1]).toEqual({
                         download: {
                             address: DeviceAddress,
                             id: 1,
-                            file: "/0004a30b001cc468/1_000001_offset_1000000_logs-a.fklog",
-                            headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                            file: "/.staging/0004a30b001cc468/1_000001_offset_1000000_logs-a.fklog",
+                            headers: "/.staging/0004a30b001cc468/1_000001_headers_logs-a.fklog",
                             downloading: 1000000,
                             offset: 1000000,
                             length: 1000000
@@ -873,11 +873,16 @@ describe("synchronizing", () => {
                 it("should download all of the files", () => {
                     expect(this.plan.plan).toEqual([
                         {
+                            delete: {
+                                path: "/.staging/0004a30b001cc468"
+                            }
+                        },
+                        {
                             download: {
                                 address: DeviceAddress,
                                 id: 1,
-                                file: "/0004a30b001cc468/1_000001_offset_0_logs-a.fklog",
-                                headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                                file: "/.staging/0004a30b001cc468/1_000001_offset_0_logs-a.fklog",
+                                headers: "/.staging/0004a30b001cc468/1_000001_headers_logs-a.fklog",
                                 downloading: 8200000,
                                 offset: 0,
                                 length: 0
@@ -887,6 +892,12 @@ describe("synchronizing", () => {
                             delete: {
                                 address: DeviceAddress,
                                 id: 1
+                            }
+                        },
+                        {
+                            rename: {
+                                from: "/.staging/0004a30b001cc468",
+                                to: "/0004a30b001cc468"
                             }
                         }
                     ]);
@@ -962,11 +973,16 @@ describe("synchronizing", () => {
                 it("should download remainder of the file", () => {
                     expect(this.plan.plan).toEqual([
                         {
+                            delete: {
+                                path: "/.staging/0004a30b001cc468"
+                            }
+                        },
+                        {
                             download: {
                                 address: DeviceAddress,
                                 id: 1,
-                                file: "/0004a30b001cc468/1_000001_offset_5000000_logs-a.fklog",
-                                headers: "/0004a30b001cc468/1_000001_headers_logs-a.fklog",
+                                file: "/.staging/0004a30b001cc468/1_000001_offset_5000000_logs-a.fklog",
+                                headers: "/.staging/0004a30b001cc468/1_000001_headers_logs-a.fklog",
                                 downloading: 2200000,
                                 offset: 6000000,
                                 length: 0
@@ -976,6 +992,12 @@ describe("synchronizing", () => {
                             delete: {
                                 address: DeviceAddress,
                                 id: 1
+                            }
+                        },
+                        {
+                            rename: {
+                                from: "/.staging/0004a30b001cc468",
+                                to: "/0004a30b001cc468"
                             }
                         }
                     ]);
@@ -1007,11 +1029,16 @@ describe("synchronizing", () => {
                 it("should download to a new local file", () => {
                     expect(this.plan.plan).toEqual([
                         {
+                            delete: {
+                                path: "/.staging/0004a30b001cc468"
+                            }
+                        },
+                        {
                             download: {
                                 address: DeviceAddress,
                                 id: 1,
-                                file: "/0004a30b001cc468/1_000002_offset_0_logs-a.fklog",
-                                headers: "/0004a30b001cc468/1_000002_headers_logs-a.fklog",
+                                file: "/.staging/0004a30b001cc468/1_000002_offset_0_logs-a.fklog",
+                                headers: "/.staging/0004a30b001cc468/1_000002_headers_logs-a.fklog",
                                 downloading: 20000,
                                 offset: 0,
                                 length: 0
@@ -1021,6 +1048,12 @@ describe("synchronizing", () => {
                             delete: {
                                 address: DeviceAddress,
                                 id: 1
+                            }
+                        },
+                        {
+                            rename: {
+                                from: "/.staging/0004a30b001cc468",
+                                to: "/0004a30b001cc468"
                             }
                         }
                     ]);
@@ -1057,11 +1090,16 @@ describe("synchronizing", () => {
                 it("should download to a new local file", () => {
                     expect(this.plan.plan).toEqual([
                         {
+                            delete: {
+                                path: "/.staging/0004a30b001cc468"
+                            }
+                        },
+                        {
                             download: {
                                 address: DeviceAddress,
                                 id: 1,
-                                file: "/0004a30b001cc468/1_000002_offset_0_logs-a.fklog",
-                                headers: "/0004a30b001cc468/1_000002_headers_logs-a.fklog",
+                                file: "/.staging/0004a30b001cc468/1_000002_offset_0_logs-a.fklog",
+                                headers: "/.staging/0004a30b001cc468/1_000002_headers_logs-a.fklog",
                                 downloading: 10000,
                                 offset: 20000,
                                 length: 0
@@ -1071,6 +1109,12 @@ describe("synchronizing", () => {
                             delete: {
                                 address: DeviceAddress,
                                 id: 1
+                            }
+                        },
+                        {
+                            rename: {
+                                from: "/.staging/0004a30b001cc468",
+                                to: "/0004a30b001cc468"
                             }
                         }
                     ]);
@@ -1321,8 +1365,8 @@ describe("synchronizing", () => {
         });
 
         it("should backup the local file before downloading", () => {
-            expect(this.download.plan[0].backup).toBeDefined();
-            expect(this.download.plan[1].download).toBeDefined();
+            expect(this.download.plan[1].backup).toBeDefined();
+            expect(this.download.plan[2].download).toBeDefined();
         });
     });
 

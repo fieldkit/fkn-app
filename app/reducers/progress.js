@@ -4,7 +4,6 @@ import * as ActionTypes from "../actions/types";
 
 const initialProgressState = {
     depth: 0,
-    operations: [],
     task: {
         done: true
     },
