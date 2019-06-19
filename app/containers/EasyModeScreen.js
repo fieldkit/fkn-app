@@ -23,26 +23,11 @@ import { navigateWelcome, navigateEditDeviceName, deviceStartConnect, findAllFil
 
 import Config from "../config";
 
-import styles from "../styles";
-
-// <View style={{ flex: 1, justifyContent: "flex-end", marginBottom: 20 }}>
-//   <View>
-//     <Button
-//       title={i18n.t("easyMode.advanced")}
-//       onPress={() => navigateWelcome()}
-//     />
-//   </View>
-// </View>
+import { textStyle, title, subtitle, cardWrapper, cardStyle } from "../styles";
 
 const textPanelStyle = {
     paddingLeft: 15,
     paddingRight: 15,
-    textAlign: "center"
-};
-
-const textStyle = {
-    padding: 10,
-    fontSize: 15,
     textAlign: "center"
 };
 
@@ -98,22 +83,26 @@ export class UploadQueueOptions extends React.Component {
 
         if (numberOfFiles == 0) {
             return (
-                <View>
-                    <Text style={textStyle}>{i18n.t("easyMode.noPendingFiles")}</Text>
+                <View style={cardWrapper}>
+                    <View style={cardStyle}>
+                        <Text style={textStyle}>{i18n.t("easyMode.noPendingFiles")}</Text>
+                    </View>
                 </View>
             );
         }
 
         if (!networkConfiguration.internet.online) {
             return (
-                <View style={textPanelStyle}>
-                    <Text style={textStyle}>
-                        {i18n.t("easyMode.pendingFiles", {
-                            numberOfFiles: numberOfFiles,
-                            estimatedUpload: estimatedUpload
-                        })}{" "}
-                        {i18n.t("easyMode.offline")}
-                    </Text>
+                <View style={cardWrapper}>
+                    <View style={cardStyle}>
+                        <Text style={subtitle}>
+                            {i18n.t("easyMode.pendingFiles", {
+                                numberOfFiles: numberOfFiles,
+                                estimatedUpload: estimatedUpload
+                            })}{" "}
+                            {i18n.t("easyMode.offline")}
+                        </Text>
+                    </View>
                 </View>
             );
         }
@@ -146,7 +135,7 @@ export class DeviceOptions extends React.Component {
         const easyMode = this.props;
         if (easyMode.devices && _.size(easyMode.devices) == 1) {
             try {
-                const value = await AsyncStorage.getItem(hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId));
+                const value = await AsyncStorage.getItem("deviceName" + hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId));
                 this.setState({ recognizedDevice: value });
             } catch (error) {
                 console.log(error);
@@ -193,28 +182,34 @@ export class DeviceOptions extends React.Component {
             .filter(p => p.download)
             .map(p => p.download.downloading)
             .sum();
+
+        console.log(numberOfDevices);
         if (numberOfDevices == 0 || !_.isArray(downloads) || downloads.length == 0) {
             if (!easyMode.networkConfiguration.deviceAp) {
                 return (
                     <View>
-                        <View style={{ justifyContent: "center", alignItems: "center" }} />
-                        <Image
-                            source={require("../../assets/fogg-no-comments.png")}
-                            style={{
-                                resizeMode: "contain",
-                                width: "100%",
-                                height: 250
-                            }}
-                        />
-                        <View style={textPanelStyle}>
-                            <Text style={textStyle}>{i18n.t("easyMode.noDevicesConnect")}</Text>
+                        <View style={cardWrapper}>
+                            <View style={cardStyle}>
+                                <Image
+                                    source={require("../../assets/fogg-no-comments.png")}
+                                    style={{
+                                        resizeMode: "contain",
+                                        width: "100%",
+                                        height: 180
+                                    }}
+                                />
+                                <Text style={subtitle}>No Devices Found</Text>
+                                <Text style={textStyle}>Please connect to a FieldKit WiFi access point.</Text>
+                                <View style={{ alignItems: "center", paddingTop: 5 }}>
+                                    <Button
+                                        onPress={() => {
+                                            this.setState({ modalVisible: !this.state.modalVisible });
+                                        }}
+                                        title="Connect Device Guide"
+                                    />
+                                </View>
+                            </View>
                         </View>
-                        <Button
-                            onPress={() => {
-                                this.setState({ modalVisible: !this.state.modalVisible });
-                            }}
-                            title="Connect Device Guide"
-                        />
                         <Modal
                             animationType="slide"
                             transparent={false}
@@ -284,27 +279,37 @@ export class DeviceOptions extends React.Component {
         if (numberOfDevices == 1 && _.toString(this.state.recognizedDevice) != "") {
             return (
                 <View>
-                    <Text style={textPanelStyle}>{this.state.recognizedDevice} was found.</Text>
-                    <View
-                        style={{
-                            paddingLeft: 10,
-                            paddingRight: 10,
-                            paddingBottom: 10,
-                            width: "100%"
-                        }}
-                    >
-                        <Button title="Edit Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
+                    <View style={cardWrapper}>
+                        <View style={cardStyle}>
+                            <Image
+                                source={require("../../assets/fieldkit_river.jpg")}
+                                style={{
+                                    resizeMode: "contain",
+                                    width: "100%",
+                                    height: 200
+                                }}
+                            />
+                            <Text style={subtitle}>{this.state.recognizedDevice} was found.</Text>
+                            <View
+                                style={{
+                                    alignItems: "center"
+                                }}
+                            >
+                                <Button title="Edit Device Name" onPress={() => navigateEditDeviceName("deviceName" + hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
+                            </View>
+                        </View>
                     </View>
-                    <Text style={textPanelStyle}>Syncing will download {estimatedDownload} bytes.</Text>
-                    <View
-                        style={{
-                            paddingLeft: 10,
-                            paddingRight: 10,
-                            paddingBottom: 10,
-                            width: "100%"
-                        }}
-                    >
-                        <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
+                    <View style={cardWrapper}>
+                        <View style={cardStyle}>
+                            <Text style={textStyle}>Syncing will download {estimatedDownload} bytes.</Text>
+                            <View
+                                style={{
+                                    alignItems: "center"
+                                }}
+                            >
+                                <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
+                            </View>
+                        </View>
                     </View>
                 </View>
             );
@@ -312,23 +317,30 @@ export class DeviceOptions extends React.Component {
 
         if (numberOfDevices == 1 && _.toString(this.state.recognizedDevice) == "") {
             return (
-                <View>
-                    <Text style={textPanelStyle}>
-                        {i18n.t("easyMode.devicesFound", {
-                            numberOfDevices: numberOfDevices,
-                            estimatedDownload: estimatedDownload
-                        })}
-                    </Text>
-                    <View
-                        style={{
-                            paddingLeft: 10,
-                            paddingRight: 10,
-                            paddingBottom: 10,
-                            width: "100%"
-                        }}
-                    >
-                        <Button title="Set Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
-                        <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
+                <View style={cardWrapper}>
+                    <View style={cardStyle}>
+                        <Image
+                            source={require("../../assets/fieldkit_river.jpg")}
+                            style={{
+                                resizeMode: "contain",
+                                width: "100%",
+                                height: 200
+                            }}
+                        />
+                        <Text style={subtitle}>
+                            {i18n.t("easyMode.devicesFound", {
+                                numberOfDevices: numberOfDevices,
+                                estimatedDownload: estimatedDownload
+                            })}
+                        </Text>
+                        <View
+                            style={{
+                                alignItems: "center"
+                            }}
+                        >
+                            <Button title="Set Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
+                            <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
+                        </View>
                     </View>
                 </View>
             );
@@ -385,9 +397,11 @@ class EasyModeScreen extends React.Component {
 
     renderBusy() {
         return (
-            <View>
-                <Text style={textPanelStyle}>{i18n.t("easyMode.busy")}</Text>
-                <KeepAwake />
+            <View style={cardWrapper}>
+                <View style={cardStyle}>
+                    <Text style={textStyle}>{i18n.t("easyMode.busy")}</Text>
+                    <KeepAwake />
+                </View>
             </View>
         );
     }
@@ -395,38 +409,24 @@ class EasyModeScreen extends React.Component {
     renderMenu() {
         const { easyMode, executePlan, navigateWelcome, navigateEditDeviceName, configureName } = this.props;
 
-        const shadowStyle = {
-            shadowOpacity: 0.5,
-            shadowRadius: 20,
-            shadowColor: "DidFinishRenderingFrameFully"
-        };
         return (
-            <ScrollView style={{ flex: 1, alignSelf: "stretch" }}>
-                <View style={shadowStyle}>
-                    <DeviceOptions easyMode={easyMode} executePlan={executePlan} navigateEditDeviceName={navigateEditDeviceName} configureName={configureName} />
-                </View>
+            <View>
+                <DeviceOptions easyMode={easyMode} executePlan={executePlan} navigateEditDeviceName={navigateEditDeviceName} configureName={configureName} />
 
                 <UploadQueueOptions easyMode={easyMode} executePlan={executePlan} />
-            </ScrollView>
+            </View>
         );
     }
 
     render() {
         const { easyMode } = this.props;
         return (
-            <AppScreen backgroundStyle={{ height: "100%" }}>
-                <View style={{ justifyContent: "center", alignItems: "center" }}>
-                    <Image
-                        source={require("../../assets/FieldKit_Logo_blue.png")}
-                        style={{
-                            resizeMode: "contain",
-                            width: "50%",
-                            height: 100
-                        }}
-                    />
-                </View>
+            <AppScreen>
+                <View style={{ height: "92%" }}>
+                    <Text style={title}>FieldKit</Text>
 
-                {easyMode.busy ? this.renderBusy() : this.renderMenu()}
+                    {easyMode.busy ? this.renderBusy() : this.renderMenu()}
+                </View>
             </AppScreen>
         );
     }

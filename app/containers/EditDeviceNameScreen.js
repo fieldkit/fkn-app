@@ -18,6 +18,8 @@ import { navigateBack, configureName } from "../actions";
 
 import styles from "../styles";
 
+//add a prefix device name
+
 class EditDeviceName extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return { title: "Edit Device Name" };

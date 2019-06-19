@@ -166,14 +166,19 @@ const styles = StyleSheet.create({
     button: Platform.select({
         ios: {
             // Material design blue from https://material.google.com/style/color.html#color-color-palette
-            backgroundColor: "#2196F3",
-            borderRadius: 2
+            borderRadius: 2,
+            borderColor: "#1B80C9",
+            borderWidth: 1,
+            borderRadius: 50,
+            margin: 15,
+            width: 200
         },
         android: {
-            backgroundColor: "#CE596B",
             alignItems: "center",
-            borderRadius: 5,
-            margin: 15
+            borderColor: "#1B80C9",
+            borderWidth: 1,
+            borderRadius: 50,
+            width: 200
         }
     }),
     text: {
@@ -181,11 +186,11 @@ const styles = StyleSheet.create({
         padding: 8,
         ...Platform.select({
             ios: {
-                color: "#ffffff",
+                color: "#1B80C9",
                 fontSize: 18
             },
             android: {
-                color: "white",
+                color: "#1B80C9",
                 fontWeight: "500"
             }
         })

@@ -12,6 +12,8 @@ import { AppScreen, DirectoryBrowser } from "../components";
 
 import { navigateBrowser, browseDirectory, browseFile } from "../actions";
 
+import { textStyle, title, subtitle, cardWrapper, cardStyle } from "../styles";
+
 class BrowserScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -29,20 +31,12 @@ class BrowserScreen extends React.Component {
         const { path, localFiles } = this.props;
 
         return (
-            <AppScreen background={false}>
-                <View style={{ height: "91%" }}>
-                    <Text
-                        style={{
-                            fontSize: 30,
-                            fontWeight: "bold",
-                            paddingTop: 30,
-                            paddingBottom: 20,
-                            paddingLeft: 15
-                        }}
-                    >
-                        Browser
-                    </Text>
-                    <DirectoryBrowser path={path} localFiles={localFiles} onSelectEntry={this.onSelectEntry.bind(this)} />
+            <AppScreen>
+                <View style={{ height: "92%" }}>
+                    <Text style={title}>Browser</Text>
+                    <View style={{ paddingTop: 15 }}>
+                        <DirectoryBrowser path={path} localFiles={localFiles} onSelectEntry={this.onSelectEntry.bind(this)} />
+                    </View>
                 </View>
             </AppScreen>
         );

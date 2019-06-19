@@ -9,13 +9,15 @@ import i18n from "../internationalization/i18n";
 
 import * as Files from "../lib/files";
 
+import { Image, Text, View, TouchableOpacity, Row } from "react-native";
 import { AppScreen, Loading, FileMenu, MenuButton } from "../components";
 
 import { browseDirectory, openLocalFile, uploadLocalFile, deleteLocalFile, openDataMap, navigateBack } from "../actions";
+import { title } from "../styles";
 
 class LocalFileScreen extends React.Component {
-    static navigationOptions = ({ navigation }) => {
-        return { title: i18n.t("localFile.title") };
+    static navigationOptions = {
+        header: null
     };
 
     onOpen(entry, parentEntry) {
@@ -36,7 +38,7 @@ class LocalFileScreen extends React.Component {
     }
 
     render() {
-        const { onOpen, onUpload, onDelete, navigateDataMap } = this.props;
+        const { onOpen, onUpload, onDelete, navigateDataMap, browseDirectory } = this.props;
         const { localFiles, path } = this.props;
 
         const file = Files.getFileEntry(localFiles, path);
@@ -45,8 +47,25 @@ class LocalFileScreen extends React.Component {
         }
 
         return (
-            <AppScreen background={false}>
-                <FileMenu file={file} onOpenDataMap={this.onOpenDataMap.bind(this)} onOpen={this.onOpen.bind(this)} onUpload={this.onUpload.bind(this)} onDelete={this.onDelete.bind(this)} />
+            <AppScreen>
+                <View style={{ height: "90%" }}>
+                    <View
+                        style={{
+                            alignItems: "flex-start",
+                            paddingTop: 20,
+                            paddingLeft: 20
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={() => {
+                                browseDirectory("/");
+                            }}
+                        >
+                            <Text style={{ color: "#1B80C9" }}> Back</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <FileMenu file={file} onOpenDataMap={this.onOpenDataMap.bind(this)} onOpen={this.onOpen.bind(this)} onUpload={this.onUpload.bind(this)} onDelete={this.onDelete.bind(this)} />
+                </View>
             </AppScreen>
         );
     }
