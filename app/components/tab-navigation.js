@@ -60,8 +60,8 @@ class Tab extends React.Component {
                                 navigateEasyModeWelcome();
                             }}
                         >
-                            <Image source={require("../../assets/Icon_Device_active3x.png")} style={imageSize} />
-                            <Text style={subtext}> Device </Text>
+                            <Image source={require("../../assets/icon_connect_active3x.png")} style={imageSize} />
+                            <Text style={subtext}> Connect </Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: "column" }}>
@@ -70,7 +70,7 @@ class Tab extends React.Component {
                                 navigateUpload();
                             }}
                         >
-                            <Image source={require("../../assets/Icon_sync_active3x.png")} style={imageSize} />
+                            <Image source={require("../../assets/icon_upload_active3x.png")} style={imageSize} />
                             <Text style={subtext}> Upload </Text>
                         </TouchableOpacity>
                     </View>
@@ -80,7 +80,7 @@ class Tab extends React.Component {
                                 browseDirectory("/");
                             }}
                         >
-                            <Image source={require("../../assets/Icon_files_active3x.png")} style={imageSize} />
+                            <Image source={require("../../assets/icon_files_active3x.png")} style={imageSize} />
                             <Text style={subtext}> Browser </Text>
                         </TouchableOpacity>
                     </View>
