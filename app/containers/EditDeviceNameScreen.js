@@ -16,19 +16,21 @@ import { AppScreen, Button } from "../components";
 
 import { navigateBack, configureName } from "../actions";
 
+import { textStyle, title, subtitle, cardWrapper, cardStyle } from "../styles";
+
 import styles from "../styles";
 
 import { makeDeviceNameKey } from "../components/DeviceOptions";
 
 class EditDeviceName extends React.Component {
-    static navigationOptions = ({ navigation }) => {
-        return { title: "Edit Device Name" };
+    static navigationOptions = {
+        header: null
     };
 
     constructor() {
         super();
         this.state = {
-            name: ""
+            deviceName: ""
         };
     }
 
@@ -60,13 +62,32 @@ class EditDeviceName extends React.Component {
         const { deviceId, navigateBack, address } = this.props;
         return (
             <View>
-                <View style={{ paddingTop: 20, paddingBottom: 10 }}>
-                    <TextInput style={{ height: 40, borderColor: "gray", borderWidth: 1 }} placeholder={"Device Name"} onChangeText={text => this.setState({ name: text })} value={this.state.name} />
+                <Text style={title}>Edit Device Name </Text>
+
+                <View style={{ paddingTop: 60, paddingBottom: 40 }}>
+                    <View
+                        style={{
+                            paddingLeft: 20,
+                            paddingRight: 20
+                        }}
+                    >
+                        <TextInput
+                            style={{
+                                height: 40,
+                                borderColor: "gray",
+                                borderWidth: 1,
+                                borderRadius: 5
+                            }}
+                            placeholder={"Device Name"}
+                            onChangeText={text => this.setState({ name: text })}
+                            value={this.state.name}
+                        />
+                    </View>
                 </View>
-                <View style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 10 }}>
+                <View style={{ paddingLeft: 20, paddingBottom: 10 }}>
                     <Button title="Save" onPress={() => this._addData(deviceId, this.state.name, address)} />
                 </View>
-                <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+                <View style={{ paddingLeft: 20 }}>
                     <Button title="Cancel" onPress={() => navigateBack()} />
                 </View>
             </View>

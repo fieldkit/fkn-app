@@ -16,6 +16,10 @@ export function navigateDataMap(path) {
     });
 }
 
+export function navigateUpload(path) {
+    return NavigationActions.navigate({ routeName: "Upload" });
+}
+
 export function navigateConnecting() {
     return NavigationActions.navigate({ routeName: "Connecting" });
 }

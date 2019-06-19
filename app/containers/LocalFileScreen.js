@@ -48,7 +48,7 @@ class LocalFileScreen extends React.Component {
 
         return (
             <AppScreen>
-                <View style={{ height: "90%" }}>
+                <View style={{ height: "92%" }}>
                     <View
                         style={{
                             alignItems: "flex-start",
@@ -61,7 +61,7 @@ class LocalFileScreen extends React.Component {
                                 browseDirectory("/");
                             }}
                         >
-                            <Text style={{ color: "#1B80C9" }}> Back</Text>
+                            <Text style={{ color: "#1B80C9" }}> Go Back</Text>
                         </TouchableOpacity>
                     </View>
                     <FileMenu file={file} onOpenDataMap={this.onOpenDataMap.bind(this)} onOpen={this.onOpen.bind(this)} onUpload={this.onUpload.bind(this)} onDelete={this.onDelete.bind(this)} />

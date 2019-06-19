@@ -102,9 +102,15 @@ export class DeviceOptions extends React.Component {
                                     height: 180
                                 }}
                             />
-                            <Text style={subtitle}>No Devices Found</Text>
-                            <Text style={textStyle}>Please connect to a FieldKit WiFi access point.</Text>
-                            <View style={{ alignItems: "center", paddingTop: 5 }}>
+                            <Text style={subtitle}>{i18n.t("easyMode.noDevicesConnect")}</Text>
+                            <Text style={textStyle}>{i18n.t("easyMode.tryConnecting")}</Text>
+                            <View
+                                style={{
+                                    alignItems: "center",
+                                    paddingTop: 10,
+                                    paddingBottom: 10
+                                }}
+                            >
                                 <Button
                                     onPress={() => {
                                         this.setState({ modalVisible: !this.state.modalVisible });
@@ -125,11 +131,12 @@ export class DeviceOptions extends React.Component {
                         <View style={textPanelStyle}>
                             <Text
                                 style={{
-                                    paddingTop: 20,
+                                    paddingTop: 40,
                                     paddingLeft: 10,
-                                    paddingBottom: 20,
-                                    fontSize: 30,
-                                    fontWeight: "bold"
+                                    paddingBottom: 30,
+                                    fontSize: 28,
+                                    fontWeight: "bold",
+                                    color: "#1B80C9"
                                 }}
                             >
                                 Connect to Your Fieldkit
@@ -161,12 +168,25 @@ export class DeviceOptions extends React.Component {
                             >
                                 3. Select your FieldKit device to connect
                             </Text>
-                            <Button
-                                onPress={() => {
-                                    this.setState({ modalVisible: !this.state.modalVisible });
+                            <Text
+                                style={{
+                                    color: "#6B6D6F",
+                                    paddingLeft: 10,
+                                    paddingRight: 10,
+                                    paddingBottom: 40,
+                                    fontSize: 15
                                 }}
-                                title="Done"
-                            />
+                            >
+                                You may need to repeat these steps multiple times to get a successful connection. We apologize for the inconvenience but we're working to make the process easier!
+                            </Text>
+                            <View style={{ paddingLeft: 10 }}>
+                                <Button
+                                    onPress={() => {
+                                        this.setState({ modalVisible: !this.state.modalVisible });
+                                    }}
+                                    title="Got It"
+                                />
+                            </View>
                         </View>
                     </Modal>
                 </View>
@@ -197,23 +217,13 @@ export class DeviceOptions extends React.Component {
                                 }}
                             />
                             <Text style={subtitle}>Connected to {this.state.recognizedDevice}!</Text>
-                            <View
-                                style={{
-                                    alignItems: "center"
-                                }}
-                            >
-                                <Button title="Edit Device Name" onPress={() => navigateEditDeviceName("deviceName" + hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
-                            </View>
-                        </View>
-                    </View>
-                    <View style={cardWrapper}>
-                        <View style={cardStyle}>
                             <Text style={textStyle}>There's {summary.estimatedDownload} bytes waiting.</Text>
                             <View
                                 style={{
                                     alignItems: "center"
                                 }}
                             >
+                                <Button title="Edit Device Name" onPress={() => navigateEditDeviceName("deviceName" + hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
                                 <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
                             </View>
                         </View>
@@ -234,13 +244,15 @@ export class DeviceOptions extends React.Component {
                         }}
                     />
                     <Text style={subtitle}>{i18n.t("easyMode.devicesFound", summary)}</Text>
+                    <Text style={textStyle}>{i18n.t("easyMode.syncing", summary)}</Text>
                     <View
                         style={{
-                            alignItems: "center"
+                            alignItems: "center",
+                            paddingTop: 10
                         }}
                     >
-                        <Button title="Set Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
                         <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
+                        <Button title="Set Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
                     </View>
                 </View>
             </View>
