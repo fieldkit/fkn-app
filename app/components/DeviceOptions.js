@@ -25,6 +25,21 @@ import Config from "../config";
 
 import { textStyle, textPanelStyle, title, subtitle, cardWrapper, cardStyle } from "../styles";
 
+export function makeDeviceNameKey(deviceId) {
+    if (_.isString(deviceId)) {
+        return "device-name:" + deviceId;
+    }
+    return "device-name:" + hexArrayBuffer(deviceId);
+}
+
+export function isDeviceNameKey(key) {
+    return key.indexOf("device-name:") === 0;
+}
+
+export function getDeviceIdFromKey(key) {
+    return key.replace("device-name:", "");
+}
+
 export class DeviceOptions extends React.Component {
     state = {
         recognizedDevice: "",
@@ -35,7 +50,8 @@ export class DeviceOptions extends React.Component {
         const easyMode = this.props;
         if (easyMode.devices && _.size(easyMode.devices) == 1) {
             try {
-                const value = await AsyncStorage.getItem("deviceName" + hexArrayBuffer(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId));
+                const key = makeDeviceNameKey(easyMode.devices[_.first(_.keys(easyMode.devices))].capabilities.deviceId);
+                const value = await AsyncStorage.getItem(key);
                 this.setState({ recognizedDevice: value });
             } catch (error) {
                 console.log(error);
@@ -51,7 +67,8 @@ export class DeviceOptions extends React.Component {
 
         if (easyModeAfter.devices != easyModeBefore.devices && _.size(easyModeAfter.devices) == 1) {
             try {
-                const value = await AsyncStorage.getItem(hexArrayBuffer(easyModeAfter.devices[_.first(_.keys(easyModeAfter.devices))].capabilities.deviceId));
+                const key = makeDeviceNameKey(easyModeAfter.devices[_.first(_.keys(easyModeAfter.devices))].capabilities.deviceId);
+                const value = await AsyncStorage.getItem(key);
                 this.setState({ recognizedDevice: value });
             } catch (error) {
                 console.log(error);

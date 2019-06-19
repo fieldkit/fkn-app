@@ -18,7 +18,7 @@ import { navigateBack, configureName } from "../actions";
 
 import styles from "../styles";
 
-//add a prefix device name
+import { makeDeviceNameKey } from "../components/DeviceOptions";
 
 class EditDeviceName extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -33,7 +33,8 @@ class EditDeviceName extends React.Component {
     }
 
     async componentWillMount() {
-        const name = await AsyncStorage.getItem(this.props.deviceId);
+        const name = await AsyncStorage.getItem(makeDeviceNameKey(this.props.deviceId));
+
         this.setState({
             name: name
         });
@@ -45,7 +46,7 @@ class EditDeviceName extends React.Component {
         } else {
             const { configureName } = this.props;
             try {
-                await AsyncStorage.setItem(deviceId, text);
+                await AsyncStorage.setItem(makeDeviceNameKey(deviceId), text);
                 configureName(address, text);
                 Toasts.show("Your device name has been saved!");
                 this.props.navigateBack();

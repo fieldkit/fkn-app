@@ -25,7 +25,43 @@ import Config from "../config";
 
 import { textStyle, textPanelStyle, title, subtitle, cardWrapper, cardStyle } from "../styles";
 
+import { isDeviceNameKey, getDeviceIdFromKey } from "./DeviceOptions";
+
 export class UploadQueueOptions extends React.Component {
+    setNamesOnServer() {
+        return AsyncStorage.getAllKeys((err, keys) => {
+            return AsyncStorage.multiGet(
+                _(keys)
+                    .filter(key => isDeviceNameKey(key))
+                    .value(),
+                (err, names) => {
+                    return Promise.all(
+                        _(names)
+                            .map(value => {
+                                console.log(value, key);
+                                const [key, name] = value;
+                                const deviceId = getDeviceIdFromKey(key);
+                                return fetch(Config.baseUri + "/devices/" + deviceId, {
+                                    method: "POST",
+                                    headers: {
+                                        Accept: "application/json",
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        deviceId: deviceId,
+                                        name: name
+                                    })
+                                });
+                            })
+                            .value()
+                    );
+                }
+            );
+        }).then(huh => {
+            console.log(huh);
+        });
+    }
+
     onSync() {
         const { easyMode, executePlan } = this.props;
         const { uploads } = easyMode.plans;
@@ -37,28 +73,7 @@ export class UploadQueueOptions extends React.Component {
                 .value()
         );
 
-        if (false)
-            try {
-                AsyncStorage.getAllKeys((err, keys) => {
-                    AsyncStorage.multiGet(keys, (err, stores) => {
-                        stores.map((result, i, store) => {
-                            fetch(Config.baseUri + "/devices/" + store[i][0], {
-                                method: "POST",
-                                headers: {
-                                    Accept: "application/json",
-                                    "Content-Type": "application/json"
-                                },
-                                body: JSON.stringify({
-                                    deviceId: store[i][0],
-                                    name: store[i][1]
-                                })
-                            });
-                        });
-                    });
-                });
-            } catch (error) {
-                console.log(error);
-            }
+        this.setNamesOnServer();
     }
 
     renderNothingToUpload() {
@@ -71,7 +86,7 @@ export class UploadQueueOptions extends React.Component {
         );
     }
 
-    renderOffline(pending) {
+    renderOnline(pending) {
         return (
             <View>
                 <View>
@@ -89,7 +104,7 @@ export class UploadQueueOptions extends React.Component {
         );
     }
 
-    renderOnline(pending) {
+    renderOffline(pending) {
         return (
             <View style={cardWrapper}>
                 <View style={cardStyle}>
@@ -126,7 +141,7 @@ export class UploadQueueOptions extends React.Component {
             estimatedUpload
         };
 
-        if (numberOfFiles >= 0) {
+        if (numberOfFiles > 0) {
             if (networkConfiguration.internet.online) {
                 return this.renderOnline(pending);
             }
