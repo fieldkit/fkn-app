@@ -32,6 +32,8 @@ class DownloadPlanGenerator {
     constructor(config, local, remote) {
         this.config = config;
         this.deviceId = remote.deviceId;
+        this.stagingDirectory = "/.staging/" + this.deviceId;
+        this.directory = "/" + this.deviceId;
         this.address = remote.address;
         this.infos = _(local.files)
             .filter(entry => !entry.directory)
@@ -71,7 +73,7 @@ class DownloadPlanGenerator {
                     .value();
 
                 return {
-                    directory: "/" + this.deviceId,
+                    directory: this.stagingDirectory,
                     config: config,
                     remote: remote,
                     locals: locals
@@ -238,8 +240,31 @@ class DownloadPlanGenerator {
             .compact()
             .value();
 
+        if (!_.some(plan)) {
+            return {
+                plan: []
+            };
+        }
+
+        // Wrap the plan in steps to delete the staging directory and rename.
         return {
-            plan: plan
+            plan: _([
+                {
+                    delete: {
+                        path: this.stagingDirectory
+                    }
+                }
+            ])
+                .concat(plan)
+                .concat([
+                    {
+                        rename: {
+                            from: this.stagingDirectory,
+                            to: this.directory
+                        }
+                    }
+                ])
+                .value()
         };
     }
 }

@@ -177,7 +177,7 @@ export class DownloadWriter {
                     this.headersPath = this.dataDirectoryPath + "/" + this.settings.paths.headers;
                     this.path = this.dataDirectoryPath + "/" + this.settings.paths.file;
                     this.directory = Files.getParentPath(this.path);
-                    console.log("Making", this.directory);
+
                     return RNFS.mkdir(this.directory);
                 })
                 .then(() => {
