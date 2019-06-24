@@ -59,7 +59,8 @@ export default {
     mainView: {
         flex: 1,
         flexDirection: "column",
-        backgroundColor: colors.defaultBackground
+        backgroundColor: colors.defaultBackground,
+        paddingTop: 5
     },
     menuButton: {
         fontSize: 30

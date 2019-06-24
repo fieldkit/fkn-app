@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { View } from "react-native";
+import { View, SafeAreaView } from "react-native";
 import RNLanguages from "react-native-languages";
 
 import i18n from "../internationalization/i18n";
@@ -28,8 +28,10 @@ export class AppScreen extends React.Component {
 
         return (
             <View style={styles.mainView}>
-                {children}
-                <Tab />
+                <SafeAreaView style={{ flex: 1, backgroundColor: "#F4F5F7" }}>
+                    <View style={{ backgroundColor: "#F4F5F7" }}>{children}</View>
+                    <Tab />
+                </SafeAreaView>
             </View>
         );
     }
