@@ -223,7 +223,7 @@ export class DeviceOptions extends React.Component {
                                     alignItems: "center"
                                 }}
                             >
-                                <View style={{ paddingBottome: 10 }}>
+                                <View style={{ paddingBottom: 10 }}>
                                     <Button title="Edit Device Name" onPress={() => navigateEditDeviceName("deviceName" + hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
                                 </View>
                                 <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
@@ -253,7 +253,9 @@ export class DeviceOptions extends React.Component {
                             paddingTop: 10
                         }}
                     >
-                        <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
+                        <View style={{ paddingBottom: 10 }}>
+                            <Button title={i18n.t("easyMode.syncPhone")} onPress={() => this.onSync()} />
+                        </View>
                         <Button title="Set Device Name" onPress={() => navigateEditDeviceName(hexArrayBuffer(easyMode.singleDevice.capabilities.deviceId), easyMode.singleDevice.address)} />
                     </View>
                 </View>
