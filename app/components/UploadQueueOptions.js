@@ -105,6 +105,9 @@ export class UploadQueueOptions extends React.Component {
                                 estimatedUpload: pending.estimatedUpload
                             })}
                         </Text>
+                        <View style={{ paddingTop: 10 }}>
+                            <Text style={textStyle}>{i18n.t("easyMode.disconnectfirst")}</Text>
+                        </View>
                     </View>
                     <View style={{ alignItems: "center", paddingTop: 10, paddingBottom: 10 }}>
                         <Button title={i18n.t("easyMode.syncServer")} onPress={() => this.onSync()} />
