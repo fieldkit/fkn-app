@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image, Platform, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Image, Platform, StyleSheet, SafeAreaView } from "react-native";
 import EasyModeScreen from "../containers/EasyModeScreen";
 import BrowserScreen from "../containers/BrowserScreen";
 import PropTypes from "prop-types";
@@ -44,7 +44,6 @@ class Tab extends React.Component {
                 style={{
                     flex: 1,
                     justifyContent: "flex-end",
-                    backgroundColor: "white",
                     elevation: 4
                 }}
             >

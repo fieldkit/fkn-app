@@ -48,7 +48,7 @@ class LocalFileScreen extends React.Component {
 
         return (
             <AppScreen>
-                <View style={{ height: "92%" }}>
+                <View style={{ height: "92%", paddingTop: 20 }}>
                     <View
                         style={{
                             alignItems: "flex-start",
