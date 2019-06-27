@@ -60,9 +60,7 @@ class ProgressHeader extends React.Component {
         );
     }
 
-    //
     renderBar(i, progress) {
-        console.log("THIS IS PROGRESS", progress);
         return (
             <View key={i} style={{ paddingTop: 20 }}>
                 {progress.label ? (
