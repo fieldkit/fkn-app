@@ -19,7 +19,7 @@ class AboutScreen extends React.Component {
     static navigationOptions = { header: null };
 
     render() {
-        const { navigateWelcome } = this.props;
+        const { navigateWelcome, uploadLogs } = this.props;
         return (
             <AppScreen>
                 <View style={{ height: "92%" }}>
