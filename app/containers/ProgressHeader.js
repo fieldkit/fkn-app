@@ -69,7 +69,7 @@ class ProgressHeader extends React.Component {
                     </View>
                 ) : (
                     <View>
-                        <Text style={{ textAlign: "center", paddingTop: 20 }}>{progress.bytesRead} bytes read.</Text>
+                        <Text style={{ textAlign: "center", paddingTop: 20 }}>{progress.bytesRead} bytes copied.</Text>
                     </View>
                 )}
                 <ProgressBar progress={progress.progress * 100} />

@@ -294,6 +294,15 @@ export function uploadLogs() {
             });
         }
 
+        dispatch({
+            type: Types.TASK_PROGRESS,
+            task: {
+                progress: 0,
+                cancelable: false,
+                done: false
+            }
+        });
+
         return rollover()
             .then(() => getArchivedLogs())
             .then(files => {
@@ -314,6 +323,13 @@ export function uploadLogs() {
                         done: true,
                         progress: 1.0,
                         cancelable: false
+                    }
+                });
+
+                dispatch({
+                    type: Types.TASK_DONE,
+                    task: {
+                        done: true
                     }
                 });
             });
