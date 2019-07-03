@@ -9,7 +9,7 @@ import * as Types from "../types";
 
 import { queryCapabilities } from "../device-status";
 import { queryFiles, queryDeviceMetadata, queryDownloadFile, deleteFile } from "../device-data";
-import { deleteLocalFile, renameLocalDirectory, archiveLocalFile, touchLocalFile } from "../local-files";
+import { deleteLocalFile, renameLocalDirectory, archiveLocalFile, touchLocalFile, findAllFiles } from "../local-files";
 
 import { uploadFile } from "../../lib/uploading";
 import { writeDeviceMetadata } from "../../lib/downloading";
@@ -181,6 +181,8 @@ export function* executePlans() {
             }
 
             yield devices.refresh();
+
+            yield call(findAllFiles);
 
             yield put({
                 type: Types.TASK_DONE,
