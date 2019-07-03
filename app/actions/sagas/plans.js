@@ -36,9 +36,11 @@ class Devices {
     }
 
     *refresh() {
+        console.log("Refreshing devices");
         const queries = _(this.cache)
             .values()
             .map(row => {
+                console.log("Refreshing", row.address);
                 return call(deviceCall, queryFiles(row.address));
             })
             .value();

@@ -303,35 +303,41 @@ export function uploadLogs() {
             }
         });
 
-        return rollover()
-            .then(() => getArchivedLogs())
-            .then(files => {
-                return _(files).reduce((promise, file) => {
-                    return promise.then(values => {
-                        return uploadFile(file.relativePath, getHeaders(file), update => progress(files, update)).then(value => {
-                            return [...values, ...[file]];
+        return resolveDataDirectoryPath().then(dataDirectoryPath => {
+            return rollover()
+                .then(() => getArchivedLogs())
+                .then(files => {
+                    return _(files).reduce((promise, file) => {
+                        return promise.then(values => {
+                            console.log("Uploading", file.relativePath);
+                            return uploadFile(file.relativePath, getHeaders(file), update => progress(files, update)).then(value => {
+                                console.log("Deleting", file.relativePath);
+                                return RNFS.unlink(dataDirectoryPath + file.relativePath).then(() => {
+                                    return [...values, ...[file]];
+                                });
+                            });
                         });
+                    }, Promise.resolve([]));
+                })
+                .then(files => console.log(files))
+                .then(() => {
+                    console.log("DONE");
+                    dispatch({
+                        type: Types.DOWNLOAD_FILE_DONE,
+                        download: {
+                            done: true,
+                            progress: 1.0,
+                            cancelable: false
+                        }
                     });
-                }, Promise.resolve([]));
-            })
-            .then(files => console.log(files))
-            .then(() => {
-                console.log("DONE");
-                dispatch({
-                    type: Types.DOWNLOAD_FILE_DONE,
-                    download: {
-                        done: true,
-                        progress: 1.0,
-                        cancelable: false
-                    }
-                });
 
-                dispatch({
-                    type: Types.TASK_DONE,
-                    task: {
-                        done: true
-                    }
+                    dispatch({
+                        type: Types.TASK_DONE,
+                        task: {
+                            done: true
+                        }
+                    });
                 });
-            });
+        });
     };
 }
