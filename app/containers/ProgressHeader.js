@@ -13,7 +13,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 
 import { ProgressBar } from "../components/ProgressBar";
 
-import styles from "../styles";
+import styles, { subtitle } from "../styles";
 
 class ProgressHeader extends React.Component {
     onCancel() {
@@ -68,9 +68,12 @@ class ProgressHeader extends React.Component {
                         <Text>{progress.label}</Text>
                     </View>
                 ) : (
-                    <View />
+                    <View>
+                        <Text style={{ textAlign: "center", paddingTop: 20 }}>{progress.bytesRead} bytes read.</Text>
+                    </View>
                 )}
                 <ProgressBar progress={progress.progress * 100} />
+                <Text style={{ textAlign: "center", paddingTop: 20 }}>Transferring can take a long time if a lot of data is stored on your FieldKit device</Text>
             </View>
         );
     }
