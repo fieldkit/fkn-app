@@ -25,7 +25,7 @@ function makeHeaders(headers) {
 }
 
 export function uploadFile(relativePath, userHeaders, progress) {
-    const baseUri = "http://192.168.0.100:8090";
+    const baseUri = Config.baseUri;
     const uploadPath = "/messages/ingestion/stream";
     const mimeType = "application/vnd.fk.data+binary";
     const throttledProgress = _.throttle(progress, 100, { leading: true });
