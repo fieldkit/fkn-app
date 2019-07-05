@@ -292,8 +292,6 @@ export class DownloadWriter {
 
     onProgress(info) {
         this.bytesRead = info.received;
-        this.bytesWritten = info.received;
-
         this.progress(Types.DOWNLOAD_FILE_PROGRESS);
     }
 
