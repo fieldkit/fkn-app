@@ -150,7 +150,7 @@ export function writeDeviceMetadata(device, metadata) {
 
 export class DownloadWriter {
     constructor(dataDirectoryPath, device, file, settings, dispatch) {
-        this.device = device;
+        // this.device = device;
         this.file = file;
         this.settings = settings;
         this.dispatch = dispatch;
@@ -167,17 +167,17 @@ export class DownloadWriter {
         this.pending = 0;
         this.buffer = new Uint8Array(0);
         this.bufferSize = 65536 * 0.5;
+
+        this.headersPath = this.dataDirectoryPath + "/" + this.settings.paths.headers;
+        this.path = this.dataDirectoryPath + "/" + this.settings.paths.file;
     }
 
     open() {
         return this.fileSystemOp(() => {
             return Promise.resolve(true)
                 .then(() => {
-                    console.log("settings", this.settings);
-                    this.headersPath = this.dataDirectoryPath + "/" + this.settings.paths.headers;
-                    this.path = this.dataDirectoryPath + "/" + this.settings.paths.file;
+                    console.log("Settings", this.settings);
                     this.directory = Files.getParentPath(this.path);
-
                     return RNFS.mkdir(this.directory);
                 })
                 .then(() => {
@@ -278,6 +278,25 @@ export class DownloadWriter {
         }));
     }
 
+    onHeader(data) {
+        console.log("onHeader", data);
+
+        const reader = protobuf.Reader.create(data);
+        const header = WireMessageReply.decodeDelimited(reader);
+
+        this.readHeader = true;
+        this.bytesTotal = header.fileData.size;
+
+        console.log("Header", header, headerData.length);
+    }
+
+    onProgress(info) {
+        this.bytesRead = info.received;
+        this.bytesWritten = info.received;
+
+        this.progress(Types.DOWNLOAD_FILE_PROGRESS);
+    }
+
     progress(type) {
         const now = new Date();
         const fn = type == Types.DOWNLOAD_FILE_DONE ? this.dispatch : this.throttledDispatch;
@@ -295,5 +314,9 @@ export class DownloadWriter {
                 elapsed: now - this.started
             }
         });
+    }
+
+    getWrite() {
+        return this.path;
     }
 }

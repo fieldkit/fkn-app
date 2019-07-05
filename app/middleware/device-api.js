@@ -29,7 +29,8 @@ class DeviceConnection {
             const client = net.createConnection({
                 host: host,
                 port: port,
-                timeout: 1000
+                timeout: 1000,
+                write: writer != null ? writer.getWrite() : null
             });
 
             const returned = [];
@@ -45,6 +46,18 @@ class DeviceConnection {
 
                 if (noReply) {
                     client.end();
+                }
+            });
+
+            client.on("header", data => {
+                if (writer) {
+                    writer.onHeader(data);
+                }
+            });
+
+            client.on("progress", progress => {
+                if (writer) {
+                    writer.onProgress(progress);
                 }
             });
 

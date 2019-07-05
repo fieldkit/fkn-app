@@ -1,7 +1,7 @@
 import { CALL_DEVICE_API, cancelPendingDeviceCalls } from "../middleware/device-api";
 
 import { QueryType } from "../lib/protocol";
-import { openWriter } from "../lib/downloading";
+import { resolveDataDirectoryPath, openWriter } from "../lib/downloading";
 
 import * as Types from "./types";
 

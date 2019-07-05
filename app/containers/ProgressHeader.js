@@ -61,6 +61,7 @@ class ProgressHeader extends React.Component {
     }
 
     renderBar(i, progress) {
+        const bytes = progress.bytesRead + progress.bytesWritten;
         return (
             <View key={i} style={{ paddingTop: 20 }}>
                 {progress.label ? (
@@ -69,7 +70,7 @@ class ProgressHeader extends React.Component {
                     </View>
                 ) : (
                     <View>
-                        <Text style={{ textAlign: "center", paddingTop: 20 }}>{progress.bytesRead} bytes copied.</Text>
+                        <Text style={{ textAlign: "center", paddingTop: 20 }}>{bytes.toLocaleString()} bytes copied.</Text>
                     </View>
                 )}
                 <ProgressBar progress={progress.progress * 100} />
