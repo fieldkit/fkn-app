@@ -69,9 +69,7 @@ class ProgressHeader extends React.Component {
                         <Text>{progress.label}</Text>
                     </View>
                 ) : (
-                    <View>
-                        <Text style={{ textAlign: "center", paddingTop: 20 }}>{bytes.toLocaleString()} bytes copied.</Text>
-                    </View>
+                    <View>{bytes > 0 && <Text style={{ textAlign: "center", paddingTop: 20 }}>{bytes.toLocaleString()} bytes copied.</Text>}</View>
                 )}
                 <ProgressBar progress={progress.progress * 100} />
                 <Text style={{ textAlign: "center", paddingTop: 20 }}>Transferring can take a long time if a lot of data is stored on your FieldKit device</Text>
