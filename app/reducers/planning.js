@@ -23,7 +23,18 @@ function isArchivePath(path) {
     return path.match(/archive/);
 }
 
-export const Configuration = [
+export const DataConfiguration = [
+    {
+        fileId: 4,
+        chunked: 0,
+        offset: 0,
+        length: 0,
+        delete: false,
+        condition: (file, others) => true
+    }
+];
+
+export const DataAndLogsConfiguration = [
     {
         fileId: 4,
         chunked: 0,
@@ -81,9 +92,11 @@ function mergeUpdate(state, deviceId, after) {
         console.groupEnd();
     }
 
+    const configuration = DataConfiguration;
+
     deviceAfter.plans = {
-        download: generateDownloadPlan(Configuration, deviceAfter.local, deviceAfter.remote),
-        upload: generateUploadPlan(Configuration, deviceAfter.local)
+        download: generateDownloadPlan(configuration, deviceAfter.local, deviceAfter.remote),
+        upload: generateUploadPlan(configuration, deviceAfter.local)
     };
 
     const downloads = _(newState.devices)

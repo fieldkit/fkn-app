@@ -2,7 +2,7 @@ import _ from "lodash";
 
 import { generateDownloadPlan, generateUploadPlan } from "./synchronizing";
 
-import { Configuration } from "./planning";
+import { DataAndLogsConfiguration } from "./planning";
 import { Scenarios } from "./scenarios";
 
 describe("synchronizing", () => {
@@ -1361,7 +1361,7 @@ describe("synchronizing", () => {
     describe("DownloadingBackupLargerLocalFile scenario", () => {
         beforeEach(() => {
             const data = Scenarios.DownloadingBackupLargerLocalFile;
-            this.download = generateDownloadPlan(Configuration, data.local, data.remote);
+            this.download = generateDownloadPlan(DataAndLogsConfiguration, data.local, data.remote);
         });
 
         it("should backup the local file before downloading", () => {
@@ -1373,7 +1373,7 @@ describe("synchronizing", () => {
     describe.skip("DownloadingNegative scenario 1", () => {
         beforeEach(() => {
             const data = Scenarios.DownloadingNegative1;
-            this.download = generateDownloadPlan(Configuration, data.local, data.remote);
+            this.download = generateDownloadPlan(DataAndLogsConfiguration, data.local, data.remote);
         });
 
         it("should backup the local file before downloading", () => {
@@ -1390,7 +1390,7 @@ describe("synchronizing", () => {
     describe.skip("DownloadingNegative scenario 2", () => {
         beforeEach(() => {
             const data = Scenarios.DownloadingNegative2;
-            this.download = generateDownloadPlan(Configuration, data.local, data.remote);
+            this.download = generateDownloadPlan(DataAndLogsConfiguration, data.local, data.remote);
         });
 
         it("should backup the local file before downloading", () => {
@@ -1408,7 +1408,7 @@ describe("synchronizing", () => {
     describe.skip("DownloadingNegative scenario 3", () => {
         beforeEach(() => {
             const data = Scenarios.DownloadingNegative3;
-            this.download = generateDownloadPlan(Configuration, data.local, data.remote);
+            this.download = generateDownloadPlan(DataAndLogsConfiguration, data.local, data.remote);
         });
 
         it("should backup the local file before downloading", () => {
