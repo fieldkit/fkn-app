@@ -18,13 +18,14 @@ function makeHeaders(headers) {
             }
             return ["Fk-" + _.upperFirst(key), String(value)];
         })
+        .concat([["Content-Type", "application/vnd.fk.data+binary"]])
         .filter(pair => pair.length)
         .fromPairs()
         .value();
 }
 
 export function uploadFile(relativePath, userHeaders, progress) {
-    const baseUri = Config.baseUri;
+    const baseUri = "http://192.168.0.100:8090";
     const uploadPath = "/messages/ingestion/stream";
     const mimeType = "application/vnd.fk.data+binary";
     const throttledProgress = _.throttle(progress, 100, { leading: true });
