@@ -26,12 +26,23 @@ class DeviceConnection {
         return new Promise((resolve, reject, onCancel) => {
             debug("Connecting to", host + ":" + port);
 
-            const client = net.createConnection({
-                host: host,
-                port: port,
-                timeout: 1000,
-                write: writer != null ? writer.getWrite() : null
-            });
+            function getSettings() {
+                if (writer != null) {
+                    return {
+                        host: host,
+                        port: port,
+                        timeout: 1000,
+                        write: writer.getWrite()
+                    };
+                }
+                return {
+                    host: host,
+                    port: port,
+                    timeout: 1000
+                };
+            }
+
+            const client = net.createConnection(getSettings());
 
             const returned = [];
 
