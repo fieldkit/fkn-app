@@ -35,12 +35,20 @@ function walkDirectory(relativePath, dispatch, callback) {
     });
 }
 
-export function browseDirectory(relativePath) {
-    return dispatch => {
-        return getDirectory(relativePath).then(action => {
+export function browseDirectoryDispatch(relativePath, dispatch) {
+    return getDirectory(relativePath).then(action => {
+        if (dispatch) {
             dispatch(action);
             dispatch(navigateBrowser(relativePath));
-        });
+        } else {
+            console.log("No dispatch!");
+        }
+    });
+}
+
+export function browseDirectory(relativePath) {
+    return dispatch => {
+        return browseDirectoryDispatch(relativePath, dispatch);
     };
 }
 
@@ -112,7 +120,7 @@ export function touchLocalFile(relativePath) {
             return RNFS.mkdir(dataDirectoryPath + "/" + directory).then(() => {
                 console.log("Touching", relativePath);
                 return RNFS.appendFile(dataDirectoryPath + "/" + relativePath, "", "base64").then(() => {
-                    return browseDirectory(directory);
+                    return browseDirectoryDispatch(directory, dispatch);
                 });
             });
         });
@@ -137,8 +145,8 @@ export function renameLocalDirectory(fromPath, toPath) {
                     );
                 })
                 .then(() => {
-                    console.log("Renamed", fromPath, toPath);
-                    return browseDirectory(Files.getParentPath(toPath));
+                    console.log("Renamed", fromPath, toPath, dispatch);
+                    return browseDirectoryDispatch(Files.getParentPath(toPath), dispatch);
                 });
         });
     };
@@ -154,7 +162,7 @@ export function archiveLocalFile(relativePath) {
                 console.log("Archiving", relativePath, "from", oldPath, "to", newPath);
                 return RNFS.moveFile(oldPath, newPath).then(() => {
                     console.log("Done");
-                    return browseDirectory(Files.getParentPath(oldPath));
+                    return browseDirectoryDispatch(Files.getParentPath(oldPath), dispatch);
                 });
             });
         });
@@ -165,11 +173,16 @@ export function deleteLocalFile(relativePath) {
     return dispatch => {
         return resolveDataDirectoryPath().then(dataDirectoryPath => {
             const path = dataDirectoryPath + relativePath;
-            console.log("Deleting", path);
             return RNFS.exists(path).then(e => {
                 if (e) {
+                    console.log("Deleting", path);
                     return RNFS.unlink(path).then(() => {
-                        return browseDirectory(Files.getParentPath(path));
+                        const parentPath = Files.getParentPath(path).replace(dataDirectoryPath, "");
+                        if (parentPath == "") {
+                            parentPath = "/";
+                        }
+                        console.log("Browsing", parentPath);
+                        return browseDirectoryDispatch(parentPath, dispatch);
                     });
                 }
                 return false;
