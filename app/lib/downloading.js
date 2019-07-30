@@ -298,6 +298,8 @@ export class DownloadWriter {
     progress(type) {
         const now = new Date();
         const fn = type == Types.DOWNLOAD_FILE_DONE ? this.dispatch : this.throttledDispatch;
+        const copied = this.bytesWritten > 0 ? this.bytesWritten : this.bytesRead;
+        const total = this.bytesTotal > 0 ? this.bytesTotal : this.bytesWritten;
 
         fn({
             type: type,
@@ -307,7 +309,7 @@ export class DownloadWriter {
                 bytesTotal: this.bytesTotal,
                 bytesRead: this.bytesRead,
                 bytesWritten: this.bytesWritten,
-                progress: this.bytesWritten / this.bytesTotal,
+                progress: copied / total,
                 started: this.started,
                 elapsed: now - this.started
             }
